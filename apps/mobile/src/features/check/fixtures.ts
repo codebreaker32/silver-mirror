@@ -40,7 +40,7 @@ export const TINTED: CatalogProduct = {
   name: 'Sheer Lip Tint',
   category: 'lip_tint',
   tinted: true,
-  shades: [{ name: 'Rose' }, { name: 'Berry' }],
+  shades: [{ name: 'Rose', hex: '#C46A6F' }, { name: 'Berry', hex: '#8E3B4F' }],
   claims: [],
 };
 

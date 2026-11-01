@@ -135,8 +135,11 @@ export function reevaluate(engine: Engine, key: KeyProfile | null, r: CheckResul
 
 export function tryonEntry(product: CatalogProduct | null): { mode: TryonMode; label: string } | null {
   if (!product?.tinted) return null;
+  // The Worker can only render shades with a colour on file; without one, the try-on would be rejected.
+  const coloured = product.shades.filter((s) => s.hex).length;
+  if (coloured === 0) return null;
   const shadeClaim = product.claims.some((c) => c.type === 'one_shade' || c.type === 'universal_tint');
-  const mode: TryonMode = product.shades.length >= 2 ? 'multi' : 'single';
+  const mode: TryonMode = coloured >= 2 ? 'multi' : 'single';
   if (shadeClaim || mode === 'single') return { mode, label: COPY.tryonSingleClaim };
   return { mode, label: COPY.tryonMulti };
 }

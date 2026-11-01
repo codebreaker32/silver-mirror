@@ -6,7 +6,7 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - [x] 1. Monorepo green (install, typecheck, test)
 - [x] 2. Spike findings applied
 - [x] 3. Catalog merged + AUDIT.md
-- [ ] 4. Tier 1 flows E2E against mock
+- [x] 4. Tier 1 flows E2E against mock
 - [ ] 5. Worker `wrangler dev` mock + smoke script
 - [ ] 6. Web pages + vite build
 - [ ] 7. Android debug APK
@@ -15,6 +15,7 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 ## Needs Aman
 - (STATUS.md morning checklist: selfie for band calibration, Flipkart audit screenshots, hallway tests, demo video)
 - **Catalogue verification ticks**: 0 of 176 rows are verified, so better matches and "N verified products" show 0 until a human ticks rows. Check a `brand_official` row's INCI against its `source_url`, then add its id to `data/catalog/verified.json` and run `npm run catalog:merge`. Ticks on retailer rows are ignored by design. About 10 ticks across sunscreen/moisturiser/cleanser would cover the demo.
+- **Shade colours for try-on**: none of the 11 real tinted rows has a shade hex, so the phone no longer offers try-on on them (the Worker would reject it). For the demo, add `shades: [{name, hex}]` for 1–2 tinted SKUs (hex picked from the brand's official swatch), then `npm run catalog:merge`.
 
 ---
 
@@ -49,3 +50,17 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - Tests: `packages/rules/test/catalogMerge.test.ts` (7): classification, drop reasons, dedupe, tick policy, plus checks that catalog.json is exactly the merge of brands/*.json and every row is schema-valid, unique, complete and https.
 - Verification: `npm run typecheck` exit 0, 0 TS errors; `npx vitest run` 40 files passed, 1 skipped; 466 passed, 1 skipped.
 - Next: item 4 (Tier 1 flows end to end against the mock). For the mock demo a few verified rows will be needed; tests use fixtures, so this doesn't block.
+
+## 2026-11-01 — Iteration 4: Tier 1 flows end to end against the mock
+- New `apps/worker/test/tier1.e2e.test.ts`: the phone's own pure flow modules (`features/check/{flow,chips,present}`, `matches/select`, `scan/runScan`, `tryon/runTryon`, `share/{parse,sample}`) drive the real Worker app in-process with mock YouCam (real G1/G5 fixtures) + mock Claude, the real rules engine, and the real merged catalogue. No network, no units. Each response is parsed with the contracts `routes` schemas, like the phone's client.
+  - **scan**: consent → upload → analyse → read → delete. The Key has inverted bands (Low on the airbrushed sample), `photoDeleted`, no raw/ui scores; local capture deleted; deleteState `deleted`.
+  - **share → SKU confirm → verdict → better matches**: sample share resolves to the Garnier SKU without Claude, verdict FITS/CAUTION with fixed subtitle, then category search → rank → ≤3 FITS-only matches with Flipkart URLs, excluding the current SKU.
+  - **designed UNKNOWN**: unknown name → UNKNOWN (ingredients) with the fixed subtitle → label OCR → chips with uncertain flags → user confirms → deterministic label verdict.
+  - **try-on**: two shades rendered, no tone hex in the response, selfie deleted.
+  - **How this was made**: scan + label-OCR ledgers are `mock:true`, list entries/files; `/v1/ledger` mode mock.
+  - **medicine gate**: "Adapalene Gel" title → `medicine` step; `/v1/label-check` returns `medicineToken: adapalene`; a Tretinoin label → MEDICINE with no label text.
+- Catalogue ticks are simulated in the test only (brand-page sunscreen rows); the real file still has 0 (Needs Aman).
+- **Bug fixed**: `tryonEntry()` offered try-on on tinted products with no shade colour on file (all 11 real tinted rows), which the Worker rejects with 400. It now counts only shades with a hex. Updated `flow.test.ts` and the TINTED fixture.
+- `test/helpers.ts` `setup()` takes an optional `catalog` (additive).
+- Verification: `npm run typecheck` exit 0, 0 TS errors; `npx vitest run` 41 files passed, 1 skipped; 473 passed, 1 skipped; mobile `jest` 7/7.
+- Next: item 5 (`wrangler dev` in mock mode + smoke script).

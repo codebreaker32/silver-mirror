@@ -99,6 +99,8 @@ export interface SetupOptions {
   mockOptions?: MockOptions;
   env?: Partial<Env>;
   shareFetch?: (input: string, init?: RequestInit) => Promise<Response>;
+  /** Catalogue rows to serve (default TEST_PRODUCTS). */
+  catalog?: CatalogProduct[];
 }
 
 export const setup = (opts: SetupOptions = {}) => {
@@ -119,7 +121,7 @@ export const setup = (opts: SetupOptions = {}) => {
     mock: recording,
     liveFetch: recording.fetch,
     rules: opts.rules ?? fr.rules,
-    catalog: loadCatalog(TEST_PRODUCTS),
+    catalog: loadCatalog(opts.catalog ?? TEST_PRODUCTS),
     ...(opts.claude ? { claude: opts.claude } : {}),
     random: () => 0,
     ...(opts.shareFetch ? { shareFetch: opts.shareFetch } : {}),
