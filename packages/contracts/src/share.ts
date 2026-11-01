@@ -152,6 +152,7 @@ export const SHARE_FIXTURES = {
     'Check this out at Amazon\nMinimalist SPF 30 Body Sunscreen, UVA & UVB Protection | Nourishing Lotion | Broad Spectrum PA+++ Sunscreen for All Skin Types | For Men & Women | 150 g https://amzn.in/d/05kxo4QC',
   amazonTitle:
     'Minimalist SPF 30 Body Sunscreen, UVA & UVB Protection | Nourishing Lotion | Broad Spectrum PA+++ Sunscreen for All Skin Types | For Men & Women | 150 g',
+  // lint-claims:allow (verbatim retailer title from the S1 spike, not SkinKey copy)
   nykaaTitle: 'Minimalist SPF 50 PA++++ Sunscreen With Niacinamide - Lightweight & No White Cast For All Skin Types',
   /** FINDINGS gives the URL shape only; slug/id/skuId here are placeholders in that shape. */
   nykaaUrl: 'https://www.nykaa.com/minimalist-spf-50-sunscreen/p/1234567?skuId=1234567&se=0',

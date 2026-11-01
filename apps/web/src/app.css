@@ -153,6 +153,9 @@ a {
 }
 
 .sk-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
   text-decoration: none;
   padding: 10px 0;
   opacity: 0.86;
@@ -267,7 +270,7 @@ a {
 }
 
 .btn-sm {
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 16px;
   font-size: var(--t5);
 }
@@ -572,6 +575,7 @@ a {
 .lookup-examples button {
   background: none;
   border: 0;
+  min-height: 48px;
   padding: 10px 0;
   font: inherit;
   font-weight: 600;
@@ -1337,8 +1341,8 @@ table.data tr.ours th {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  min-height: 40px;
-  padding: 0 4px 0 12px;
+  min-height: 48px;
+  padding: 0 0 0 12px;
   border-radius: var(--sk-radius-sm);
   background: var(--sk-color-surface-raised);
   border: 1.5px solid var(--sk-color-border);
@@ -1361,8 +1365,8 @@ table.data tr.ours th {
 .chip-edit button {
   border: 0;
   background: none;
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 48px;
+  min-height: 48px;
   cursor: pointer;
   color: var(--muted);
   font-size: 18px;

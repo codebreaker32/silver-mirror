@@ -98,3 +98,22 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - Not verified: running on a device (no phone or emulator on the VM) → Needs Aman.
 - Verification: `npm run typecheck` exit 0; `npx vitest run` 42 files passed, 1 skipped; 479 passed, 1 skipped; mobile jest 7/7.
 - Next: item 8 (copy linter replacing the `lint-claims` stub, a11y 48 dp/labels, bundle secret grep script, root README).
+
+## 2026-11-01 — Iteration 8: quality (copy linter, a11y, secret grep, README)
+- **Copy linter**: replaced the `lint-claims` stub with `scripts/lint-claims.ts` (`npm run lint:claims`, also run by `npm run lint`). It uses the rules package's `lintCopy()` (brief §4.4 + spec §9 list, Accuracy note allowlisted). It parses TS/TSX with the TypeScript compiler and checks string literals, template text and JSX text in `apps/mobile/src`, `apps/web/src` and `packages/contracts/src` (tests excluded). Code strings (imports, keys, type literals, `===` comparisons, non-copy JSX attributes, identifier-like strings) are skipped. It also checks README.md (outside code fences and inline code) and any .srt/.vtt in docs/. `// lint-claims:allow` marks third-party text quoted verbatim; used once, on the Nykaa retailer title fixture ("No White Cast"), which is retailer data, not SkinKey copy. Result: 158 files, 0 violations. Test `packages/rules/test/lint-claims-cli.test.ts`: the real repo is clean, and a temp fixture gets exactly the 4 expected hits (copy, aria-label, template, README) while code strings and allow-marked lines are skipped.
+- **Accessibility**:
+  - Mobile `apps/mobile/src/a11y.test.ts` (static AST): 23 Pressables found. Every visible one has `accessibilityRole` and a label (prop or visible Text child). Each is sized from a ≥48 dp token, fills its row, or is a padded card, with no literal size under 48. Every design-token touch size (minHeight/target/minTarget/iconButton/touch.min, 42 values) is ≥48. Already compliant, nothing to change.
+  - Web had targets under 48 px: `.btn-sm` 44, `.chip-edit` 40, chip remove button 36, `.sk-nav a` about 40, lookup example buttons about 40. All now 48. `apps/web/src/a11y.test.ts` checks these selectors and that no button or link rule sets a height under 48 px.
+- **Secret grep**: `scripts/secret-grep.mjs` (`npm run secrets:grep`) scans `apps/web/dist`, the Worker dist/dry-run if present, and the assets/ + res/raw/ of both APKs (unzipped to a temp dir). It looks for key patterns (`sk-ant-`, AKIA, X-Amz signatures, private keys, key env-var names) plus every secret-named VALUE from `.env`/`.dev.vars`, and prints only names, never values. Fresh web build + both APKs: 28 files, 3 env values checked, 0 hits. Test `packages/rules/test/secret-grep-cli.test.ts`: a planted fake key and an .env value are both flagged without the value being echoed; a clean build passes.
+- **README.md** (root): story, why (desk research labelled), hero flow including the spike facts (inverted bands, delete retry, the three share parsers, Custom Tab, coach mark), the Claude boundary, architecture diagram, possible/not-possible table, run commands, Android build, repo map, roadmap, credits. It passes the copy linter (the linter caught 3 of its own first-draft phrases, which were reworded).
+- BUILD_NOTES.md: updated the scripts and commands lines.
+- Verification:
+  - `npm run typecheck`: exit 0, 0 TS errors.
+  - `npx vitest run`: 46 files passed, 1 skipped; 495 passed, 1 skipped.
+  - mobile `jest`: 7/7.
+  - `npm run lint`: exit 0, 0 violations.
+  - `npm run build -w @skinkey/web`: built.
+  - `npm run secrets:grep`: 0 hits.
+- Items 1–8 are verified per the iteration entries above. Still open, and needing the human (see Needs Aman): on-device APK run, catalogue verification ticks, shade hexes for try-on, the selfie for band calibration, and the Flipkart audit frame.
+
+ALL_DONE

@@ -11,7 +11,7 @@ The spec is `research/skinkey_v2_spec.md` and it overrides everything else. Copy
 | **APP-CORE** (A1) | `apps/mobile/src/features/{check,share,matches,home}/`<br>`apps/mobile/src/app/(tabs)/**`<br>`apps/mobile/src/app/{check,settings,how}.tsx`<br>`apps/mobile/src/app/_layout.tsx`<br>`apps/mobile/src/app/+native-intent.tsx`<br>`apps/mobile/src/components/**` | Share intent, parser, SKU confirm, verdict sheet, better matches, Home, sample share, Demo Key mode, "How this was made" screen. `src/components/` is the shared UI kit. APP-SCAN may add new files there but must not edit APP-CORE's. |
 | **APP-SCAN** (A2) | `apps/mobile/src/features/{scan,tryon,key}/`<br>`apps/mobile/src/app/scan/**`<br>`apps/mobile/src/app/{tryon,key}.tsx` | Consent, capture guide, upload, HD flow, overlay held in memory, Key card, try-on, delete state on the phone, cache-check E2E. Keep the exported signatures in `features/key/index.ts` stable; APP-CORE consumes them. |
 | **WORKER** (A3) | `apps/worker/**`<br>`packages/contracts/src/{api,ledger}.ts` | YouCam proxy, limiter, ledger, caps, mock YouCam (`src/mock/`, fixtures in `src/mock/fixtures/`), Claude X3/X4 (`src/claude/`), `/v1/label-check`, and the catalogue endpoints. |
-| **RULES** (A4) | `packages/rules/**`<br>`packages/contracts/src/{domain,rules,verdict}.ts`<br>`scripts/lint-claims.mjs`<br>`audit/**` (create it)<br>root `audit` script | Rules engine, bands, label check, medicine gate, `rank()`, the CI suites, the claim linter, `npm run audit`, and `summary.json`. |
+| **RULES** (A4) | `packages/rules/**`<br>`packages/contracts/src/{domain,rules,verdict}.ts`<br>`scripts/lint-claims.ts`<br>`audit/**` (create it)<br>root `audit` script | Rules engine, bands, label check, medicine gate, `rank()`, the CI suites, the claim linter, `npm run audit`, and `summary.json`. |
 | **WEB** (A6) | `apps/web/**` | Landing, `/check`, `/audit`, `/rules`, `/how`, `/r/:token`. |
 | CATALOG (A5) | `data/catalog/**`<br>`packages/contracts/src/catalog.ts` | The on-disk row schema is `CatalogProduct` (snake_case, following X1). |
 | DESIGN (A7) | `design/system/**` | `packages/design` re-exports these tokens. Never copy token values. |
@@ -28,7 +28,7 @@ apps/web         Vite 8 + React 19.3 + react-router 8. Static, deploys to Cloudf
 packages/contracts  zod schemas + types for every Worker route (`routes` map), KeyProfile, Verdict, ledger, COPY, DEMO_KEY
 packages/rules      pure TS engine (signatures with TODO bodies); depends only on zod + contracts (types)
 packages/design     re-exports design/system/tokens: `@skinkey/design` (RN theme.ts), `@skinkey/design/web`, `@skinkey/design/tokens.css`
-scripts/            gen-dev-vars.mjs, lint-claims.mjs (stub)
+scripts/            gen-dev-vars.mjs, lint-claims.ts (copy linter), secret-grep.mjs, merge-catalog.ts, audit.mjs
 ```
 
 The mobile route stubs are `(tabs)/index` (Home), `check`, `scan/{index,capture,processing,result}`, `tryon`, `key`, `settings` and `how`. The Expo template keeps routes under `src/app` and features under `src/features`, and `@/*` maps to `src/*`.
@@ -60,7 +60,8 @@ The mobile route stubs are `(tabs)/index` (Home), `check`, `scan/{index,capture,
 npm install                 # all workspaces
 npm run typecheck           # every workspace (passes on the skeleton)
 npm test                    # vitest, projects = packages/* + apps/*
-npm run lint                # workspace lint + claim linter (stub)
+npm run lint                # workspace lint + claim linter (npm run lint:claims)
+npm run secrets:grep        # grep built web bundle + APKs for keys / .env values (never prints values)
 npm run gen:devvars         # writes apps/worker/.dev.vars from .env (0600, gitignored, values never printed)
 npm run dev:worker          # wrangler dev on :8787, MOCK_YOUCAM=1 by default
 npm run dev:web             # vite on :5173 (VITE_WORKER_URL overrides the Worker URL)
