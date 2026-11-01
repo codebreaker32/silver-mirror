@@ -2,7 +2,7 @@
 // SkinKey contrast and token-rule validator. Node 18+, no dependencies.
 //
 //   node check-contrast.mjs                      # print report, exit 1 on any failure
-//   node check-contrast.mjs --md contrast-report.md
+//   node check-contrast.mjs --md contrast-report.md    # relative or absolute path
 //   node check-contrast.mjs --tokens other.tokens.json   # check a candidate file
 //
 // Reads skinkey.tokens.json, resolves every alias for light and dark, and checks
@@ -16,8 +16,8 @@
 // It also lints the non-colour rules from the art-direction review (type floor,
 // touch targets, motion, CAUTION hue, neutral meter, grain, verdict icons).
 
-import { writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { dirname, join, resolve as resolveFile } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadTokens, resolvePath, resolve, MODES } from './lib/resolve.mjs';
 
@@ -89,8 +89,22 @@ add('color.disabled-fg', 'color.disabled-bg', 'text', 'Disabled primary button l
 add('color.on-overlay', 'color.overlay-camera', 'text', 'Capture hints, try-on badges over live camera', { camera: true });
 add('color.on-overlay', 'color.overlay-camera', 'ui', 'Capture oval, barcode corners, shutter ring over live camera', { camera: true });
 add('color.qr.module', 'color.qr.field', 'ui', 'QR modules (scanner)');
-add('color.text', 'component.skinMap.zoneFill', 'text', 'Skin-map zone label on zone fill', { on: 'color.surface' });
-add('color.text', 'meter.filled', 'text', 'Skin-map label on highlighted zone (18% ink)', { alpha: 'component.skinMap.zoneFillHighlightOpacity', on: 'color.surface' });
+add('color.focus-ring-inverse', 'color.inverse-surface', 'ui', 'Focus ring on the snackbar action (inverse surface)');
+add('color.focus-ring-overlay', 'color.overlay-camera', 'ui', 'Focus ring on shutter, flip, Tips, torch, Type the barcode, try-on handle', { camera: true });
+add('color.on-overlay', 'color.overlay-halo', 'ui', 'Try-on divider and overlay focus ring, with their 1dp dark halo, over a photo', { camera: true });
+add('component.skinMap.hatch', 'component.skinMap.bg', 'ui', 'Skin-map hatch strokes (band encoding) on the map frame');
+add('component.skinMap.zoneStroke', 'component.skinMap.bg', 'ui', 'Skin-map zone outline');
+add('component.skinMap.faceOutline', 'component.skinMap.bg', 'ui', 'Skin-map face outline');
+add('component.bottomNav.iconInactive', 'color.surface-raised', 'ui', 'Unselected nav icon on the bar');
+add('component.bottomNav.iconActive', 'component.bottomNav.indicator.bg', 'ui', 'Selected nav icon on its pill');
+add('component.bottomNav.labelActiveColor', 'color.surface-raised', 'text', 'Selected nav label');
+add('component.bottomNav.labelInactiveColor', 'color.surface-raised', 'text', 'Unselected nav label');
+add('component.bottomNav.indicator.bg', 'color.surface-raised', 'info', 'Nav pill against the bar (not the only cue: weight + stroke carry selection)');
+add('component.bottomNav.labelActiveColor', 'component.bottomNav.labelInactiveColor', 'info', 'Selected vs unselected nav label colour (weight 600 vs 400 carries it)');
+add('component.segmented.selectedFg', 'component.segmented.selectedBg', 'text', 'Selected segment label (skin-map selector, try-on switcher)');
+add('component.processingStepper.done.check', 'component.processingStepper.done.fill', 'ui', 'Done-step check on its ink disc');
+add('component.rankingDisclosure.color', 'color.bg', 'text', 'Ranking disclosure text (14dp, full text colour)');
+add('component.rankingDisclosure.rule', 'color.bg', 'ui', 'Ranking disclosure leading rule');
 
 for (const v of VERDICTS) {
   const b = `verdict.${v}.bg`;
@@ -98,7 +112,8 @@ for (const v of VERDICTS) {
   add('color.text', b, 'text', `${v.toUpperCase()} subtitle (body, full text colour)`);
   add('color.text-muted', b, 'text', `${v.toUpperCase()} name-only qualifier`);
   add(`verdict.${v}.icon`, b, 'ui', `${v.toUpperCase()} 24dp icon on head`);
-  add('color.focus-ring', b, 'ui', `Focus ring on ${v.toUpperCase()} head (Edit link inside head)`);
+  add('color.focus-ring', b, 'ui', `Focus ring on ${v.toUpperCase()} head (web results page link next to the head)`);
+  add('color.link', b, 'text', `Link on ${v.toUpperCase()} head (noProfile prompt sits below it; gated in case it moves inside)`);
   for (const s of ['color.bg', 'color.surface']) {
     add(`verdict.${v}.border`, s, 'ui', `${v.toUpperCase()} head border against the screen`);
     add(`verdict.${v}.icon`, s, 'ui', `${v.toUpperCase()} 16dp icon in match-card tag`);
@@ -154,7 +169,7 @@ const rr = tokens.component.reasonRow;
 lint('Product fact in reasons: 16dp in full text colour', rr.fact === '{type.body}' && T.body.size === 16 && rr.factColor === '{color.text}', `${rr.fact} (${T.body.size}dp), ${rr.factColor}`);
 
 // Touch targets: every key that names a tap target must be >= touch.min.
-const TARGET_KEY = /^(minHeight|target|minTarget|itemTarget|editTarget|iconButton|torch|handle|rowMinHeight)$/;
+const TARGET_KEY = /^(minHeight|target|minTarget|iconButton|torch|handle|rowMinHeight)$|Target$/;
 const tooSmall = [];
 let targetCount = 0;
 (function walk(obj, path) {
@@ -170,6 +185,83 @@ let targetCount = 0;
 })(tokens.component, 'component');
 const shutter = tokens.component.captureGuide.shutter.size;
 lint(`Touch targets >= ${tokens.touch.min}dp (${targetCount} target tokens + shutter)`, tokens.touch.min >= 48 && tooSmall.length === 0 && shutter >= 48, tooSmall.join(', ') || `all >= ${tokens.touch.min}; shutter ${shutter}`);
+
+// No fixed height on anything that sets text: it would clip at 2.0x font scale.
+{
+  const bad = [];
+  (function walk(obj, path) {
+    const hasType = Object.values(obj).some((v) => typeof v === 'string' && v.startsWith('{type.'));
+    for (const [k, v] of Object.entries(obj)) {
+      if (k.startsWith('$')) continue;
+      if (v && typeof v === 'object' && !Array.isArray(v)) walk(v, `${path}.${k}`);
+      else if (hasType && k === 'height') bad.push(`${path}.height`);
+    }
+  })(tokens.component, 'component');
+  lint('No fixed height next to a type token (minHeight only)', bad.length === 0, bad.join(', ') || 'ok');
+}
+
+// Every component group referenced by a lint exists and the four verdict heads share one shape.
+{
+  const h = tokens.component.verdictCard.head;
+  const keys = VERDICTS.map((v) => Object.keys(h[v]).sort().join(','));
+  lint('Verdict head variants share one shape (indexable by Verdict)', new Set(keys).size === 1, keys[0]);
+  lint('Verdict head has no leading stripe / rule token', !JSON.stringify(h).match(/"rule/), 'icon + label carry the state');
+}
+
+// Nav selection is not colour alone.
+{
+  const n = tokens.component.bottomNav;
+  const wa = T[n.labelActive.slice(6, -1)].weight, wi = T[n.labelInactive.slice(6, -1)].weight;
+  lint('Bottom nav: selected and unselected labels differ by weight and stroke', wa - wi >= 200 && n.iconActiveStrokeWidth > n.iconInactiveStrokeWidth, `label ${wa} vs ${wi}, stroke ${n.iconActiveStrokeWidth} vs ${n.iconInactiveStrokeWidth}`);
+}
+
+// The stepper and other neutral parts never use the accent.
+{
+  const s = JSON.stringify(tokens.component.processingStepper) + JSON.stringify(tokens.component.bandList) + JSON.stringify(tokens.component.skinMap);
+  lint('Processing stepper, band list and skin map use neutral ink, never the accent', !/color\.accent/.test(s), 'ok');
+}
+
+// Ranking disclosure is not grey fine print.
+{
+  const r = tokens.component.rankingDisclosure;
+  lint('Ranking disclosure >= 14dp in full text colour', T[r.type.slice(6, -1)].size >= 14 && r.color === '{color.text}', `${r.type} ${r.color}`);
+}
+
+// components.md references resolve against this token file (and its CSS vars against tokens.css).
+{
+  const mdPath = join(here, '..', 'components.md');
+  const cssPath = join(here, 'tokens.css');
+  if (existsSync(mdPath)) {
+    const md = readFileSync(mdPath, 'utf8');
+    const comps = Object.keys(tokens.component);
+    const heads = new Set(['color', 'type', 'space', 'radius', 'elevation', 'motion', 'touch', 'icon', 'texture', 'verdict', 'meter', 'z', 'typography', ...comps]);
+    const bad = [];
+    let n = 0;
+    const dig = (obj, parts) => { let cur = obj; for (const p of parts) { if (cur == null || typeof cur !== 'object' || !(p in cur)) return false; cur = cur[p]; } return true; };
+    for (const m of md.matchAll(/`([a-zA-Z][\w-]*(?:\.[\w$<>*-]+)+)`/g)) {
+      const ref = m[1].replace(/<(s|state|verdict)>/g, 'fits').replace(/<mode>/g, 'light').replace(/\.\*$/, '');
+      const [head, ...rest] = ref.split('.');
+      if (!heads.has(head) || /\.(md|json|ts|css|mjs|png|ttf)$/.test(ref)) continue;
+      n++;
+      let ok;
+      if (rest.length === 0) ok = true;
+      else if (comps.includes(head)) ok = dig(tokens.component, [head, ...rest]);
+      else if (head === 'motion') ok = dig(tokens.motion, rest);
+      else if (head === 'texture') ok = dig(tokens.texture, rest);
+      else if (head === 'typography') ok = dig(tokens.typography, rest);
+      else if (head === 'z') ok = dig(tokens.zIndex, rest);
+      else { try { resolve(tokens, `{${ref}}`, 'light'); resolve(tokens, `{${ref}}`, 'dark'); ok = true; } catch { ok = false; } }
+      if (!ok) bad.push(m[1]);
+    }
+    let cssBad = [];
+    if (existsSync(cssPath)) {
+      const css = readFileSync(cssPath, 'utf8');
+      const defined = new Set([...css.matchAll(/(--sk-[a-z0-9-]+)\s*:/g)].map((x) => x[1]));
+      cssBad = [...new Set([...md.matchAll(/(--sk-[a-z0-9-]+)(?![a-z0-9-]*\*)/g)].map((x) => x[1]).filter((v) => !v.endsWith('-') && !defined.has(v)))];
+    }
+    lint(`components.md token references resolve (${n} refs)`, bad.length === 0 && cssBad.length === 0, [...new Set(bad)].slice(0, 25).join(', ') + (cssBad.length ? ` css: ${cssBad.join(', ')}` : '') || 'all resolve');
+  }
+}
 
 // Motion: no overshoot, reduced motion is a short crossfade.
 const eases = Object.entries(tokens.motion.ease).filter(([k]) => !k.startsWith('$'));
@@ -259,7 +351,7 @@ for (const mode of MODES) {
 const md = lines.join('\n') + '\n';
 
 const mdIdx = process.argv.indexOf('--md');
-if (mdIdx > -1) writeFileSync(join(process.cwd(), process.argv[mdIdx + 1]), md);
+if (mdIdx > -1) writeFileSync(resolveFile(process.cwd(), process.argv[mdIdx + 1]), md);
 
 console.log(`SkinKey contrast: ${gated.length} gated pairs, ${failed.length} failures; ${lints.length} lints, ${lintFailed.length} failures.`);
 for (const f of failed) console.log(`  FAIL ${f.mode} ${f.fg} on ${f.bg}: ${f.ratio.toFixed(2)}:1 < ${f.min}:1 (${f.fgHex} on ${f.bgHex})`);

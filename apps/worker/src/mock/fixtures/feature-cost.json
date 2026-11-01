@@ -1,0 +1,135 @@
+{
+ "_source": "research/youcam_skus_live.json (live GET /s2s/v2.0/credit/feature-cost, 2026-11-01), filtered to the endpoints SkinKey calls",
+ "status": 200,
+ "result": {
+  "next_token": null,
+  "skus": [
+   {
+    "description": "AI Skin Analysis V2.0 HD (1-4 concerns)",
+    "amount": 12.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.0 HD (5-8 concerns)",
+    "amount": 16.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.0 HD (9-12 concerns)",
+    "amount": 20.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.0 HD (13-16 concerns)",
+    "amount": 22.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.0 SD (1-4 concerns)",
+    "amount": 9.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.0 SD (5-8 concerns)",
+    "amount": 12.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.0 SD (9-12 concerns)",
+    "amount": 14.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.0 SD (13-16 concerns)",
+    "amount": 16.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.1 HD (1-4 concerns)",
+    "amount": 12.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.1/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.1 HD (5-8 concerns)",
+    "amount": 16.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.1/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.1 HD (9-12 concerns)",
+    "amount": 20.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.1/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.1 HD (13-16 concerns)",
+    "amount": 22.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.1/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.1 SD (1-4 concerns)",
+    "amount": 9.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.1/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.1 SD (5-8 concerns)",
+    "amount": 12.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.1/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.1 SD (9-12 concerns)",
+    "amount": 14.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.1/task/skin-analysis"
+   },
+   {
+    "description": "AI Skin Analysis V2.1 SD (13-16 concerns)",
+    "amount": 16.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.1/task/skin-analysis"
+   },
+   {
+    "description": "AI Facial Color Tones Analyzer V1.0",
+    "amount": 20.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/skin-tone-analysis"
+   },
+   {
+    "description": "AI Makeup Virtual Try-On V1.0",
+    "amount": 1.0,
+    "unit": "result_image",
+    "proc_unit": 1,
+    "run_task_url": "https://yce-api-01.makeupar.com/s2s/v2.0/task/makeup-vto"
+   }
+  ]
+ }
+}

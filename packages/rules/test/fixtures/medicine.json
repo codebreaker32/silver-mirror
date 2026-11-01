@@ -1,0 +1,26 @@
+{
+  "_note": "Reviewed medicine-gate fixtures (spec §5). `gated` must trip the gate; `false_positives` must not. Edit only with a reviewer's note.",
+  "gated": [
+    { "title": "Benzoyl Peroxide 2.5% Gel Face Wash", "inci": [], "token": "benzoyl peroxide", "why": "everyday BPO wash" },
+    { "title": "Acne Foaming Wash 4%", "inci": ["Aqua", "Benzoyl Peroxide", "Sodium Cocoyl Isethionate"], "token": "benzoyl peroxide", "why": "BPO in INCI" },
+    { "title": "Ketoconazole 2% Anti-Dandruff Shampoo", "inci": [], "token": "ketoconazole", "why": "ketoconazole shampoo" },
+    { "title": "Scalp Wash", "inci": ["Aqua", "Ketoconazole", "Sodium Laureth Sulfate"], "token": "ketoconazole", "why": "ketoconazole in INCI" },
+    { "title": "Adapalene Gel 0.1%", "inci": [], "token": "adapalene", "why": "retinoid drug" },
+    { "title": "Night Cream", "inci": ["Aqua", "Tretinoin 0.025%"], "token": "tretinoin", "why": "tretinoin in INCI" },
+    { "title": "Night Cream", "inci": ["Aqua", "Retinoic Acid"], "token": "tretinoin", "why": "INCI synonym of tretinoin" },
+    { "title": "Spot Gel", "inci": ["Clindamycin Phosphate", "Aqua"], "token": "clindamycin", "why": "salt form" },
+    { "title": "Skin Cream with Hydroquinone, Tretinoin and Mometasone", "inci": [], "token": "tretinoin", "why": "triple-combination cream: first gated token in list order" },
+    { "title": "Hydrocortisone Cream 1%", "inci": [], "token": "hydrocortisone", "why": "steroid" }
+  ],
+  "false_positives": [
+    { "title": "Retinol 0.3% Night Serum", "inci": ["Aqua", "Retinol", "Retinyl Palmitate"], "why": "cosmetic retinoids are not tretinoin" },
+    { "title": "Hydroquinone-Free Even Tone Serum", "inci": ["Aqua", "Alpha-Arbutin"], "why": "negated in the title" },
+    { "title": "Benzoyl Peroxide Free Acne Wash", "inci": ["Aqua", "Salicylic Acid"], "why": "negated in the title" },
+    { "title": "Gentle Face Wash without Benzoyl Peroxide", "inci": ["Aqua", "Glycerin"], "why": "negated in the title" },
+    { "title": "10% Azelaic Acid Suspension", "inci": ["Aqua", "Azelaic Acid"], "why": "cosmetic-strength azelaic acid is not gated" },
+    { "title": "2% Salicylic Acid Face Wash", "inci": ["Aqua", "Salicylic Acid", "Glycerin"], "why": "cosmetic exfoliant" },
+    { "title": "Tea Tree Spot Gel", "inci": ["Aqua", "Melaleuca Alternifolia (Tea Tree) Leaf Oil"], "why": "essential oil, not a medicine" },
+    { "title": "Zinc + Niacinamide Serum", "inci": ["Aqua", "Niacinamide", "Zinc PCA"], "why": "cosmetic actives" },
+    { "title": "Anti-Dandruff Shampoo with Zinc Pyrithione", "inci": ["Aqua", "Zinc Pyrithione"], "why": "not on the gate list" }
+  ]
+}

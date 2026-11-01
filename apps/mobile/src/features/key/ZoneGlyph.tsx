@@ -1,0 +1,108 @@
+import { useId } from 'react';
+import { Text, View } from 'react-native';
+import Svg, { Defs, Ellipse, G, Line, Path, Pattern, Rect } from 'react-native-svg';
+import type { Band } from '@skinkey/contracts';
+import { useTheme } from '@/theme/ThemeProvider';
+import type { GlyphModel, GlyphZone } from './model';
+
+const SHAPES: Record<GlyphZone, { cx: number; cy: number; rx: number; ry: number }> = {
+  forehead: { cx: 100, cy: 62, rx: 46, ry: 20 },
+  nose: { cx: 100, cy: 114, rx: 12, ry: 26 },
+  leftCheek: { cx: 60, cy: 130, rx: 20, ry: 24 },
+  rightCheek: { cx: 140, cy: 130, rx: 20, ry: 24 },
+  chin: { cx: 100, cy: 178, rx: 26, ry: 13 },
+};
+
+interface Props {
+  model: GlyphModel;
+  highlight?: readonly GlyphZone[];
+  width?: number;
+  showLegend?: boolean;
+  caption?: string;
+}
+
+function usePatternIds() {
+  const base = useId().replace(/[^a-zA-Z0-9]/g, '');
+  return { medium: `hm${base}`, high: `hh${base}` };
+}
+
+export function ZoneGlyph({ model, highlight = [], width = 200, showLegend = true, caption }: Props) {
+  const theme = useTheme();
+  const m = theme.components.skinMap;
+  const ink = theme.components.bandChip.meter.filled;
+  const ids = usePatternIds();
+  const height = (width * 240) / 200;
+
+  const fillFor = (band: Band | null) =>
+    band === 'High' ? `url(#${ids.high})` : band === 'Medium' ? `url(#${ids.medium})` : band === 'Low' ? m.zoneFill : 'none';
+
+  return (
+    <View
+      accessible
+      accessibilityRole="image"
+      accessibilityLabel={[model.accessibilityLabel, ...model.lines].join(' ')}
+      style={{ backgroundColor: m.bg, borderRadius: m.radius, padding: theme.space[4], gap: theme.space[3], alignItems: 'center' }}
+    >
+      <Text style={[theme.type.label, { color: m.labelColor, alignSelf: 'flex-start' }]}>{model.title}</Text>
+      <Svg width={width} height={height} viewBox="0 0 200 240">
+        <Defs>
+          <Pattern id={ids.medium} patternUnits="userSpaceOnUse" width={6} height={6} patternTransform="rotate(45)">
+            <Line x1={0} y1={0} x2={0} y2={6} stroke={ink} strokeWidth={1} />
+          </Pattern>
+          <Pattern id={ids.high} patternUnits="userSpaceOnUse" width={4} height={4} patternTransform="rotate(45)">
+            <Line x1={0} y1={0} x2={0} y2={4} stroke={ink} strokeWidth={1} />
+            <Line x1={0} y1={0} x2={4} y2={0} stroke={ink} strokeWidth={1} />
+          </Pattern>
+        </Defs>
+        <Path d="M76 196 L72 236 M124 196 L128 236" stroke={m.faceOutline} strokeWidth={m.strokeWidth} strokeLinecap="round" fill="none" />
+        <Ellipse cx={100} cy={112} rx={72} ry={92} stroke={m.faceOutline} strokeWidth={m.strokeWidth} fill="none" />
+        <Line x1={100} y1={24} x2={100} y2={200} stroke={m.faceOutline} strokeWidth={0.75} strokeDasharray="2 5" />
+        {(Object.keys(SHAPES) as GlyphZone[]).map((zone) => {
+          const s = SHAPES[zone];
+          const band = model.zones[zone];
+          const lit = highlight.includes(zone);
+          return (
+            <G key={zone}>
+              {lit ? <Ellipse {...s} fill={m.zoneFillHighlight} fillOpacity={m.zoneFillHighlightOpacity} /> : null}
+              <Ellipse
+                {...s}
+                fill={fillFor(band)}
+                stroke={m.zoneStroke}
+                strokeWidth={lit ? m.strokeWidth * 2 : 1}
+                strokeDasharray={band === null ? '3 3' : undefined}
+              />
+            </G>
+          );
+        })}
+      </Svg>
+      {showLegend ? (
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.space[3], alignSelf: 'flex-start' }} importantForAccessibility="no-hide-descendants">
+          {(['Low', 'Medium', 'High'] as const).map((b) => (
+            <View key={b} style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[1] }}>
+              <Svg width={16} height={12} viewBox="0 0 16 12">
+                <Rect x={0.5} y={0.5} width={15} height={11} rx={2} fill={fillFor(b)} stroke={m.zoneStroke} strokeWidth={1} />
+              </Svg>
+              <Text style={[theme.type.caption, { color: theme.colors.textMuted }]}>{b}</Text>
+            </View>
+          ))}
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[1] }}>
+            <Svg width={16} height={12} viewBox="0 0 16 12">
+              <Rect x={0.5} y={0.5} width={15} height={11} rx={2} fill="none" stroke={m.zoneStroke} strokeWidth={1} strokeDasharray="3 3" />
+            </Svg>
+            <Text style={[theme.type.caption, { color: theme.colors.textMuted }]}>Not measured</Text>
+          </View>
+        </View>
+      ) : null}
+      {model.lines.length > 0 ? (
+        <View style={{ alignSelf: 'stretch', gap: theme.space[1] }} importantForAccessibility="no-hide-descendants">
+          {model.lines.map((line) => (
+            <Text key={line} style={[theme.type.bodySm, { color: theme.colors.text }]}>
+              {line}
+            </Text>
+          ))}
+        </View>
+      ) : null}
+      {caption ? <Text style={[theme.type.caption, { color: theme.colors.textMuted, alignSelf: 'flex-start' }]}>{caption}</Text> : null}
+    </View>
+  );
+}

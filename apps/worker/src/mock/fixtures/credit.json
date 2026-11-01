@@ -1,0 +1,18 @@
+{
+ "_source": "yce.html GET /s2s/v1.0/client/credit schema; amounts from research/youcam_live_facts.md",
+ "status": 200,
+ "results": [
+  {
+   "id": 1,
+   "type": "ApiPaygToken",
+   "amount": 1000,
+   "expiry": 1798761600000
+  },
+  {
+   "id": 2,
+   "type": "ApiSubsToken",
+   "amount": 40,
+   "expiry": 1830297600000
+  }
+ ]
+}

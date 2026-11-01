@@ -1,0 +1,30 @@
+{
+  "name": "@skinkey/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:catalog": "node scripts/build-catalog.mjs",
+    "predev": "node scripts/build-catalog.mjs",
+    "dev": "wrangler dev",
+    "dev:mock": "wrangler dev --var YOUCAM_MODE:mock",
+    "dev:live": "wrangler dev --var YOUCAM_MODE:live",
+    "predeploy": "node scripts/build-catalog.mjs",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc -p tsconfig.json && tsc -p scripts/tsconfig.json",
+    "test": "vitest run",
+    "smoke:live": "esbuild scripts/live-smoke.ts --bundle --platform=node --format=esm --outfile=.wrangler/smoke/live-smoke.mjs --log-level=warning && node .wrangler/smoke/live-smoke.mjs",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "@skinkey/contracts": "*",
+    "@skinkey/rules": "*",
+    "hono": "^4.13.16",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261101.1",
+    "wrangler": "^4.156.0"
+  }
+}

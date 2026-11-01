@@ -1,0 +1,34 @@
+[
+  {
+    "brand": "Bombay Shaving Company",
+    "name": "Charcoal Face Wash, 100g",
+    "category": "cleanser",
+    "size": "100g",
+    "mrp_inr": 299,
+    "spf": null,
+    "marketed_for": ["all skin types", "acne prone skin", "oily/combination skin", "people who live in polluted cities / ride two-wheelers", "pollution & oil control"],
+    "key_actives_claimed": ["Activated Bamboo Charcoal", "Papaya extract", "Pomegranate extract", "Turmeric"],
+    "inci": ["Aqua", "Sodium Lauroyl Sarcosinate", "Acrylate Copolymer", "Decyl Glucoside", "Cocamide DEA", "Cocoamidopropyl Betaine", "Glycerin", "Betaine", "Sodium Pyrrolidone Carboxylate", "Triethanolamine", "Carica Papaya (Papaya) Extract", "Allantoin", "Charcoal Powder", "Fragrance", "Sodium Benzoate", "Potassium Sorbate", "Punica (Pomegranate) Granatum Extract", "Mentha Piperita (Peppermint) Crystal", "Disodium EDTA", "Curcuma Longa (Turmeric) Extract"],
+    "inci_complete": true,
+    "source_url": "https://pharmeasy.in/health-care/products/bombay-shaving-com-charcoal-face-wash-100g-3931739",
+    "gtin_barcode": "655172771762",
+    "search_keywords": "Bombay Shaving Company Charcoal Face Wash 100g",
+    "notes": "Retailer source. The INCI is copied from the back-of-pack photo on PharmEasy (cdn01.pharmeasy.in/dam/products_otc/K58251/bombay-shaving-company-charcoal-face-wash-100g-7-1681816046.jpg). An independent verifier re-checked it word for word on 2026-11-01. Pack spellings are kept as printed (e.g. 'Cocoamidopropyl Betaine', 'Acrylate Copolymer'). The official brand page has no INCI. The pack shows the older MG Shahani (manufacturer) and Visage Lines (marketer) addresses, so the current formula may differ. The pack barcode reads 0 655172 771762. MRP is shown as ₹299 on the brand page and ₹259 on PharmEasy. Claims: silicone-free, cruelty-free, no SLS or parabens."
+  },
+  {
+    "brand": "Bombay Shaving Company",
+    "name": "Coffee Face Wash",
+    "category": "cleanser",
+    "size": "50g",
+    "mrp_inr": 119,
+    "spf": null,
+    "marketed_for": ["all skin types", "dull & tired skin", "skin brightening", "reduces tan"],
+    "key_actives_claimed": ["Coffee (Coffea Arabica seed extract)", "Vitamin B3 (Niacinamide)", "Matcha Tea"],
+    "inci": ["Aqua", "Sodium C14-16 Olefin Sulfonate (and) Sodium Cocoamphoacetate (and) Cocamide MEA", "Acrylates Copolymer", "Cocamidopropyl Betaine", "Glycerin", "Sodium Lauroyl Sarcosinate", "Propylene Glycol", "Ethylene Glycol Distearate", "Ethylhexylglycerin (and) Phenoxyethanol", "Biosaccharide Gum 4", "Biosaccharide Gum 1", "Niacinamide", "Camellia Sinensis (Matcha Tea) Leaf Extract", "Coffea Arabica (Coffee) Seed Extract", "Perfume", "Allantoin", "Sodium Hydroxide", "Disodium EDTA", "Benzophenone 4", "CI 20285"],
+    "inci_complete": true,
+    "source_url": "https://www.1mg.com/otc/869225",
+    "gtin_barcode": null,
+    "search_keywords": "Bombay Shaving Company Coffee Face Wash Niacinamide Matcha",
+    "notes": "Retailer source. The INCI is copied from the back-of-pack photo on Tata 1mg (image 213d935bc4364eb6a1b97245c2912781.jpg, 50g pack, made by Maxima Solutions in Pantnagar and marketed by Visage Lines in Gurugram). An independent verifier re-checked it word for word on 2026-11-01. The official brand page has no INCI. It is also sold as 100g (MRP ₹249 on Nykaa, not verified here). CAUTION: the brand's old URL /products/coffee-face-wash now shows 'Daily Detan Face Wash' (Coffee Extracts + Vitamin C Beads), so the product may have been renamed or reformulated. Pack claims: 'Sulphate & Paraben Free', 'With Niacinamide & Matcha Tea'."
+  }
+]

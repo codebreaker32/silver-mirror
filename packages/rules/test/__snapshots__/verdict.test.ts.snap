@@ -1,0 +1,70 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`snapshot matrix: SKUs × 6 reading profiles > matches the frozen matrix 1`] = `
+{
+  "fx-alcohol-toner": {
+    "combination": "CAUTION ALC-1",
+    "combination-redness": "CAUTION ALC-1",
+    "dry": "CAUTION ALC-1",
+    "normal": "FITS",
+    "oily": "FITS",
+    "oily-redness": "FITS",
+  },
+  "fx-bpo-wash": {
+    "combination": "MEDICINE",
+    "combination-redness": "MEDICINE",
+    "dry": "MEDICINE",
+    "normal": "MEDICINE",
+    "oily": "MEDICINE",
+    "oily-redness": "MEDICINE",
+  },
+  "fx-clean-sunscreen": {
+    "combination": "FITS SUP-1",
+    "combination-redness": "FITS SUP-1",
+    "dry": "FITS SUP-1",
+    "normal": "FITS",
+    "oily": "FITS",
+    "oily-redness": "FITS",
+  },
+  "fx-fragrance-free-lie": {
+    "combination": "FITS SUP-1",
+    "combination-redness": "CAUTION FRG-1",
+    "dry": "FITS SUP-1",
+    "normal": "FITS",
+    "oily": "FITS",
+    "oily-redness": "CAUTION FRG-1",
+  },
+  "fx-gel-niacinamide": {
+    "combination": "FITS SUP-1",
+    "combination-redness": "FITS SUP-1",
+    "dry": "FITS SUP-1",
+    "normal": "FITS",
+    "oily": "FITS SUP-2",
+    "oily-redness": "FITS SUP-2",
+  },
+  "fx-heavy-cream": {
+    "combination": "FITS SUP-1",
+    "combination-redness": "CAUTION FRG-1",
+    "dry": "FITS SUP-1",
+    "normal": "FITS",
+    "oily": "CAUTION OCC-2+OCC-1",
+    "oily-redness": "CAUTION FRG-1+OCC-2+OCC-1",
+  },
+  "fx-oil-free-jojoba": {
+    "combination": "FITS SUP-1",
+    "combination-redness": "FITS SUP-1",
+    "dry": "FITS SUP-1",
+    "normal": "FITS",
+    "oily": "FITS",
+    "oily-redness": "FITS",
+  },
+  "fx-unverified": {
+    "combination": "UNKNOWN",
+    "combination-redness": "UNKNOWN",
+    "dry": "UNKNOWN",
+    "normal": "UNKNOWN",
+    "oily": "UNKNOWN",
+    "oily-redness": "UNKNOWN",
+  },
+}
+`;

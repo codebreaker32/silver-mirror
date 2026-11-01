@@ -39,6 +39,8 @@ function rnType(style) {
   return t;
 }
 const typographyRN = Object.fromEntries(Object.entries(tokens.typography.scale).map(([k, v]) => [k, rnType(v)]));
+const MAX_SCALE = tokens.typography.rules.maxFontSizeMultiplier;
+const textPropsRN = Object.fromEntries(Object.keys(tokens.typography.scale).map((k) => [k, { allowFontScaling: true, maxFontSizeMultiplier: MAX_SCALE }]));
 
 // Resolve a component/elevation subtree for RN: type refs become RN text styles.
 function resolveRN(value, mode) {
@@ -46,6 +48,7 @@ function resolveRN(value, mode) {
     const hit = lookup(tokens, value, mode);
     if (hit.kind === 'type') return typographyRN[hit.name];
     if (hit.kind === 'ease') return hit.value.bezier;
+    if (hit.kind === 'elevation' && /^\{elevation\.\d\}$/.test(value)) return rnElevation(mode)[value.slice(11, -1)].style;
     return resolveRN(hit.value, mode);
   }
   if (Array.isArray(value)) return value.map((v) => resolveRN(v, mode));
@@ -63,7 +66,7 @@ function rnElevation(mode) {
     const style = { backgroundColor: surface, borderWidth: border ? 1 : 0, borderColor: border ?? 'transparent', elevation: e.rn.elevation };
     // Explicit zero shadows where a level has none, so light and dark share one shape.
     Object.assign(style, e.rn.shadowColor
-      ? { shadowColor: e.rn.shadowColor, shadowOpacity: e.rn.shadowOpacity, shadowRadius: e.rn.shadowRadius, shadowOffset: { width: 0, height: e.rn.shadowOffsetY } }
+      ? { shadowColor: resolve(tokens, e.rn.shadowColor, mode), shadowOpacity: e.rn.shadowOpacity, shadowRadius: e.rn.shadowRadius, shadowOffset: { width: 0, height: e.rn.shadowOffsetY } }
       : { shadowColor: 'transparent', shadowOpacity: 0, shadowRadius: 0, shadowOffset: { width: 0, height: 0 } });
     out[lvl] = { surface, border: border ?? 'transparent', boxShadow: e.shadow, style };
   }
@@ -111,14 +114,18 @@ for (const key of ['colors', 'elevation', 'components', 'grain']) {
 
 const lit = (o) => JSON.stringify(o, null, 2);
 const fontKeys = Object.entries(FONT).filter(([k]) => !k.startsWith('$'));
-const serifKeys = fontKeys.filter(([k]) => k.startsWith('serif')).map(([, v]) => v);
-const sansKeys = fontKeys.filter(([k]) => k.startsWith('sans')).map(([, v]) => v);
+const localFonts = FONT.$local || {};
+const isLocal = (v) => v in localFonts;
+const serifKeys = fontKeys.filter(([k, v]) => k.startsWith('serif') && !isLocal(v)).map(([, v]) => v);
+const sansKeys = fontKeys.filter(([k, v]) => k.startsWith('sans') && !isLocal(v)).map(([, v]) => v);
+const localKeys = Object.keys(localFonts);
 
 const motion = strip(tokens.motion);
 const motionTS = {
   duration: motion.duration,
   ease: Object.fromEntries(Object.entries(motion.ease).map(([k, v]) => [k, v.bezier])),
   timing: motion.timing,
+  enter: { translate: motion.enter.translate, scaleFrom: motion.enter.scaleFrom },
   reduced: { duration: motion.reducedMotion.duration, translate: motion.reducedMotion.translate, scaleFrom: motion.reducedMotion.scaleFrom, stagger: motion.reducedMotion.stagger },
 };
 
@@ -126,9 +133,12 @@ const ts = `// ${BANNER}
 // SkinKey design tokens for React Native (Expo). Direction: ${tokens.$meta.direction}.
 //
 // Usage:
-//   const [loaded] = useFonts(fontAssets);            // from expo-font or either @expo-google-fonts package
+//   const [loaded] = useFonts({
+//     ...fontAssets,                                   // 16pt instances from @expo-google-fonts
+//     Newsreader36pt_500Medium: require('./assets/fonts/Newsreader36pt_500Medium.ttf'), // display + title
+//   });
 //   const theme = useSkinKeyTheme();                   // follows the system light/dark setting
-//   <Text style={[theme.type.reason, { color: theme.colors.text }]}>...</Text>
+//   <Text {...textProps.reason} style={[typography.reason, { color: theme.colors.text }]}>...</Text>
 //   <Pressable style={{ minHeight: theme.touch.min }} />
 //
 // Notes:
@@ -147,10 +157,13 @@ import {
 ${sansKeys.map((k) => `  ${k},`).join('\n')}
 } from '@expo-google-fonts/commissioner';
 
-/** Pass to useFonts(). Keys are the fontFamily names used in \`type\`. */
+/** Pass to useFonts(), together with the local files in \`localFontFiles\`. Keys are the fontFamily names used in \`typography\`. */
 export const fontAssets = {
 ${[...serifKeys, ...sansKeys].map((k) => `  ${k},`).join('\n')}
 } as const;
+
+/** Fonts that are not in @expo-google-fonts: bundle these files and add them to useFonts() under these keys. */
+export const localFontFiles = ${lit(Object.fromEntries(localKeys.map((k) => [k, localFonts[k].split(' ')[0]])))} as const;
 
 /** Font family keys by role. */
 export const fonts = ${lit(Object.fromEntries(fontKeys.map(([k, v]) => [camel(k), v])))} as const;
@@ -158,7 +171,7 @@ export const fonts = ${lit(Object.fromEntries(fontKeys.map(([k, v]) => [camel(k)
 /** Web font stacks, for react-native-web or shared code. */
 export const webFontStacks = ${lit({ serif: tokens.typography.family.serif.web, sans: tokens.typography.family.sans.web })} as const;
 
-export type FontFamilyKey = keyof typeof fontAssets;
+export type FontFamilyKey = keyof typeof fontAssets | keyof typeof localFontFiles;
 
 /** Primitive palette. Components should use theme.colors, not these. */
 export const palette = ${lit(strip(tokens.primitive.color))} as const;
@@ -172,7 +185,13 @@ export interface TypeStyle extends TextStyle {
 }
 
 /** Type scale (dp). Minimum size is ${tokens.typography.rules.minSize}. */
-export const type: Record<TypeStyleName, TypeStyle> = ${lit(typographyRN)};
+export const typography: Record<TypeStyleName, TypeStyle> = ${lit(typographyRN)};
+
+/** Text props per style: spread onto <Text>. Font scaling stays on, capped at ${MAX_SCALE}x. */
+export const textProps: Record<TypeStyleName, { allowFontScaling: true; maxFontSizeMultiplier: number }> = ${lit(textPropsRN)};
+
+/** @deprecated Use \`typography\`. Kept for one release; the name collides visually with TS \`import { type X }\`. */
+export const type = typography;
 
 /** 4dp spacing scale plus semantic aliases. */
 export const space = ${lit(tokens.spacing.scale)} as const;
@@ -182,7 +201,7 @@ export const radius = ${lit(strip(tokens.radius))} as const;
 
 export const touch = ${lit(strip(tokens.touch))} as const;
 
-export const icon = ${lit({ sm: tokens.icon.sm, md: tokens.icon.md, lg: tokens.icon.lg, xl: tokens.icon.xl, stroke: tokens.icon.stroke, verdictSize: tokens.icon.verdict.size, verdictGlyph: Object.fromEntries(['fits', 'caution', 'unknown', 'medicine'].map((v) => [v, tokens.icon.verdict[v].glyph])) })} as const;
+export const icon = ${lit({ sm: tokens.icon.sm, md: tokens.icon.md, lg: tokens.icon.lg, xl: tokens.icon.xl, stroke: tokens.icon.stroke, verdictSize: tokens.icon.verdict.size, medicineSize: tokens.icon.verdict.medicineSize, verdictGlyph: Object.fromEntries(['fits', 'caution', 'unknown', 'medicine'].map((v) => [v, tokens.icon.verdict[v].glyph])) })} as const;
 
 export const zIndex = ${lit(strip(tokens.zIndex))} as const;
 
@@ -222,7 +241,10 @@ export interface SkinKeyTheme {
   /** Paper grain: static tile only, never behind body text. Always 0 in dark mode. */
   grain: { opacity: number };
   components: ThemeComponents;
-  type: typeof type;
+  typography: typeof typography;
+  textProps: typeof textProps;
+  /** @deprecated Use typography. */
+  type: typeof typography;
   space: typeof space;
   spacing: typeof spacing;
   radius: typeof radius;
@@ -233,7 +255,7 @@ export interface SkinKeyTheme {
   fonts: typeof fonts;
 }
 
-const shared = { type, space, spacing, radius, touch, icon, zIndex, motion, fonts };
+const shared = { typography, textProps, type: typography, space, spacing, radius, touch, icon, zIndex, motion, fonts };
 
 export const lightTheme: SkinKeyTheme = {
   ...${lit(light).replace(/\n/g, '\n  ')},
@@ -291,7 +313,7 @@ function cssRef(value, key) {
       case 'space': return `var(${P}-space-${kebab(path)})`;
       case 'radius': return `var(${P}-radius-${path})`;
       case 'type': return `var(${P}-type-${kebab(path)})`;
-      case 'elevation': return `var(${P}-elevation-${path})`;
+      case 'elevation': return /^\d$/.test(path) ? `var(${P}-elevation-${path}-shadow)` : `var(${P}-elevation-${path})`;
       case 'icon': return `var(${P}-icon-${kebab(path)})`;
       case 'touch': return `var(${P}-touch-${kebab(path)})`;
       case 'z': return `var(${P}-z-${kebab(path)})`;
@@ -301,7 +323,7 @@ function cssRef(value, key) {
   }
   if (typeof value === 'number') {
     if (/Pct$/.test(key)) return `${value}%`;
-    if (/(aspect|opacity|items|segments|elevation|stackAtFontScale)$/i.test(key)) return String(value);
+    if (/(aspect|opacity|items|segments|elevation|FontScale|Segments)$/i.test(key)) return String(value);
     return `${value}px`;
   }
   if (typeof value === 'string' && /^(#|rgba?\(|transparent$|none$|dashed$|solid$|start$|horizontal$)/.test(value)) return value;
@@ -315,6 +337,14 @@ function emitComponents(obj, prefix) {
     if (v && typeof v === 'object') { emitComponents(v, name); continue; }
     const css = cssRef(v, k);
     if (css !== null) decl(name, css);
+    // Type aliases carry tracking / case / figures too, so a component var is complete on its own.
+    if (isAlias(v) && v.startsWith('{type.')) {
+      const st = tokens.typography.scale[v.slice(6, -1)];
+      const n = kebab(v.slice(6, -1));
+      decl(`${name}-tracking`, `var(${P}-type-${n}-tracking)`);
+      if (st.transform) decl(`${name}-transform`, st.transform);
+      if (st.numeric === 'tabular') decl(`${name}-numeric`, 'tabular-nums');
+    }
   }
 }
 
@@ -352,16 +382,21 @@ for (const [ramp, steps] of Object.entries(strip(tokens.primitive.color))) {
   for (const [s, hexv] of Object.entries(steps)) decl(`${ramp}-${s}`, hexv);
 }
 lines.push('');
-lines.push('  /* Type families and scale. Font shorthand: font: var(--sk-type-body); then apply the');
-lines.push('     matching letter-spacing, or use the .sk-type-* classes below. */');
+lines.push('  /* Type families and scale. Sizes are rem (16px root) with unitless line heights, so the');
+lines.push('     browser text-size setting scales type without clipping. Newsreader is loaded as the');
+lines.push('     variable font with its opsz axis; font-optical-sizing: auto picks the cut per size.');
+lines.push('     Font shorthand: font: var(--sk-type-body); letter-spacing: var(--sk-type-body-tracking);');
+lines.push('     or use the .sk-type-* classes below. */');
 decl('font-serif', tokens.typography.family.serif.web);
 decl('font-sans', tokens.typography.family.sans.web);
+const rem = (px) => `${+(px / 16).toFixed(4)}rem`;
+const unitless = (s) => String(+(s.lineHeight / s.size).toFixed(4));
 for (const [k, s] of Object.entries(tokens.typography.scale)) {
   const n = kebab(k);
   const fam = `var(${P}-font-${s.family})`;
-  decl(`type-${n}`, `${s.italic ? 'italic ' : ''}${s.weight} ${s.size}px/${s.lineHeight}px ${fam}`);
-  decl(`type-${n}-size`, `${s.size}px`);
-  decl(`type-${n}-line`, `${s.lineHeight}px`);
+  decl(`type-${n}`, `${s.italic ? 'italic ' : ''}${s.weight} ${rem(s.size)}/${unitless(s)} ${fam}`);
+  decl(`type-${n}-size`, rem(s.size));
+  decl(`type-${n}-line`, unitless(s));
   decl(`type-${n}-weight`, String(s.weight));
   decl(`type-${n}-tracking`, `${+(s.letterSpacing / s.size).toFixed(4)}em`);
 }
@@ -373,17 +408,19 @@ for (const [k, v] of Object.entries(strip(tokens.radius))) decl(`radius-${k}`, `
 for (const [k, v] of Object.entries(strip(tokens.touch))) decl(`touch-${kebab(k)}`, `${v}px`);
 for (const k of ['sm', 'md', 'lg', 'xl']) decl(`icon-${k}`, `${tokens.icon[k]}px`);
 decl('icon-verdict-size', `${tokens.icon.verdict.size}px`);
+decl('icon-verdict-medicine-size', `${tokens.icon.verdict.medicineSize}px`);
 decl('icon-stroke', String(tokens.icon.stroke));
 for (const [k, v] of Object.entries(strip(tokens.zIndex))) decl(`z-${kebab(k)}`, String(v));
-decl('focus-ring-width', `${tokens.component.button.focusRing.width}px`);
-decl('focus-ring-offset', `${tokens.component.button.focusRing.offset}px`);
+decl('focus-ring-width', `${tokens.component.focus.width}px`);
+decl('focus-ring-offset', `${tokens.component.focus.offset}px`);
 lines.push('');
 lines.push('  /* Motion: ink settling. No springs, no overshoot, nothing loops. */');
 for (const [k, v] of Object.entries(motion.duration)) decl(`duration-${kebab(k)}`, `${v}ms`);
 for (const [k, v] of Object.entries(motion.ease)) decl(`ease-${kebab(k)}`, `cubic-bezier(${v.bezier.join(', ')})`);
-decl('motion-translate', '6px');
-decl('motion-scale-from', '0.98');
-lines.push('  --sk-grain-tile: url("/assets/texture/grain-160.png");');
+decl('motion-translate', `${motion.enter.translate}px`);
+decl('motion-scale-from', String(motion.enter.scaleFrom));
+lines.push('  /* Relative to this file: ship tokens.css next to ../assets/texture/, or override this var. */');
+lines.push('  --sk-grain-tile: url("../assets/texture/grain-160.png");');
 lines.push('}');
 lines.push('');
 lines.push('/* ===== Layer 2: semantic, light (default) ===== */');
@@ -435,10 +472,22 @@ for (const [k, s] of Object.entries(tokens.typography.scale)) {
 lines.push('.sk-num { font-variant-numeric: tabular-nums; }');
 lines.push(`.sk-focusable:focus-visible { outline: var(${P}-focus-ring-width) solid var(${P}-color-focus-ring); outline-offset: var(${P}-focus-ring-offset); }`);
 lines.push(`.sk-target { min-width: var(${P}-touch-min); min-height: var(${P}-touch-min); }`);
+lines.push(`.sk-focusable.sk-on-inverse:focus-visible { outline-color: var(${P}-color-focus-ring-inverse); }`);
+lines.push(`.sk-focusable.sk-on-overlay:focus-visible { outline-color: var(${P}-color-focus-ring-overlay); box-shadow: 0 0 0 1px var(${P}-color-overlay-halo) inset, 0 0 0 calc(var(${P}-focus-ring-offset) + var(${P}-focus-ring-width) + 1px) var(${P}-color-overlay-halo); }`);
+lines.push(`html { font-optical-sizing: auto; }`);
 lines.push('/* Paper grain: static tile, decorative zones only (hero margins, empty-state plate). Never');
 lines.push('   behind body text, verdicts, cards or sheets. Opacity is 0 in dark mode. */');
 lines.push(`.sk-grain { position: relative; isolation: isolate; }`);
 lines.push(`.sk-grain::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: var(${P}-grain-tile); background-size: 160px 160px; opacity: var(${P}-grain-opacity); }`);
+lines.push('');
+lines.push('/* ===== Windows High Contrast / forced colours ===== */');
+lines.push('@media (forced-colors: active) {');
+lines.push('  .sk-meter > i { border: 1px solid CanvasText; background: Canvas; forced-color-adjust: none; }');
+lines.push('  .sk-meter > i.is-on { background: CanvasText; }');
+lines.push('  .sk-verdict-head { border: 1px solid CanvasText; }');
+lines.push('  .sk-focusable:focus-visible { outline: 2px solid Highlight; }');
+lines.push('  .sk-grain::before { display: none; }');
+lines.push('}');
 writeFileSync(join(here, 'tokens.css'), lines.join('\n') + '\n');
 
 console.log('Wrote theme.ts and tokens.css');

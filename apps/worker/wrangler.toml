@@ -1,0 +1,29 @@
+name = "skinkey-worker"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# mock (default) replays recorded fixtures in-process; live calls the real YouCam API. Only "live" goes live.
+YOUCAM_MODE = "mock"
+MOCK_YOUCAM = "1"
+YOUCAM_BASE_URL = "https://yce-api-01.makeupar.com"
+YOUCAM_MIN_INTERVAL_MS = "1200"
+CLAUDE_MODEL = "claude-opus-5-5"
+SCAN_CAP = "1"
+TRYON_CAP = "3"
+# Balance after the hour-0 spikes (spikes/FINDINGS.md); live calls stop before the floor.
+UNIT_BALANCE_START = "1022"
+UNIT_FLOOR = "50"
+AFFILIATE_NYKAA = "off"
+
+# Local dev uses a simulated KV. For deploy: wrangler kv namespace create SKINKEY_KV, then paste the id here.
+[[kv_namespaces]]
+binding = "KV"
+id = "skinkey-local"
+
+# Sweeps unfinished jobs so every task gets a GET and a delete even if the phone stops polling.
+[triggers]
+crons = ["*/5 * * * *"]
+
+# Secrets (wrangler secret put ...; locally from .dev.vars): YOUCAM_API_KEY, ANTHROPIC_API_KEY, INSTALL_HMAC_SECRET, ADMIN_TOKEN
