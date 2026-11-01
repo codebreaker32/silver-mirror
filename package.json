@@ -17,7 +17,8 @@
     "dev:mobile": "npm run start -w @skinkey/mobile",
     "gen:devvars": "node scripts/gen-dev-vars.mjs",
     "audit": "node scripts/audit.mjs",
-    "catalog:merge": "esbuild scripts/merge-catalog.ts --bundle --platform=node --format=esm --outfile=node_modules/.cache/skinkey/merge-catalog.mjs --log-level=warning && node node_modules/.cache/skinkey/merge-catalog.mjs && npm run build:catalog -w @skinkey/worker"
+    "catalog:merge": "esbuild scripts/merge-catalog.ts --bundle --platform=node --format=esm --outfile=node_modules/.cache/skinkey/merge-catalog.mjs --log-level=warning && node node_modules/.cache/skinkey/merge-catalog.mjs && npm run build:catalog -w @skinkey/worker",
+    "smoke:mock": "npm run smoke:mock -w @skinkey/worker"
   },
   "devDependencies": {
     "typescript": "~6.0.3",

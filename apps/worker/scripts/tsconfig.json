@@ -1,8 +1,17 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ES2023", "DOM"],
-    "types": ["node", "@cloudflare/workers-types"]
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
+    "types": [
+      "node",
+      "@cloudflare/workers-types"
+    ]
   },
-  "include": ["live-smoke.ts"]
+  "include": [
+    "live-smoke.ts",
+    "mock-smoke.ts"
+  ]
 }

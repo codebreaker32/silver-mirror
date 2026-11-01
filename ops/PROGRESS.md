@@ -7,7 +7,7 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - [x] 2. Spike findings applied
 - [x] 3. Catalog merged + AUDIT.md
 - [x] 4. Tier 1 flows E2E against mock
-- [ ] 5. Worker `wrangler dev` mock + smoke script
+- [x] 5. Worker `wrangler dev` mock + smoke script
 - [ ] 6. Web pages + vite build
 - [ ] 7. Android debug APK
 - [ ] 8. Quality (copy linter, a11y, secret grep, README)
@@ -64,3 +64,10 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - `test/helpers.ts` `setup()` takes an optional `catalog` (additive).
 - Verification: `npm run typecheck` exit 0, 0 TS errors; `npx vitest run` 41 files passed, 1 skipped; 473 passed, 1 skipped; mobile `jest` 7/7.
 - Next: item 5 (`wrangler dev` in mock mode + smoke script).
+
+## 2026-11-01 — Iteration 5: `wrangler dev` in mock mode + smoke script
+- `apps/worker/scripts/mock-smoke.ts` + `npm run smoke:mock` (root and worker). It starts `wrangler dev` on 127.0.0.1:8797 with `--var YOUCAM_MODE:mock --var CLAUDE_MODE:mock`, `CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV=false` and blank key env vars. It drives the Worker over real HTTP, parses every response with the contracts `routes` schemas, then kills the whole process group (npx → wrangler → workerd) so nothing keeps holding the port. `-- --url http://localhost:8787` reuses a Worker that is already running. It stops before the scan if `/health` does not report `mode: mock`.
+- Checks (20): health is mock (176 rows); install token; the scan upload slot is rewritten to the local `/mock-youcam/upload/`; PUT with the real declared size; scan done in ~9 s of real time with inverted Low bands, no raw numbers, delete confirmed, ledger mock; sample share → Garnier SKU without Claude, product INCI, category search; Flipkart `dl.flipkart.com/s/` → slug title "vaseline gluta hya dewy radiance" from the redirect fixture; label OCR (mock Claude) → 7 chips with uncertain flags; medicine gate → adapalene; try-on on a real tinted row without a shade hex → 400 (refuses instead of guessing); `/v1/rules`; `/v1/ledger` mock.
+- Gotcha recorded in the script: the upload slot's `Content-Length` must match the body, otherwise Node fetch fails, so the smoke sends a body of the declared size.
+- Verification: `npm run smoke:mock` → 20/20 checks passed, no wrangler/workerd left running; `npm run typecheck` exit 0; `npx vitest run` 41 files passed, 1 skipped; 473 passed, 1 skipped.
+- Next: item 6 (web: landing, /check, /audit empty state, /rules, /how; `vite build`).
