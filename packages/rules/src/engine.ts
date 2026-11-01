@@ -13,6 +13,8 @@ import {
   type Rule,
   type Verdict,
   type VerdictLabel,
+  type VerdictBasis,
+  type VerdictResult,
 } from '@skinkey/contracts';
 import { BAND_CUTOFFS } from './bands';
 import { inciVariants, matchesInci } from './inci';
