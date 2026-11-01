@@ -84,6 +84,9 @@ npm run dev:mobile          # expo start (needs a dev client; expo-share-intent 
 - **expo-file-system on SDK 58** uses the new API: `new File(uri).delete()`. `deleteAsync` lives only in `expo-file-system/legacy`.
 - **Theme:** `useTheme()` from `@/theme/ThemeProvider` gives you the `SkinKeyTheme` from `@skinkey/design`. Fonts load in `_layout.tsx` through `fontAssets`.
 - **Share intent:** `ShareIntentProvider` is in the root layout. `+native-intent.tsx` sends share deep links to `/check`. Read the payload with `useShareIntentContext()`.
+- **Debug APK (verified 2026-11-01, iteration 7):** `scripts/build-android.sh`. It uses the SDK at `~/android-sdk` (cmdline-tools latest, platform-tools, platforms 36 + 37 (Gradle pulled 37), build-tools 36) and system OpenJDK 17, then runs `expo prebuild` and `./gradlew assembleDebug -PreactNativeArchitectures=arm64-v8a`. A clean build takes about 8 minutes.
+  - Output: `apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk` (~106 MB, `app.skinkey` 0.1.0, targetSdk 36, arm64 only). `android/` is gitignored.
+  - This is a **dev-client** build: it carries no JS bundle and loads JS from Metro (`npm run dev:mobile` + `adb reverse tcp:8081 tcp:8081 && adb reverse tcp:8787 tcp:8787`). Standalone demo APK (verified): `cd apps/mobile/android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a` → `app/build/outputs/apk/release/app-release.apk` (~45 MB, embeds `index.android.bundle`, debug-signed, ~5 min). The bundle points at `http://localhost:8787`, so the phone still needs `adb reverse tcp:8787 tcp:8787` to a running Worker.
 - **Verified:** `expo export -p android` bundles cleanly, including `@skinkey/design` → `design/system/tokens/theme.ts`. `expo-doctor` passes 20/20.
 
 ## Worker

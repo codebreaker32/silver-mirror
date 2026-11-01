@@ -9,10 +9,11 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - [x] 4. Tier 1 flows E2E against mock
 - [x] 5. Worker `wrangler dev` mock + smoke script
 - [x] 6. Web pages + vite build
-- [ ] 7. Android debug APK
+- [x] 7. Android debug APK
 - [ ] 8. Quality (copy linter, a11y, secret grep, README)
 
 ## Needs Aman
+- **Install the APK on the phone**: `adb install apps/mobile/android/app/build/outputs/apk/release/app-release.apk` (standalone), then `adb reverse tcp:8787 tcp:8787` with `npm run dev:worker` running. Not run on a device yet: there is no phone/emulator on the VM (no KVM).
 - (STATUS.md morning checklist: selfie for band calibration, Flipkart audit screenshots, hallway tests, demo video)
 - **Catalogue verification ticks**: 0 of 176 rows are verified, so better matches and "N verified products" show 0 until a human ticks rows. Check a `brand_official` row's INCI against its `source_url`, then add its id to `data/catalog/verified.json` and run `npm run catalog:merge`. Ticks on retailer rows are ignored by design. About 10 ticks across sunscreen/moisturiser/cleanser would cover the demo.
 - **Shade colours for try-on**: none of the 11 real tinted rows has a shade hex, so the phone no longer offers try-on on them (the Worker would reject it). For the demo, add `shades: [{name, hex}]` for 1–2 tinted SKUs (hex picked from the brand's official swatch), then `npm run catalog:merge`.
@@ -83,3 +84,17 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
   - `npm run typecheck` exit 0.
   - `npx vitest run`: 42 files passed, 1 skipped; 479 passed, 1 skipped.
 - Next: item 7 (Android SDK cmdline-tools + Java 17, `expo prebuild`, `./gradlew assembleDebug`). Item 8 still has the `lint-claims` stub to replace.
+
+## 2026-11-01 — Iteration 7: Android APK
+- Installed the Android SDK at `~/android-sdk`: cmdline-tools (latest), platform-tools, platforms;android-36, build-tools;36.0.0. Licences accepted; Gradle pulled android-37 itself. Java is the system OpenJDK 17.0.20.
+- `CI=1 npx expo prebuild --platform android --no-install` ✓ (expo-share-intent filters text/* image/*). `android/` stays gitignored.
+- `./gradlew assembleDebug -PreactNativeArchitectures=arm64-v8a` → BUILD SUCCESSFUL in 7m 50s (824 tasks).
+  - **Debug APK path:** `apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk` (106 MB). This is a dev client and loads JS from Metro.
+- Also `./gradlew assembleRelease` → BUILD SUCCESSFUL in 5m 18s.
+  - **Standalone APK:** `apps/mobile/android/app/build/outputs/apk/release/app-release.apk` (45 MB, embeds `index.android.bundle` 3.5 MB, debug-signed).
+- `aapt2 dump badging`: package `app.skinkey` 0.1.0, targetSdk 36, arm64-v8a, CAMERA permission, no RECORD_AUDIO. The manifest has the SEND intent filter for text/* and image/*.
+- Secret grep of both unzipped APKs (`sk-ant-`, `AKIA…`, `ANTHROPIC_API_KEY`, `YOUCAM_API_KEY`, `x-api-key`) → 0 hits. The bundle's Worker URL is `http://localhost:8787`.
+- `scripts/build-android.sh` reproduces the debug build; BUILD_NOTES.md Mobile section updated.
+- Not verified: running on a device (no phone or emulator on the VM) → Needs Aman.
+- Verification: `npm run typecheck` exit 0; `npx vitest run` 42 files passed, 1 skipped; 479 passed, 1 skipped; mobile jest 7/7.
+- Next: item 8 (copy linter replacing the `lint-claims` stub, a11y 48 dp/labels, bundle secret grep script, root README).
