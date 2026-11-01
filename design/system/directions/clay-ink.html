@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkinKey / Direction A / Clay &amp; Ink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Newsreader is pinned to opsz 16: that is the optical size shipped in @expo-google-fonts/newsreader, so the preview matches the app. -->
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,16,400;0,16,500;1,16,400&family=Commissioner:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+.light{--bg:#F3EEE6;--surface:#FAF7F2;--surface-raised:#FFFCF7;--surface-sunken:#EAE3D8;--text:#1E1C19;--text-muted:#655B4D;--border:#DDD3C5;--border-strong:#7E725F;--accent:#1B2F32;--on-accent:#F6F1E8;--accent-text:#253D41;--focus-ring:#43666A;--chip-bg:#EAE3D8;--chip-fg:#2B2722;--fits-bg:#E5EBDD;--fits-fg:#34492A;--fits-border:#B3C4A3;--caution-bg:#F3E6CC;--caution-fg:#62410A;--caution-border:#DDBE85;--unknown-bg:#E6E8E8;--unknown-fg:#3B464D;--unknown-border:#C1C7CA;--medicine-bg:#EFEBE4;--medicine-fg:#1E1C19;--medicine-border:#1E1C19;--shadow:rgba(66,59,50,.38);--grain:.045}
+.dark{--bg:#151411;--surface:#1E1C18;--surface-raised:#28251F;--surface-sunken:#100F0D;--text:#F1EBE1;--text-muted:#B0A595;--border:#38332B;--border-strong:#807464;--accent:#B0C5C7;--on-accent:#0C171A;--accent-text:#B0C5C7;--focus-ring:#86A4A7;--chip-bg:#2E2A24;--chip-fg:#E8E0D4;--fits-bg:#1E2A1A;--fits-fg:#B9CCA8;--fits-border:#3F5534;--caution-bg:#2D2313;--caution-fg:#E6C482;--caution-border:#5E4920;--unknown-bg:#21262A;--unknown-fg:#BCC5CA;--unknown-border:#414C53;--medicine-bg:#211F1B;--medicine-fg:#F1EBE1;--medicine-border:#B0A595;--shadow:rgba(10,9,8,.75);--grain:.06}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{background:#E4DCCF;color:#1E1C19;font-family:'Commissioner',system-ui,sans-serif;font-size:16px;line-height:24px;min-height:100dvh}
+svg{display:block;flex:none}
+.ico{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ico.sm{width:16px;height:16px}
+.ico.lg{width:22px;height:22px}
+
+/* ---------- type scale (dp == px here) ---------- */
+.t-display{font-family:'Newsreader',serif;font-weight:400;font-size:34px;line-height:40px;letter-spacing:-.5px}
+.t-title{font-family:'Newsreader',serif;font-weight:400;font-size:26px;line-height:32px;letter-spacing:-.3px}
+.t-headline{font-family:'Newsreader',serif;font-weight:400;font-size:20px;line-height:27px;letter-spacing:-.1px}
+.t-body{font-size:16px;line-height:24px}
+.t-body-sm{font-size:14px;line-height:20px}
+.t-label{font-size:14px;line-height:20px;font-weight:600;letter-spacing:.1px}
+.t-overline{font-size:12px;line-height:16px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase}
+.t-caption{font-size:13px;line-height:18px;letter-spacing:.1px}
+
+/* ---------- page ---------- */
+.page{max-width:1480px;margin:0 auto;padding:56px 48px 96px}
+.mast{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:end;padding-bottom:36px;border-bottom:1px solid #C9BDAB;margin-bottom:44px}
+.mast .kick{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;font-weight:600;color:#5A5043}
+.mast h1{font-family:'Newsreader',serif;font-weight:400;font-size:64px;line-height:64px;letter-spacing:-1.6px;margin-top:14px;color:#1A1815}
+.mast h1 em{font-style:italic;color:#253D41}
+.mast p{font-size:16px;line-height:25px;color:#423B32;max-width:58ch}
+.mast dl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin-top:18px;font-size:13px;line-height:18px;color:#423B32}
+.mast dt{font-weight:600;color:#2B2722}
+
+.row{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:36px;align-items:start}
+.cap{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600;color:#5A5043;margin-bottom:14px;display:flex;gap:10px;align-items:center}
+.cap span{font-weight:400;letter-spacing:.2px;text-transform:none;color:#5A5043}
+
+/* ---------- phone ---------- */
+.device{width:414px;padding:12px;border-radius:56px;background:#1A1815;box-shadow:0 1px 0 #3a352e inset,0 30px 60px -30px rgba(43,39,34,.45)}
+.screen{position:relative;width:390px;height:844px;border-radius:44px;overflow:hidden;background:var(--bg);color:var(--text);display:flex;flex-direction:column;isolation:isolate}
+.screen::before,.panel::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:var(--grain);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .24 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.screen>*{position:relative;z-index:1}
+.status{height:36px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:6px 26px 0 30px;font-size:13px;font-weight:500;color:var(--text)}
+.status .r{display:flex;gap:6px;align-items:center}
+.appbar{height:56px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+.iconbtn{width:48px;height:48px;border-radius:24px;display:grid;place-items:center;color:var(--text);background:none;border:0}
+.appbar .src{font-size:13px;line-height:18px;color:var(--text-muted);display:flex;gap:6px;align-items:center}
+.scroll{flex:1;overflow-y:auto;scrollbar-width:none;padding:4px 20px 28px}
+.scroll::-webkit-scrollbar{display:none}
+
+/* product */
+.prod-k{display:flex;justify-content:space-between;align-items:center;color:var(--text-muted)}
+.editlink{display:inline-flex;gap:6px;align-items:center;min-height:32px;padding:0 2px;color:var(--accent-text);font-size:14px;font-weight:600;background:none;border:0;font-family:inherit}
+.prod-t{margin-top:6px;padding-bottom:14px;border-bottom:1px dashed var(--border-strong)}
+.prod-m{margin-top:10px;color:var(--text-muted)}
+
+/* verdict */
+.verdict{margin-top:22px;border-radius:10px;padding:16px 16px 18px;background:var(--v-bg);border:1px solid var(--v-border);color:var(--v-fg)}
+.verdict .lab{display:flex;gap:8px;align-items:center}
+.verdict .sub{margin-top:10px;color:var(--v-fg)}
+.verdict .sub2{margin-top:4px;color:var(--v-fg)}
+.v-caution{--v-bg:var(--caution-bg);--v-fg:var(--caution-fg);--v-border:var(--caution-border)}
+.v-fits{--v-bg:var(--fits-bg);--v-fg:var(--fits-fg);--v-border:var(--fits-border)}
+.v-unknown{--v-bg:var(--unknown-bg);--v-fg:var(--unknown-fg);--v-border:var(--unknown-border)}
+.v-medicine{--v-bg:var(--medicine-bg);--v-fg:var(--medicine-fg);--v-border:var(--medicine-border)}
+
+/* reasons */
+.sec{margin-top:28px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;color:var(--text-muted);padding-bottom:10px;border-bottom:1px solid var(--border)}
+.reason{display:grid;grid-template-columns:30px 1fr;gap:0 8px;padding:16px 0;border-bottom:1px solid var(--border)}
+.reason .n{font-family:'Newsreader',serif;font-style:italic;font-size:17px;line-height:27px;color:var(--text-muted)}
+.reason .fact{margin-top:4px;color:var(--text-muted)}
+.reading{display:inline-flex;align-items:center;gap:7px;margin-top:10px;height:28px;padding:0 10px 0 8px;border-radius:6px;background:var(--chip-bg);color:var(--chip-fg);font-size:13px;font-weight:600;line-height:18px}
+
+/* band meter */
+.meter{display:flex;gap:2px;align-items:flex-end;height:12px}
+.meter i{display:block;width:3px;border-radius:1px;background:var(--border-strong)}
+.meter i:nth-child(1){height:5px}.meter i:nth-child(2){height:8px}.meter i:nth-child(3){height:12px}
+.meter i.on{background:var(--chip-fg)}
+
+/* provenance */
+.prov{margin-top:28px;background:var(--surface-sunken);border-radius:10px;padding:16px}
+.prov .row2{display:grid;grid-template-columns:20px 1fr;gap:12px;padding:10px 0}
+.prov .row2+.row2{border-top:1px solid var(--border)}
+.prov .row2 svg{color:var(--text-muted);margin-top:2px}
+.prov .k{color:var(--text-muted)}
+.fixed{margin-top:20px;color:var(--text-muted);display:grid;gap:2px}
+
+/* action bar */
+.actions{flex:none;background:var(--surface-raised);border-top:1px solid var(--border);padding:14px 20px 8px;box-shadow:0 -10px 24px -18px var(--shadow)}
+.btn{width:100%;min-height:52px;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit;font-size:15px;line-height:20px;font-weight:600;letter-spacing:.1px;cursor:pointer;transition:transform .12s cubic-bezier(.2,0,0,1),background-color .2s}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.btn-p{background:var(--accent);color:var(--on-accent);border:0}
+.btn-s{background:transparent;color:var(--text);border:1.5px solid var(--border-strong);min-height:48px;margin-top:12px}
+.dest{display:flex;gap:6px;align-items:center;justify-content:center;margin-top:8px;color:var(--text-muted)}
+.gesture{height:22px;flex:none;display:grid;place-items:center;background:var(--surface-raised)}
+.gesture i{display:block;width:108px;height:4px;border-radius:2px;background:var(--text);opacity:.55}
+
+/* ---------- spec column ---------- */
+.spec{display:grid;gap:30px;padding-top:30px}
+.spec h3{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600;color:#5A5043;margin-bottom:10px}
+.ramp{display:grid;grid-template-columns:repeat(11,1fr);border-radius:8px;overflow:hidden;border:1px solid #C9BDAB}
+.ramp div{height:56px;padding:6px 5px;font-size:10px;line-height:12px;display:flex;flex-direction:column;justify-content:flex-end}
+.ramp b{font-weight:600}
+.typespec{background:#FAF7F2;border:1px solid #D6CBBB;border-radius:10px;padding:6px 18px}
+.typespec .ts{display:grid;grid-template-columns:86px 1fr;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid #E8E0D4}
+.typespec .ts:last-child{border-bottom:0}
+.typespec .ts small{font-size:11px;line-height:15px;color:#5A5043;letter-spacing:.2px}
+.typespec .ts small b{display:block;color:#2B2722;font-weight:600;letter-spacing:.8px;text-transform:uppercase;font-size:10.5px}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.note{background:#FAF7F2;border:1px solid #D6CBBB;border-radius:10px;padding:14px 16px;font-size:13px;line-height:19px;color:#423B32}
+.note b{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#2B2722;margin-bottom:4px}
+
+/* ---------- mode panels ---------- */
+.panels{display:grid;grid-template-columns:1fr;gap:28px;margin-top:64px}
+.panel{position:relative;isolation:isolate;background:var(--bg);color:var(--text);border-radius:22px;padding:32px 36px 36px;overflow:hidden}
+.panel>*{position:relative;z-index:1}
+.panel .ph{display:flex;justify-content:space-between;align-items:center;color:var(--text-muted);margin-bottom:18px}
+.pgrid{display:grid;grid-template-columns:358px minmax(0,1fr);gap:36px;align-items:start}
+.card{background:var(--surface-raised);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 1px 0 var(--border),0 12px 28px -22px var(--shadow)}
+.card .top{display:flex;justify-content:space-between;align-items:center;color:var(--text-muted)}
+.card .stype{margin-top:12px}
+.card .est{color:var(--text-muted);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px 0 10px;border-radius:6px;background:var(--chip-bg);color:var(--chip-fg);font-size:14px;line-height:20px;font-weight:600;letter-spacing:.1px}
+.chip .dot{opacity:.9;font-weight:400}
+.card .meta{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);color:var(--text-muted)}
+.acc{display:grid;grid-template-columns:16px 1fr;gap:8px;margin-top:10px;color:var(--text-muted)}
+.acc svg{margin-top:1px}
+.card .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.ghost{white-space:nowrap;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:8px;border:1.5px solid var(--border-strong);background:transparent;color:var(--text);font-family:inherit;font-size:14px;font-weight:600}
+.ghost .q{color:var(--text-muted);font-weight:400}
+.textlink{white-space:nowrap;font-size:14px;line-height:20px;font-weight:600;color:var(--accent-text);display:inline-flex;gap:6px;align-items:center}
+
+.sw{display:grid;grid-template-columns:1fr 1fr;gap:16px 16px}
+.swi .tok{display:flex;justify-content:space-between;color:var(--text-muted);margin-bottom:6px}
+.swc{border-radius:10px;padding:12px 14px;background:var(--v-bg);border:1px solid var(--v-border);color:var(--v-fg);display:grid;grid-template-columns:22px 1fr;gap:10px}
+.swc .l{font-size:12px;line-height:16px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase}
+.swc p{font-size:13px;line-height:18px;margin-top:3px}
+.swc.med{border-width:1.5px}
+.swc.med p{font-family:'Newsreader',serif;font-size:17px;line-height:23px;margin-top:0}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12"/><path d="M9 12h12"/><path d="M9 18h12"/><path d="M4 6h.01"/><path d="M4 12h.01"/><path d="M4 18h.01"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.25"/><path d="M12 16.5v-5"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <!-- verdict icons -->
+    <symbol id="v-fits" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="v-caution" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="v-unknown" viewBox="0 0 24 24"><path d="M10.1 2.18a10 10 0 0 1 3.8 0"/><path d="M13.9 21.82a10 10 0 0 1-3.8 0"/><path d="M17.61 3.72a10 10 0 0 1 2.69 2.7"/><path d="M2.18 13.9a10 10 0 0 1 0-3.8"/><path d="M20.28 17.61a10 10 0 0 1-2.7 2.69"/><path d="M21.82 10.1a10 10 0 0 1 0 3.8"/><path d="M3.72 6.39a10 10 0 0 1 2.7-2.69"/><path d="M6.39 20.28a10 10 0 0 1-2.69-2.7"/><circle cx="12" cy="12" r="1.25" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="v-medicine" viewBox="0 0 24 24"><path d="M3.5 11.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="m13.5 11.5 6.2-7.6a1.4 1.4 0 0 0-2.1-1.8L11 9.6"/><path d="M8.5 21.5h7"/></symbol>
+  </defs>
+</svg>
+
+<main class="page">
+  <header class="mast">
+    <div>
+      <div class="kick">SkinKey · Visual direction A</div>
+      <h1>Clay <em>&amp;</em> Ink</h1>
+    </div>
+    <div>
+      <p>Printed matter, not a beauty counter. Warm sand paper, one deep blue-green ink, and a bookish serif that sets the reasons like a well-made label. The verdict is a small stamp; the reasons are the story. Calm enough to read in a store aisle, and confident enough for someone who already pays for serums.</p>
+      <dl>
+        <dt>Display</dt><dd>Newsreader (Production Type), 400 / 500 / italic, optical size 16</dd>
+        <dt>Text</dt><dd>Commissioner (Kostas Bartsokas), 400 / 500 / 600, humanist low-contrast</dd>
+        <dt>Accent</dt><dd>Ink 800 #1B2F32 in light, Ink 200 #B0C5C7 in dark. No second accent.</dd>
+        <dt>Rupee</dt><dd>₹399 renders natively in both families (U+20B9 in the Expo TTFs)</dd>
+      </dl>
+    </div>
+  </header>
+
+  <section class="row">
+    <figure>
+  <figcaption class="cap">/check · Light <span>CAUTION, 2 reasons</span></figcaption>
+  <div class="device"><div class="screen light">
+    <div class="status" aria-hidden="true"><span>9:41</span><span class="r">
+<svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 11.5 0.6 3.9a10.5 10.5 0 0 1 14.8 0Z" opacity=".9"/></svg>
+<svg width="15" height="12" viewBox="0 0 15 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx=".6"/><rect x="4" y="5.5" width="3" height="6.5" rx=".6"/><rect x="8" y="3" width="3" height="9" rx=".6"/><rect x="12" y="0" width="3" height="12" rx=".6" opacity=".35"/></svg>
+<svg width="24" height="12" viewBox="0 0 24 12" fill="none" stroke="currentColor"><rect x=".5" y=".5" width="20" height="11" rx="3"/><rect x="2.5" y="2.5" width="13" height="7" rx="1.5" fill="currentColor" stroke="none"/><path d="M22.5 4v4" stroke-linecap="round"/></svg>
+</span></div>
+    <div class="appbar">
+      <button class="iconbtn" aria-label="Back"><svg class="ico lg" aria-hidden="true"><use href="#i-back"/></svg></button>
+      <span class="src"><svg class="ico sm" aria-hidden="true"><use href="#i-share"/></svg>Shared from Flipkart</span>
+      <button class="iconbtn" aria-label="What we keep"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg></button>
+    </div>
+    <div class="scroll">
+      <div class="prod-k"><span class="t-overline">Is this the product?</span>
+        <button class="editlink" aria-label="Edit product name"><svg class="ico sm" aria-hidden="true"><use href="#i-pencil"/></svg>Edit</button></div>
+      <h2 class="prod-t t-title">Minimalist Sunscreen SPF&nbsp;50 Gel</h2>
+      <p class="prod-m t-caption">Illustrative example · 50 g · ₹399 on the listing</p>
+
+      <section class="verdict v-caution" aria-label="Verdict: Caution">
+        <div class="lab"><svg class="ico" aria-hidden="true"><use href="#v-caution"/></svg><span class="t-overline">Caution</span></div>
+        <p class="sub t-headline">May not suit your readings.</p>
+        <p class="sub2 t-body-sm">This is not a safety warning.</p>
+      </section>
+
+      <section class="sec" aria-label="Reasons">
+        <div class="sec-h"><span class="t-overline">Why</span><span class="t-caption">2 reasons</span></div>
+        <div class="reason"><span class="n">01</span><div>
+          <p class="t-headline">Your skin looked oily in your 1&nbsp;Nov scan.</p>
+          <p class="fact t-body-sm">Contains isopropyl myristate, which can clog pores.</p>
+          <span class="reading"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span>Oiliness · High</span></div></div>
+        <div class="reason"><span class="n">02</span><div>
+          <p class="t-headline">Your skin showed some redness in your 1&nbsp;Nov scan.</p>
+          <p class="fact t-body-sm">Contains fragrance (parfum), which is often flagged for skin with visible redness.</p>
+          <span class="reading"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span>Redness · Medium</span></div></div>
+      </section>
+
+      <section class="prov" aria-label="Where this comes from">
+        <p class="t-overline" style="color:var(--text-muted)">Where this comes from</p>
+        <div class="row2"><svg class="ico sm" aria-hidden="true"><use href="#i-scan"/></svg><div><p class="t-body-sm">Measured by YouCam Skin Analysis, 1 Nov</p><p class="k t-caption">Photo deleted · score bands only</p></div></div>
+        <div class="row2"><svg class="ico sm" aria-hidden="true"><use href="#i-list"/></svg><div><p class="t-body-sm">Ingredient list from the SkinKey catalogue</p><p class="k t-caption">14 products checked by hand · source linked</p></div></div>
+      </section>
+
+      <div class="fixed t-caption">
+        <p>Cosmetic guidance, not medical advice.</p>
+        <p>Not affiliated with Flipkart, Amazon or Nykaa.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-p"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>Find better matches</button>
+      <p class="dest t-caption"><svg class="ico sm" aria-hidden="true"><use href="#i-out"/></svg>Opens a Flipkart search, filtered to Oily Skin</p>
+      <button class="btn btn-s"><svg class="ico" aria-hidden="true"><use href="#i-back"/></svg>Back to product</button>
+    </div>
+    <div class="gesture"><i></i></div>
+  </div></div>
+</figure>
+    <figure>
+  <figcaption class="cap">/check · Dark <span>CAUTION, 2 reasons</span></figcaption>
+  <div class="device"><div class="screen dark">
+    <div class="status" aria-hidden="true"><span>9:41</span><span class="r">
+<svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 11.5 0.6 3.9a10.5 10.5 0 0 1 14.8 0Z" opacity=".9"/></svg>
+<svg width="15" height="12" viewBox="0 0 15 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx=".6"/><rect x="4" y="5.5" width="3" height="6.5" rx=".6"/><rect x="8" y="3" width="3" height="9" rx=".6"/><rect x="12" y="0" width="3" height="12" rx=".6" opacity=".35"/></svg>
+<svg width="24" height="12" viewBox="0 0 24 12" fill="none" stroke="currentColor"><rect x=".5" y=".5" width="20" height="11" rx="3"/><rect x="2.5" y="2.5" width="13" height="7" rx="1.5" fill="currentColor" stroke="none"/><path d="M22.5 4v4" stroke-linecap="round"/></svg>
+</span></div>
+    <div class="appbar">
+      <button class="iconbtn" aria-label="Back"><svg class="ico lg" aria-hidden="true"><use href="#i-back"/></svg></button>
+      <span class="src"><svg class="ico sm" aria-hidden="true"><use href="#i-share"/></svg>Shared from Flipkart</span>
+      <button class="iconbtn" aria-label="What we keep"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg></button>
+    </div>
+    <div class="scroll">
+      <div class="prod-k"><span class="t-overline">Is this the product?</span>
+        <button class="editlink" aria-label="Edit product name"><svg class="ico sm" aria-hidden="true"><use href="#i-pencil"/></svg>Edit</button></div>
+      <h2 class="prod-t t-title">Minimalist Sunscreen SPF&nbsp;50 Gel</h2>
+      <p class="prod-m t-caption">Illustrative example · 50 g · ₹399 on the listing</p>
+
+      <section class="verdict v-caution" aria-label="Verdict: Caution">
+        <div class="lab"><svg class="ico" aria-hidden="true"><use href="#v-caution"/></svg><span class="t-overline">Caution</span></div>
+        <p class="sub t-headline">May not suit your readings.</p>
+        <p class="sub2 t-body-sm">This is not a safety warning.</p>
+      </section>
+
+      <section class="sec" aria-label="Reasons">
+        <div class="sec-h"><span class="t-overline">Why</span><span class="t-caption">2 reasons</span></div>
+        <div class="reason"><span class="n">01</span><div>
+          <p class="t-headline">Your skin looked oily in your 1&nbsp;Nov scan.</p>
+          <p class="fact t-body-sm">Contains isopropyl myristate, which can clog pores.</p>
+          <span class="reading"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span>Oiliness · High</span></div></div>
+        <div class="reason"><span class="n">02</span><div>
+          <p class="t-headline">Your skin showed some redness in your 1&nbsp;Nov scan.</p>
+          <p class="fact t-body-sm">Contains fragrance (parfum), which is often flagged for skin with visible redness.</p>
+          <span class="reading"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span>Redness · Medium</span></div></div>
+      </section>
+
+      <section class="prov" aria-label="Where this comes from">
+        <p class="t-overline" style="color:var(--text-muted)">Where this comes from</p>
+        <div class="row2"><svg class="ico sm" aria-hidden="true"><use href="#i-scan"/></svg><div><p class="t-body-sm">Measured by YouCam Skin Analysis, 1 Nov</p><p class="k t-caption">Photo deleted · score bands only</p></div></div>
+        <div class="row2"><svg class="ico sm" aria-hidden="true"><use href="#i-list"/></svg><div><p class="t-body-sm">Ingredient list from the SkinKey catalogue</p><p class="k t-caption">14 products checked by hand · source linked</p></div></div>
+      </section>
+
+      <div class="fixed t-caption">
+        <p>Cosmetic guidance, not medical advice.</p>
+        <p>Not affiliated with Flipkart, Amazon or Nykaa.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-p"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>Find better matches</button>
+      <p class="dest t-caption"><svg class="ico sm" aria-hidden="true"><use href="#i-out"/></svg>Opens a Flipkart search, filtered to Oily Skin</p>
+      <button class="btn btn-s"><svg class="ico" aria-hidden="true"><use href="#i-back"/></svg>Back to product</button>
+    </div>
+    <div class="gesture"><i></i></div>
+  </div></div>
+</figure>
+    <aside class="spec">
+      <div>
+        <h3>Clay · neutrals</h3>
+        <div class="ramp"><div style="background:#FAF7F2;color:#1E1C19"><b>50</b>FAF7F2</div><div style="background:#F3EEE6;color:#1E1C19"><b>100</b>F3EEE6</div><div style="background:#E8E0D4;color:#1E1C19"><b>200</b>E8E0D4</div><div style="background:#D6CBBB;color:#1E1C19"><b>300</b>D6CBBB</div><div style="background:#B6A994;color:#1E1C19"><b>400</b>B6A994</div><div style="background:#938672;color:#F6F1E8"><b>500</b>938672</div><div style="background:#736856;color:#F6F1E8"><b>600</b>736856</div><div style="background:#5A5043;color:#F6F1E8"><b>700</b>5A5043</div><div style="background:#423B32;color:#F6F1E8"><b>800</b>423B32</div><div style="background:#2B2722;color:#F6F1E8"><b>900</b>2B2722</div><div style="background:#1A1815;color:#F6F1E8"><b>950</b>1A1815</div></div>
+      </div>
+      <div>
+        <h3>Ink · accent</h3>
+        <div class="ramp"><div style="background:#EDF2F2;color:#1E1C19"><b>50</b>EDF2F2</div><div style="background:#D5E0E1;color:#1E1C19"><b>100</b>D5E0E1</div><div style="background:#B0C5C7;color:#1E1C19"><b>200</b>B0C5C7</div><div style="background:#86A4A7;color:#1E1C19"><b>300</b>86A4A7</div><div style="background:#5E8286;color:#1E1C19"><b>400</b>5E8286</div><div style="background:#43666A;color:#F6F1E8"><b>500</b>43666A</div><div style="background:#324F53;color:#F6F1E8"><b>600</b>324F53</div><div style="background:#253D41;color:#F6F1E8"><b>700</b>253D41</div><div style="background:#1B2F32;color:#F6F1E8"><b>800</b>1B2F32</div><div style="background:#132326;color:#F6F1E8"><b>900</b>132326</div><div style="background:#0C171A;color:#F6F1E8"><b>950</b>0C171A</div></div>
+      </div>
+      <div>
+        <h3>Type scale · dp</h3>
+        <div class="typespec">
+          <div class="ts"><small><b>Display</b>Newsreader 400<br>34 / 40 · -0.5</small><span class="t-display">Your readings</span></div>
+          <div class="ts"><small><b>Title</b>Newsreader 400<br>26 / 32 · -0.3</small><span class="t-title">Minimalist Sunscreen</span></div>
+          <div class="ts"><small><b>Headline</b>Newsreader 400<br>20 / 27 · -0.1</small><span class="t-headline">Your skin looked oily in your 1 Nov scan.</span></div>
+          <div class="ts"><small><b>Body</b>Commissioner 400<br>16 / 24 · 0</small><span class="t-body">Contains fragrance (parfum). Listed at ₹399.</span></div>
+          <div class="ts"><small><b>Label</b>Commissioner 600<br>14 / 20 · +0.1</small><span class="t-label">Find better matches</span></div>
+          <div class="ts"><small><b>Overline</b>Commissioner 600<br>12 / 16 · +1.2 caps</small><span class="t-overline">Caution</span></div>
+          <div class="ts"><small><b>Caption</b>Commissioner 400<br>13 / 18 · +0.1</small><span class="t-caption">Measured by YouCam Skin Analysis, 1 Nov</span></div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="note"><b>Radius</b>2 focus inset · 6 chips · 8 buttons · 10 verdict, provenance · 12 cards · 24 sheets. Corners stay crisp, like trimmed card stock.</div>
+        <div class="note"><b>Elevation</b>Tone first: sunken, surface, raised paper. One hairline border per layer. Only the action bar and sheets cast a short clay-tinted shadow.</div>
+        <div class="note"><b>Motion · "ink settling"</b>No springs, no bounce. Ease (0.2, 0, 0, 1). Press 120 ms scale 0.98. Verdict stamp fades in 320 ms; reasons follow, 60 ms apart, rising 6 dp.</div>
+        <div class="note"><b>Reduce motion</b>Every transition becomes a 120 ms crossfade. No movement, no stagger. Paper grain is a static 3 % tile, never animated.</div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="panels">
+    <div class="panel light">
+  <div class="ph"><span class="t-overline">Light</span><span class="t-caption">/profile card · verdict states</span></div>
+  <div class="pgrid">
+    <article class="card" aria-label="Your readings">
+      <div class="top"><span class="t-overline">Your readings</span><span class="t-caption">Scan 1 Nov</span></div>
+      <p class="stype t-title">Oily</p>
+      <p class="est t-caption">Skin type estimated from oiliness + moisture</p>
+      <div class="chips">
+        <span class="chip"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span>Oiliness <span class="dot">·</span> High</span>
+        <span class="chip"><span class="meter" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i></span>Moisture <span class="dot">·</span> Low</span>
+        <span class="chip"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span>Redness <span class="dot">·</span> Medium</span>
+        <span class="chip"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span>Texture <span class="dot">·</span> Medium</span>
+      </div>
+      <div class="foot"><button class="ghost"><span class="q">Feels wrong?</span><svg class="ico sm" aria-hidden="true"><use href="#i-pencil"/></svg>Edit</button>
+        <span class="textlink"><svg class="ico sm" aria-hidden="true"><use href="#i-lock"/></svg>What we keep</span></div>
+      <p class="meta t-caption">Measured by YouCam Skin Analysis, 1 Nov · photo deleted · score bands only</p>
+      <div class="acc t-caption"><svg class="ico sm" aria-hidden="true"><use href="#i-info"/></svg><p>Accuracy note: Skin AI can be less accurate on deeper skin tones and in poor light.</p></div>
+    </article>
+    <div class="sw"><div class="swi"><div class="tok t-caption"><span>fits</span><span>seal + check</span></div>
+      <div class="swc v-fits"><svg class="ico lg" aria-hidden="true"><use href="#v-fits"/></svg><div><span class="l">Fits</span><p>Matches your scan on the ingredients we know about. Not a guarantee.</p></div></div></div><div class="swi"><div class="tok t-caption"><span>caution</span><span>half-filled circle</span></div>
+      <div class="swc v-caution"><svg class="ico lg" aria-hidden="true"><use href="#v-caution"/></svg><div><span class="l">Caution</span><p>May not suit your readings. This is not a safety warning.</p></div></div></div><div class="swi"><div class="tok t-caption"><span>unknown</span><span>dashed circle</span></div>
+      <div class="swc v-unknown"><svg class="ico lg" aria-hidden="true"><use href="#v-unknown"/></svg><div><span class="l">Unknown</span><p>This product isn't in our catalogue (14 products) and its name alone isn't enough. This doesn't mean it's bad.</p></div></div></div><div class="swi"><div class="tok t-caption"><span>medicine · no verdict label</span><span>mortar + pestle</span></div>
+      <div class="swc v-medicine med"><svg class="ico lg" aria-hidden="true"><use href="#v-medicine"/></svg><div><p>This looks like a medicine. Ask the pharmacist.</p></div></div></div></div>
+  </div>
+</div>
+    <div class="panel dark">
+  <div class="ph"><span class="t-overline">Dark</span><span class="t-caption">/profile card · verdict states</span></div>
+  <div class="pgrid">
+    <article class="card" aria-label="Your readings">
+      <div class="top"><span class="t-overline">Your readings</span><span class="t-caption">Scan 1 Nov</span></div>
+      <p class="stype t-title">Oily</p>
+      <p class="est t-caption">Skin type estimated from oiliness + moisture</p>
+      <div class="chips">
+        <span class="chip"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span>Oiliness <span class="dot">·</span> High</span>
+        <span class="chip"><span class="meter" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i></span>Moisture <span class="dot">·</span> Low</span>
+        <span class="chip"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span>Redness <span class="dot">·</span> Medium</span>
+        <span class="chip"><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span>Texture <span class="dot">·</span> Medium</span>
+      </div>
+      <div class="foot"><button class="ghost"><span class="q">Feels wrong?</span><svg class="ico sm" aria-hidden="true"><use href="#i-pencil"/></svg>Edit</button>
+        <span class="textlink"><svg class="ico sm" aria-hidden="true"><use href="#i-lock"/></svg>What we keep</span></div>
+      <p class="meta t-caption">Measured by YouCam Skin Analysis, 1 Nov · photo deleted · score bands only</p>
+      <div class="acc t-caption"><svg class="ico sm" aria-hidden="true"><use href="#i-info"/></svg><p>Accuracy note: Skin AI can be less accurate on deeper skin tones and in poor light.</p></div>
+    </article>
+    <div class="sw"><div class="swi"><div class="tok t-caption"><span>fits</span><span>seal + check</span></div>
+      <div class="swc v-fits"><svg class="ico lg" aria-hidden="true"><use href="#v-fits"/></svg><div><span class="l">Fits</span><p>Matches your scan on the ingredients we know about. Not a guarantee.</p></div></div></div><div class="swi"><div class="tok t-caption"><span>caution</span><span>half-filled circle</span></div>
+      <div class="swc v-caution"><svg class="ico lg" aria-hidden="true"><use href="#v-caution"/></svg><div><span class="l">Caution</span><p>May not suit your readings. This is not a safety warning.</p></div></div></div><div class="swi"><div class="tok t-caption"><span>unknown</span><span>dashed circle</span></div>
+      <div class="swc v-unknown"><svg class="ico lg" aria-hidden="true"><use href="#v-unknown"/></svg><div><span class="l">Unknown</span><p>This product isn't in our catalogue (14 products) and its name alone isn't enough. This doesn't mean it's bad.</p></div></div></div><div class="swi"><div class="tok t-caption"><span>medicine · no verdict label</span><span>mortar + pestle</span></div>
+      <div class="swc v-medicine med"><svg class="ico lg" aria-hidden="true"><use href="#v-medicine"/></svg><div><p>This looks like a medicine. Ask the pharmacist.</p></div></div></div></div>
+  </div>
+</div>
+  </section>
+</main>
+</body>
+</html>

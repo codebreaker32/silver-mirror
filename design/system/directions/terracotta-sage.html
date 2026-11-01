@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkinKey - Direction C: Terracotta &amp; Sage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wght@400;500;600;700&family=Eczar:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ---------- generated tokens (from tokens.json) ---------- */
+.m-light{--bg:#F4EFE5;--surface:#FAF7F1;--surface-raised:#FFFDF9;--surface-sunken:#E8E0D1;--text:#27221C;--text-muted:#5F5444;--text-subtle:#6B5F4D;--border:#D6CAB6;--border-strong:#8C7D67;--accent:#9A4630;--accent-text:#8A3E2A;--on-accent:#FAF7F1;--accent-soft:#F5DED3;--on-accent-soft:#622C20;--secondary:#556641;--secondary-soft:#E2E8D7;--on-secondary-soft:#323C28;--ink:#27221C;--on-ink:#FAF7F1;--focus-ring:#9A4630;--chip-bg:#EDE6D9;--chip-text:#27221C;--chip-meter-on:#524839;--chip-meter-off:#D6CAB6;--selected:#E8E0D1;--on-selected:#27221C;--raised:#FFFDF9;--sunken:#E8E0D1;--fits-bg:#E6EBDB;--fits-fg:#33402A;--fits-border:#6B7F52;--caution-bg:#F6EBCB;--caution-fg:#5E440F;--caution-border:#9C7419;--unknown-bg:#E9E9E5;--unknown-fg:#3B3F3D;--unknown-border:#6E726E;--medicine-bg:#FFFDF9;--medicine-fg:#27221C;--medicine-border:#27221C;--card-shadow:0 1px 0 rgba(39,34,28,.04),0 10px 24px -14px rgba(39,34,28,.22);--sheet-shadow:0 -8px 24px -16px rgba(39,34,28,.28);color-scheme:light}
+.m-dark{--bg:#181512;--surface:#211D19;--surface-raised:#2B2621;--surface-sunken:#13110E;--text:#F2ECE1;--text-muted:#B9AD9A;--text-subtle:#A49884;--border:#3D362D;--border-strong:#877A66;--accent:#B4593B;--accent-text:#D98B6A;--on-accent:#FFFDF9;--accent-soft:#3E2219;--on-accent-soft:#F5DED3;--secondary:#A7B68C;--secondary-soft:#262D20;--on-secondary-soft:#D3DCC3;--ink:#F2ECE1;--on-ink:#181512;--focus-ring:#D98B6A;--chip-bg:#2E2924;--chip-text:#F2ECE1;--chip-meter-on:#D6CAB6;--chip-meter-off:#4A4238;--selected:#3A3229;--on-selected:#F2ECE1;--raised:#2B2621;--sunken:#13110E;--fits-bg:#252C1F;--fits-fg:#C3CFAE;--fits-border:#6B7F52;--caution-bg:#2F2510;--caution-fg:#E8C978;--caution-border:#A87D1C;--unknown-bg:#252827;--unknown-fg:#C9CBC6;--unknown-border:#7C807C;--medicine-bg:#13110E;--medicine-fg:#F2ECE1;--medicine-border:#D6CAB6;--card-shadow:none;--sheet-shadow:none;color-scheme:dark}
+
+/* ---------- presentation page ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#E8E0D1;color:#27221C;font-family:"Anek Latin",system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.page{max-width:1240px;margin:0 auto;padding:56px 32px 96px}
+.disp{font-family:"Eczar",Georgia,serif}
+.masthead{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:end;padding-bottom:40px;margin-bottom:48px;position:relative}
+.masthead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:repeating-linear-gradient(90deg,#8C7D67 0 6px,transparent 6px 11px)}
+.kicker{font-weight:600;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:#6B5F4D;margin:0 0 14px}
+.masthead h1{font-family:"Eczar",Georgia,serif;font-weight:500;font-size:56px;line-height:1.02;letter-spacing:-1px;margin:0;color:#27221C}
+.masthead h1 em{font-style:normal;color:#9A4630}
+.masthead p{margin:0;color:#524839;font-size:17px;line-height:1.6;max-width:56ch}
+.section{margin-top:72px}
+.section-head{display:grid;grid-template-columns:220px 1fr;gap:32px;margin-bottom:28px;align-items:baseline}
+.section-head h2{font-family:"Eczar",Georgia,serif;font-weight:500;font-size:26px;line-height:1.2;margin:0}
+.section-head p{margin:0;color:#524839;max-width:70ch}
+.duo{display:grid;grid-template-columns:repeat(2,390px);gap:56px;justify-content:start}
+.duo-label{font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#6B5F4D;margin:0 0 12px;display:flex;gap:10px;align-items:center}
+.duo-label i{display:inline-block;width:10px;height:10px;border-radius:3px;border:1px solid #8C7D67}
+.duo-label.l i{background:#FAF7F1}.duo-label.d i{background:#211D19}
+@media (max-width:900px){.masthead,.section-head{grid-template-columns:1fr}.duo{grid-template-columns:390px}}
+
+/* ---------- device ---------- */
+.device{width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg);color:var(--text);
+  box-shadow:0 0 0 1px rgba(39,34,28,.18),0 0 0 9px #1E1A16,0 0 0 10px rgba(39,34,28,.5),0 40px 60px -30px rgba(39,34,28,.45);
+  font-family:"Anek Latin",system-ui,sans-serif;display:flex;flex-direction:column}
+.statusbar{height:36px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:6px 26px 0 30px;font-size:14px;font-weight:500;color:var(--text)}
+.statusbar .sys{display:flex;gap:6px;align-items:center}
+.statusbar svg{width:16px;height:16px;display:block}
+.gesture{height:22px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--raised)}
+.gesture i{width:108px;height:4px;border-radius:4px;background:var(--text);opacity:.55}
+.device.navpad .gesture{background:var(--surface)}
+.appbar{height:56px;flex:none;display:flex;align-items:center;gap:4px;padding:0 8px 0 4px}
+.iconbtn{width:48px;height:48px;border:0;background:transparent;border-radius:12px;display:grid;place-items:center;color:var(--text);cursor:pointer}
+.iconbtn svg{width:22px;height:22px}
+.wordmark{display:flex;align-items:center;gap:8px;font-family:"Eczar",Georgia,serif;font-weight:600;font-size:19px;letter-spacing:-.2px;color:var(--text)}
+.mark{width:22px;height:22px;display:block;color:var(--accent)}
+.scanchip{margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px 0 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:500;color:var(--text)}
+.scanchip svg{width:14px;height:14px;color:var(--secondary)}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:4px 20px 24px;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+svg.i{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+
+/* type roles */
+.t-display{font-family:"Eczar",Georgia,serif;font-weight:500;font-size:34px;line-height:40px;letter-spacing:-.4px}
+.t-title{font-family:"Eczar",Georgia,serif;font-weight:500;font-size:26px;line-height:32px;letter-spacing:-.2px}
+.t-headline{font-family:"Eczar",Georgia,serif;font-weight:600;font-size:20px;line-height:26px}
+.t-body{font-size:16px;line-height:24px}
+.t-label{font-size:14px;line-height:18px;font-weight:600;letter-spacing:.2px}
+.t-over{font-size:12px;line-height:16px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-subtle)}
+.t-caption{font-size:13px;line-height:18px;letter-spacing:.1px;color:var(--text-muted)}
+p{margin:0}
+
+/* product field */
+.field{margin-top:6px;background:var(--surface-raised);border:1px solid var(--border-strong);border-radius:12px;padding:12px 6px 12px 16px;display:flex;gap:6px;align-items:flex-start}
+.field .val{flex:1;padding-top:2px}
+.field .val .t-headline{color:var(--text)}
+.field .meta{margin-top:4px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.field .iconbtn{width:44px;height:44px;color:var(--accent-text);flex:none;margin-top:-4px}
+.field .iconbtn svg{width:20px;height:20px}
+.dot{width:3px;height:3px;border-radius:50%;background:var(--text-muted);display:inline-block}
+
+/* verdict panel */
+.verdict{margin-top:20px;border-radius:18px;border:1px solid var(--v-border);background:var(--v-bg);padding:18px 18px 8px}
+.v-caution{--v-bg:var(--caution-bg);--v-fg:var(--caution-fg);--v-border:var(--caution-border)}
+.v-fits{--v-bg:var(--fits-bg);--v-fg:var(--fits-fg);--v-border:var(--fits-border)}
+.v-unknown{--v-bg:var(--unknown-bg);--v-fg:var(--unknown-fg);--v-border:var(--unknown-border)}
+.v-medicine{--v-bg:var(--medicine-bg);--v-fg:var(--medicine-fg);--v-border:var(--medicine-border)}
+.v-head{display:flex;align-items:center;gap:12px}
+.v-icon{width:40px;height:40px;border-radius:12px;border:1.5px solid var(--v-border);display:grid;place-items:center;color:var(--v-fg);flex:none}
+.v-icon svg{width:22px;height:22px}
+.v-label{font-size:15px;line-height:18px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--v-fg)}
+.v-sub{margin-top:12px;font-size:16px;line-height:24px;color:var(--text)}
+.stitch{height:1.5px;background:repeating-linear-gradient(90deg,var(--v-border,var(--border-strong)) 0 6px,transparent 6px 11px);margin:16px 0 4px;opacity:.9}
+.reasons{list-style:none;margin:0;padding:0}
+.reason{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:14px 0;border-top:1px solid color-mix(in srgb,var(--v-border) 35%,transparent)}
+.reason:first-child{border-top:0}
+.rnum{font-family:"Eczar",Georgia,serif;font-weight:600;font-size:20px;line-height:24px;color:var(--v-fg)}
+.r-reading{font-size:16px;line-height:24px;font-weight:600;color:var(--text)}
+.r-fact{margin-top:4px;font-size:16px;line-height:24px;color:var(--text)}
+.r-fact b{font-weight:600}
+.r-tag{margin-top:10px;display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 10px;border-radius:8px;background:var(--surface-raised);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--text)}
+.r-tag .mini{display:flex;gap:2px}
+.r-tag .mini i{width:5px;height:10px;border-radius:1.5px;background:var(--chip-meter-off)}
+.r-tag .mini i.on{background:var(--chip-meter-on)}
+
+/* provenance */
+.prov{margin-top:20px;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px 16px 6px}
+.prov h3{margin:0 0 4px;font-size:14px;line-height:18px;font-weight:600;letter-spacing:.2px;color:var(--text)}
+.prow{display:grid;grid-template-columns:32px 1fr;gap:10px;padding:12px 0;align-items:start}
+.prow + .prow{border-top:1px solid var(--border)}
+.pico{width:32px;height:32px;border-radius:10px;background:var(--sunken);display:grid;place-items:center;color:var(--text)}
+.pico svg{width:18px;height:18px}
+.prow .main{font-size:15px;line-height:22px;color:var(--text);font-weight:500}
+.prow .t-caption{margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tick{display:inline-flex;align-items:center;gap:4px;color:var(--on-secondary-soft);background:var(--secondary-soft);border-radius:6px;padding:1px 7px 1px 5px;font-weight:500}
+.tick svg{width:13px;height:13px;color:var(--secondary)}
+.fixed{margin-top:18px;padding:0 2px}
+.fixed p{font-size:13px;line-height:18px;color:var(--text-muted)}
+.fixed p + p{margin-top:4px}
+
+/* action sheet */
+.actions{flex:none;background:var(--surface-raised);border-top:1px solid var(--border);padding:14px 20px 10px;box-shadow:var(--sheet-shadow)}
+.btn{width:100%;min-height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit;font-size:16px;line-height:20px;font-weight:600;letter-spacing:.1px;cursor:pointer;transition:transform 120ms cubic-bezier(.2,.7,.2,1),filter 120ms}
+.btn:active{transform:scale(.98);filter:brightness(.96)}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--accent);color:var(--on-accent);border:0}
+.btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--border-strong)}
+.btn:focus-visible{outline:2.5px solid var(--focus-ring);outline-offset:3px}
+.dest{display:flex;gap:6px;align-items:center;justify-content:center;margin:8px 0 12px;font-size:13px;line-height:18px;color:var(--text-muted)}
+.dest svg{width:14px;height:14px;flex:none}
+.dest b{font-weight:600;color:var(--text)}
+
+/* profile */
+.ptitle{margin:8px 0 4px}
+.card{margin-top:18px;background:var(--surface-raised);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:var(--card-shadow)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.stype{margin-top:6px}
+.stype .t-caption{margin-top:2px}
+.bands{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.band{background:var(--chip-bg);border-radius:10px;padding:11px 12px 12px;min-height:64px}
+.band-txt{font-size:15px;line-height:20px;color:var(--chip-text);font-weight:500}
+.band-txt span{color:var(--text-muted);font-weight:400;margin:0 3px}
+.band-txt b{font-weight:600}
+.meter{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:10px}
+.meter i{height:4px;border-radius:2px;background:var(--chip-meter-off)}
+.meter i.on{background:var(--chip-meter-on)}
+.more{margin-top:12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--text-muted);padding:4px 2px}
+.more svg{width:16px;height:16px}
+.edit{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 4px;color:var(--accent-text);font-weight:600;font-size:15px;background:none;border:0;font-family:inherit;cursor:pointer}
+.edit span{color:var(--text-muted);font-weight:400}
+.edit svg{width:16px;height:16px}
+.card .stitch{margin:16px 0 14px;--v-border:var(--border-strong)}
+.card .prov-line{font-size:13px;line-height:18px;color:var(--text-muted)}
+.card .prov-line b{color:var(--text);font-weight:600}
+.note{margin-top:14px;display:grid;grid-template-columns:20px 1fr;gap:10px;padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
+.note svg{width:18px;height:18px;color:var(--text-muted);margin-top:1px}
+.note p{font-size:14px;line-height:20px;color:var(--text)}
+.note p b{font-weight:600}
+.prow-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.btn-quiet{min-height:48px;background:var(--surface);color:var(--text);border:1px solid var(--border-strong);border-radius:12px;font-size:15px}
+.btn-quiet.del{color:var(--text)}
+.navbar{flex:none;height:76px;background:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);align-items:center}
+.nav{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--text-muted)}
+.nav .pill{width:56px;height:30px;border-radius:15px;display:grid;place-items:center}
+.nav svg{width:20px;height:20px}
+.nav.on{color:var(--text);font-weight:600}
+.nav.on .pill{background:var(--selected);color:var(--on-selected)}
+
+/* swatches */
+.swatchboard{border-radius:24px;padding:22px;background:var(--bg);color:var(--text);box-shadow:0 0 0 1px rgba(39,34,28,.16);display:grid;gap:12px}
+.sw{border-radius:16px;border:1px solid var(--v-border);background:var(--v-bg);padding:14px 14px 14px 14px;display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start}
+.sw.v-medicine{border-width:1.5px}
+.sw .v-label{padding-top:2px}
+.sw p{font-size:14px;line-height:20px;color:var(--text);margin-top:4px}
+.sw .med{font-size:16px;line-height:22px;font-weight:600;color:var(--v-fg);padding-top:8px;margin:0}
+.sw .meta{margin-top:8px;font-size:12px;line-height:16px;color:var(--text-muted)}
+
+/* spec tables */
+.ramps{display:grid;gap:10px}
+.ramp{display:grid;grid-template-columns:120px repeat(11,1fr);gap:4px;align-items:stretch}
+.ramp .nm{font-size:13px;font-weight:600;color:#3A3229;align-self:center}
+.ramp .nm small{display:block;font-weight:400;color:#6B5F4D}
+.chipc{height:56px;border-radius:8px;padding:6px;font-size:10px;line-height:12px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:inset 0 0 0 1px rgba(39,34,28,.08)}
+.specgrid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.spec{background:#FAF7F1;border:1px solid #D6CAB6;border-radius:18px;padding:22px}
+.spec h3{margin:0 0 12px;font-size:14px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600;color:#6B5F4D}
+.spec dl{margin:0;display:grid;grid-template-columns:110px 1fr;gap:10px 16px;font-size:14px;line-height:20px}
+.spec dt{font-weight:600;color:#27221C}
+.spec dd{margin:0;color:#524839}
+.scale-row{display:grid;grid-template-columns:96px 1fr 140px;gap:16px;align-items:baseline;padding:12px 0;border-top:1px solid #E8E0D1}
+.scale-row:first-of-type{border-top:0}
+.scale-row .k{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#6B5F4D}
+.scale-row .m{font-size:12px;color:#6B5F4D;text-align:right;font-variant-numeric:tabular-nums}
+table.ct{width:100%;border-collapse:collapse;font-size:13px;line-height:18px;background:#FAF7F1;border-radius:14px;overflow:hidden}
+table.ct th,table.ct td{padding:7px 10px;text-align:left;border-bottom:1px solid #E8E0D1;vertical-align:middle}
+table.ct th{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6B5F4D;background:#F4EFE5;position:sticky;top:0}
+table.ct td.n{font-variant-numeric:tabular-nums;font-weight:600}
+table.ct .sp{display:inline-flex;align-items:center;justify-content:center;width:46px;height:22px;border-radius:5px;font-weight:600;font-size:12px;box-shadow:inset 0 0 0 1px rgba(39,34,28,.12)}
+.ct-wrap{max-height:560px;overflow:auto;border:1px solid #D6CAB6;border-radius:14px}
+.pass{color:#33402A;font-weight:600}
+.fail{color:#7E3827;font-weight:700}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@keyframes settle{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.verdict,.reason{animation:settle 320ms cubic-bezier(.2,.7,.2,1) both}
+.reason:nth-child(1){animation-delay:120ms}.reason:nth-child(2){animation-delay:180ms}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.98-3.98L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.25"/><path d="m8.5 12.25 2.4 2.4 4.6-4.9"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.25"/><path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-pill" viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.7 4.73a2 2 0 0 0 2 0L20.7 7"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-tick" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.25"/><path d="M12 16v-4.5"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect width="16" height="10" x="4" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+    <symbol id="i-handoff" viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="m10 16 4-4-4-4"/><path d="M14 12H4"/></symbol>
+    <symbol id="i-signal" viewBox="0 0 16 16"><path d="M2 13h2v-2H2zM6 13h2V8H6zM10 13h2V5h-2zM14 13h-.01V2" stroke="none" fill="currentColor"/><rect x="13" y="2" width="2" height="11" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 16 16"><path d="M8 13.5 15 5.2A10.6 10.6 0 0 0 1 5.2Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-batt" viewBox="0 0 16 16"><rect x="4" y="1.5" width="8" height="13" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="5.6" y="5" width="4.8" height="8" rx=".6" fill="currentColor" stroke="none"/><rect x="6.5" y=".4" width="3" height="1.4" rx=".4" fill="currentColor" stroke="none"/></symbol>
+    <!-- SkinKey mark: a clay tile with a keyhole notch -->
+    <symbol id="mark" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="6.5" fill="currentColor"/><circle cx="12" cy="10" r="3" fill="var(--bg)"/><path d="M10.9 11.5h2.2l.9 6h-4z" fill="var(--bg)"/></symbol>
+  </defs>
+</svg>
+
+<main class="page">
+  <header class="masthead">
+    <div>
+      <p class="kicker">SkinKey design directions &middot; C of 3 &middot; slug terracotta-sage</p>
+      <h1>Indian Earth:<br><em>terracotta</em> on khadi, with sage.</h1>
+    </div>
+    <div>
+      <p>Unbleached-cotton neutrals, one fired-clay accent used once per screen, and a sage that only ever means "fits" or "done". The display face is Eczar, a Rosetta typeface by Indian designer Vaibhav Singh, which carries calligraphic stress from Devanagari into a confident Latin. The text face is Anek Latin by Ek Type: plain enough for reasons and chips, warm in its terminals. The one ornament is the kantha running stitch, a dashed rule that marks where provenance begins.</p>
+    </div>
+  </header>
+
+  <!-- ===================== 1. CHECK ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <h2>/check &middot; CAUTION</h2>
+      <p>Reason before label weight: the reading (moment phrasing) is set in semibold, the product fact follows in plain words, and the band chip ties it back to /profile. The only terracotta on the screen is the one action that leaves the app, and its destination is printed directly under it.</p>
+    </div>
+    <div class="duo">
+      <div><p class="duo-label l"><i></i>Light</p><div class="device m-light" role="img" aria-label="SkinKey check screen, light mode">
+  <div class="statusbar"><span>10:24</span><span class="sys"><svg class="i " aria-hidden="true"><use href="#i-signal"/></svg><svg class="i " aria-hidden="true"><use href="#i-wifi"/></svg><svg class="i " aria-hidden="true"><use href="#i-batt"/></svg></span></div>
+  <div class="appbar">
+    <button class="iconbtn" aria-label="Back"><svg class="i " aria-hidden="true"><use href="#i-back"/></svg></button>
+    <span class="wordmark"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>SkinKey</span>
+    <span class="scanchip"><svg class="i " aria-hidden="true"><use href="#i-tick"/></svg>Scan 1 Nov</span>
+  </div>
+  <div class="scroll">
+    <p class="t-over">Is this the product?</p>
+    <div class="field">
+      <div class="val">
+        <p class="t-headline">Minimalist Sunscreen SPF 50 Gel</p>
+        <p class="meta t-caption">From Flipkart <span class="dot"></span> &#8377;399 on the listing <span class="dot"></span> tap to correct</p>
+      </div>
+      <button class="iconbtn" aria-label="Edit product name"><svg class="i " aria-hidden="true"><use href="#i-pencil"/></svg></button>
+    </div>
+
+    <section class="verdict v-caution" aria-label="Verdict: Caution">
+      <div class="v-head">
+        <span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-eye"/></svg></span>
+        <span class="v-label">Caution</span>
+      </div>
+      <p class="v-sub">May not suit your readings. This is not a safety warning.</p>
+      <div class="stitch" aria-hidden="true"></div>
+      <ol class="reasons">
+        <li class="reason">
+          <span class="rnum">1</span>
+          <div>
+            <p class="r-reading">Your skin looked oily in your 1 Nov scan.</p>
+            <p class="r-fact">Contains <b>isopropyl myristate</b>, an oily ingredient that can clog pores.</p>
+            <span class="r-tag">Oiliness &middot; High <span class="mini" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span></span>
+          </div>
+        </li>
+        <li class="reason">
+          <span class="rnum">2</span>
+          <div>
+            <p class="r-reading">Your skin showed some redness in your 1 Nov scan.</p>
+            <p class="r-fact">Contains <b>added fragrance (parfum)</b>, which skin that looks red often doesn't suit.</p>
+            <span class="r-tag">Redness &middot; Medium <span class="mini" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span></span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="prov" aria-label="Where this comes from">
+      <h3>Where this comes from</h3>
+      <div class="prow">
+        <span class="pico"><svg class="i " aria-hidden="true"><use href="#i-scan"/></svg></span>
+        <div>
+          <p class="main">Measured by YouCam Skin Analysis, 1 Nov</p>
+          <p class="t-caption"><span class="tick"><svg class="i " aria-hidden="true"><use href="#i-tick"/></svg>Photo deleted</span> score bands only</p>
+        </div>
+      </div>
+      <div class="prow">
+        <span class="pico"><svg class="i " aria-hidden="true"><use href="#i-box"/></svg></span>
+        <div>
+          <p class="main">SkinKey catalogue, 14 products</p>
+          <p class="t-caption">Ingredient list from the brand's product page</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="fixed">
+      <p>Cosmetic guidance, not medical advice.</p>
+      <p>Not affiliated with Flipkart, Amazon or Nykaa.</p>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary"><svg class="i " aria-hidden="true"><use href="#i-search"/></svg>Find better matches</button>
+    <p class="dest"><svg class="i " aria-hidden="true"><use href="#i-out"/></svg><span>Opens a Flipkart search, filtered to <b>Oily Skin</b></span></p>
+    <button class="btn btn-outline"><svg class="i " aria-hidden="true"><use href="#i-back"/></svg>Back to product</button>
+  </div>
+  <div class="gesture"><i></i></div>
+</div></div>
+      <div><p class="duo-label d"><i></i>Dark</p><div class="device m-dark" role="img" aria-label="SkinKey check screen, dark mode">
+  <div class="statusbar"><span>10:24</span><span class="sys"><svg class="i " aria-hidden="true"><use href="#i-signal"/></svg><svg class="i " aria-hidden="true"><use href="#i-wifi"/></svg><svg class="i " aria-hidden="true"><use href="#i-batt"/></svg></span></div>
+  <div class="appbar">
+    <button class="iconbtn" aria-label="Back"><svg class="i " aria-hidden="true"><use href="#i-back"/></svg></button>
+    <span class="wordmark"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>SkinKey</span>
+    <span class="scanchip"><svg class="i " aria-hidden="true"><use href="#i-tick"/></svg>Scan 1 Nov</span>
+  </div>
+  <div class="scroll">
+    <p class="t-over">Is this the product?</p>
+    <div class="field">
+      <div class="val">
+        <p class="t-headline">Minimalist Sunscreen SPF 50 Gel</p>
+        <p class="meta t-caption">From Flipkart <span class="dot"></span> &#8377;399 on the listing <span class="dot"></span> tap to correct</p>
+      </div>
+      <button class="iconbtn" aria-label="Edit product name"><svg class="i " aria-hidden="true"><use href="#i-pencil"/></svg></button>
+    </div>
+
+    <section class="verdict v-caution" aria-label="Verdict: Caution">
+      <div class="v-head">
+        <span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-eye"/></svg></span>
+        <span class="v-label">Caution</span>
+      </div>
+      <p class="v-sub">May not suit your readings. This is not a safety warning.</p>
+      <div class="stitch" aria-hidden="true"></div>
+      <ol class="reasons">
+        <li class="reason">
+          <span class="rnum">1</span>
+          <div>
+            <p class="r-reading">Your skin looked oily in your 1 Nov scan.</p>
+            <p class="r-fact">Contains <b>isopropyl myristate</b>, an oily ingredient that can clog pores.</p>
+            <span class="r-tag">Oiliness &middot; High <span class="mini" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span></span>
+          </div>
+        </li>
+        <li class="reason">
+          <span class="rnum">2</span>
+          <div>
+            <p class="r-reading">Your skin showed some redness in your 1 Nov scan.</p>
+            <p class="r-fact">Contains <b>added fragrance (parfum)</b>, which skin that looks red often doesn't suit.</p>
+            <span class="r-tag">Redness &middot; Medium <span class="mini" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span></span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="prov" aria-label="Where this comes from">
+      <h3>Where this comes from</h3>
+      <div class="prow">
+        <span class="pico"><svg class="i " aria-hidden="true"><use href="#i-scan"/></svg></span>
+        <div>
+          <p class="main">Measured by YouCam Skin Analysis, 1 Nov</p>
+          <p class="t-caption"><span class="tick"><svg class="i " aria-hidden="true"><use href="#i-tick"/></svg>Photo deleted</span> score bands only</p>
+        </div>
+      </div>
+      <div class="prow">
+        <span class="pico"><svg class="i " aria-hidden="true"><use href="#i-box"/></svg></span>
+        <div>
+          <p class="main">SkinKey catalogue, 14 products</p>
+          <p class="t-caption">Ingredient list from the brand's product page</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="fixed">
+      <p>Cosmetic guidance, not medical advice.</p>
+      <p>Not affiliated with Flipkart, Amazon or Nykaa.</p>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary"><svg class="i " aria-hidden="true"><use href="#i-search"/></svg>Find better matches</button>
+    <p class="dest"><svg class="i " aria-hidden="true"><use href="#i-out"/></svg><span>Opens a Flipkart search, filtered to <b>Oily Skin</b></span></p>
+    <button class="btn btn-outline"><svg class="i " aria-hidden="true"><use href="#i-back"/></svg>Back to product</button>
+  </div>
+  <div class="gesture"><i></i></div>
+</div></div>
+    </div>
+    <div class="duo" style="margin-top:40px">
+      <div><p class="duo-label l"><i></i>Light &middot; scrolled to the end</p><div class="device m-light" role="img" aria-label="SkinKey check screen, light mode">
+  <div class="statusbar"><span>10:24</span><span class="sys"><svg class="i " aria-hidden="true"><use href="#i-signal"/></svg><svg class="i " aria-hidden="true"><use href="#i-wifi"/></svg><svg class="i " aria-hidden="true"><use href="#i-batt"/></svg></span></div>
+  <div class="appbar">
+    <button class="iconbtn" aria-label="Back"><svg class="i " aria-hidden="true"><use href="#i-back"/></svg></button>
+    <span class="wordmark"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>SkinKey</span>
+    <span class="scanchip"><svg class="i " aria-hidden="true"><use href="#i-tick"/></svg>Scan 1 Nov</span>
+  </div>
+  <div class="scroll at-end">
+    <p class="t-over">Is this the product?</p>
+    <div class="field">
+      <div class="val">
+        <p class="t-headline">Minimalist Sunscreen SPF 50 Gel</p>
+        <p class="meta t-caption">From Flipkart <span class="dot"></span> &#8377;399 on the listing <span class="dot"></span> tap to correct</p>
+      </div>
+      <button class="iconbtn" aria-label="Edit product name"><svg class="i " aria-hidden="true"><use href="#i-pencil"/></svg></button>
+    </div>
+
+    <section class="verdict v-caution" aria-label="Verdict: Caution">
+      <div class="v-head">
+        <span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-eye"/></svg></span>
+        <span class="v-label">Caution</span>
+      </div>
+      <p class="v-sub">May not suit your readings. This is not a safety warning.</p>
+      <div class="stitch" aria-hidden="true"></div>
+      <ol class="reasons">
+        <li class="reason">
+          <span class="rnum">1</span>
+          <div>
+            <p class="r-reading">Your skin looked oily in your 1 Nov scan.</p>
+            <p class="r-fact">Contains <b>isopropyl myristate</b>, an oily ingredient that can clog pores.</p>
+            <span class="r-tag">Oiliness &middot; High <span class="mini" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span></span>
+          </div>
+        </li>
+        <li class="reason">
+          <span class="rnum">2</span>
+          <div>
+            <p class="r-reading">Your skin showed some redness in your 1 Nov scan.</p>
+            <p class="r-fact">Contains <b>added fragrance (parfum)</b>, which skin that looks red often doesn't suit.</p>
+            <span class="r-tag">Redness &middot; Medium <span class="mini" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span></span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="prov" aria-label="Where this comes from">
+      <h3>Where this comes from</h3>
+      <div class="prow">
+        <span class="pico"><svg class="i " aria-hidden="true"><use href="#i-scan"/></svg></span>
+        <div>
+          <p class="main">Measured by YouCam Skin Analysis, 1 Nov</p>
+          <p class="t-caption"><span class="tick"><svg class="i " aria-hidden="true"><use href="#i-tick"/></svg>Photo deleted</span> score bands only</p>
+        </div>
+      </div>
+      <div class="prow">
+        <span class="pico"><svg class="i " aria-hidden="true"><use href="#i-box"/></svg></span>
+        <div>
+          <p class="main">SkinKey catalogue, 14 products</p>
+          <p class="t-caption">Ingredient list from the brand's product page</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="fixed">
+      <p>Cosmetic guidance, not medical advice.</p>
+      <p>Not affiliated with Flipkart, Amazon or Nykaa.</p>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary"><svg class="i " aria-hidden="true"><use href="#i-search"/></svg>Find better matches</button>
+    <p class="dest"><svg class="i " aria-hidden="true"><use href="#i-out"/></svg><span>Opens a Flipkart search, filtered to <b>Oily Skin</b></span></p>
+    <button class="btn btn-outline"><svg class="i " aria-hidden="true"><use href="#i-back"/></svg>Back to product</button>
+  </div>
+  <div class="gesture"><i></i></div>
+</div></div>
+      <div><p class="duo-label d"><i></i>Dark &middot; scrolled to the end</p><div class="device m-dark" role="img" aria-label="SkinKey check screen, dark mode">
+  <div class="statusbar"><span>10:24</span><span class="sys"><svg class="i " aria-hidden="true"><use href="#i-signal"/></svg><svg class="i " aria-hidden="true"><use href="#i-wifi"/></svg><svg class="i " aria-hidden="true"><use href="#i-batt"/></svg></span></div>
+  <div class="appbar">
+    <button class="iconbtn" aria-label="Back"><svg class="i " aria-hidden="true"><use href="#i-back"/></svg></button>
+    <span class="wordmark"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>SkinKey</span>
+    <span class="scanchip"><svg class="i " aria-hidden="true"><use href="#i-tick"/></svg>Scan 1 Nov</span>
+  </div>
+  <div class="scroll at-end">
+    <p class="t-over">Is this the product?</p>
+    <div class="field">
+      <div class="val">
+        <p class="t-headline">Minimalist Sunscreen SPF 50 Gel</p>
+        <p class="meta t-caption">From Flipkart <span class="dot"></span> &#8377;399 on the listing <span class="dot"></span> tap to correct</p>
+      </div>
+      <button class="iconbtn" aria-label="Edit product name"><svg class="i " aria-hidden="true"><use href="#i-pencil"/></svg></button>
+    </div>
+
+    <section class="verdict v-caution" aria-label="Verdict: Caution">
+      <div class="v-head">
+        <span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-eye"/></svg></span>
+        <span class="v-label">Caution</span>
+      </div>
+      <p class="v-sub">May not suit your readings. This is not a safety warning.</p>
+      <div class="stitch" aria-hidden="true"></div>
+      <ol class="reasons">
+        <li class="reason">
+          <span class="rnum">1</span>
+          <div>
+            <p class="r-reading">Your skin looked oily in your 1 Nov scan.</p>
+            <p class="r-fact">Contains <b>isopropyl myristate</b>, an oily ingredient that can clog pores.</p>
+            <span class="r-tag">Oiliness &middot; High <span class="mini" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span></span>
+          </div>
+        </li>
+        <li class="reason">
+          <span class="rnum">2</span>
+          <div>
+            <p class="r-reading">Your skin showed some redness in your 1 Nov scan.</p>
+            <p class="r-fact">Contains <b>added fragrance (parfum)</b>, which skin that looks red often doesn't suit.</p>
+            <span class="r-tag">Redness &middot; Medium <span class="mini" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span></span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="prov" aria-label="Where this comes from">
+      <h3>Where this comes from</h3>
+      <div class="prow">
+        <span class="pico"><svg class="i " aria-hidden="true"><use href="#i-scan"/></svg></span>
+        <div>
+          <p class="main">Measured by YouCam Skin Analysis, 1 Nov</p>
+          <p class="t-caption"><span class="tick"><svg class="i " aria-hidden="true"><use href="#i-tick"/></svg>Photo deleted</span> score bands only</p>
+        </div>
+      </div>
+      <div class="prow">
+        <span class="pico"><svg class="i " aria-hidden="true"><use href="#i-box"/></svg></span>
+        <div>
+          <p class="main">SkinKey catalogue, 14 products</p>
+          <p class="t-caption">Ingredient list from the brand's product page</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="fixed">
+      <p>Cosmetic guidance, not medical advice.</p>
+      <p>Not affiliated with Flipkart, Amazon or Nykaa.</p>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary"><svg class="i " aria-hidden="true"><use href="#i-search"/></svg>Find better matches</button>
+    <p class="dest"><svg class="i " aria-hidden="true"><use href="#i-out"/></svg><span>Opens a Flipkart search, filtered to <b>Oily Skin</b></span></p>
+    <button class="btn btn-outline"><svg class="i " aria-hidden="true"><use href="#i-back"/></svg>Back to product</button>
+  </div>
+  <div class="gesture"><i></i></div>
+</div></div>
+    </div>
+  </section>
+
+  <!-- ===================== 2. PROFILE ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <h2>/profile &middot; readings card</h2>
+      <p>Bands are words first; the three-step meter is a redundant cue, drawn in ink rather than verdict colours so no band reads as good or bad. No skin-colour swatch anywhere. "Feels wrong? Edit" sits next to the readings it corrects.</p>
+    </div>
+    <div class="duo">
+      <div><p class="duo-label l"><i></i>Light</p><div class="device navpad m-light" role="img" aria-label="SkinKey profile screen, light mode">
+  <div class="statusbar"><span>10:24</span><span class="sys"><svg class="i " aria-hidden="true"><use href="#i-signal"/></svg><svg class="i " aria-hidden="true"><use href="#i-wifi"/></svg><svg class="i " aria-hidden="true"><use href="#i-batt"/></svg></span></div>
+  <div class="appbar">
+    <span class="wordmark" style="padding-left:16px"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>SkinKey</span>
+  </div>
+  <div class="scroll">
+    <h1 class="t-title ptitle">Your readings</h1>
+    <p class="t-caption">Stored on this phone only. Bands, never numbers.</p>
+    <article class="card" aria-label="Skin readings from 1 Nov scan">
+      <div class="card-top">
+        <div>
+          <p class="t-over">From your 1 Nov scan</p>
+          <div class="stype">
+            <p class="t-headline">Skin type: Oily</p>
+            <p class="t-caption">Estimated from oiliness + moisture</p>
+          </div>
+        </div>
+      </div>
+      <div class="bands">
+        <div class="band"><p class="band-txt">Oiliness<span>&middot;</span><b>High</b></p><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+        <div class="band"><p class="band-txt">Moisture<span>&middot;</span><b>Low</b></p><span class="meter" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i></span></div>
+        <div class="band"><p class="band-txt">Redness<span>&middot;</span><b>Medium</b></p><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span></div>
+        <div class="band"><p class="band-txt">Texture<span>&middot;</span><b>Medium</b></p><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span></div>
+      </div>
+      <div class="more"><span>3 more readings: acne, pores, radiance</span><svg class="i " aria-hidden="true"><use href="#i-chev"/></svg></div>
+      <button class="edit"><svg class="i " aria-hidden="true"><use href="#i-pencil"/></svg><span>Feels wrong?</span>Edit</button>
+      <div class="stitch" aria-hidden="true"></div>
+      <p class="prov-line"><b>Measured by YouCam Skin Analysis, 1 Nov</b> &middot; photo deleted &middot; score bands only</p>
+      <div class="note"><svg class="i " aria-hidden="true"><use href="#i-info"/></svg><p><b>Accuracy note.</b> Skin AI can be less accurate on deeper skin tones and in poor light.</p></div>
+      <div class="prow-btns">
+        <button class="btn btn-quiet"><svg class="i " aria-hidden="true"><use href="#i-lock"/></svg>What we keep</button>
+        <button class="btn btn-quiet del"><svg class="i " aria-hidden="true"><use href="#i-trash"/></svg>Delete</button>
+      </div>
+    </article>
+  </div>
+  <nav class="navbar" aria-label="Main">
+    <span class="nav"><span class="pill"><svg class="i " aria-hidden="true"><use href="#i-home"/></svg></span>Home</span>
+    <span class="nav"><span class="pill"><svg class="i " aria-hidden="true"><use href="#i-scan"/></svg></span>Scan in store</span>
+    <span class="nav on"><span class="pill"><svg class="i " aria-hidden="true"><use href="#i-layers"/></svg></span>Profile</span>
+  </nav>
+  <div class="gesture"><i></i></div>
+</div></div>
+      <div><p class="duo-label d"><i></i>Dark</p><div class="device navpad m-dark" role="img" aria-label="SkinKey profile screen, dark mode">
+  <div class="statusbar"><span>10:24</span><span class="sys"><svg class="i " aria-hidden="true"><use href="#i-signal"/></svg><svg class="i " aria-hidden="true"><use href="#i-wifi"/></svg><svg class="i " aria-hidden="true"><use href="#i-batt"/></svg></span></div>
+  <div class="appbar">
+    <span class="wordmark" style="padding-left:16px"><svg class="mark" aria-hidden="true"><use href="#mark"/></svg>SkinKey</span>
+  </div>
+  <div class="scroll">
+    <h1 class="t-title ptitle">Your readings</h1>
+    <p class="t-caption">Stored on this phone only. Bands, never numbers.</p>
+    <article class="card" aria-label="Skin readings from 1 Nov scan">
+      <div class="card-top">
+        <div>
+          <p class="t-over">From your 1 Nov scan</p>
+          <div class="stype">
+            <p class="t-headline">Skin type: Oily</p>
+            <p class="t-caption">Estimated from oiliness + moisture</p>
+          </div>
+        </div>
+      </div>
+      <div class="bands">
+        <div class="band"><p class="band-txt">Oiliness<span>&middot;</span><b>High</b></p><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+        <div class="band"><p class="band-txt">Moisture<span>&middot;</span><b>Low</b></p><span class="meter" aria-hidden="true"><i class="on"></i><i class=""></i><i class=""></i></span></div>
+        <div class="band"><p class="band-txt">Redness<span>&middot;</span><b>Medium</b></p><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span></div>
+        <div class="band"><p class="band-txt">Texture<span>&middot;</span><b>Medium</b></p><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class=""></i></span></div>
+      </div>
+      <div class="more"><span>3 more readings: acne, pores, radiance</span><svg class="i " aria-hidden="true"><use href="#i-chev"/></svg></div>
+      <button class="edit"><svg class="i " aria-hidden="true"><use href="#i-pencil"/></svg><span>Feels wrong?</span>Edit</button>
+      <div class="stitch" aria-hidden="true"></div>
+      <p class="prov-line"><b>Measured by YouCam Skin Analysis, 1 Nov</b> &middot; photo deleted &middot; score bands only</p>
+      <div class="note"><svg class="i " aria-hidden="true"><use href="#i-info"/></svg><p><b>Accuracy note.</b> Skin AI can be less accurate on deeper skin tones and in poor light.</p></div>
+      <div class="prow-btns">
+        <button class="btn btn-quiet"><svg class="i " aria-hidden="true"><use href="#i-lock"/></svg>What we keep</button>
+        <button class="btn btn-quiet del"><svg class="i " aria-hidden="true"><use href="#i-trash"/></svg>Delete</button>
+      </div>
+    </article>
+  </div>
+  <nav class="navbar" aria-label="Main">
+    <span class="nav"><span class="pill"><svg class="i " aria-hidden="true"><use href="#i-home"/></svg></span>Home</span>
+    <span class="nav"><span class="pill"><svg class="i " aria-hidden="true"><use href="#i-scan"/></svg></span>Scan in store</span>
+    <span class="nav on"><span class="pill"><svg class="i " aria-hidden="true"><use href="#i-layers"/></svg></span>Profile</span>
+  </nav>
+  <div class="gesture"><i></i></div>
+</div></div>
+    </div>
+  </section>
+
+  <!-- ===================== 3. VERDICT STATES ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Verdict states</h2>
+      <p>Each state carries label, icon and colour, so colour is never the only signal. CAUTION is haldi ochre with an eye ("look closer"), never a warning triangle. UNKNOWN is a cool slate with an open question. The medicine gate drops the verdict label entirely and uses a heavier ink outline with a pill icon.</p>
+    </div>
+    <div class="duo">
+      <div><p class="duo-label l"><i></i>Light</p><div class="swatchboard m-light">
+  <div class="sw v-fits"><span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-check-circle"/></svg></span><div><span class="v-label">Fits</span><p>Matches your scan on the ingredients we know about. Not a guarantee.</p><p class="meta">fits &middot; bg #E6EBDB &middot; fg #33402A</p></div></div>
+  <div class="sw v-caution"><span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-eye"/></svg></span><div><span class="v-label">Caution</span><p>May not suit your readings. This is not a safety warning.</p><p class="meta">caution &middot; bg #F6EBCB &middot; fg #5E440F</p></div></div>
+  <div class="sw v-unknown"><span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-help"/></svg></span><div><span class="v-label">Unknown</span><p>This product isn't in our catalogue (14 products) and its name alone isn't enough. This doesn't mean it's bad.</p><p class="meta">unknown &middot; bg #E9E9E5 &middot; fg #3B3F3D</p></div></div>
+  <div class="sw v-medicine"><span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-pill"/></svg></span><div><p class="med">This looks like a medicine. Ask the pharmacist.</p><p class="meta">medicine gate, no verdict label &middot; bg #FFFDF9 &middot; fg #27221C</p></div></div>
+</div></div>
+      <div><p class="duo-label d"><i></i>Dark</p><div class="swatchboard m-dark">
+  <div class="sw v-fits"><span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-check-circle"/></svg></span><div><span class="v-label">Fits</span><p>Matches your scan on the ingredients we know about. Not a guarantee.</p><p class="meta">fits &middot; bg #252C1F &middot; fg #C3CFAE</p></div></div>
+  <div class="sw v-caution"><span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-eye"/></svg></span><div><span class="v-label">Caution</span><p>May not suit your readings. This is not a safety warning.</p><p class="meta">caution &middot; bg #2F2510 &middot; fg #E8C978</p></div></div>
+  <div class="sw v-unknown"><span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-help"/></svg></span><div><span class="v-label">Unknown</span><p>This product isn't in our catalogue (14 products) and its name alone isn't enough. This doesn't mean it's bad.</p><p class="meta">unknown &middot; bg #252827 &middot; fg #C9CBC6</p></div></div>
+  <div class="sw v-medicine"><span class="v-icon"><svg class="i " aria-hidden="true"><use href="#i-pill"/></svg></span><div><p class="med">This looks like a medicine. Ask the pharmacist.</p><p class="meta">medicine gate, no verdict label &middot; bg #13110E &middot; fg #F2ECE1</p></div></div>
+</div></div>
+    </div>
+  </section>
+
+  <!-- ===================== 4. TOKENS ===================== -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Primitive palette</h2>
+      <p>Khadi (warm neutral), mitti (terracotta accent), sage (fits and confirmations), haldi (caution only) and slate (unknown only). Hex values shown on each step.</p>
+    </div>
+    <div class="ramps"><div class="ramp"><span class="nm">khadi<small>unbleached cotton</small></span><span class="chipc" style="background:#FAF7F1;color:#27221C"><b>50</b>#FAF7F1</span><span class="chipc" style="background:#F4EFE5;color:#27221C"><b>100</b>#F4EFE5</span><span class="chipc" style="background:#E8E0D1;color:#27221C"><b>200</b>#E8E0D1</span><span class="chipc" style="background:#D6CAB6;color:#27221C"><b>300</b>#D6CAB6</span><span class="chipc" style="background:#B3A48D;color:#27221C"><b>400</b>#B3A48D</span><span class="chipc" style="background:#8C7D67;color:#FFFFFF"><b>500</b>#8C7D67</span><span class="chipc" style="background:#6B5F4D;color:#FFFFFF"><b>600</b>#6B5F4D</span><span class="chipc" style="background:#524839;color:#FFFFFF"><b>700</b>#524839</span><span class="chipc" style="background:#3A3229;color:#FFFFFF"><b>800</b>#3A3229</span><span class="chipc" style="background:#27221C;color:#FFFFFF"><b>900</b>#27221C</span><span class="chipc" style="background:#181512;color:#FFFFFF"><b>950</b>#181512</span></div>
+<div class="ramp"><span class="nm">mitti<small>terracotta clay</small></span><span class="chipc" style="background:#FBF1EC;color:#27221C"><b>50</b>#FBF1EC</span><span class="chipc" style="background:#F5DED3;color:#27221C"><b>100</b>#F5DED3</span><span class="chipc" style="background:#EBBDA8;color:#27221C"><b>200</b>#EBBDA8</span><span class="chipc" style="background:#DE987A;color:#27221C"><b>300</b>#DE987A</span><span class="chipc" style="background:#CC7553;color:#27221C"><b>400</b>#CC7553</span><span class="chipc" style="background:#B4593B;color:#FFFFFF"><b>500</b>#B4593B</span><span class="chipc" style="background:#9A4630;color:#FFFFFF"><b>600</b>#9A4630</span><span class="chipc" style="background:#7E3827;color:#FFFFFF"><b>700</b>#7E3827</span><span class="chipc" style="background:#622C20;color:#FFFFFF"><b>800</b>#622C20</span><span class="chipc" style="background:#47211A;color:#FFFFFF"><b>900</b>#47211A</span><span class="chipc" style="background:#2B140F;color:#FFFFFF"><b>950</b>#2B140F</span></div>
+<div class="ramp"><span class="nm">sage<small>fits, done</small></span><span class="chipc" style="background:#F2F5EE;color:#27221C"><b>50</b>#F2F5EE</span><span class="chipc" style="background:#E2E8D7;color:#27221C"><b>100</b>#E2E8D7</span><span class="chipc" style="background:#C7D2B3;color:#27221C"><b>200</b>#C7D2B3</span><span class="chipc" style="background:#A7B68C;color:#27221C"><b>300</b>#A7B68C</span><span class="chipc" style="background:#879A6B;color:#27221C"><b>400</b>#879A6B</span><span class="chipc" style="background:#6B7F52;color:#FFFFFF"><b>500</b>#6B7F52</span><span class="chipc" style="background:#556641;color:#FFFFFF"><b>600</b>#556641</span><span class="chipc" style="background:#425034;color:#FFFFFF"><b>700</b>#425034</span><span class="chipc" style="background:#323C28;color:#FFFFFF"><b>800</b>#323C28</span><span class="chipc" style="background:#242B1E;color:#FFFFFF"><b>900</b>#242B1E</span><span class="chipc" style="background:#161A12;color:#FFFFFF"><b>950</b>#161A12</span></div>
+<div class="ramp"><span class="nm">haldi<small>caution only</small></span><span class="chipc" style="background:#FBF5E3;color:#27221C"><b>50</b>#FBF5E3</span><span class="chipc" style="background:#F5E8C2;color:#27221C"><b>100</b>#F5E8C2</span><span class="chipc" style="background:#EBD08A;color:#27221C"><b>200</b>#EBD08A</span><span class="chipc" style="background:#DDB453;color:#27221C"><b>300</b>#DDB453</span><span class="chipc" style="background:#C99A2E;color:#27221C"><b>400</b>#C99A2E</span><span class="chipc" style="background:#A87D1C;color:#27221C"><b>500</b>#A87D1C</span><span class="chipc" style="background:#866215;color:#FFFFFF"><b>600</b>#866215</span><span class="chipc" style="background:#674B12;color:#FFFFFF"><b>700</b>#674B12</span><span class="chipc" style="background:#4C3810;color:#FFFFFF"><b>800</b>#4C3810</span><span class="chipc" style="background:#33260C;color:#FFFFFF"><b>900</b>#33260C</span><span class="chipc" style="background:#1F1708;color:#FFFFFF"><b>950</b>#1F1708</span></div>
+<div class="ramp"><span class="nm">slate<small>unknown only</small></span><span class="chipc" style="background:#F3F3F1;color:#27221C"><b>50</b>#F3F3F1</span><span class="chipc" style="background:#E7E7E3;color:#27221C"><b>100</b>#E7E7E3</span><span class="chipc" style="background:#D2D3CE;color:#27221C"><b>200</b>#D2D3CE</span><span class="chipc" style="background:#B4B6B1;color:#27221C"><b>300</b>#B4B6B1</span><span class="chipc" style="background:#8F928D;color:#27221C"><b>400</b>#8F928D</span><span class="chipc" style="background:#6E726E;color:#FFFFFF"><b>500</b>#6E726E</span><span class="chipc" style="background:#565A57;color:#FFFFFF"><b>600</b>#565A57</span><span class="chipc" style="background:#434745;color:#FFFFFF"><b>700</b>#434745</span><span class="chipc" style="background:#313433;color:#FFFFFF"><b>800</b>#313433</span><span class="chipc" style="background:#222524;color:#FFFFFF"><b>900</b>#222524</span><span class="chipc" style="background:#151716;color:#FFFFFF"><b>950</b>#151716</span></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Type, shape, motion</h2>
+      <p>Sizes are dp at 1x. Eczar never goes below 20dp; Anek Latin carries everything functional. Both shipped TTFs contain the rupee sign: <span class="disp" style="font-size:20px">&#8377;399</span> &middot; <span style="font-size:18px;font-weight:600">&#8377;1,249</span>.</p>
+    </div>
+    <div class="specgrid">
+      <div class="spec"><h3>Mobile type scale</h3><div class="scale-row"><span class="k">display</span><span style="font-family:'Eczar',Georgia,serif;font-size:34px;line-height:40px;font-weight:500;letter-spacing:-0.4px;color:#27221C">Your readings</span><span class="m">Eczar 500Medium<br>34 / 40 dp, 500</span></div>
+<div class="scale-row"><span class="k">title</span><span style="font-family:'Eczar',Georgia,serif;font-size:26px;line-height:32px;font-weight:500;letter-spacing:-0.2px;color:#27221C">Find better matches</span><span class="m">Eczar 500Medium<br>26 / 32 dp, 500</span></div>
+<div class="scale-row"><span class="k">headline</span><span style="font-family:'Eczar',Georgia,serif;font-size:20px;line-height:26px;font-weight:600;letter-spacing:0px;color:#27221C">Minimalist Sunscreen SPF 50 Gel</span><span class="m">Eczar 600SemiBold<br>20 / 26 dp, 600</span></div>
+<div class="scale-row"><span class="k">bodyLg</span><span style="font-family:'Anek Latin',system-ui,sans-serif;font-size:17px;line-height:25px;font-weight:400;letter-spacing:0px;color:#27221C">Your skin looked oily in your 1 Nov scan.</span><span class="m">AnekLatin 400Regular<br>17 / 25 dp, 400</span></div>
+<div class="scale-row"><span class="k">body</span><span style="font-family:'Anek Latin',system-ui,sans-serif;font-size:16px;line-height:24px;font-weight:400;letter-spacing:0px;color:#27221C">Contains isopropyl myristate, an oily ingredient that can clog pores.</span><span class="m">AnekLatin 400Regular<br>16 / 24 dp, 400</span></div>
+<div class="scale-row"><span class="k">bodyStrong</span><span style="font-family:'Anek Latin',system-ui,sans-serif;font-size:16px;line-height:24px;font-weight:500;letter-spacing:0px;color:#27221C">Measured by YouCam Skin Analysis</span><span class="m">AnekLatin 500Medium<br>16 / 24 dp, 500</span></div>
+<div class="scale-row"><span class="k">label</span><span style="font-family:'Anek Latin',system-ui,sans-serif;font-size:14px;line-height:18px;font-weight:600;letter-spacing:0.2px;color:#27221C">Back to product</span><span class="m">AnekLatin 600SemiBold<br>14 / 18 dp, 600</span></div>
+<div class="scale-row"><span class="k">verdictLabel</span><span style="font-family:'Anek Latin',system-ui,sans-serif;font-size:15px;line-height:18px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#27221C">CAUTION</span><span class="m">AnekLatin 700Bold<br>15 / 18 dp, 700</span></div>
+<div class="scale-row"><span class="k">overline</span><span style="font-family:'Anek Latin',system-ui,sans-serif;font-size:12px;line-height:16px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#27221C">IS THIS THE PRODUCT?</span><span class="m">AnekLatin 600SemiBold<br>12 / 16 dp, 600</span></div>
+<div class="scale-row"><span class="k">caption</span><span style="font-family:'Anek Latin',system-ui,sans-serif;font-size:13px;line-height:18px;font-weight:400;letter-spacing:0.1px;color:#27221C">Opens a Flipkart search, filtered to Oily Skin</span><span class="m">AnekLatin 400Regular<br>13 / 18 dp, 400</span></div></div>
+      <div class="spec">
+        <h3>Radius, elevation, motion</h3>
+        <dl>
+          <dt>Radius</dt><dd>4 / 8 / 12 / 18, pill only for the scan-date chip. Cards and verdict panels 18, buttons and inputs 12, chips 8-10.</dd>
+          <dt>Elevation</dt><dd>Tonal layering: bg, surface, raised, each with a 1dp hairline. Only the bottom action sheet and modal sheets cast a shadow, tinted khadi-900. In dark mode shadows are dropped and raised surfaces get lighter.</dd>
+          <dt>Ornament</dt><dd>Kantha running stitch: 1.5dp dashed rule, 6 on / 5 off, in the panel's border colour. Used for section seams and before provenance. Nothing else is decorative.</dd>
+          <dt>Motion</dt><dd>"Settling clay". Standard 220ms, emphasis 320ms, cubic-bezier(0.2, 0.7, 0.2, 1). The verdict panel rises 8dp and stops, reasons follow at 60ms. No springs, no loops. Press: scale 0.98, 120ms.</dd>
+          <dt>Reduce motion</dt><dd>Translations and staggers removed; 150ms opacity crossfade only. Processing steps become static ticks.</dd>
+          <dt>Fonts</dt><dd>@expo-google-fonts/eczar 0.4.1 and @expo-google-fonts/anek-latin 0.4.2 (both checked on npm). Load Eczar_500Medium, Eczar_600SemiBold, AnekLatin_400Regular, _500Medium, _600SemiBold, _700Bold.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Contrast (WCAG 2.1)</h2>
+      <p>Every text and icon pair, computed by the contrast script from the same token file that generated this page. Body text needs 4.5:1; large text, icons, focus rings and input borders need 3:1. Hairline dividers are decorative and not listed.</p>
+    </div>
+    <div class="ct-wrap"><table class="ct"><thead><tr><th>Mode</th><th>Pair</th><th>Sample</th><th>FG</th><th>BG</th><th>Ratio</th><th>Min</th><th>Use</th><th>Result</th></tr></thead><tbody><tr><td>light</td><td>text on bg</td><td><span class="sp" style="color:#27221C;background:#F4EFE5">Aa</span></td><td>#27221C</td><td>#F4EFE5</td><td class="n">13.76</td><td>4.5</td><td>body</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textMuted on bg</td><td><span class="sp" style="color:#5F5444;background:#F4EFE5">Aa</span></td><td>#5F5444</td><td>#F4EFE5</td><td class="n">6.46</td><td>4.5</td><td>body/caption</td><td class="pass">Pass</td></tr><tr><td>light</td><td>text on surface</td><td><span class="sp" style="color:#27221C;background:#FAF7F1">Aa</span></td><td>#27221C</td><td>#FAF7F1</td><td class="n">14.75</td><td>4.5</td><td>body</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textMuted on surface</td><td><span class="sp" style="color:#5F5444;background:#FAF7F1">Aa</span></td><td>#5F5444</td><td>#FAF7F1</td><td class="n">6.92</td><td>4.5</td><td>body/caption</td><td class="pass">Pass</td></tr><tr><td>light</td><td>text on surfaceRaised</td><td><span class="sp" style="color:#27221C;background:#FFFDF9">Aa</span></td><td>#27221C</td><td>#FFFDF9</td><td class="n">15.52</td><td>4.5</td><td>body</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textMuted on surfaceRaised</td><td><span class="sp" style="color:#5F5444;background:#FFFDF9">Aa</span></td><td>#5F5444</td><td>#FFFDF9</td><td class="n">7.28</td><td>4.5</td><td>body/caption</td><td class="pass">Pass</td></tr><tr><td>light</td><td>text on surfaceSunken</td><td><span class="sp" style="color:#27221C;background:#E8E0D1">Aa</span></td><td>#27221C</td><td>#E8E0D1</td><td class="n">12.02</td><td>4.5</td><td>body</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textMuted on surfaceSunken</td><td><span class="sp" style="color:#5F5444;background:#E8E0D1">Aa</span></td><td>#5F5444</td><td>#E8E0D1</td><td class="n">5.64</td><td>4.5</td><td>body/caption</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textSubtle on bg</td><td><span class="sp" style="color:#6B5F4D;background:#F4EFE5">Aa</span></td><td>#6B5F4D</td><td>#F4EFE5</td><td class="n">5.44</td><td>4.5</td><td>caption</td><td class="pass">Pass</td></tr><tr><td>light</td><td>accentText on bg</td><td><span class="sp" style="color:#8A3E2A;background:#F4EFE5">Aa</span></td><td>#8A3E2A</td><td>#F4EFE5</td><td class="n">6.54</td><td>4.5</td><td>link text</td><td class="pass">Pass</td></tr><tr><td>light</td><td>accent on bg</td><td><span class="sp" style="color:#9A4630;background:#F4EFE5">Aa</span></td><td>#9A4630</td><td>#F4EFE5</td><td class="n">5.57</td><td>3</td><td>icon / focus ring</td><td class="pass">Pass</td></tr><tr><td>light</td><td>focusRing on bg</td><td><span class="sp" style="color:#9A4630;background:#F4EFE5">Aa</span></td><td>#9A4630</td><td>#F4EFE5</td><td class="n">5.57</td><td>3</td><td>focus ring (non-text)</td><td class="pass">Pass</td></tr><tr><td>light</td><td>secondary on bg</td><td><span class="sp" style="color:#556641;background:#F4EFE5">Aa</span></td><td>#556641</td><td>#F4EFE5</td><td class="n">5.45</td><td>3</td><td>icon (photo-deleted tick)</td><td class="pass">Pass</td></tr><tr><td>light</td><td>borderStrong on bg</td><td><span class="sp" style="color:#8C7D67;background:#F4EFE5">Aa</span></td><td>#8C7D67</td><td>#F4EFE5</td><td class="n">3.49</td><td>3</td><td>input/outline button border</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textSubtle on surface</td><td><span class="sp" style="color:#6B5F4D;background:#FAF7F1">Aa</span></td><td>#6B5F4D</td><td>#FAF7F1</td><td class="n">5.83</td><td>4.5</td><td>caption</td><td class="pass">Pass</td></tr><tr><td>light</td><td>accentText on surface</td><td><span class="sp" style="color:#8A3E2A;background:#FAF7F1">Aa</span></td><td>#8A3E2A</td><td>#FAF7F1</td><td class="n">7.01</td><td>4.5</td><td>link text</td><td class="pass">Pass</td></tr><tr><td>light</td><td>accent on surface</td><td><span class="sp" style="color:#9A4630;background:#FAF7F1">Aa</span></td><td>#9A4630</td><td>#FAF7F1</td><td class="n">5.96</td><td>3</td><td>icon / focus ring</td><td class="pass">Pass</td></tr><tr><td>light</td><td>focusRing on surface</td><td><span class="sp" style="color:#9A4630;background:#FAF7F1">Aa</span></td><td>#9A4630</td><td>#FAF7F1</td><td class="n">5.96</td><td>3</td><td>focus ring (non-text)</td><td class="pass">Pass</td></tr><tr><td>light</td><td>secondary on surface</td><td><span class="sp" style="color:#556641;background:#FAF7F1">Aa</span></td><td>#556641</td><td>#FAF7F1</td><td class="n">5.84</td><td>3</td><td>icon (photo-deleted tick)</td><td class="pass">Pass</td></tr><tr><td>light</td><td>borderStrong on surface</td><td><span class="sp" style="color:#8C7D67;background:#FAF7F1">Aa</span></td><td>#8C7D67</td><td>#FAF7F1</td><td class="n">3.74</td><td>3</td><td>input/outline button border</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textSubtle on surfaceRaised</td><td><span class="sp" style="color:#6B5F4D;background:#FFFDF9">Aa</span></td><td>#6B5F4D</td><td>#FFFDF9</td><td class="n">6.13</td><td>4.5</td><td>caption</td><td class="pass">Pass</td></tr><tr><td>light</td><td>accentText on surfaceRaised</td><td><span class="sp" style="color:#8A3E2A;background:#FFFDF9">Aa</span></td><td>#8A3E2A</td><td>#FFFDF9</td><td class="n">7.37</td><td>4.5</td><td>link text</td><td class="pass">Pass</td></tr><tr><td>light</td><td>accent on surfaceRaised</td><td><span class="sp" style="color:#9A4630;background:#FFFDF9">Aa</span></td><td>#9A4630</td><td>#FFFDF9</td><td class="n">6.28</td><td>3</td><td>icon / focus ring</td><td class="pass">Pass</td></tr><tr><td>light</td><td>focusRing on surfaceRaised</td><td><span class="sp" style="color:#9A4630;background:#FFFDF9">Aa</span></td><td>#9A4630</td><td>#FFFDF9</td><td class="n">6.28</td><td>3</td><td>focus ring (non-text)</td><td class="pass">Pass</td></tr><tr><td>light</td><td>secondary on surfaceRaised</td><td><span class="sp" style="color:#556641;background:#FFFDF9">Aa</span></td><td>#556641</td><td>#FFFDF9</td><td class="n">6.15</td><td>3</td><td>icon (photo-deleted tick)</td><td class="pass">Pass</td></tr><tr><td>light</td><td>borderStrong on surfaceRaised</td><td><span class="sp" style="color:#8C7D67;background:#FFFDF9">Aa</span></td><td>#8C7D67</td><td>#FFFDF9</td><td class="n">3.94</td><td>3</td><td>input/outline button border</td><td class="pass">Pass</td></tr><tr><td>light</td><td>onAccent on accent</td><td><span class="sp" style="color:#FAF7F1;background:#9A4630">Aa</span></td><td>#FAF7F1</td><td>#9A4630</td><td class="n">5.96</td><td>4.5</td><td>primary button label</td><td class="pass">Pass</td></tr><tr><td>light</td><td>onAccentSoft on accentSoft</td><td><span class="sp" style="color:#622C20;background:#F5DED3">Aa</span></td><td>#622C20</td><td>#F5DED3</td><td class="n">8.56</td><td>4.5</td><td>soft accent chip</td><td class="pass">Pass</td></tr><tr><td>light</td><td>onSecondarySoft on secondarySoft</td><td><span class="sp" style="color:#323C28;background:#E2E8D7">Aa</span></td><td>#323C28</td><td>#E2E8D7</td><td class="n">9.25</td><td>4.5</td><td>sage tag</td><td class="pass">Pass</td></tr><tr><td>light</td><td>secondary on secondarySoft</td><td><span class="sp" style="color:#556641;background:#E2E8D7">Aa</span></td><td>#556641</td><td>#E2E8D7</td><td class="n">4.98</td><td>3</td><td>tick icon in sage tag</td><td class="pass">Pass</td></tr><tr><td>light</td><td>chipMeterOn on surfaceRaised</td><td><span class="sp" style="color:#524839;background:#FFFDF9">Aa</span></td><td>#524839</td><td>#FFFDF9</td><td class="n">8.82</td><td>3</td><td>mini meter in reason tag</td><td class="pass">Pass</td></tr><tr><td>light</td><td>onSelected on selected</td><td><span class="sp" style="color:#27221C;background:#E8E0D1">Aa</span></td><td>#27221C</td><td>#E8E0D1</td><td class="n">12.02</td><td>3</td><td>active nav icon in pill</td><td class="pass">Pass</td></tr><tr><td>light</td><td>text on selected</td><td><span class="sp" style="color:#27221C;background:#E8E0D1">Aa</span></td><td>#27221C</td><td>#E8E0D1</td><td class="n">12.02</td><td>4.5</td><td>selected row text</td><td class="pass">Pass</td></tr><tr><td>light</td><td>onInk on ink</td><td><span class="sp" style="color:#FAF7F1;background:#27221C">Aa</span></td><td>#FAF7F1</td><td>#27221C</td><td class="n">14.75</td><td>4.5</td><td>ink button label</td><td class="pass">Pass</td></tr><tr><td>light</td><td>chipText on chipBg</td><td><span class="sp" style="color:#27221C;background:#EDE6D9">Aa</span></td><td>#27221C</td><td>#EDE6D9</td><td class="n">12.71</td><td>4.5</td><td>band chip text</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textMuted on chipBg</td><td><span class="sp" style="color:#5F5444;background:#EDE6D9">Aa</span></td><td>#5F5444</td><td>#EDE6D9</td><td class="n">5.96</td><td>4.5</td><td>chip band word</td><td class="pass">Pass</td></tr><tr><td>light</td><td>chipMeterOn on chipBg</td><td><span class="sp" style="color:#524839;background:#EDE6D9">Aa</span></td><td>#524839</td><td>#EDE6D9</td><td class="n">7.22</td><td>3</td><td>band meter segment</td><td class="pass">Pass</td></tr><tr><td>light</td><td>accentText on chipBg</td><td><span class="sp" style="color:#8A3E2A;background:#EDE6D9">Aa</span></td><td>#8A3E2A</td><td>#EDE6D9</td><td class="n">6.04</td><td>4.5</td><td>Edit link near chips</td><td class="pass">Pass</td></tr><tr><td>light</td><td>fits.fg on fits.bg</td><td><span class="sp" style="color:#33402A;background:#E6EBDB">Aa</span></td><td>#33402A</td><td>#E6EBDB</td><td class="n">9.05</td><td>4.5</td><td>verdict label + reasons</td><td class="pass">Pass</td></tr><tr><td>light</td><td>text on fits.bg</td><td><span class="sp" style="color:#27221C;background:#E6EBDB">Aa</span></td><td>#27221C</td><td>#E6EBDB</td><td class="n">12.97</td><td>4.5</td><td>reason body inside panel</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textMuted on fits.bg</td><td><span class="sp" style="color:#5F5444;background:#E6EBDB">Aa</span></td><td>#5F5444</td><td>#E6EBDB</td><td class="n">6.09</td><td>4.5</td><td>subtitle inside panel</td><td class="pass">Pass</td></tr><tr><td>light</td><td>fits.border on fits.bg</td><td><span class="sp" style="color:#6B7F52;background:#E6EBDB">Aa</span></td><td>#6B7F52</td><td>#E6EBDB</td><td class="n">3.61</td><td>3</td><td>panel rule / icon ring</td><td class="pass">Pass</td></tr><tr><td>light</td><td>fits.border on surface</td><td><span class="sp" style="color:#6B7F52;background:#FAF7F1">Aa</span></td><td>#6B7F52</td><td>#FAF7F1</td><td class="n">4.11</td><td>3</td><td>panel edge on surface</td><td class="pass">Pass</td></tr><tr><td>light</td><td>fits.fg on surface</td><td><span class="sp" style="color:#33402A;background:#FAF7F1">Aa</span></td><td>#33402A</td><td>#FAF7F1</td><td class="n">10.30</td><td>4.5</td><td>verdict icon/label on surface</td><td class="pass">Pass</td></tr><tr><td>light</td><td>caution.fg on caution.bg</td><td><span class="sp" style="color:#5E440F;background:#F6EBCB">Aa</span></td><td>#5E440F</td><td>#F6EBCB</td><td class="n">7.65</td><td>4.5</td><td>verdict label + reasons</td><td class="pass">Pass</td></tr><tr><td>light</td><td>text on caution.bg</td><td><span class="sp" style="color:#27221C;background:#F6EBCB">Aa</span></td><td>#27221C</td><td>#F6EBCB</td><td class="n">13.26</td><td>4.5</td><td>reason body inside panel</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textMuted on caution.bg</td><td><span class="sp" style="color:#5F5444;background:#F6EBCB">Aa</span></td><td>#5F5444</td><td>#F6EBCB</td><td class="n">6.22</td><td>4.5</td><td>subtitle inside panel</td><td class="pass">Pass</td></tr><tr><td>light</td><td>caution.border on caution.bg</td><td><span class="sp" style="color:#9C7419;background:#F6EBCB">Aa</span></td><td>#9C7419</td><td>#F6EBCB</td><td class="n">3.59</td><td>3</td><td>panel rule / icon ring</td><td class="pass">Pass</td></tr><tr><td>light</td><td>caution.border on surface</td><td><span class="sp" style="color:#9C7419;background:#FAF7F1">Aa</span></td><td>#9C7419</td><td>#FAF7F1</td><td class="n">3.99</td><td>3</td><td>panel edge on surface</td><td class="pass">Pass</td></tr><tr><td>light</td><td>caution.fg on surface</td><td><span class="sp" style="color:#5E440F;background:#FAF7F1">Aa</span></td><td>#5E440F</td><td>#FAF7F1</td><td class="n">8.50</td><td>4.5</td><td>verdict icon/label on surface</td><td class="pass">Pass</td></tr><tr><td>light</td><td>unknown.fg on unknown.bg</td><td><span class="sp" style="color:#3B3F3D;background:#E9E9E5">Aa</span></td><td>#3B3F3D</td><td>#E9E9E5</td><td class="n">8.78</td><td>4.5</td><td>verdict label + reasons</td><td class="pass">Pass</td></tr><tr><td>light</td><td>text on unknown.bg</td><td><span class="sp" style="color:#27221C;background:#E9E9E5">Aa</span></td><td>#27221C</td><td>#E9E9E5</td><td class="n">12.95</td><td>4.5</td><td>reason body inside panel</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textMuted on unknown.bg</td><td><span class="sp" style="color:#5F5444;background:#E9E9E5">Aa</span></td><td>#5F5444</td><td>#E9E9E5</td><td class="n">6.08</td><td>4.5</td><td>subtitle inside panel</td><td class="pass">Pass</td></tr><tr><td>light</td><td>unknown.border on unknown.bg</td><td><span class="sp" style="color:#6E726E;background:#E9E9E5">Aa</span></td><td>#6E726E</td><td>#E9E9E5</td><td class="n">4.02</td><td>3</td><td>panel rule / icon ring</td><td class="pass">Pass</td></tr><tr><td>light</td><td>unknown.border on surface</td><td><span class="sp" style="color:#6E726E;background:#FAF7F1">Aa</span></td><td>#6E726E</td><td>#FAF7F1</td><td class="n">4.57</td><td>3</td><td>panel edge on surface</td><td class="pass">Pass</td></tr><tr><td>light</td><td>unknown.fg on surface</td><td><span class="sp" style="color:#3B3F3D;background:#FAF7F1">Aa</span></td><td>#3B3F3D</td><td>#FAF7F1</td><td class="n">10.00</td><td>4.5</td><td>verdict icon/label on surface</td><td class="pass">Pass</td></tr><tr><td>light</td><td>medicine.fg on medicine.bg</td><td><span class="sp" style="color:#27221C;background:#FFFDF9">Aa</span></td><td>#27221C</td><td>#FFFDF9</td><td class="n">15.52</td><td>4.5</td><td>verdict label + reasons</td><td class="pass">Pass</td></tr><tr><td>light</td><td>text on medicine.bg</td><td><span class="sp" style="color:#27221C;background:#FFFDF9">Aa</span></td><td>#27221C</td><td>#FFFDF9</td><td class="n">15.52</td><td>4.5</td><td>reason body inside panel</td><td class="pass">Pass</td></tr><tr><td>light</td><td>textMuted on medicine.bg</td><td><span class="sp" style="color:#5F5444;background:#FFFDF9">Aa</span></td><td>#5F5444</td><td>#FFFDF9</td><td class="n">7.28</td><td>4.5</td><td>subtitle inside panel</td><td class="pass">Pass</td></tr><tr><td>light</td><td>medicine.border on medicine.bg</td><td><span class="sp" style="color:#27221C;background:#FFFDF9">Aa</span></td><td>#27221C</td><td>#FFFDF9</td><td class="n">15.52</td><td>3</td><td>panel rule / icon ring</td><td class="pass">Pass</td></tr><tr><td>light</td><td>medicine.border on surface</td><td><span class="sp" style="color:#27221C;background:#FAF7F1">Aa</span></td><td>#27221C</td><td>#FAF7F1</td><td class="n">14.75</td><td>3</td><td>panel edge on surface</td><td class="pass">Pass</td></tr><tr><td>light</td><td>medicine.fg on surface</td><td><span class="sp" style="color:#27221C;background:#FAF7F1">Aa</span></td><td>#27221C</td><td>#FAF7F1</td><td class="n">14.75</td><td>4.5</td><td>verdict icon/label on surface</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>text on bg</td><td><span class="sp" style="color:#F2ECE1;background:#181512">Aa</span></td><td>#F2ECE1</td><td>#181512</td><td class="n">15.47</td><td>4.5</td><td>body</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textMuted on bg</td><td><span class="sp" style="color:#B9AD9A;background:#181512">Aa</span></td><td>#B9AD9A</td><td>#181512</td><td class="n">8.23</td><td>4.5</td><td>body/caption</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>text on surface</td><td><span class="sp" style="color:#F2ECE1;background:#211D19">Aa</span></td><td>#F2ECE1</td><td>#211D19</td><td class="n">14.24</td><td>4.5</td><td>body</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textMuted on surface</td><td><span class="sp" style="color:#B9AD9A;background:#211D19">Aa</span></td><td>#B9AD9A</td><td>#211D19</td><td class="n">7.58</td><td>4.5</td><td>body/caption</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>text on surfaceRaised</td><td><span class="sp" style="color:#F2ECE1;background:#2B2621">Aa</span></td><td>#F2ECE1</td><td>#2B2621</td><td class="n">12.74</td><td>4.5</td><td>body</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textMuted on surfaceRaised</td><td><span class="sp" style="color:#B9AD9A;background:#2B2621">Aa</span></td><td>#B9AD9A</td><td>#2B2621</td><td class="n">6.78</td><td>4.5</td><td>body/caption</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>text on surfaceSunken</td><td><span class="sp" style="color:#F2ECE1;background:#13110E">Aa</span></td><td>#F2ECE1</td><td>#13110E</td><td class="n">16.03</td><td>4.5</td><td>body</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textMuted on surfaceSunken</td><td><span class="sp" style="color:#B9AD9A;background:#13110E">Aa</span></td><td>#B9AD9A</td><td>#13110E</td><td class="n">8.53</td><td>4.5</td><td>body/caption</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textSubtle on bg</td><td><span class="sp" style="color:#A49884;background:#181512">Aa</span></td><td>#A49884</td><td>#181512</td><td class="n">6.41</td><td>4.5</td><td>caption</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>accentText on bg</td><td><span class="sp" style="color:#D98B6A;background:#181512">Aa</span></td><td>#D98B6A</td><td>#181512</td><td class="n">6.80</td><td>4.5</td><td>link text</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>accent on bg</td><td><span class="sp" style="color:#B4593B;background:#181512">Aa</span></td><td>#B4593B</td><td>#181512</td><td class="n">3.84</td><td>3</td><td>icon / focus ring</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>focusRing on bg</td><td><span class="sp" style="color:#D98B6A;background:#181512">Aa</span></td><td>#D98B6A</td><td>#181512</td><td class="n">6.80</td><td>3</td><td>focus ring (non-text)</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>secondary on bg</td><td><span class="sp" style="color:#A7B68C;background:#181512">Aa</span></td><td>#A7B68C</td><td>#181512</td><td class="n">8.41</td><td>3</td><td>icon (photo-deleted tick)</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>borderStrong on bg</td><td><span class="sp" style="color:#877A66;background:#181512">Aa</span></td><td>#877A66</td><td>#181512</td><td class="n">4.33</td><td>3</td><td>input/outline button border</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textSubtle on surface</td><td><span class="sp" style="color:#A49884;background:#211D19">Aa</span></td><td>#A49884</td><td>#211D19</td><td class="n">5.90</td><td>4.5</td><td>caption</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>accentText on surface</td><td><span class="sp" style="color:#D98B6A;background:#211D19">Aa</span></td><td>#D98B6A</td><td>#211D19</td><td class="n">6.26</td><td>4.5</td><td>link text</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>accent on surface</td><td><span class="sp" style="color:#B4593B;background:#211D19">Aa</span></td><td>#B4593B</td><td>#211D19</td><td class="n">3.53</td><td>3</td><td>icon / focus ring</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>focusRing on surface</td><td><span class="sp" style="color:#D98B6A;background:#211D19">Aa</span></td><td>#D98B6A</td><td>#211D19</td><td class="n">6.26</td><td>3</td><td>focus ring (non-text)</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>secondary on surface</td><td><span class="sp" style="color:#A7B68C;background:#211D19">Aa</span></td><td>#A7B68C</td><td>#211D19</td><td class="n">7.74</td><td>3</td><td>icon (photo-deleted tick)</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>borderStrong on surface</td><td><span class="sp" style="color:#877A66;background:#211D19">Aa</span></td><td>#877A66</td><td>#211D19</td><td class="n">3.99</td><td>3</td><td>input/outline button border</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textSubtle on surfaceRaised</td><td><span class="sp" style="color:#A49884;background:#2B2621">Aa</span></td><td>#A49884</td><td>#2B2621</td><td class="n">5.28</td><td>4.5</td><td>caption</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>accentText on surfaceRaised</td><td><span class="sp" style="color:#D98B6A;background:#2B2621">Aa</span></td><td>#D98B6A</td><td>#2B2621</td><td class="n">5.60</td><td>4.5</td><td>link text</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>accent on surfaceRaised</td><td><span class="sp" style="color:#B4593B;background:#2B2621">Aa</span></td><td>#B4593B</td><td>#2B2621</td><td class="n">3.16</td><td>3</td><td>icon / focus ring</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>focusRing on surfaceRaised</td><td><span class="sp" style="color:#D98B6A;background:#2B2621">Aa</span></td><td>#D98B6A</td><td>#2B2621</td><td class="n">5.60</td><td>3</td><td>focus ring (non-text)</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>secondary on surfaceRaised</td><td><span class="sp" style="color:#A7B68C;background:#2B2621">Aa</span></td><td>#A7B68C</td><td>#2B2621</td><td class="n">6.93</td><td>3</td><td>icon (photo-deleted tick)</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>borderStrong on surfaceRaised</td><td><span class="sp" style="color:#877A66;background:#2B2621">Aa</span></td><td>#877A66</td><td>#2B2621</td><td class="n">3.57</td><td>3</td><td>input/outline button border</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>onAccent on accent</td><td><span class="sp" style="color:#FFFDF9;background:#B4593B">Aa</span></td><td>#FFFDF9</td><td>#B4593B</td><td class="n">4.66</td><td>4.5</td><td>primary button label</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>onAccentSoft on accentSoft</td><td><span class="sp" style="color:#F5DED3;background:#3E2219">Aa</span></td><td>#F5DED3</td><td>#3E2219</td><td class="n">11.24</td><td>4.5</td><td>soft accent chip</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>onSecondarySoft on secondarySoft</td><td><span class="sp" style="color:#D3DCC3;background:#262D20">Aa</span></td><td>#D3DCC3</td><td>#262D20</td><td class="n">10.01</td><td>4.5</td><td>sage tag</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>secondary on secondarySoft</td><td><span class="sp" style="color:#A7B68C;background:#262D20">Aa</span></td><td>#A7B68C</td><td>#262D20</td><td class="n">6.57</td><td>3</td><td>tick icon in sage tag</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>chipMeterOn on surfaceRaised</td><td><span class="sp" style="color:#D6CAB6;background:#2B2621">Aa</span></td><td>#D6CAB6</td><td>#2B2621</td><td class="n">9.26</td><td>3</td><td>mini meter in reason tag</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>onSelected on selected</td><td><span class="sp" style="color:#F2ECE1;background:#3A3229">Aa</span></td><td>#F2ECE1</td><td>#3A3229</td><td class="n">10.71</td><td>3</td><td>active nav icon in pill</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>text on selected</td><td><span class="sp" style="color:#F2ECE1;background:#3A3229">Aa</span></td><td>#F2ECE1</td><td>#3A3229</td><td class="n">10.71</td><td>4.5</td><td>selected row text</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>onInk on ink</td><td><span class="sp" style="color:#181512;background:#F2ECE1">Aa</span></td><td>#181512</td><td>#F2ECE1</td><td class="n">15.47</td><td>4.5</td><td>ink button label</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>chipText on chipBg</td><td><span class="sp" style="color:#F2ECE1;background:#2E2924">Aa</span></td><td>#F2ECE1</td><td>#2E2924</td><td class="n">12.24</td><td>4.5</td><td>band chip text</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textMuted on chipBg</td><td><span class="sp" style="color:#B9AD9A;background:#2E2924">Aa</span></td><td>#B9AD9A</td><td>#2E2924</td><td class="n">6.52</td><td>4.5</td><td>chip band word</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>chipMeterOn on chipBg</td><td><span class="sp" style="color:#D6CAB6;background:#2E2924">Aa</span></td><td>#D6CAB6</td><td>#2E2924</td><td class="n">8.90</td><td>3</td><td>band meter segment</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>accentText on chipBg</td><td><span class="sp" style="color:#D98B6A;background:#2E2924">Aa</span></td><td>#D98B6A</td><td>#2E2924</td><td class="n">5.38</td><td>4.5</td><td>Edit link near chips</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>fits.fg on fits.bg</td><td><span class="sp" style="color:#C3CFAE;background:#252C1F">Aa</span></td><td>#C3CFAE</td><td>#252C1F</td><td class="n">8.81</td><td>4.5</td><td>verdict label + reasons</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>text on fits.bg</td><td><span class="sp" style="color:#F2ECE1;background:#252C1F">Aa</span></td><td>#F2ECE1</td><td>#252C1F</td><td class="n">12.24</td><td>4.5</td><td>reason body inside panel</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textMuted on fits.bg</td><td><span class="sp" style="color:#B9AD9A;background:#252C1F">Aa</span></td><td>#B9AD9A</td><td>#252C1F</td><td class="n">6.52</td><td>4.5</td><td>subtitle inside panel</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>fits.border on fits.bg</td><td><span class="sp" style="color:#6B7F52;background:#252C1F">Aa</span></td><td>#6B7F52</td><td>#252C1F</td><td class="n">3.28</td><td>3</td><td>panel rule / icon ring</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>fits.border on surface</td><td><span class="sp" style="color:#6B7F52;background:#211D19">Aa</span></td><td>#6B7F52</td><td>#211D19</td><td class="n">3.81</td><td>3</td><td>panel edge on surface</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>fits.fg on surface</td><td><span class="sp" style="color:#C3CFAE;background:#211D19">Aa</span></td><td>#C3CFAE</td><td>#211D19</td><td class="n">10.25</td><td>4.5</td><td>verdict icon/label on surface</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>caution.fg on caution.bg</td><td><span class="sp" style="color:#E8C978;background:#2F2510">Aa</span></td><td>#E8C978</td><td>#2F2510</td><td class="n">9.37</td><td>4.5</td><td>verdict label + reasons</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>text on caution.bg</td><td><span class="sp" style="color:#F2ECE1;background:#2F2510">Aa</span></td><td>#F2ECE1</td><td>#2F2510</td><td class="n">12.82</td><td>4.5</td><td>reason body inside panel</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textMuted on caution.bg</td><td><span class="sp" style="color:#B9AD9A;background:#2F2510">Aa</span></td><td>#B9AD9A</td><td>#2F2510</td><td class="n">6.82</td><td>4.5</td><td>subtitle inside panel</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>caution.border on caution.bg</td><td><span class="sp" style="color:#A87D1C;background:#2F2510">Aa</span></td><td>#A87D1C</td><td>#2F2510</td><td class="n">4.03</td><td>3</td><td>panel rule / icon ring</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>caution.border on surface</td><td><span class="sp" style="color:#A87D1C;background:#211D19">Aa</span></td><td>#A87D1C</td><td>#211D19</td><td class="n">4.48</td><td>3</td><td>panel edge on surface</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>caution.fg on surface</td><td><span class="sp" style="color:#E8C978;background:#211D19">Aa</span></td><td>#E8C978</td><td>#211D19</td><td class="n">10.41</td><td>4.5</td><td>verdict icon/label on surface</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>unknown.fg on unknown.bg</td><td><span class="sp" style="color:#C9CBC6;background:#252827">Aa</span></td><td>#C9CBC6</td><td>#252827</td><td class="n">9.10</td><td>4.5</td><td>verdict label + reasons</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>text on unknown.bg</td><td><span class="sp" style="color:#F2ECE1;background:#252827">Aa</span></td><td>#F2ECE1</td><td>#252827</td><td class="n">12.65</td><td>4.5</td><td>reason body inside panel</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textMuted on unknown.bg</td><td><span class="sp" style="color:#B9AD9A;background:#252827">Aa</span></td><td>#B9AD9A</td><td>#252827</td><td class="n">6.74</td><td>4.5</td><td>subtitle inside panel</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>unknown.border on unknown.bg</td><td><span class="sp" style="color:#7C807C;background:#252827">Aa</span></td><td>#7C807C</td><td>#252827</td><td class="n">3.71</td><td>3</td><td>panel rule / icon ring</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>unknown.border on surface</td><td><span class="sp" style="color:#7C807C;background:#211D19">Aa</span></td><td>#7C807C</td><td>#211D19</td><td class="n">4.17</td><td>3</td><td>panel edge on surface</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>unknown.fg on surface</td><td><span class="sp" style="color:#C9CBC6;background:#211D19">Aa</span></td><td>#C9CBC6</td><td>#211D19</td><td class="n">10.24</td><td>4.5</td><td>verdict icon/label on surface</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>medicine.fg on medicine.bg</td><td><span class="sp" style="color:#F2ECE1;background:#13110E">Aa</span></td><td>#F2ECE1</td><td>#13110E</td><td class="n">16.03</td><td>4.5</td><td>verdict label + reasons</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>text on medicine.bg</td><td><span class="sp" style="color:#F2ECE1;background:#13110E">Aa</span></td><td>#F2ECE1</td><td>#13110E</td><td class="n">16.03</td><td>4.5</td><td>reason body inside panel</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>textMuted on medicine.bg</td><td><span class="sp" style="color:#B9AD9A;background:#13110E">Aa</span></td><td>#B9AD9A</td><td>#13110E</td><td class="n">8.53</td><td>4.5</td><td>subtitle inside panel</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>medicine.border on medicine.bg</td><td><span class="sp" style="color:#D6CAB6;background:#13110E">Aa</span></td><td>#D6CAB6</td><td>#13110E</td><td class="n">11.65</td><td>3</td><td>panel rule / icon ring</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>medicine.border on surface</td><td><span class="sp" style="color:#D6CAB6;background:#211D19">Aa</span></td><td>#D6CAB6</td><td>#211D19</td><td class="n">10.35</td><td>3</td><td>panel edge on surface</td><td class="pass">Pass</td></tr><tr><td>dark</td><td>medicine.fg on surface</td><td><span class="sp" style="color:#F2ECE1;background:#211D19">Aa</span></td><td>#F2ECE1</td><td>#211D19</td><td class="n">14.24</td><td>4.5</td><td>verdict icon/label on surface</td><td class="pass">Pass</td></tr></tbody></table></div>
+  </section>
+</main>
+<script>document.querySelectorAll('.at-end').forEach(function(e){e.scrollTop=e.scrollHeight;});</script>
+</body>
+</html>

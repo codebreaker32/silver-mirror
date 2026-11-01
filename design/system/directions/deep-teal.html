@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkinKey · Direction B · Deep Teal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&family=Schibsted+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Tokens are generated from tokens.js (the same file the contrast script checks). */
+:root {
+  --neutral-50: #F7F6F3;
+  --neutral-100: #EFEDE8;
+  --neutral-200: #E3E0D9;
+  --neutral-300: #CDC9C0;
+  --neutral-400: #ABA69C;
+  --neutral-500: #878278;
+  --neutral-600: #69655D;
+  --neutral-700: #4F4C46;
+  --neutral-800: #363430;
+  --neutral-900: #23221F;
+  --neutral-950: #161614;
+  --petrol-50: #EDF5F5;
+  --petrol-100: #D3E8E8;
+  --petrol-200: #A7D0D2;
+  --petrol-300: #76B3B7;
+  --petrol-400: #47949B;
+  --petrol-500: #24767F;
+  --petrol-600: #155F68;
+  --petrol-700: #0F4D55;
+  --petrol-800: #0C3D44;
+  --petrol-900: #0A2F35;
+  --petrol-950: #061E22;
+}
+.t-light {
+  --bg: #F7F6F3;
+  --surface: #FCFBF9;
+  --surface-raised: #FFFFFF;
+  --surface-sunken: #EFEDE8;
+  --text: #23221F;
+  --text-muted: #69655D;
+  --border: #E3E0D9;
+  --border-strong: #878278;
+  --accent: #0F4D55;
+  --accent-hover: #0C3D44;
+  --on-accent: #F7FBFB;
+  --accent-subtle: #EDF5F5;
+  --on-accent-subtle: #0C3D44;
+  --link: #155F68;
+  --focus-ring: #24767F;
+  --v-fits-bg: #E7F0E9;
+  --v-fits-fg: #2B5A3B;
+  --v-fits-border: #A8C8B0;
+  --v-fits-solid: #3E7552;
+  --v-caution-bg: #F7EDD9;
+  --v-caution-fg: #6E480C;
+  --v-caution-border: #D7AE62;
+  --v-caution-solid: #A86F12;
+  --v-unknown-bg: #E9ECEF;
+  --v-unknown-fg: #3B4651;
+  --v-unknown-border: #B6BFC8;
+  --v-unknown-solid: #5D6A77;
+  --v-medicine-bg: #F2F0EC;
+  --v-medicine-fg: #1E1D1B;
+  --v-medicine-border: #363430;
+  --v-medicine-solid: #23221F;
+}
+.t-dark {
+  --bg: #161614;
+  --surface: #1C1B19;
+  --surface-raised: #252421;
+  --surface-sunken: #121211;
+  --text: #F2F0EB;
+  --text-muted: #ABA69C;
+  --border: #33312D;
+  --border-strong: #878278;
+  --accent: #76B3B7;
+  --accent-hover: #A7D0D2;
+  --on-accent: #061E22;
+  --accent-subtle: #12292C;
+  --on-accent-subtle: #A7D0D2;
+  --link: #76B3B7;
+  --focus-ring: #76B3B7;
+  --v-fits-bg: #16261B;
+  --v-fits-fg: #A9D3B4;
+  --v-fits-border: #3A6847;
+  --v-fits-solid: #7FB890;
+  --v-caution-bg: #2B2110;
+  --v-caution-fg: #EBC47D;
+  --v-caution-border: #7A5A22;
+  --v-caution-solid: #D9A548;
+  --v-unknown-bg: #1D2227;
+  --v-unknown-fg: #BAC4CE;
+  --v-unknown-border: #4A5561;
+  --v-unknown-solid: #93A0AD;
+  --v-medicine-bg: #21201D;
+  --v-medicine-fg: #F2F0EB;
+  --v-medicine-border: #CDC9C0;
+  --v-medicine-solid: #E3E0D9;
+}
+
+:root {
+  --font-display: 'Schibsted Grotesk', system-ui, sans-serif;
+  --font-text: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --r-xs: 3px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 24px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --canvas: #E6E3DC; --canvas-ink: #23221F; --canvas-muted: #5C5952; --canvas-line: #D3CFC6;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { background: var(--canvas); color: var(--canvas-ink); font-family: var(--font-text); font-size: 16px; line-height: 1.5; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+svg.i.s16 { width: 16px; height: 16px; } svg.i.s24 { width: 24px; height: 24px; } svg.i.s18 { width: 18px; height: 18px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Page shell ---------- */
+.page { max-width: 1320px; margin: 0 auto; padding: 72px 48px 120px; }
+.masthead { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; align-items: end; padding-bottom: 40px; border-bottom: 1px solid var(--canvas-line); }
+.eyebrow { font: 600 12px/16px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--canvas-muted); }
+.masthead h1 { font: 600 52px/1.02 var(--font-display); letter-spacing: -0.035em; margin: 14px 0 20px; }
+.masthead h1 em { font-style: normal; color: var(--petrol-700); }
+.masthead p { color: var(--canvas-muted); max-width: 60ch; }
+.specimen { display: grid; grid-template-columns: auto 1fr; gap: 4px 20px; align-items: baseline; }
+.specimen .big { font: 600 96px/0.9 var(--font-display); letter-spacing: -0.04em; color: var(--canvas-ink); grid-row: span 2; }
+.specimen .big.t { font-family: var(--font-text); font-weight: 400; font-size: 88px; }
+.specimen .nm { font: 600 15px/1.3 var(--font-display); }
+.specimen .meta { font-size: 13px; color: var(--canvas-muted); }
+.specimen .rule { grid-column: 1 / -1; height: 1px; background: var(--canvas-line); margin: 16px 0; }
+
+.section { padding-top: 64px; }
+.section-head { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; margin-bottom: 32px; align-items: baseline; }
+.section-head .no { font: 600 13px/1 var(--font-display); color: var(--canvas-muted); letter-spacing: 0.08em; }
+.section-head h2 { font: 600 28px/1.15 var(--font-display); letter-spacing: -0.02em; }
+.section-head p { color: var(--canvas-muted); font-size: 15px; margin-top: 6px; max-width: 70ch; }
+
+.pair { display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 0 48px; align-items: start; }
+.pair .side-note { font-size: 14px; color: var(--canvas-muted); max-width: 34ch; padding-top: 40px; }
+.pair .side-note strong { color: var(--canvas-ink); font-weight: 600; display: block; margin-bottom: 4px; font-family: var(--font-display); }
+.pair .side-note p + p { margin-top: 14px; }
+.frame-label { font: 600 12px/16px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--canvas-muted); margin-bottom: 14px; display: flex; gap: 10px; align-items: center; }
+.frame-label span.dot { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--canvas-muted); }
+.frame-label span.dot.f { background: var(--canvas-ink); border-color: var(--canvas-ink); }
+
+/* ---------- Device ---------- */
+.device { width: 410px; padding: 10px; border-radius: 54px; background: #121211; box-shadow: 0 0 0 1px #3A3833, 0 40px 60px -40px rgba(35, 34, 31, 0.55); }
+.screen { width: 390px; height: 844px; border-radius: 44px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--text); position: relative; }
+.statusbar { height: 36px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 28px 0; font: 500 14px/1 var(--font-text); }
+.statusbar .icons { display: flex; gap: 6px; align-items: center; }
+.statusbar svg { width: 16px; height: 16px; }
+.appbar { height: 56px; flex: none; display: flex; align-items: center; padding: 0 8px; gap: 4px; }
+.appbar .title { font: 600 18px/24px var(--font-display); letter-spacing: -0.01em; flex: 1; }
+.icon-btn { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 999px; color: var(--text); }
+.wordmark { display: flex; align-items: center; gap: 8px; font: 700 17px/1 var(--font-display); letter-spacing: -0.02em; flex: 1; }
+.wordmark svg { width: 22px; height: 22px; color: var(--accent); }
+.content { flex: 1; overflow-y: auto; padding: 4px 20px 28px; scrollbar-width: none; }
+.content::-webkit-scrollbar { display: none; }
+.gesture { height: 22px; flex: none; display: grid; place-items: center; background: var(--surface); }
+.gesture i { display: block; width: 108px; height: 4px; border-radius: 2px; background: var(--text); opacity: 0.38; }
+
+/* ---------- Shared components ---------- */
+.overline { font: 600 12px/16px var(--font-display); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+.caption { font: 400 13px/18px var(--font-text); color: var(--text-muted); }
+.btn { height: 52px; width: 100%; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; gap: 10px; font: 600 16px/20px var(--font-text); letter-spacing: 0.005em; transition: transform 160ms var(--ease), background-color 160ms var(--ease); }
+.btn:active { transform: scale(0.98); }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--border-strong); }
+.focus { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* Product field */
+.field-label { font: 600 14px/20px var(--font-text); color: var(--text-muted); margin: 6px 0 8px; }
+.field { display: flex; align-items: center; gap: 8px; padding: 12px 6px 12px 14px; border-radius: var(--r-md); background: var(--surface-raised); box-shadow: inset 0 0 0 1px var(--border-strong); }
+.field .val { flex: 1; font: 600 18px/24px var(--font-display); letter-spacing: -0.01em; }
+.field .icon-btn { width: 44px; height: 44px; color: var(--text-muted); }
+.field-meta { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+.field-meta .sep { width: 3px; height: 3px; border-radius: 50%; background: var(--text-muted); }
+
+/* Verdict sheet */
+.verdict { margin-top: 22px; border-radius: var(--r-lg); overflow: hidden; box-shadow: inset 0 0 0 1px var(--vb); background: var(--surface-raised); }
+.verdict-head { background: var(--vbg); padding: 16px 16px 16px; border-bottom: 1px solid var(--vb); }
+.verdict-label { display: flex; align-items: center; gap: 10px; color: var(--vfg); }
+.verdict-label svg { width: 24px; height: 24px; color: var(--vsolid); stroke-width: 2; }
+.verdict-label b { font: 700 17px/24px var(--font-display); letter-spacing: 0.14em; }
+.verdict-sub { font: 400 15px/22px var(--font-text); color: var(--vfg); margin-top: 6px; }
+.v-caution { --vbg: var(--v-caution-bg); --vfg: var(--v-caution-fg); --vb: var(--v-caution-border); --vsolid: var(--v-caution-solid); }
+.v-fits { --vbg: var(--v-fits-bg); --vfg: var(--v-fits-fg); --vb: var(--v-fits-border); --vsolid: var(--v-fits-solid); }
+.v-unknown { --vbg: var(--v-unknown-bg); --vfg: var(--v-unknown-fg); --vb: var(--v-unknown-border); --vsolid: var(--v-unknown-solid); }
+.v-medicine { --vbg: var(--v-medicine-bg); --vfg: var(--v-medicine-fg); --vb: var(--v-medicine-border); --vsolid: var(--v-medicine-solid); }
+
+.reasons { list-style: none; }
+.reason { display: grid; grid-template-columns: 28px 1fr; gap: 0 10px; padding: 16px 16px 16px 14px; }
+.reason + .reason { border-top: 1px solid var(--border); }
+.reason .idx { font: 600 13px/24px var(--font-display); color: var(--text-muted); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.reason .reading { font: 600 17px/24px var(--font-display); letter-spacing: -0.01em; }
+.reason .fact { font: 400 16px/23px var(--font-text); margin-top: 4px; }
+.ref-chip { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 3px 9px 3px 7px; border-radius: var(--r-sm); background: var(--surface-sunken); font: 600 13px/18px var(--font-text); color: var(--text); }
+.ref-chip svg { width: 14px; height: 14px; color: var(--text-muted); }
+
+/* Provenance ledger */
+.ledger { margin-top: 26px; }
+.ledger-title { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--text); }
+.ledger-title h3 { font: 600 15px/20px var(--font-display); letter-spacing: -0.005em; }
+.ledger-row { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.ledger-row .k { font: 600 11px/20px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+.ledger-row .v { font: 400 15px/21px var(--font-text); }
+.ledger-row .v .caption { margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+.ledger-row .v .caption svg { width: 14px; height: 14px; }
+.link { color: var(--link); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.fixed { margin-top: 18px; display: grid; gap: 4px; }
+
+/* Action bar */
+.actions { flex: none; padding: 14px 20px 10px; background: var(--surface); border-top: 1px solid var(--border); display: grid; gap: 10px; }
+.dest { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.dest svg { width: 14px; height: 14px; color: var(--text-muted); }
+
+/* Profile */
+.page-title { font: 600 26px/32px var(--font-display); letter-spacing: -0.02em; padding: 8px 0 4px; }
+.card { background: var(--surface-raised); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--border), var(--elev-1); margin-top: 18px; }
+.t-light { --elev-1: 0 1px 2px rgba(35, 34, 31, 0.06), 0 4px 12px -6px rgba(35, 34, 31, 0.10); --elev-2: 0 12px 32px -12px rgba(35, 34, 31, 0.22); }
+.t-dark { --elev-1: 0 0 0 0 transparent; --elev-2: 0 0 0 0 transparent; }
+.card-pad { padding: 16px; }
+.card-top { display: flex; align-items: center; justify-content: space-between; }
+.date-tag { font: 600 13px/18px var(--font-text); color: var(--on-accent-subtle); background: var(--accent-subtle); padding: 3px 9px; border-radius: var(--r-sm); }
+.skin-type { font: 600 24px/30px var(--font-display); letter-spacing: -0.02em; margin-top: 12px; }
+.bands { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+.band { background: var(--surface-sunken); border-radius: var(--r-md); padding: 12px 12px 12px; }
+.band .lbl { font: 400 15px/20px var(--font-text); }
+.band .lbl b { font-weight: 700; }
+.meter { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 10px; }
+.meter i { height: 4px; border-radius: 2px; background: var(--border-strong); opacity: 0.35; }
+.meter i.on { background: var(--accent); opacity: 1; }
+.meter-scale { display: flex; justify-content: space-between; margin-top: 4px; font: 500 11px/14px var(--font-text); color: var(--text-muted); letter-spacing: 0.02em; }
+.card-foot { padding: 12px 16px 14px; border-top: 1px solid var(--border); }
+.edit-row { display: flex; justify-content: flex-end; margin: 8px -6px -6px 0; }
+.text-btn { display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 10px; border-radius: var(--r-md); font: 600 15px/20px var(--font-text); color: var(--link); white-space: nowrap; }
+.text-btn .q { color: var(--text-muted); font-weight: 400; }
+.note { display: grid; grid-template-columns: 20px 1fr; gap: 12px; margin-top: 18px; padding: 14px 16px; border-radius: var(--r-md); background: var(--surface-sunken); }
+.note svg { color: var(--text-muted); margin-top: 1px; }
+.note p { font: 400 15px/21px var(--font-text); }
+.note p span { display: block; font-weight: 700; font-size: 13px; letter-spacing: 0.02em; color: var(--text-muted); margin-bottom: 2px; }
+.list { margin-top: 22px; }
+.list .overline { padding-bottom: 6px; }
+.row { display: flex; align-items: center; gap: 14px; min-height: 56px; border-bottom: 1px solid var(--border); font: 500 16px/22px var(--font-text); }
+.row .grow { flex: 1; }
+.row .sub { display: block; font-size: 13px; line-height: 18px; color: var(--text-muted); font-weight: 400; }
+.row svg.lead { color: var(--text-muted); }
+.navbar { flex: none; height: 72px; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border-top: 1px solid var(--border); padding-top: 10px; }
+.nav-item { display: grid; justify-items: center; gap: 4px; font: 600 12px/16px var(--font-text); color: var(--text-muted); }
+.nav-item .pill { width: 60px; height: 30px; border-radius: 15px; display: grid; place-items: center; }
+.nav-item.on { color: var(--text); }
+.nav-item.on .pill { background: var(--accent-subtle); color: var(--on-accent-subtle); }
+
+/* Swatches */
+.swatch-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+.swatch-panel { border-radius: 20px; padding: 20px; background: var(--bg); color: var(--text); }
+.swatch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.sw { border-radius: var(--r-lg); background: var(--vbg); box-shadow: inset 0 0 0 1px var(--vb); padding: 14px 14px 12px; display: flex; flex-direction: column; min-height: 176px; }
+.sw .verdict-label b { font-size: 15px; }
+.sw .verdict-label svg { width: 22px; height: 22px; }
+.sw p { font: 400 14px/20px var(--font-text); color: var(--vfg); margin-top: 8px; flex: 1; }
+.sw .tok { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; align-items: center; }
+.sw .tok i { width: 14px; height: 14px; border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(127,127,127,0.35); }
+.sw .tok span { flex-basis: 100%; margin-top: 2px; font: 500 11px/14px var(--font-text); color: var(--text-muted); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.sw.v-medicine { box-shadow: inset 0 0 0 1.5px var(--vb); }
+.sw .med-line { font: 600 16px/22px var(--font-display); color: var(--vfg); letter-spacing: -0.01em; }
+.gate-tag { font: 600 11px/14px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+
+/* System spec */
+.spec { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 0 56px; }
+.ramp { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); border-radius: 12px; overflow: hidden; }
+.ramp div { height: 84px; padding: 7px 6px; display: flex; flex-direction: column; justify-content: flex-end; font: 500 9.5px/12px var(--font-text); font-variant-numeric: tabular-nums; overflow: hidden; }
+.ramp div b { font-size: 11px; line-height: 14px; }
+.ramp-name { font: 600 14px/20px var(--font-display); margin: 22px 0 8px; display: flex; justify-content: space-between; }
+.ramp-name span { font: 400 13px/20px var(--font-text); color: var(--canvas-muted); }
+.ramp-name:first-child { margin-top: 0; }
+.typescale { margin-top: 36px; border-top: 1px solid var(--canvas-ink); }
+.ts-row { display: grid; grid-template-columns: 88px 1fr 200px; gap: 16px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--canvas-line); }
+.ts-row .k { font: 600 11px/16px var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--canvas-muted); }
+.ts-row .m { font-size: 12px; line-height: 16px; color: var(--canvas-muted); text-align: right; font-variant-numeric: tabular-nums; }
+.spec-block { padding: 18px 0; border-top: 1px solid var(--canvas-line); }
+.spec-block:first-child { border-top: 1px solid var(--canvas-ink); }
+.spec-block h4 { font: 600 15px/20px var(--font-display); margin-bottom: 8px; }
+.spec-block p, .spec-block li { font-size: 14px; line-height: 21px; color: var(--canvas-muted); }
+.spec-block ul { list-style: none; display: grid; gap: 4px; }
+.spec-block b { color: var(--canvas-ink); font-weight: 600; }
+.radii { display: flex; gap: 14px; align-items: flex-end; margin: 6px 0 10px; }
+.radii div { width: 52px; height: 52px; background: #FCFBF9; box-shadow: inset 0 0 0 1px var(--canvas-line); display: grid; place-items: end center; padding-bottom: 4px; font-size: 11px; color: var(--canvas-muted); }
+.elev { display: flex; gap: 14px; margin: 6px 0 10px; }
+.elev div { flex: 1; height: 56px; border-radius: 10px; background: #FFFFFF; display: grid; place-items: center; font-size: 12px; color: var(--canvas-muted); }
+.ease-demo { height: 64px; margin: 6px 0 10px; }
+
+/* Motion: settle, never bounce */
+@media (prefers-reduced-motion: no-preference) {
+  .verdict { animation: settle 240ms var(--ease) both; }
+  .reason { animation: settle 220ms var(--ease) both; }
+  .reason:nth-child(1) { animation-delay: 120ms; } .reason:nth-child(2) { animation-delay: 160ms; }
+  @keyframes settle { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
+@media (max-width: 1100px) {
+  .masthead, .pair, .swatch-wrap, .spec { grid-template-columns: 1fr; gap: 32px; }
+  .section-head { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">SkinKey · Visual direction B · Draft until the session debrief</div>
+      <h1>Deep Teal, <em>clinic-free.</em></h1>
+      <p>A petrol-teal accent on warm putty neutrals. It should read like a well-run neighbourhood pharmacy counter: precise, plain-spoken, nothing to sell you. Teal is kept for actions and focus only. It never marks a verdict, so FITS (sage), CAUTION (ochre) and UNKNOWN (slate) carry no brand colour. Schibsted Grotesk sets headings and reasons with a sturdy, newsprint confidence. Atkinson Hyperlegible Next, drawn so that letters like I, l and 1 cannot be confused, sets ingredient names such as "isopropyl myristate" so a fast, non-native reader gets them right.</p>
+    </div>
+    <div class="specimen">
+      <div class="big">Aa</div><div class="nm">Schibsted Grotesk</div><div class="meta">Display, titles, reasons · 500 / 600 / 700</div>
+      <div class="rule"></div>
+      <div class="big t">₹1</div><div class="nm">Atkinson Hyperlegible Next</div><div class="meta">Body, labels, captions · 400 / 600 / 700 · ₹ U+20B9 in both</div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-head"><div class="no">01 / CHECK</div><div><h2>The verdict screen, CAUTION state</h2><p>Reasons are set larger than the label: the label frames the reasons, it doesn't replace them. Each reason starts with the scan moment, then the ingredient and why it matters, then a link back to the reading's band chip. The actions stay pinned and name where they go. Both frames scroll. The dark frame opens at the end so that, between them, the whole screen is visible.</p></div></div>
+    <div class="pair">
+      <div><div class="frame-label"><span class="dot"></span>Light · top of screen</div><div class="device"><div class="screen t-light" data-screen="check"></div></div></div>
+      <div><div class="frame-label"><span class="dot f"></span>Dark · opened scrolled to the end</div><div class="device"><div class="screen t-dark" data-screen="check" data-scroll="end"></div></div></div>
+      <div class="side-note">
+        <p><strong>Verdict sheet</strong>One container: a tinted head for the label and the fixed subtitle, then the reasons on a plain surface. The tint stays in the head and the reasons stay neutral, so CAUTION never fills the screen with alarm colour.</p>
+        <p><strong>Provenance ledger</strong>"Where this comes from" is set like a dispensing label, with small-caps keys and hairline rows. It is visible proof, not fine print.</p>
+        <p><strong>TalkBack order</strong>Label, subtitle, reasons, source, actions. At the largest font size the reasons wrap and are never cut off. The two buttons are stacked already.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="no">02 / PROFILE</div><div><h2>Readings as band chips</h2><p>Bands only, never numbers. Each band is written out in words, and the three-step meter only repeats it. There are no skin-colour swatches anywhere. "Feels wrong? Edit" sits on the card itself; in the light frame it is shown in its keyboard-focus state to demo the focus ring token.</p></div></div>
+    <div class="pair">
+      <div><div class="frame-label"><span class="dot"></span>Light</div><div class="device"><div class="screen t-light" data-screen="profile" data-focus="1"></div></div></div>
+      <div><div class="frame-label"><span class="dot f"></span>Dark</div><div class="device"><div class="screen t-dark" data-screen="profile"></div></div></div>
+      <div class="side-note">
+        <p><strong>Calm delete</strong>"Delete profile" uses neutral ink, not red. Deleting is a normal, supported action, not an emergency.</p>
+        <p><strong>Tonal elevation</strong>Light mode: one tinted, low shadow for cards. Dark mode: no shadows. Depth comes from three surface steps and a hairline.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="no">03 / VERDICTS</div><div><h2>Four states, never colour alone</h2><p>Each state has a text label, a unique icon shape and its own hue. CAUTION uses a half-filled circle ("partly fits"), not a warning triangle. UNKNOWN uses a dashed, incomplete circle. The medicine gate has no verdict label: just an ink outline, a pharmacist-at-counter icon and the one fixed line.</p></div></div>
+    <div class="swatch-wrap">
+      <div class="swatch-panel t-light" data-swatches></div>
+      <div class="swatch-panel t-dark" data-swatches></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div class="no">04 / SYSTEM</div><div><h2>Primitives, type, shape, motion</h2><p>All the colour values on this page come from one token file. The same file feeds the WCAG 2.1 contrast script, and all 84 text, icon and focus pairs pass in both modes.</p></div></div>
+    <div class="spec">
+      <div>
+        <div data-ramps></div>
+        <div class="typescale" data-typescale></div>
+      </div>
+      <div>
+        <div class="spec-block"><h4>Radius: crisp, not bubbly</h4>
+          <div class="radii"><div style="border-radius:3px">3</div><div style="border-radius:6px">6</div><div style="border-radius:10px">10</div><div style="border-radius:14px">14</div><div style="border-radius:24px">24</div></div>
+          <ul><li><b>xs 3</b> meter segments · <b>sm 6</b> chips, tags · <b>md 10</b> buttons, inputs, band tiles · <b>lg 14</b> cards, verdict sheet · <b>xl 24</b> bottom sheets. Icon buttons are full circles (48dp touch target).</li></ul>
+        </div>
+        <div class="spec-block"><h4>Elevation: borders first, light shadow</h4>
+          <div class="elev"><div style="box-shadow: inset 0 0 0 1px var(--canvas-line)">0 · hairline</div><div style="box-shadow: inset 0 0 0 1px #E3E0D9, 0 1px 2px rgba(35,34,31,.06), 0 4px 12px -6px rgba(35,34,31,.10)">1 · card</div><div style="box-shadow: 0 12px 32px -12px rgba(35,34,31,.22)">2 · sheet</div></div>
+          <p>Shadows are warm-tinted (ink #23221F), never neutral black. Dark mode drops shadows and steps through bg #161614, surface #1C1B19, raised #252421. RN: <b>elevation 0/1/3</b> on Android with a matching hairline.</p>
+        </div>
+        <div class="spec-block"><h4>Motion: settle, never bounce</h4>
+          <svg class="ease-demo" viewBox="0 0 300 64" width="100%"><path d="M8 56 C 56 56, 8 8, 292 8" fill="none" stroke="#0F4D55" stroke-width="2"/><path d="M8 56 H292 M8 8 V56" stroke="#D3CFC6" fill="none"/></svg>
+          <ul>
+            <li><b>Easing</b> cubic-bezier(0.2, 0, 0, 1) everywhere; no spring overshoot</li>
+            <li><b>Durations</b> 120 press · 160 state · 240 verdict reveal · 300 sheet</li>
+            <li><b>Verdict reveal</b> opacity 0 to 1 plus a 4dp rise; reasons 40ms apart</li>
+            <li><b>Processing steps</b> each tick draws in once (Deleting photo from YouCam); no looping spinners</li>
+            <li><b>Reduce motion</b> opacity only, at 0ms or 120ms; no layout movement</li>
+            <li><b>Haptics</b> one light tick when the verdict lands; none on CAUTION</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const PRIMS = {"neutral":{"50":"#F7F6F3","100":"#EFEDE8","200":"#E3E0D9","300":"#CDC9C0","400":"#ABA69C","500":"#878278","600":"#69655D","700":"#4F4C46","800":"#363430","900":"#23221F","950":"#161614"},"petrol":{"50":"#EDF5F5","100":"#D3E8E8","200":"#A7D0D2","300":"#76B3B7","400":"#47949B","500":"#24767F","600":"#155F68","700":"#0F4D55","800":"#0C3D44","900":"#0A2F35","950":"#061E22"}};
+const P = d => `<path d="${d}"/>`;
+const svg = (body, cls = '') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${body}</svg>`;
+const I = {
+  back: svg(P('m12 19-7-7 7-7') + P('M19 12H5'), 's24'),
+  key: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4.5"/><path d="M11.2 11.8 20 3"/><path d="m16.5 6.5 2.5 2.5"/><path d="m14 9 2 2"/></svg>`,
+  keep: svg(P('M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6z') + P('M9.5 12.5h5') , 's24'),
+  pencil: svg(P('M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z') + P('m15 5 4 4')),
+  fits: svg('<circle cx="12" cy="12" r="9.5"/>' + P('m8.5 12.2 2.4 2.4 4.8-4.9')),
+  caution: svg('<circle cx="12" cy="12" r="9.5"/>' + '<path d="M12 2.5a9.5 9.5 0 0 1 0 19z" fill="currentColor" stroke="none"/>'),
+  unknown: svg(P('M10.1 2.68a9.5 9.5 0 0 1 3.8 0') + P('M13.9 21.32a9.5 9.5 0 0 1-3.8 0') + P('M17.3 4.1a9.5 9.5 0 0 1 2.6 2.6') + P('M2.68 13.9a9.5 9.5 0 0 1 0-3.8') + P('M19.9 17.3a9.5 9.5 0 0 1-2.6 2.6') + P('M21.32 10.1a9.5 9.5 0 0 1 0 3.8') + P('M4.1 6.7a9.5 9.5 0 0 1 2.6-2.6') + P('M6.7 19.9a9.5 9.5 0 0 1-2.6-2.6') + P('M12 13.2v-.4c0-.8.5-1.2 1-1.5.6-.4 1-.9 1-1.6a2 2 0 0 0-3.9-.6') + '<circle cx="12" cy="16" r=".4" fill="currentColor"/>'),
+  medicine: svg('<circle cx="12" cy="6.5" r="3"/>' + P('M6 14c.4-2.8 2.9-4.5 6-4.5s5.6 1.7 6 4.5') + P('M2.5 14h19') + P('M4.5 14v6.5h15V14') + P('M10 17.25h4')),
+  ext: svg(P('M7 17 17 7') + P('M8 7h9v9'), 's18'),
+  search: svg('<circle cx="11" cy="11" r="7"/>' + P('m20 20-3.8-3.8')),
+  scan: svg(P('M3 7V5a2 2 0 0 1 2-2h2') + P('M17 3h2a2 2 0 0 1 2 2v2') + P('M21 17v2a2 2 0 0 1-2 2h-2') + P('M7 21H5a2 2 0 0 1-2-2v-2') + P('M7 12h10'), 's24'),
+  check: svg(P('M20 6 9 17l-5-5'), 's16'),
+  info: svg('<circle cx="12" cy="12" r="9.5"/>' + P('M12 16v-4.5') + P('M12 8h.01')),
+  chevron: svg(P('m9 18 6-6-6-6')),
+  list: svg(P('M9 6h11') + P('M9 12h11') + P('M9 18h11') + P('M4.5 6h.01') + P('M4.5 12h.01') + P('M4.5 18h.01')),
+  trash: svg(P('M3.5 6h17') + P('M8 6V4.5A1.5 1.5 0 0 1 9.5 3h5A1.5 1.5 0 0 1 16 4.5V6') + P('M18.5 6l-.8 13a2 2 0 0 1-2 1.9H8.3a2 2 0 0 1-2-1.9L5.5 6')),
+  home: svg(P('M3.5 10.5 12 3.5l8.5 7') + P('M5.5 9v11h13V9') + P('M10 20v-5.5h4V20'), 's24'),
+  barcode: svg(P('M4 6v12') + P('M7.5 6v12') + P('M11 6v12') + P('M13.5 6v12') + P('M17 6v12') + P('M20 6v12'), 's24'),
+  link: svg(P('M9 15 15 9') + P('M11 6.5l1.2-1.2a3.9 3.9 0 0 1 5.5 5.5L16.5 12') + P('M13 17.5l-1.2 1.2a3.9 3.9 0 0 1-5.5-5.5L7.5 12'), 's16'),
+};
+const status = `<div class="statusbar"><span class="num">10:24</span><span class="icons">
+  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 12h2v2H1zM5 9h2v5H5zM9 6h2v8H9zM13 2h2v12h-2z"/></svg>
+  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 13.5 1.2 6.2a10 10 0 0 1 13.6 0z"/></svg>
+  <svg viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="1.4" style="width:22px"><rect x="1" y="2.5" width="19" height="11" rx="3"/><rect x="3" y="4.5" width="12" height="7" rx="1.5" fill="currentColor" stroke="none"/><path d="M22 6.5v3"/></svg>
+</span></div>`;
+
+function checkScreen() {
+  return `${status}
+  <div class="appbar">
+    <button class="icon-btn" aria-label="Back">${I.back}</button>
+    <div class="wordmark">${I.key}SkinKey</div>
+    <button class="icon-btn" aria-label="What we keep">${I.keep}</button>
+  </div>
+  <div class="content">
+    <div class="field-label">Is this the product?</div>
+    <div class="field"><span class="val">Minimalist Sunscreen SPF 50 Gel</span><button class="icon-btn" aria-label="Edit product name">${I.pencil}</button></div>
+    <div class="field-meta caption"><span>Shared from Flipkart</span><span class="sep"></span><span class="num">₹399 listed</span><span class="sep"></span><span>Example only</span></div>
+
+    <section class="verdict v-caution" aria-label="Verdict">
+      <div class="verdict-head">
+        <div class="verdict-label">${I.caution}<b>CAUTION</b></div>
+        <p class="verdict-sub">May not suit your readings. This is not a safety warning.</p>
+      </div>
+      <ol class="reasons">
+        <li class="reason"><span class="idx">01</span><div>
+          <p class="reading">Your skin looked oily in your 1&nbsp;Nov scan.</p>
+          <p class="fact">Contains coconut oil and isopropyl myristate, which can clog pores.</p>
+          <span class="ref-chip">${I.scan.replace('s24', 's16')}Oiliness · High</span>
+        </div></li>
+        <li class="reason"><span class="idx">02</span><div>
+          <p class="reading">Your skin showed some redness in your 1&nbsp;Nov scan.</p>
+          <p class="fact">Contains added fragrance (parfum). Fragrance-free options are usually a better fit for redness readings.</p>
+          <span class="ref-chip">${I.scan.replace('s24', 's16')}Redness · Medium</span>
+        </div></li>
+      </ol>
+    </section>
+
+    <section class="ledger" aria-label="Where this comes from">
+      <div class="ledger-title"><h3>Where this comes from</h3></div>
+      <div class="ledger-row"><div class="k">Skin</div><div class="v">Measured by YouCam Skin Analysis, 1&nbsp;Nov<div class="caption">${I.check}Photo deleted from YouCam · bands only</div></div></div>
+      <div class="ledger-row"><div class="k">Product</div><div class="v">SkinKey catalogue <span class="num">(14 products)</span><div class="caption"><a class="link" href="#">Ingredient list source</a></div></div></div>
+      <div class="ledger-row"><div class="k">Limits</div><div class="v">Skin AI can be less accurate on deeper skin tones and in poor light.</div></div>
+    </section>
+    <div class="fixed caption"><span>Cosmetic guidance, not medical advice.</span><span>Not affiliated with Flipkart, Amazon or Nykaa.</span></div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-secondary">Back to product</button>
+    <button class="btn btn-primary">Find better matches ${I.ext}</button>
+    <div class="dest caption">${I.search}Opens a Flipkart search, filtered to Oily Skin</div>
+  </div>
+  <div class="gesture"><i></i></div>`;
+}
+
+function band(name, level) {
+  const n = { Low: 1, Medium: 2, High: 3 }[level];
+  return `<div class="band" role="group" aria-label="${name} reading: ${level}">
+    <div class="lbl">${name} · <b>${level}</b></div>
+    <div class="meter" aria-hidden="true">${[1, 2, 3].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('')}</div>
+    <div class="meter-scale" aria-hidden="true"><span>Low</span><span>Med</span><span>High</span></div>
+  </div>`;
+}
+function profileScreen(focus) {
+  return `${status}
+  <div class="appbar"><div class="wordmark">${I.key}SkinKey</div><button class="icon-btn" aria-label="What we keep">${I.keep}</button></div>
+  <div class="content">
+    <h1 class="page-title">Your readings</h1>
+    <div class="card">
+      <div class="card-pad">
+        <div class="card-top"><span class="overline">Skin profile</span><span class="date-tag num">Scan 1 Nov</span></div>
+        <div class="skin-type">Oily</div>
+        <div class="caption">Skin type estimated from oiliness + moisture</div>
+        <div class="bands">${band('Oiliness', 'High')}${band('Moisture', 'Low')}${band('Redness', 'Medium')}${band('Texture', 'Medium')}</div>
+        <div class="edit-row"><button class="text-btn ${focus ? 'focus' : ''}" aria-label="Feels wrong? Edit your readings"><span class="q">Feels wrong?</span> Edit ${I.pencil.replace('class="i ', 'class="i s16 ')}</button></div>
+      </div>
+      <div class="card-foot caption">Measured by YouCam Skin Analysis, 1&nbsp;Nov · photo deleted · score bands only</div>
+    </div>
+    <div class="note">${I.info}<p><span>Accuracy note</span>Skin AI can be less accurate on deeper skin tones and in poor light.</p></div>
+    <div class="list">
+      <div class="row">${I.list.replace('class="i ', 'class="i lead ')}<span class="grow">3 more readings<span class="sub">Acne, pores, radiance</span></span>${I.chevron}</div>
+    </div>
+    <div class="list">
+      <div class="overline">Your data</div>
+      <div class="row">${I.keep.replace('s24', 'lead')}<span class="grow">What we keep<span class="sub">Skin type, 7 bands and the scan date, on this phone only</span></span>${I.chevron}</div>
+      <div class="row">${I.trash.replace('class="i ', 'class="i lead ')}<span class="grow">Delete profile</span></div>
+    </div>
+  </div>
+  <nav class="navbar">
+    <div class="nav-item"><span class="pill">${I.home}</span>Check</div>
+    <div class="nav-item"><span class="pill">${I.barcode}</span>Scan in store</div>
+    <div class="nav-item on"><span class="pill">${I.key.replace('<svg ', '<svg style="width:22px;height:22px" ')}</span>Profile</div>
+  </nav>
+  <div class="gesture"><i></i></div>`;
+}
+
+function swatches(mode) {
+  const tok = k => `<div class="tok"><i style="background:var(--v-${k}-bg)"></i><i style="background:var(--v-${k}-fg)"></i><i style="background:var(--v-${k}-border)"></i><i style="background:var(--v-${k}-solid)"></i><span data-hex="${k}"></span></div>`;
+  return `<div class="frame-label" style="color:var(--text-muted)"><span class="dot ${mode === 'dark' ? 'f' : ''}" style="border-color:var(--text-muted);${mode === 'dark' ? 'background:var(--text-muted)' : ''}"></span>${mode === 'dark' ? 'Dark' : 'Light'}</div>
+  <div class="swatch-grid">
+    <div class="sw v-fits"><div class="verdict-label">${I.fits}<b>FITS</b></div><p>Matches your scan on the ingredients we know about. Not a guarantee.</p>${tok('fits')}</div>
+    <div class="sw v-caution"><div class="verdict-label">${I.caution}<b>CAUTION</b></div><p>May not suit your readings. This is not a safety warning.</p>${tok('caution')}</div>
+    <div class="sw v-unknown"><div class="verdict-label">${I.unknown}<b>UNKNOWN</b></div><p>This product isn't in our catalogue (14 products) and its name alone isn't enough. This doesn't mean it's bad.</p>${tok('unknown')}</div>
+    <div class="sw v-medicine"><div class="verdict-label">${I.medicine}<span class="gate-tag">Medicine gate · no verdict</span></div><p class="med-line">This looks like a medicine. Ask the pharmacist.</p>${tok('medicine')}</div>
+  </div>`;
+}
+
+document.querySelectorAll('[data-screen]').forEach(el => {
+  el.innerHTML = el.dataset.screen === 'check' ? checkScreen() : profileScreen(el.dataset.focus);
+});
+document.querySelectorAll('[data-scroll="end"] .content').forEach(c => { c.scrollTop = c.scrollHeight; });
+document.querySelectorAll('[data-swatches]').forEach(el => {
+  const mode = el.classList.contains('t-dark') ? 'dark' : 'light';
+  el.innerHTML = swatches(mode);
+  el.querySelectorAll('[data-hex]').forEach(s => {
+    const cs = getComputedStyle(el), k = s.dataset.hex;
+    s.textContent = ['bg', 'fg', 'border'].map(p => cs.getPropertyValue(`--v-${k}-${p}`).trim()).join(' · ');
+  });
+});
+
+// Primitive ramps
+const lumOf = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+const ramp = (name, sub, obj) => `<div class="ramp-name">${name}<span>${sub}</span></div><div class="ramp">${Object.entries(obj).map(([k, v]) => `<div style="background:${v};color:${lumOf(v) > 0.22 ? '#23221F' : '#F7F6F3'}"><b>${k}</b>${v}</div>`).join('')}</div>`;
+document.querySelector('[data-ramps]').innerHTML = ramp('Putty, warm neutral', 'hue about 45°, chroma under 4%', PRIMS.neutral) + ramp('Petrol, accent', 'hue about 186°; 700 is light-mode action, 300 is dark-mode action', PRIMS.petrol);
+
+const scale = [
+  ['Display', 'font:700 34px/40px var(--font-display);letter-spacing:-0.02em', 'SkinKey stores no photo.', 'Schibsted 700 · 34/40 · -0.6'],
+  ['Title', 'font:600 24px/30px var(--font-display);letter-spacing:-0.02em', 'Your readings', 'Schibsted 600 · 24/30 · -0.4'],
+  ['Headline', 'font:600 18px/24px var(--font-display);letter-spacing:-0.01em', 'Your skin looked oily in your 1 Nov scan.', 'Schibsted 600 · 18/24 · -0.2'],
+  ['Body', 'font:400 16px/24px var(--font-text)', 'Contains coconut oil and isopropyl myristate, which can clog pores.', 'Atkinson Next 400 · 16/24'],
+  ['Label', 'font:600 14px/20px var(--font-text);letter-spacing:0.01em', 'Find better matches · ₹399', 'Atkinson Next 600 · 14/20 · +0.1'],
+  ['Overline', 'font:600 12px/16px var(--font-display);letter-spacing:0.1em;text-transform:uppercase', 'Where this comes from', 'Schibsted 600 · 12/16 · +1.2 caps'],
+  ['Caption', 'font:400 13px/18px var(--font-text)', 'Opens a Flipkart search, filtered to Oily Skin', 'Atkinson Next 400 · 13/18'],
+];
+document.querySelector('[data-typescale]').innerHTML = scale.map(([k, st, s, m]) => `<div class="ts-row"><div class="k">${k}</div><div style="${st}">${s}</div><div class="m">${m}</div></div>`).join('');
+</script>
+</body>
+</html>
