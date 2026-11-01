@@ -34,3 +34,8 @@ Input: Perfect Corp's official docs sample face (`https://plugins-media.makeupar
 - G7: 768×1024 accepted.
 - S1 and S2 need the phone.
 - Calibrating the raw_score cutoffs needs a real consenting person.
+
+## S2: Flipkart skin-type facet URL inside the Flipkart app: PASS (2026-11-01 23:01 IST, Samsung SM-A276B, Android 16)
+- `adb shell am start -a VIEW -d 'https://www.flipkart.com/search?q=moisturizer&p%5B%5D=facets.skin_type%255B%255D%3DOily%2BSkin'` opened the **native Flipkart app** (`com.flipkart.android/.activity.HomeFragmentHolderActivity`). It went straight to the moisturizer results with **"1 Filter" applied**. Screenshot: `spikes/s2/flipkart_oily.png`.
+- Observation (one screenshot, not a finding): under the "Oily Skin" filter, the second result (marked Sponsored) is a moisturiser whose own pack text reads "Dry to Normal, Sensitive Skin". This is the kind of mismatch the audit counts. The audit only counts it through the pre-registered method.
+- Caveat: Android may not bring the app to the foreground if another app is in front (background activity launch limits). In the app, links open from a user tap, which is allowed.
