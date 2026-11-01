@@ -1,5 +1,5 @@
 import type { BetaMessage, MessageCreateParamsNonStreaming } from '@anthropic-ai/sdk/resources/beta/messages/messages';
-import { LabelOcrResponse, ResolveResponse } from '@skinkey/contracts';
+import { LabelOcrResponse, ResolveResponse, SHARE_FIXTURES } from '@skinkey/contracts';
 import { describe, expect, it, vi } from 'vitest';
 import { loadCatalog } from '../src/catalog';
 import { buildParams, ClaudeOutputError, ClaudeRefusalError, parseStructured, sdkCaller, type ClaudeCaller } from '../src/claude/client';
@@ -130,6 +130,40 @@ describe('/v1/resolve', () => {
     expect(body).toMatchObject({ outcome: 'match', resolver: 'catalog', store: 'flipkart', catalogCount: 2 });
     expect(body.candidates[0]!.catalogId).toBe('cerave-moisturising-cream-50ml');
     expect(calls).toHaveLength(0);
+  });
+
+  it('resolves a bare Flipkart short link from ONE redirect header and never reads the page', async () => {
+    const { caller, calls } = fakeCaller(() => msg({ text: '{}' }));
+    const seen: Array<{ url: string; init?: RequestInit }> = [];
+    const shareFetch = async (url: string, init?: RequestInit) => {
+      seen.push({ url, init });
+      return new Response('<html>never read</html>', {
+        status: 301,
+        headers: { location: 'https://dl.flipkart.com/dl/cerave-moisturising-cream-for-dry-to-very-dry-skin-50-ml/p/itm123?pid=MSCABC&lid=L1' },
+      });
+    };
+    const s = setup({ claude: caller, shareFetch });
+    const r = await s.req('POST', '/v1/resolve', { source: 'share_text', text: 'https://dl.flipkart.com/s/qPYPSuNNNN' });
+    const body = ResolveResponse.parse(r.json);
+    expect(body).toMatchObject({ outcome: 'match', store: 'flipkart', extractedTitle: 'cerave moisturising cream for dry to very dry skin 50 ml' });
+    expect(seen).toHaveLength(1);
+    expect(seen[0]!.url).toBe('https://dl.flipkart.com/s/qPYPSuNNNN');
+    expect(seen[0]!.init?.redirect).toBe('manual');
+    expect(calls).toHaveLength(0);
+  });
+
+  it('never fetches anything that is not a dl.flipkart.com/s/ short link', async () => {
+    const seen: string[] = [];
+    const s = setup({ shareFetch: async (url) => (seen.push(url), new Response(null, { status: 404 })) });
+    await s.req('POST', '/v1/resolve', { source: 'paste', text: 'https://www.flipkart.com/some-thing/p/itm1?pid=X' });
+    await s.req('POST', '/v1/resolve', { source: 'paste', text: 'https://evil.example/s/abcdef' });
+    expect(seen).toEqual([]);
+  });
+
+  it('uses the Amazon title from the real share text', async () => {
+    const s = setup();
+    const r = await s.req('POST', '/v1/resolve', { source: 'share_text', text: SHARE_FIXTURES.amazon });
+    expect(r.json).toMatchObject({ store: 'amazon_in', extractedTitle: SHARE_FIXTURES.amazonTitle });
   });
 
   it('asks Claude (effort low) when the catalogue is not sure, and returns candidates for the user to confirm', async () => {

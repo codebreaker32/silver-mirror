@@ -124,3 +124,15 @@ describe('deriveSkinType (published rule for copy set B)', () => {
     expect(deriveSkinType(bands)).toBe(expected);
   });
 });
+
+describe('bands vs the real G1 spike (spikes/g1_result.json, airbrushed sample face)', () => {
+  it('maps high raw_score to LOW visible concern (higher raw = less visible concern)', () => {
+    // FINDINGS G1: oiliness 99.5, pore 100, redness 96.2 on an airbrushed face → least visible concern.
+    expect(bandFor(99.5, 'oiliness')).toBe('Low');
+    expect(bandFor(100, 'pore')).toBe('Low');
+    expect(bandFor(96.2, 'redness')).toBe('Low');
+    // A low raw score means the concern is more visible.
+    expect(bandFor(5, 'oiliness')).toBe('High');
+    expect(bandFor(5, 'redness')).toBe('High');
+  });
+});

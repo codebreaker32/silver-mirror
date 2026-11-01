@@ -3,10 +3,13 @@ import { base64ToBytes } from '../lib/b64';
 import { MOCK_JPEG_BASE64, type MockAsset } from './assets';
 import credit from './fixtures/credit.json';
 import featureCost from './fixtures/feature-cost.json';
-import makeupVto from './fixtures/makeup-vto.json';
+import spikeG5Foundation from './fixtures/spike-g5-foundation.json';
 import skinHdOily from './fixtures/skin-analysis-hd-oily.synthetic.json';
 import skinHd from './fixtures/skin-analysis-hd.json';
 import skinTone from './fixtures/skin-tone.json';
+
+/** Real G5 makeup-vto result (spikes/g5_foundation_deep.json, signed URL redacted). */
+const makeupVto = spikeG5Foundation.result;
 
 /**
  * Mock YouCam server. Mirrors the s2s paths (docs/youcam/md: file_post, sa21_post/sa21_get, makeup VTO, face tone, yce.html task/delete)
@@ -213,7 +216,7 @@ export const createMockYouCam = (options: MockOptions = {}) => {
       return fill(strip(task.scenario === 'oily' ? skinHdOily : skinHd), assets);
     }
     if (task.kind === 'skin_tone') return strip(skinTone);
-    return fill(strip(makeupVto), assets);
+    return fill(makeupVto, assets);
   };
 
   const getTask = (kind: Kind) => (c: Context) => {

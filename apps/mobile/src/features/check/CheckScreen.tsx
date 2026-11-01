@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ComponentRef } from 'react';
-import { AccessibilityInfo, Linking, Pressable, ScrollView, Text, View } from 'react-native';
+import { AccessibilityInfo, Pressable, ScrollView, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DEMO_KEY, type HowThisWasMade, type Store } from '@skinkey/contracts';
@@ -7,6 +7,7 @@ import { FACET_MAP, medicineGate, rank, verdict } from '@skinkey/rules';
 import { useTheme } from '@/theme/ThemeProvider';
 import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
 import { BetterMatches, guessCategory, useBetterMatches } from '@/features/matches';
+import { openStoreUrl } from '@/features/matches/openStoreUrl';
 import { CropStep, inputFromPaste, sampleInput, useIncomingShare, type CheckInput } from '@/features/share';
 import { workerCheckApi } from './api';
 import { HowThisWasMadeSheet } from './components/HowThisWasMadeSheet';
@@ -117,7 +118,7 @@ export default function CheckScreen() {
   const store = state.phase === 'resolving' ? state.store : (result?.store ?? (state.phase === 'confirm' ? state.resolve.store : 'other'));
   const storeName = STORE_NAME[store];
   const backToProduct = () => {
-    if (listingUrl && storeName) void Linking.openURL(listingUrl).catch(() => router.back());
+    if (listingUrl && storeName) void openStoreUrl(listingUrl).catch(() => router.back());
     else if (router.canGoBack()) router.back();
     else router.replace('/');
   };

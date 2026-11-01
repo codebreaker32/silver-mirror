@@ -1,4 +1,4 @@
-import type { ResolveRequest, Store } from '@skinkey/contracts';
+import { parseSharePayload, type ResolveRequest, type Store } from '@skinkey/contracts';
 
 export interface ParsedShare {
   store: Store;
@@ -62,8 +62,10 @@ export function cleanTitle(raw: string): string | null {
 
 export function parseShareText(text: string, webUrl?: string | null, metaTitle?: string | null): ParsedShare {
   const url = webUrl?.trim() || firstUrl(text);
-  const title = (metaTitle && cleanTitle(metaTitle)) || cleanTitle(text) || titleFromUrl(url);
-  return { store: detectStore(url), url, title, text: text.trim() };
+  // Store-specific parsers from the real S1 payloads (Amazon/Nykaa titles in the text; Flipkart short link resolved by the Worker).
+  const store = parseSharePayload(text, url);
+  const title = (metaTitle && cleanTitle(metaTitle)) || store.title || (store.needsRedirect ? null : cleanTitle(text) || titleFromUrl(url));
+  return { store: store.store !== 'other' ? store.store : detectStore(url), url, title, text: text.trim() };
 }
 
 export function toResolveRequest(input: Extract<CheckInput, { kind: 'text' }>): ResolveRequest {

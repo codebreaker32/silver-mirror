@@ -1,0 +1,48 @@
+{
+ "_source": "spikes/g5_foundation_deep.json (real makeup-vto run on Perfect Corp's docs sample face, 2026-11-01). Signed S3 URLs redacted.",
+ "request": {
+  "src_file_url": "https://plugins-media.makeupar.com/strapi/assets/sample_Image_1_202b6bf6e6.jpg",
+  "version": "1.0",
+  "effects": [
+   {
+    "category": "foundation",
+    "palettes": [
+     {
+      "color": "#A8774F",
+      "colorIntensity": 60,
+      "glowIntensity": 30,
+      "coverageIntensity": 40
+     }
+    ]
+   },
+   {
+    "category": "skin_smooth",
+    "skinSmoothStrength": 10,
+    "skinSmoothColorIntensity": 10
+   }
+  ]
+ },
+ "create": {
+  "status": 200,
+  "data": {
+   "task_id": "9iC2l_WopuyFlqrl80VUVbJk3gn0sm1g5emXow5woIAsvjpt0-QULWVcfId_dcUN"
+  }
+ },
+ "result": {
+  "status": 200,
+  "data": {
+   "error": null,
+   "results": {
+    "url": "{{assets}}/render.jpg"
+   },
+   "task_status": "success"
+  }
+ },
+ "latency_s": 5.4,
+ "delete": {
+  "status": 200,
+  "body": {
+   "status": 200
+  }
+ }
+}

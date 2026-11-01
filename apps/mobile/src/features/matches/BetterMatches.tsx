@@ -1,15 +1,16 @@
-import { Linking, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { COPY, type FacetMapping, type KeyProfile, type ProductCategory } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Body, Button, Caption, Icon, Tag } from '@/features/check/ui';
 import { storeLinks } from './links';
+import { openStoreUrl } from './openStoreUrl';
 import type { MatchView } from './select';
 import type { MatchesState } from './useBetterMatches';
 
 /** Affiliate tags are off in the app (spec §7); the disclosure only shows when one is live. */
 const AFFILIATE_LIVE = false;
 
-const open = (url: string) => void Linking.openURL(url).catch(() => undefined);
+const open = (url: string) => void openStoreUrl(url).catch(() => undefined);
 
 function MatchCard({ m }: { m: MatchView }) {
   const t = useTheme();

@@ -4,7 +4,7 @@ import { COPY } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Button } from '../scan/ui';
 
-const STEPS = ['Open the product in Flipkart or Amazon.in', 'Tap Share', 'Pick SkinKey, then long-press it to pin it'];
+const STEPS = ['Open the product in Flipkart, Amazon.in or Nykaa', 'Tap Share (in Amazon, tap More first)', 'Pick SkinKey, then long-press it to pin it'];
 
 function ShareSheetArt() {
   const theme = useTheme();
@@ -71,6 +71,13 @@ export function ShareCoachMark({ onDismiss }: { onDismiss: () => void }) {
             <Text style={[theme.type.reasonIndex, { color: t.stepIndexColor, width: 28 }]}>{`0${i + 1}`}</Text>
             <Text style={[t.body, { color: theme.colors.text, flex: 1 }]}>{step}</Text>
           </View>
+        ))}
+      </View>
+      <View testID="share-paths" style={{ gap: theme.space[1] }}>
+        {COPY.sharePaths.map((path) => (
+          <Text key={path} style={[theme.type.bodySm, { color: theme.colors.textMuted }]}>
+            {path}
+          </Text>
         ))}
       </View>
       <Button label="Got it" variant="primary" onPress={onDismiss} />

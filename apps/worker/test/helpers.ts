@@ -98,6 +98,7 @@ export interface SetupOptions {
   claude?: ClaudeCaller;
   mockOptions?: MockOptions;
   env?: Partial<Env>;
+  shareFetch?: (input: string, init?: RequestInit) => Promise<Response>;
 }
 
 export const setup = (opts: SetupOptions = {}) => {
@@ -121,6 +122,7 @@ export const setup = (opts: SetupOptions = {}) => {
     catalog: loadCatalog(TEST_PRODUCTS),
     ...(opts.claude ? { claude: opts.claude } : {}),
     random: () => 0,
+    ...(opts.shareFetch ? { shareFetch: opts.shareFetch } : {}),
   });
   const env: Env = {
     KV: kv.asKV(),

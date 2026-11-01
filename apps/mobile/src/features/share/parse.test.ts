@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { cleanTitle, detectStore, inputFromPaste, inputFromShareIntent, parseShareText, titleFromUrl, toResolveRequest } from './parse';
 import { sampleInput } from './sample';
+import { nykaaFixture, SHARE_FIXTURES } from '@skinkey/contracts';
 
 describe('detectStore', () => {
   it.each([
@@ -75,5 +76,18 @@ describe('inputs', () => {
     const input = sampleInput();
     expect(input.kind === 'text' && input.parsed.store).toBe('flipkart');
     expect(input.kind === 'text' && toResolveRequest(input).source).toBe('sample');
+  });
+});
+
+describe('real S1 share payloads (spikes/FINDINGS.md)', () => {
+  it('Amazon: title is the text minus the prefix and URL', () => {
+    const p = parseShareText(SHARE_FIXTURES.amazon);
+    expect(p).toMatchObject({ store: 'amazon_in', url: 'https://amzn.in/d/05kxo4QC', title: SHARE_FIXTURES.amazonTitle });
+  });
+  it('Nykaa: title from "Check out <title> on Nykaa"', () => {
+    expect(parseShareText(nykaaFixture())).toMatchObject({ store: 'nykaa', title: SHARE_FIXTURES.nykaaTitle });
+  });
+  it('Flipkart short link: no title on the phone (the Worker reads one redirect header)', () => {
+    expect(parseShareText('https://dl.flipkart.com/s/qPYPSuNNNN')).toMatchObject({ store: 'flipkart', title: null });
   });
 });

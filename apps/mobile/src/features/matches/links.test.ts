@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { COPY, DEMO_KEY, type FacetMapping, type KeyProfile, type RankedMatch } from '@skinkey/contracts';
 import { PRODUCT, TINTED } from '../check/fixtures';
-import { amazonSearchUrl, facetFor, flipkartFacetUrl, flipkartSearchUrl, guessCategory, nykaaSearchUrl, storeKeywords, storeLinks } from './links';
+import { amazonSearchUrl, facetFor, flipkartFacetUrl, flipkartSearchUrl, guessCategory, nykaaSearchUrl, opensInCustomTab, storeKeywords, storeLinks } from './links';
 import { selectMatches } from './select';
 
 const MAP: FacetMapping[] = [
@@ -37,6 +37,15 @@ describe('store links', () => {
     expect(links[0]!.label).toBe("Browse Flipkart's own Oily Skin filter (seller-tagged, not checked by SkinKey)");
     expect(links[0]!.destination).toBe('Opens a Flipkart search, filtered to Oily Skin');
     expect(links[1]!.destination).toBe('Opens an Amazon keyword search for "moisturiser for oily skin"');
+  });
+
+  it('opens Nykaa in a browser Custom Tab (its app drops keyword search, FINDINGS S1); Flipkart/Amazon via the app', () => {
+    const links = storeLinks({ category: 'moisturiser', key: oily, facetMap: MAP, facetLabel: COPY.flipkartFacetLink });
+    expect(links.map((l) => [l.id, l.opener])).toEqual([['flipkart_facet', 'app'], ['amazon', 'app'], ['nykaa', 'custom_tab']]);
+    expect(links[2]!.destination).toContain('browser tab');
+    expect(opensInCustomTab('https://www.nykaa.com/x/p/123')).toBe(true);
+    expect(opensInCustomTab('https://www.flipkart.com/search?q=x')).toBe(false);
+    expect(opensInCustomTab('https://nykaa.com.evil.io/')).toBe(false);
   });
 
   it('falls back to a Flipkart keyword search with no facet', () => {

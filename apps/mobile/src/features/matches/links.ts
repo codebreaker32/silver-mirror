@@ -69,6 +69,11 @@ export interface StoreLink {
   label: string;
   destination: string;
   url: string;
+  /**
+   * How the link opens. Nykaa keyword search deep-links to the Nykaa app's home screen, not the results
+   * (spikes/FINDINGS.md S1), so Nykaa opens in a browser Custom Tab.
+   */
+  opener: 'app' | 'custom_tab';
 }
 
 export function storeLinks(opts: { category: ProductCategory | null; key: KeyProfile | null; facetMap: readonly FacetMapping[]; facetLabel: (facet: string) => string }): StoreLink[] {
@@ -77,11 +82,21 @@ export function storeLinks(opts: { category: ProductCategory | null; key: KeyPro
   const word = categoryWord(opts.category);
   const links: StoreLink[] = [];
   if (facet) {
-    links.push({ id: 'flipkart_facet', label: opts.facetLabel(facet), destination: `Opens a Flipkart search, filtered to ${facet}`, url: flipkartFacetUrl(word, facet) });
+    links.push({ id: 'flipkart_facet', label: opts.facetLabel(facet), destination: `Opens a Flipkart search, filtered to ${facet}`, url: flipkartFacetUrl(word, facet), opener: 'app' });
   } else {
-    links.push({ id: 'flipkart', label: 'Search Flipkart', destination: `Opens a Flipkart keyword search for "${q}"`, url: flipkartSearchUrl(q) });
+    links.push({ id: 'flipkart', label: 'Search Flipkart', destination: `Opens a Flipkart keyword search for "${q}"`, url: flipkartSearchUrl(q), opener: 'app' });
   }
-  links.push({ id: 'amazon', label: 'Search Amazon.in', destination: `Opens an Amazon keyword search for "${q}"`, url: amazonSearchUrl(q) });
-  links.push({ id: 'nykaa', label: 'Search Nykaa', destination: `Opens a Nykaa keyword search for "${q}"`, url: nykaaSearchUrl(q) });
+  links.push({ id: 'amazon', label: 'Search Amazon.in', destination: `Opens an Amazon keyword search for "${q}"`, url: amazonSearchUrl(q), opener: 'app' });
+  links.push({ id: 'nykaa', label: 'Search Nykaa', destination: `Opens a Nykaa keyword search for "${q}" in a browser tab`, url: nykaaSearchUrl(q), opener: 'custom_tab' });
   return links;
 }
+
+/** Store URLs that must open in a Custom Tab rather than the store app (Nykaa: app deep links drop the search). */
+export const opensInCustomTab = (url: string): boolean => {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host === 'nykaa.com' || host.endsWith('.nykaa.com');
+  } catch {
+    return false;
+  }
+};

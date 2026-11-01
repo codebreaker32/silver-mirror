@@ -52,6 +52,9 @@ export function ShareTipCard({ onDismiss, onPaste }: { onDismiss: () => void; on
           <Text style={[c.body, { color: t.colors.text, flex: 1 }]}>{s}</Text>
         </View>
       ))}
+      <Text testID="amazon-coach-mark" style={[t.type.label, { color: t.colors.text }]}>
+        {COPY.amazonCoachMark}
+      </Text>
       <Text style={[t.type.bodySm, { color: t.colors.textMuted }]}>{COPY.coachMark}.</Text>
       <View style={{ gap: t.space[2] }}>
         <Button label="Got it" onPress={onDismiss} testID="share-tip-dismiss" />

@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { LabelOcrRequest, ResolveRequest, type LedgerEntry, type ResolveCandidate, type ResolveResponse } from '@skinkey/contracts';
+import { LabelOcrRequest, parseFlipkartLocation, parseSharePayload, ResolveRequest, type LedgerEntry, type ResolveCandidate, type ResolveResponse } from '@skinkey/contracts';
 import { Hono } from 'hono';
 import { detectStore, extractTitle, inciVocabulary, MATCH, searchCatalog, toSummary, type Catalog } from '../catalog';
 import { ClaudeOutputError, ClaudeRefusalError, type StructuredResult } from '../claude/client';
@@ -43,8 +43,11 @@ const candidate = (catalog: Catalog, catalogId: string, confidence: number, why:
 /** X3 share resolver: catalogue fuzzy match first; Claude only when the catalogue is not sure. The user confirms the SKU either way. */
 export const resolve = async (ctx: AppCtx, req: ResolveRequest, ip: string, limit: (ip: string) => Promise<void>): Promise<ResolveResponse> => {
   const { catalog } = ctx;
-  const store = detectStore(req.text, req.url);
-  const title = extractTitle(req.text, req.url);
+  const parsed = parseSharePayload(req.text ?? '', req.url);
+  const store = parsed.store !== 'other' ? parsed.store : detectStore(req.text, req.url);
+  // Flipkart shares carry only dl.flipkart.com/s/<code>: one redirect header gives slug + pid (spikes/FINDINGS.md S1).
+  const redirected = parsed.needsRedirect && parsed.url ? parseFlipkartLocation(await ctx.flipkartLocation(parsed.url)) : null;
+  const title = parsed.title ?? redirected?.title ?? extractTitle(req.text, req.url);
   const base = { store, catalogCount: catalog.verifiedCount };
   const entries: LedgerEntry[] = [];
   const ledger = () => summarise(ctx.mode === 'mock', entries, []);

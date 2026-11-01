@@ -1,4 +1,4 @@
-import { INSTALL_HEADER } from '@skinkey/contracts';
+import { INSTALL_HEADER, isFlipkartShortLink, SHARE_FIXTURES } from '@skinkey/contracts';
 import type { Context } from 'hono';
 import { bundledCatalog, type Catalog } from './catalog';
 import { sdkCaller, type ClaudeCaller } from './claude/client';
@@ -24,6 +24,8 @@ export interface AppDeps {
   catalog?: Catalog;
   pacerStore?: (mode: YouCamMode, store: JsonStore) => PacerStateStore;
   random?: () => number;
+  /** Overrides the network for the Flipkart short-link redirect lookup (tests only). */
+  shareFetch?: FetchLike;
 }
 
 export interface AppCtx {
@@ -39,6 +41,8 @@ export interface AppCtx {
   youcam(useMock: boolean): YouCamClient;
   claude(): { caller: ClaudeCaller; model: string; mocked: boolean };
   installSecret(): string;
+  /** Location header of ONE manual-redirect GET to https://dl.flipkart.com/s/<code>. The page body is never read. */
+  flipkartLocation(shortUrl: string): Promise<string | null>;
 }
 
 export type HonoEnv = { Bindings: Env; Variables: { ctx: AppCtx } };
@@ -93,6 +97,18 @@ export const makeContextFactory = (deps: AppDeps) => {
         if (env.INSTALL_HMAC_SECRET) return env.INSTALL_HMAC_SECRET;
         if (mode === 'mock') return 'dev-only-mock-install-secret';
         throw new HttpError('internal', 'Install tokens are not configured');
+      },
+      flipkartLocation: async (shortUrl) => {
+        if (!isFlipkartShortLink(shortUrl)) return null;
+        if (!deps.shareFetch && mode === 'mock') return shortUrl === SHARE_FIXTURES.flipkartShortLink ? SHARE_FIXTURES.flipkartLocation : null;
+        const doFetch = deps.shareFetch ?? ((input, init) => fetch(input, init));
+        try {
+          const res = await doFetch(shortUrl, { method: 'GET', redirect: 'manual', signal: AbortSignal.timeout(4000) });
+          await res.body?.cancel().catch(() => undefined);
+          return res.status >= 300 && res.status < 400 ? res.headers.get('location') : null;
+        } catch {
+          return null;
+        }
       },
     };
   };

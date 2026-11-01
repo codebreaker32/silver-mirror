@@ -6,3 +6,4 @@ export * from './ledger';
 export * from './api';
 export * from './copy';
 export * from './demo';
+export * from './share';

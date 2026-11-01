@@ -18,6 +18,13 @@ export const COPY = {
   linkOutMatch: 'Opens a Flipkart search for this product',
   backToListing: (store: string) => `Returns to the ${store} listing`,
   shareTipTitle: 'In Flipkart, tap Share → SkinKey',
+  /** Per-store share paths from spikes/FINDINGS.md S1: Amazon's own panel hides SkinKey behind More. */
+  sharePaths: [
+    'Flipkart: Share → SkinKey',
+    'Amazon: Share → More → SkinKey',
+    'Nykaa: Share → SkinKey',
+  ] as const,
+  amazonCoachMark: 'Amazon: Share → More → SkinKey',
   noKeyPrompt: 'Scan for reasons based on your readings.',
   noMatches: 'No better matches in our catalogue yet',
   howMadeBoundary: 'Claude reads. Our rules decide.',

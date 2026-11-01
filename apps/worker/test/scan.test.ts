@@ -73,6 +73,23 @@ describe('scan chain (mock YouCam)', () => {
     expect(del).toMatchObject({ status: 'ok', deleteState: 'deleted' });
   });
 
+  it('retries the confirming GET exactly 3 times, at least 2 s apart, before giving up (FINDINGS G0)', async () => {
+    const s = setup({ mockOptions: { deleteLagGets: 99 } });
+    await s.install();
+    const { json } = await startScan(s);
+    await s.put(json.upload);
+    await s.req('POST', '/v1/scan/submit', { scanId: json.scanId });
+    const { last } = await pollUntil(s, `/v1/scan/${json.scanId}`, settled);
+    expect(last.deleteState).toBe('delete_failed');
+    const s2s = s.mock.state.calls.filter((c) => c.path.startsWith('/s2s/'));
+    expect(s2s).toHaveLength(s.apiCallTimes.length);
+    const deleteAt = s2s.findIndex((c) => c.path === '/s2s/v2.0/task/delete');
+    const confirms = s2s.map((c, i) => ({ c, t: s.apiCallTimes[i]! })).slice(deleteAt + 1).filter(({ c }) => c.method === 'GET');
+    expect(confirms).toHaveLength(3);
+    const times = [s.apiCallTimes[deleteAt]!, ...confirms.map((x) => x.t)];
+    for (let i = 1; i < times.length; i++) expect(times[i]! - times[i - 1]!).toBeGreaterThanOrEqual(2000);
+  });
+
   it('reports delete_failed with the fixed copy when YouCam refuses the delete', async () => {
     const s = setup();
     await s.install();
