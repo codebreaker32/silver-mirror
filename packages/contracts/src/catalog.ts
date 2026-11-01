@@ -23,6 +23,10 @@ export const Shade = z.object({
 });
 export type Shade = z.infer<typeof Shade>;
 
+/** Where the INCI list was copied from. Only brand_official rows are eligible for a human verification tick. */
+export const SourceKind = z.enum(['brand_official', 'retailer', 'third_party']);
+export type SourceKind = z.infer<typeof SourceKind>;
+
 export const RowStatus = z.enum(['verified', 'unverified', 'unverifiable']);
 export type RowStatus = z.infer<typeof RowStatus>;
 
@@ -40,6 +44,7 @@ export const CatalogProduct = z.object({
   claims: z.array(Claim),
   shades: z.array(Shade).default([]),
   source_url: z.string(),
+  source_kind: SourceKind.optional(),
   fetched_at: z.string(),
   screenshot_path: z.string().optional(),
   verified: z.boolean(),

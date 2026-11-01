@@ -31,4 +31,6 @@ export type { BannedPhrase, LintViolation } from './lint';
 export { sha256Hex, stableStringify } from './sha256';
 export { buildCatalog, catalogId, toCatalogProduct } from './catalog';
 export type { BuiltCatalogRow, ClaimsSource } from './catalog';
+export { mergeCatalog, sourceKindOf } from './catalogMerge';
+export type { DropReason, DroppedRow, MergeResult, MergedRow } from './catalogMerge';
 export { claimsFromMarketedFor } from './claims';

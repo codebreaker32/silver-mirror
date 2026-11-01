@@ -5,7 +5,7 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 ## Status board
 - [x] 1. Monorepo green (install, typecheck, test)
 - [x] 2. Spike findings applied
-- [ ] 3. Catalog merged + AUDIT.md
+- [x] 3. Catalog merged + AUDIT.md
 - [ ] 4. Tier 1 flows E2E against mock
 - [ ] 5. Worker `wrangler dev` mock + smoke script
 - [ ] 6. Web pages + vite build
@@ -13,7 +13,8 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - [ ] 8. Quality (copy linter, a11y, secret grep, README)
 
 ## Needs Aman
-- (none yet beyond STATUS.md morning checklist: selfie for band calibration, Flipkart audit screenshots, hallway tests, demo video)
+- (STATUS.md morning checklist: selfie for band calibration, Flipkart audit screenshots, hallway tests, demo video)
+- **Catalogue verification ticks**: 0 of 176 rows are verified, so better matches and "N verified products" show 0 until a human ticks rows. Check a `brand_official` row's INCI against its `source_url`, then add its id to `data/catalog/verified.json` and run `npm run catalog:merge`. Ticks on retailer rows are ignored by design. About 10 ticks across sunscreen/moisturiser/cleanser would cover the demo.
 
 ---
 
@@ -38,3 +39,13 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - Fixed: contracts has no DOM lib → module-scoped `declare const URL` in share.ts.
 - Verification: `npm run typecheck` all workspaces 0 errors; `npm test` 39 files passed, 1 skipped; 459 passed, 1 skipped; mobile `jest` 7/7.
 - Next: item 3 (catalog.json merge + AUDIT.md).
+
+## 2026-11-01 — Iteration 3: catalogue merged + AUDIT.md
+- `packages/rules/src/catalogMerge.ts`: `mergeCatalog()` (deterministic, first row wins) and `sourceKindOf()` (brand_official / retailer / third_party by host). It drops rows with `inci_complete:false`, no https source, third-party decoder sources (CureSkin) or out-of-scope categories (beard oil), and dedupes on id and GTIN. A human tick from `data/catalog/verified.json` only counts on a brand_official row; self-declared `verified:true` on a retailer row is ignored and listed.
+- Added optional `source_kind` to `CatalogProduct` (contracts).
+- `scripts/merge-catalog.ts` + `npm run catalog:merge` (esbuild bundle, no network) → `data/catalog/catalog.json`, `data/catalog/AUDIT.md`, then refreshes the Worker's `src/generated/catalog.json`.
+- Result: 197 input rows from 29 brand files → **176 kept** (149 brand page, 27 retailer), **21 dropped** (13 incomplete INCI, 7 CureSkin, 1 beard oil), 0 verified (needs human ticks, see Needs Aman). Categories: sunscreen 51, cleanser 47, moisturiser 38, serum 29, tinted_spf 11.
+- No new brands added this iteration (needs verbatim INCI from official brand pages; not worth the time ahead of items 4–8).
+- Tests: `packages/rules/test/catalogMerge.test.ts` (7): classification, drop reasons, dedupe, tick policy, plus checks that catalog.json is exactly the merge of brands/*.json and every row is schema-valid, unique, complete and https.
+- Verification: `npm run typecheck` exit 0, 0 TS errors; `npx vitest run` 40 files passed, 1 skipped; 466 passed, 1 skipped.
+- Next: item 4 (Tier 1 flows end to end against the mock). For the mock demo a few verified rows will be needed; tests use fixtures, so this doesn't block.
