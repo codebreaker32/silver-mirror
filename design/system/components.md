@@ -31,7 +31,7 @@ Components reference **semantic, type, space, radius, elevation, motion and comp
 | `type.reason` | `typography.scale.reason` | `<Text {...textProps.reason} style={typography.reason}>` | `font: var(--sk-type-reason); letter-spacing: var(--sk-type-reason-tracking)` or class `.sk-type-reason` |
 | `space.4`, `space.gutter` | `spacing.scale` / `spacing.semantic` | `space[4]`, `spacing.gutter` (dp numbers) | `var(--sk-space-4)` (px) |
 | `radius.lg` | `radius` | `radius.lg` | `var(--sk-radius-lg)` |
-| `elevation.2` | `elevation.light.2` / `elevation.dark.2` | `theme.elevation[2].style` (or `.boxShadow` on the new architecture, never both) | `--sk-elevation-2-surface / -border / -shadow` |
+| `elevation.2` | elevation → light / dark → level 2 | `theme.elevation[2].style` (or `.boxShadow` on the new architecture, never both) | `--sk-elevation-2-surface / -border / -shadow` |
 | `motion.duration.press`, `motion.ease.standard` | `motion.*` | `motion.duration.press`, `Easing.bezier(...motion.ease.standard)` | `var(--sk-duration-press)`, `var(--sk-ease-standard)` |
 | `touch.min`, `icon.lg` | `touch`, `icon` | `touch.min`, `icon.lg` | `var(--sk-touch-min)`, `var(--sk-icon-lg)` |
 | `<component>.<path>` e.g. `verdictCard.head.caution.bg` | `component.*` | `theme.components.verdictCard.head.caution.bg` | `var(--sk-verdict-card-head-caution-bg)` (camelCase → kebab, dots → dashes) |
@@ -676,11 +676,11 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 
 **Purpose:** the main content of /check. It ties one of the user's readings to one product fact.
 
-**Anatomy:** a 2-column grid (index 32dp | content), padding `space.4` vertical, with a hairline `color.border` bottom.
-1. Index "01" (`type.reasonIndex`, muted, tabular)
-2. **Reading line** (`type.reason`, `color.text`)
-3. **Product fact** (`type.body`, 16dp, **`color.text`**): it names the ingredient *and* says in plain words why it matters (§7 addendum)
-4. A reading band chip (§8, `compact`), `space.3` above
+**Anatomy:** a 2-column grid (index `reasonRow.indexWidth` 32 | content), padding `reasonRow.paddingY` vertical, with a hairline `reasonRow.divider` bottom.
+1. Index "01" (`reasonRow.index`, Newsreader italic 18, muted, tabular)
+2. **Reading line** (`reasonRow.reading` = `type.reason`, **Newsreader 19/26 weight 500**, `color.text`). Weight 500 so it leads the fact despite Commissioner's large x-height.
+3. **Product fact** (`reasonRow.fact` = `type.body`, Commissioner 16/400, **`reasonRow.factColor` full text colour**), only `reasonRow.factGap` (6dp) below the reading so each reason reads as one unit. It names the ingredient *and* says in plain words why it matters.
+4. A reading band chip (§8, compact), `reasonRow.chipGap` above
 
 **Variants:**
 
@@ -697,7 +697,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | State | Spec |
 |---|---|
 | default | as above |
-| entering | opacity + translateY 6dp→0, staggered `motion.duration.reasonStagger` |
+| entering | opacity + translateY `motion.enter.translate`→0, staggered `motion.duration.reasonStagger` |
 | expanded (optional "Why this matters") | tertiary link; reveals a `type.body` explanation in place |
 | focused | focus ring around the row (if expandable) |
 | loading | not shown; reasons arrive with the verdict |
@@ -747,19 +747,24 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 
 **Purpose:** shows one reading as a band (LOW / MEDIUM / HIGH). The text is the information; the meter is a visual echo.
 
-**Anatomy:**
-- Chip: `color.bg-sunken`, radius.sm
-- Text "Oiliness · High" (`type.label`, `color.text`)
-- A trailing **horizontal 3-segment meter**: segments 10 × 6dp, gap 2dp, radius.xs. Filled = `meter.filled` (neutral ink). Empty = a **full-opacity 1.5dp `meter.empty` outline**.
-- This replaces Clay & Ink's vertical "signal bars" (judge fix 8).
+**Anatomy, compact chip (reason rows, match cards):**
+- `bandChip.bg`, `bandChip.radius`, `bandChip.visualMinHeight` 32 (it is not a target)
+- Text "Oiliness · High" (`bandChip.type`, `bandChip.fg`; the "·" in `bandChip.separatorColor`)
+- A trailing **horizontal 3-segment meter**: segments `bandChip.meter.segmentWidth` × `bandChip.meter.segmentHeight` (10 × 6), gap `bandChip.meter.segmentGap` 3, `bandChip.meter.segmentRadius`. Filled = `bandChip.meter.filled` (neutral ink). Empty = a **full-opacity 1dp `bandChip.meter.emptyStroke` outline** (≥ 3:1).
+
+**Anatomy, band list (/profile)** — `bandList.*`, set like the dispensing-label ledger:
+- One legend above the list, right-aligned, in `bandList.legend`: three mini meters with "Low · Medium · High". It replaces the 7 repeated scale labels of v1.0.
+- A `bandList.topRule` (1.5dp ink) and `bandList.bottomRule`, hairline `bandList.rowDivider` between rows.
+- One row per band, `bandList.rowMinHeight` 56: band name on the left in `bandList.name` (Commissioner 16), band word on the right in `bandList.value` (**Newsreader 18**), with the neutral meter under the word (`bandList.meterGap`).
+- At ≥ `bandList.stackAtFontScale` the word and meter wrap under the name.
 
 **Variants:**
 
 | Variant | Use | Size |
 |---|---|---|
-| `compact` | inside a reason row, non-interactive | min height 32dp |
-| `profile` | the /profile **2 × 2 grid** (1 column at ≥ 1.5× font); band text on line 1, meter + `type.caption` "Low · Medium · High" scale labels below | min height 56dp |
-| `interactive` | opens the band explainer sheet (enabled if U3 fails) | 48dp target |
+| `compact` | inside a reason row or match card, non-interactive | visual 32dp |
+| `list` | the /profile band list (`bandList.*`) | row 56dp |
+| `interactive` | opens the band explainer sheet (enabled if U3 fails). A Pressable whose own box is `bandChip.target` (48dp) around the 32dp visual. | 48dp target |
 | `selfReported` | adds the tag "self-reported, not measured" (§27) | |
 
 **States:**
@@ -770,7 +775,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | pressed (interactive) | `color.state.pressed` |
 | focused (interactive) | focus ring, radius.sm + 2 |
 | stale (scan older than 30 days, ASSUMPTION) | caption "Scan [date]" stays visible. No colour change. |
-| noData | "Pores · Not measured" (proposed), all segments empty |
+| noData | "Pores · Not measured" (proposed), word in `bandChip.noData.valueColor`, all segments empty (`bandChip.noData.filledSegments` 0) |
 
 **Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
@@ -819,7 +824,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 
 **Accessibility:**
 - Label: "Oiliness reading: high." The meter is `importantForAccessibility="no"` because it duplicates the text.
-- TalkBack reads the profile grid row by row, in a fixed order: oiliness, moisture, redness, acne (label per open decision), pores, texture, radiance.
+- TalkBack reads the band list row by row, in a fixed order: oiliness, moisture, redness, acne (label per open decision), pores, texture, radiance.
 - No skin-colour swatch, ever.
 
 **Copy:**
@@ -843,12 +848,14 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 > **ASSUMPTION / UNVERIFIED:** this needs YouCam masks to give per-zone values. Masks are turned into zone bands in the proxy and then discarded with the task. Cut this component if zone data isn't available.
 
 **Anatomy:**
-- A frame on `color.bg-sunken`, radius.lg, padding `space.4`.
-- A **generic line-art face outline** (oval + neck, no hair, no beard, no features beyond a centre line). Stroke 1.5dp `color.text-muted`.
-- **5 zones**: forehead, nose, left cheek, right cheek, chin. They are filled by **hatch density**, not colour: none = Low, 45° single hatch = Medium, cross-hatch = High. Hatch strokes are 1dp `meter.filled`.
-- A legend row of three swatches + "Low · Medium · High" (`type.caption`).
-- A caption: "Zones from your [date] scan · no photo kept" (proposed).
-- Above the frame, a concern selector: an M3 segmented button of the 7 readings, scrollable, each segment 48dp.
+- Section head "Readings by zone" (`skinMap.heading`, Newsreader 18) with a **48dp icon-only list toggle** at the trailing edge (`skinMap.listToggleTarget`, `list` icon, label "Show as list"). It replaced v1.0's "WHERE READINGS CAME FROM · Show as list" row, which overflowed a 350dp column.
+- Above the frame, a concern selector (`segmented.*`): the 7 readings, scrollable, each `segmented.minHeight` 48; selected = `segmented.selectedBg` + check icon.
+- A frame on `skinMap.bg`, `skinMap.radius`, padding `skinMap.padding`, 1dp `skinMap.border`.
+- A **line-art egg face**: wider brow, a jaw taper to the chin, no neck, no hair, no realistic features (two faint brow strokes and a mouth line only). Stroke `skinMap.faceStrokeWidth` 1.25 in `skinMap.faceOutline`.
+- **5 zones** outlined in `skinMap.zoneStroke` at `skinMap.zoneStrokeWidth`: a curved forehead band; a T-zone nose that joins the forehead; two soft teardrop cheeks along the cheekbone; a crescent chin. **Band = hatch density, never fill lightness:** none = Low, single 45° hatch at `skinMap.hatchSpacingMedium` = Medium, cross-hatch at `skinMap.hatchSpacingHigh` = High, strokes `skinMap.hatchWidth` in `skinMap.hatch` (per-mode neutral ink, gated at 3:1 on the frame).
+- **Every zone has a text row** in the list beside the drawing (same top-to-bottom order): "Forehead · High", "Nose · High", "Your left cheek · Medium", "Your right cheek · Medium", "Chin · Low". The diagram is **mirrored like a selfie**, so cheeks are "Your left / Your right" and the list never contradicts the drawing.
+- A legend row of three swatches + "Low · Medium · High" (`skinMap.legend`).
+- A caption: "Zones from your [date] scan · mirrored like a selfie · no photo kept" (proposed).
 
 **Variants:** `profile` (with selector), `processing` (one reading, shown once before "Done", never saved), `compact` (in a reason row expansion, one zone set).
 
@@ -857,9 +864,9 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | State | Spec |
 |---|---|
 | default | the selected concern's zones |
-| switching | zones crossfade over `motion.duration.state` |
+| switching | hatch crossfades over `motion.duration.state` |
 | noZoneData | the frame shows the face outline + "Zone detail isn't available for this reading." (proposed) |
-| listView | toggle "Show as list" → list rows (§26) "Forehead · High" |
+| listView | the icon toggle swaps the drawing for list rows (§26) "Forehead · High"; its label becomes "Show as diagram" |
 | focused (segment) | focus ring |
 
 **Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
@@ -908,7 +915,8 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 **Motion and haptics:** a 200ms crossfade on switch. `CLOCK_TICK` on segment change is optional; the default is none.
 
 **Do / Don't:**
-- Do keep it schematic and gender-neutral.
+- Do keep it schematic and gender-neutral (an egg, not a mask: no straight neck lines, no rectangle zones).
+- Don't use hatch anywhere else in the product; hatch means skin-map band.
 - Don't render a photo, a skin-tone fill or a red–yellow heatmap.
 - Don't show numbers or zone percentages.
 - Don't draw a realistic face.
@@ -921,19 +929,11 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 
 **Anatomy:**
 - No fill. It sits on `color.bg`.
-- A **1.5dp `color.text` top rule**, then the title "Where this comes from" (`ledger.title.type` = `type.button`, 15/20, 600), `space.3` below.
-- Rows are a 2-column grid: **key column 76dp** with small-caps keys (`type.overline`, muted), then values (`type.bodySm` 14/20 in `color.text` + `type.caption` muted sub-line). Each row has a `color.border` hairline below and `space.3` vertical padding.
-- A **1.5dp `color.text` bottom rule** closes the label.
+- A **1.5dp ink top rule** (`provenanceLedger.topRule`, `provenanceLedger.topRuleWidth`), then the title "Where this comes from" (`provenanceLedger.title`, Newsreader 20).
+- Rows are a 2-column grid: **key column `provenanceLedger.keyWidth` (72dp)** with small-caps keys (`provenanceLedger.key` = `type.overline`, 13dp caps, muted), then values (`provenanceLedger.value` 14/20 in `color.text` + `provenanceLedger.caption` muted sub-line). Hairline `provenanceLedger.rowDivider` between rows, `provenanceLedger.rowPaddingY` vertical padding.
+- A **1.5dp ink bottom rule** (`provenanceLedger.bottomRule`) closes the label.
+- **Links in a row are their own row**: the "Ingredient list source" link sits on its own line under the PRODUCT text, aligned to the value column, as a sibling node with a 48dp box.
 - Below the ledger, the two fixed lines in `type.caption`, muted.
-
-| Key | Value line | Sub-line |
-|---|---|---|
-| SKIN | "Measured by YouCam Skin Analysis, [date]" | `check` 16dp + "Photo deleted · score bands only" |
-| PRODUCT | "Ingredient list from the SkinKey catalogue" / "Product name only" / "Open Beauty Facts (ODbL)" | "[n] products checked by hand · " + external link "Ingredient list source" |
-| WEATHER *(only when a UV reason shows)* | "Weather: Open-Meteo (CC BY 4.0)" | "Updated [time]" (proposed) |
-| LIMITS | "Skin AI can be less accurate on deeper skin tones and in poor light." | none |
-
-Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Flipkart, Amazon or Nykaa."
 
 **Variants:** `check` (full), `profile` (SKIN + LIMITS only), `web` (same as `<dl>`), `pharmacistView` (SKIN + LIMITS + "Shared by the user for 30 minutes", proposed).
 
@@ -942,7 +942,7 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 | State | Spec |
 |---|---|
 | default | as above |
-| stacked (≥ 1.5× font) | each key sits above its value, full width |
+| stacked (≥ `provenanceLedger.stackAtFontScale`, or below `provenanceLedger.stackBelowWidth`) | each key sits above its value, full width |
 | link pressed / focused | per §4 |
 | offline | the external source link is disabled + "Needs a connection" |
 | hidden | under the medicine gate |
@@ -974,7 +974,7 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 <!-- /tokens -->
 
 **Accessibility:**
-- The title is `accessibilityRole="header"`. Each row is one node: "Skin: Measured by YouCam Skin Analysis, 1 Nov. Photo deleted, score bands only."
+- The title is `accessibilityRole="header"`. Each row's **text** is one node: "Skin: Measured by YouCam Skin Analysis, 1 Nov. Photo deleted, score bands only." A link in a row is a separate node after it (grouping would make it unreachable on Android).
 - Web: `<section aria-labelledby>` + `<dl>`, `<dt>` / `<dd>`.
 
 **Copy:**
@@ -996,13 +996,14 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 **Purpose:** explicit, specific, revocable consent (DPDP) before any new data act: the first scan, the pharmacist share, the tint photo.
 
 **Anatomy:**
-1. Title (`type.title`)
-2. **The privacy sentence in large type** (`type.headline`, `color.text`), read as one block
-3. A "What we keep" box: `color.surface`, 1dp `color.border`, radius.lg, padding `space.4`, with an overline "What we keep" + `type.body`
-4. Accessibility / Accuracy note (`type.bodySm`, muted, `info` 16dp)
-5. An "I'm 18 or older" checkbox row, **unticked** (first scan only)
-6. A retention policy link
-7. `consentPair` buttons
+1. **The privacy sentence, exactly as approved**, as one paragraph and one TalkBack block. Its first clause "SkinKey stores no photo;" is set in `consentSheet.privacyLead` (Newsreader 26/32) on its own line; the rest "YouCam processes it and we delete it from YouCam right after." in `consentSheet.privacyRest` (Commissioner 16). Same words and punctuation, so the promise lands first without rewriting R-approved copy. (Nested Text for styling only is fine in RN; it carries no action.)
+2. A "What we keep" box: `consentSheet.keepBox.*` with a sentence-case `consentSheet.keepBox.title` (Newsreader 18) + `consentSheet.keepList`
+3. Accuracy note (`consentSheet.accuracyNote`, muted, `info` 16dp)
+4. An "I'm 18 or older" checkbox row, **unticked** (first scan only): `consentSheet.checkbox.*`, 24dp box in a 48dp row, **no row fill** when checked (`consentSheet.checkbox.rowBg`)
+5. A retention policy link
+6. `button.consentPair` buttons, side by side (stacked at ≥ 1.3×)
+
+No screen-level overline ("Before the camera opens" is gone).
 
 **Variants:**
 
@@ -1077,11 +1078,12 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 **Purpose:** helps the user take a usable photo. The guide is static; there is no live face detection.
 
 **Anatomy:**
-- Full-bleed camera.
-- A `color.overlay-camera` mask with an **oval cut-out** (width 78% of the frame, aspect 3:4). The oval has a 2dp `color.on-overlay` stroke.
-- A tip stack above the oval: three tips in `type.body`, `color.on-overlay`.
-- A hint chip below the oval (`color.inverse-surface` / `color.inverse-text`, radius.sm).
-- The bottom bar: shutter at `captureGuide.shutter.size` (72dp; ring 3dp `color.on-overlay`, inner disc `color.on-overlay`), plus a 48dp flip-camera icon button and a 48dp "Tips" icon button.
+- Full-bleed camera. (Design files use a soft radial vignette as the camera stand-in, never flat grey blocks.)
+- A `captureGuide.overlay` mask with an **oval cut-out** (`captureGuide.ovalWidthPct` 72% wide, `captureGuide.ovalAspect` 0.78) and a `captureGuide.ovalStrokeWidth` 2dp `captureGuide.oval` stroke.
+- **One instruction line** above the oval, one line at 14/600 (`captureGuide.instruction`): "Fill the oval with your face".
+- **One hint at a time** below the oval in a pill (`captureGuide.hint.*`, `visualMinHeight` 40, kept `captureGuide.hint.insetX` 16dp from the edges): "More light", "Look straight ahead", "Move closer". The hint replaces itself; tips never stack edge to edge.
+- The bottom bar: shutter `captureGuide.shutter.size` 72 (ring `captureGuide.shutter.ringWidth`), plus 48dp flip-camera and Tips icon buttons (`captureGuide.iconButtonTarget`) on `captureGuide.iconButtonBg`.
+- Focus over the camera uses `captureGuide.focus` (white ring + 1dp dark halo).
 
 **Variants:** `selfie` (default), `tintPhoto` (same guide, with the tag "Preview, not a shade guarantee").
 
@@ -1127,13 +1129,14 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 
 **Accessibility:**
 - The shutter label is "Take photo".
-- **Volume keys also fire the shutter.**
-- TalkBack announces the tips on entry and each hint as it changes (live region polite).
+- **Volume keys fire the shutter on a single press** (either key). Both keys together is the TalkBack shortcut, so never require both.
+- No face detection, so give a spoken framing hint on entry (`captureGuide.$spokenHint`): "Hold the phone at eye level, about an arm's length away."
+- Each hint change is written to the screen's single hidden live region.
 - No flash is required.
 - The image is resized to at most 4096px on the long side before upload.
 
 **Copy:**
-- Tips: "Fill the oval with your face", "Look straight ahead", "Find even light" (proposed wording of the brief's three tips).
+- Instruction: "Fill the oval with your face". Hints, one at a time: "Look straight ahead", "More light" (proposed wording of the brief's three tips).
 - **Never** ask users to remove a hijab, turban, bindi, glasses, beard or makeup.
 
 **Motion and haptics:**
@@ -1153,19 +1156,20 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 **Purpose:** an honest progress list, with no bare spinner. The deletion step is proof of P2.
 
 **Anatomy:**
-- A vertical list of 4 steps, each 56dp min.
+- A vertical list of 4 steps, each `processingStepper.rowMinHeight` (56).
 - Each step has a 24dp status glyph, a label (`type.body`) and an optional sub-line (`type.caption` muted).
-- A 2dp connector line between glyphs: `color.border-strong` until the step is done, then `color.text`.
+- A `processingStepper.connectorWidth` connector: `processingStepper.connector` until the step is done, then `processingStepper.connectorDone`.
+- **Neutral ink only, never the accent** (lint-enforced).
 - The steps, as fixed in the brief: **Uploading → Analysing → Deleting photo from YouCam ✓ → Done**.
 
-Status glyphs avoid every verdict silhouette.
+Status glyphs avoid every verdict silhouette. Pending and active rings hold the **step numeral**, so the active glyph can't be mistaken for the UNKNOWN dashed circle + dot.
 
 | Step state | Glyph |
 |---|---|
-| pending | 1.5dp `color.border-strong` ring |
-| active | 2dp `color.text` ring + a 6dp `color.text` centre dot (static) |
-| done | `color.text` filled disc + check in `color.bg` |
-| failed | 1.5dp `color.text` ring + a "–" bar |
+| pending | `processingStepper.pending.ring` 1.5dp ring with the numeral in `processingStepper.pending.numeralColor` |
+| active | `processingStepper.current.ring` 2dp ring with the numeral in `processingStepper.current.numeral` (static) |
+| done | `processingStepper.done.fill` disc + check in `processingStepper.done.check` |
+| failed | `processingStepper.failed.ring` ring + a `processingStepper.failed.bar` "–" bar |
 
 **Variants:** `scan` (4 steps), `tint` (Uploading → Making preview → Deleting from YouCam → Done, proposed), `demo` (cached demo profile; caption "Demo profile" tag).
 
@@ -1217,7 +1221,7 @@ Status glyphs avoid every verdict silhouette.
 <!-- /tokens -->
 
 **Accessibility:**
-- The list is a live region (`accessibilityLiveRegion="polite"`). Each change is announced: "Step 3 of 4, deleting photo from YouCam." then "Photo deleted from YouCam."
+- The list is **not** a live region (TalkBack would re-read every child on each change). The screen's one hidden polite live region gets a single sentence per change: "Step 3 of 4, deleting photo from YouCam." then "Photo deleted from YouCam."
 - Progress is never colour-only: there is a glyph and the text changes too.
 
 **Copy:** the step labels are exact. Never "Securely deleting…" or "AI magic…".
@@ -1242,7 +1246,8 @@ Status glyphs avoid every verdict silhouette.
 **Anatomy:**
 - A button (`primary` or `secondary`, §3).
 - A trailing `arrow-up-right` 20dp.
-- Below the button, a **destination line** (`type.caption`, muted, centred under the button, `space.2` gap), with a leading `search` 16dp icon.
+- Below the button, a **destination line** (`storeLinkOut.destination`, `storeLinkOut.destinationColor`, centred, `storeLinkOut.destinationGap`), with a leading `search` 16dp icon.
+- Only store-search link-outs carry the line. "Back to product" carries none (it explains itself).
 
 **Variants and destination copy:**
 
@@ -1251,7 +1256,7 @@ Status glyphs avoid every verdict silhouette.
 | `betterMatchesFlipkart` | Find better matches | "Opens a Flipkart search, filtered to [Oily Skin]" (fixed pattern) |
 | `betterMatchesAmazon` | Find better matches | "Opens an Amazon keyword search for "[keywords]"" (proposed, following the "Amazon keyword search" rule) |
 | `betterMatchesNykaa` | Find better matches | "Opens a Nykaa keyword search for "[keywords]"" (proposed) |
-| `backToProduct` | Back to product | "Returns to the [Flipkart] listing" (proposed) |
+| `backToProduct` | Back to product | none |
 | `matchCard` | (card row, §19) | "Opens a Flipkart search for this product" (proposed) |
 
 **States:**
@@ -1260,7 +1265,7 @@ Status glyphs avoid every verdict silhouette.
 |---|---|
 | default | as the button variant |
 | pressed / focused | §3 |
-| offline | disabled; the destination line becomes "Needs a connection" (proposed, per brief §5.5) |
+| offline | disabled; the destination line becomes "Needs a connection" in `storeLinkOut.destinationDisabledColor` (proposed, per brief §5.5) |
 | filterUnverified | if gate G3 shows that the app drops the filter, the line says "Opens a Flipkart search for [Oily Skin]" (no "filtered") |
 | loading | label "Opening…" up to 1s, then hand off |
 
@@ -1300,8 +1305,8 @@ Status glyphs avoid every verdict silhouette.
 **Purpose:** says plainly how matches are ordered and how money works.
 
 **Anatomy:**
-- An inline note: a 1dp `color.border-strong` leading rule, padding `space.3`.
-- Lines in `type.bodySm`, `color.text`.
+- An inline note: a `rankingDisclosure.ruleWidth` `rankingDisclosure.rule` leading rule, padding `rankingDisclosure.paddingY` / `rankingDisclosure.paddingX`.
+- Lines in `rankingDisclosure.type` (14dp), `rankingDisclosure.color` (full text colour). Never muted fine print (lint-enforced).
 - An optional link "How ranking works" → /about.
 
 **Variants:**
@@ -1352,13 +1357,13 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** teaches the main entry point: **Share → SkinKey** from the store app.
 
 **Anatomy:**
-- A card (`color.surface-raised`, 1dp `color.border`, radius.lg, padding `space.5`, `elevation.1`).
-- An illustration panel (`color.bg-sunken`, radius.md; **paper grain allowed here**). It shows a generic, store-agnostic share sheet with a highlighted "SkinKey" tile outlined 2dp `color.text`. There are no store logos and no real app icons except our own.
+- A card (`shareTeachingCard.bg`, 1dp `shareTeachingCard.border`, `shareTeachingCard.radius`, padding `shareTeachingCard.padding`, `elevation.1`).
+- An illustration panel (`shareTeachingCard.illustrationBg`, `radius.md`; **the paper grain is shown here**, the static 3% tile, light only — `texture.grain.allowed`). It shows a generic, store-agnostic share sheet with the "SkinKey" tile outlined `shareTeachingCard.highlightWidth` in `shareTeachingCard.highlight`. There are no store logos and no real app icons except our own.
 - A title (`type.headline`).
 - A 3-step numbered list (`type.reasonIndex` numerals + `type.body`).
 - Actions: primary "Got it", tertiary "Paste a link instead".
 
-**Variants:** `firstRun` (onboarding step "Find SkinKey in your share menu"), `homeTip` (a dismissible one-time tip on home: "In Flipkart, tap Share → SkinKey"), `pasteEqual` (if U1 / T2 / H5 fails, paste-a-link is shown at equal weight as a `secondary` button).
+**Variants:** `firstRun` (onboarding step "Find SkinKey in your share menu", with a sentence-case "Step 2 of 3" caption, no overline), `homeHero` (**the hero of home**: the same illustration, then "In Flipkart, tap Share → SkinKey" in `type.headline`; Paste a link is the secondary below it and Scan in store the tertiary; the top-right chip reads "Your scan · 1 Nov" with no person glyph), `pasteEqual` (if U1 / T2 / H5 fails, paste-a-link is shown at equal weight as a `secondary` button).
 
 **States:**
 
@@ -1411,11 +1416,11 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** a live, sourced weather nudge tied to the user's readings. It is optional and 5th on the cut list.
 
 **Anatomy:**
-- A card (`color.surface`, 1dp `color.border`, radius.lg, padding `space.4`).
-- Overline "Skin forecast · [city]" (`type.overline`).
-- The main sentence (`type.headline`): "UV high today in [city]".
+- A card (`forecastCard.bg`, 1dp `forecastCard.border`, `forecastCard.radius`, padding `forecastCard.padding`).
+- Kicker "Skin forecast · [city]" in sentence case (`forecastCard.kicker`, 14/600 muted, `sun` 16dp). No tracked caps.
+- The main sentence (`forecastCard.figure`, Newsreader 20): "UV high today in [city]".
 - A supporting line (`type.body`): "Humidity 78%. Your skin looked oily in your 1 Nov scan." (proposed; tabular numerals).
-- Credit (`type.caption`, muted): "Weather: Open-Meteo (CC BY 4.0)" + "Updated 9:00" (proposed).
+- Credit (`forecastCard.credit` = `type.fine` 12dp, the one data-credit use of the floor): "Weather: Open-Meteo (CC BY 4.0)" + "Updated 9:00" (proposed).
 - An optional tertiary "Check a sunscreen" (proposed).
 
 **Variants:** `uv`, `humidity`, `calm` ("UV low today in [city]").
@@ -1451,7 +1456,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- /tokens -->
 
 **Accessibility:**
-- Readable as one sentence: the card is grouped, label "UV high today in Pune. Humidity 78 percent. Weather: Open-Meteo."
+- Group **only the text** (kicker, sentence, body, credit) as one node: "Skin forecast, Pune. UV high today in Pune. Humidity 78 percent. Weather: Open-Meteo." "Check a sunscreen" is a sibling node after the group, so TalkBack can reach it.
 - No auto-rotating content.
 
 **Copy:** never "protect", "prevent damage" or "dangerous UV". Describe conditions and link them to readings.
@@ -1470,12 +1475,13 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** a preview of a tinted product on the user's second photo (F3b, gate G5).
 
 **Anatomy:**
-- An image frame (radius.lg, 4:5).
-- **Split view**: the left side is "Without", the right side is "With tint". There is a vertical 2dp `color.on-overlay` divider with a 48dp circular handle (`color.inverse-surface`, chevrons `color.inverse-text`).
-- Corner labels in hint chips (`color.inverse-surface / color.inverse-text`): "Without" / "With tint".
-- **A permanent caption bar under the image**: "Preview, not a shade guarantee" (`type.label`, `color.text`).
-- A view switcher: an M3 segmented button "Without · Split · With tint", each 48dp.
-- A note (`type.caption`, muted): "This preview is deleted from YouCam when you leave." (proposed; it must match `task/delete` behaviour).
+- An image frame (`tryOnCompare.radius`, 4:5, 1dp `tryOnCompare.frameBorder`).
+- **Split view**: left "Without", right "With tint". A vertical `tryOnCompare.dividerWidth` `tryOnCompare.divider` line with a 1dp `tryOnCompare.dividerHalo` either side, so it reads over light and dark photos; a 48dp handle (`tryOnCompare.handleBg` / `tryOnCompare.handleFg`) with a 2dp `tryOnCompare.handleRing`.
+- Corner badges (`tryOnCompare.badge.*`): "Without" / "With tint".
+- **A permanent caption bar attached to the bottom edge of the frame**: "Preview, not a shade guarantee" (`tryOnCompare.disclaimer` on `tryOnCompare.disclaimerBg`). Never over the photo.
+- A view switcher (`segmented.*`): "Without · Split · With tint", each 48dp.
+- A note (`tryOnCompare.note`, muted): "This preview is deleted from YouCam when you leave." (proposed; it must match `task/delete` behaviour).
+- Design files use a neutral warm-grey placeholder plate with a real ~13% warm overlay (`tryOnCompare.previewTintOpacity`) on the tinted half. **Never hatch**: hatch means skin-map band only.
 
 **Variants:** `split` (default), `toggle` (single image + switcher only, for small screens and reduced motion).
 
@@ -1521,7 +1527,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 **Accessibility:**
 - **Dragging is never the only path.** The segmented switcher does the same thing.
-- The handle is an `adjustable` role with increment / decrement actions (10% steps), label "Comparison divider, 50 percent".
+- The handle is `accessibilityRole="adjustable"` with `accessibilityValue={{min:0,max:100,now}}` and increment / decrement actions (10% steps). Label "Comparison divider" (the value is spoken from `accessibilityValue`, not baked into the label). Focus uses `tryOnCompare.focus`.
 - The image label is "Your photo with tint preview" (no skin-tone description).
 
 **Copy:**
@@ -1546,15 +1552,15 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** one ranked alternative from the catalogue, with its reason.
 
 **Anatomy:**
-- A card (`color.surface`, 1dp `color.border`, radius.lg, padding `space.4`).
+- A card (`productMatchCard.bg`, 1dp `productMatchCard.border`, `productMatchCard.radius`, padding `productMatchCard.padding`), list gap `productMatchCard.listGap`.
 - Rank index "01" (`type.reasonIndex`).
 - Product name (`type.headline`, up to 3 lines).
 - Meta (`type.caption`, muted, tabular): "50 ml · ₹349 on the listing".
 - A FITS tag (§27, `verdict` variant: seal icon 16dp + "FITS").
-- **One reason line** (`type.body`, `color.text`).
+- **One reason line** (`productMatchCard.fit`, `productMatchCard.fitColor`).
 - A band chip (`compact`).
 - A divider.
-- The link-out row: label "See it in Flipkart search" (proposed, `type.label`, `color.link`) + `arrow-up-right` + the destination line.
+- The link-out row: label "See it in Flipkart search" (proposed, `textLink.type`, `textLink.fg`) + `arrow-up-right` + the destination line.
 
 **Variants:** `catalogue` (default), `nameOnly` (tag "Name only" + weaker reason), `compact` (no reason, for horizontal lists; **not used on /check**).
 
@@ -1611,10 +1617,10 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** Aisle Check. It finds a product by barcode in-store.
 
 **Anatomy:**
-- A full-bleed camera with a `color.overlay-camera` mask.
-- A **rectangular window** (80% width, 5:3) with four 24dp corner brackets (3dp `color.on-overlay`).
-- Hint text above the window (`type.body`, `color.on-overlay`): "Point at the barcode" (proposed).
-- A bottom bar with a torch toggle (48dp icon button, labelled) + **"Type the barcode"** (secondary on `color.overlay-camera`, always visible).
+- A full-bleed camera with a `barcodeFrame.overlay` mask (design files: a soft vignette stand-in, never flat grey blocks).
+- A **rectangular window** (`barcodeFrame.window.width` × `barcodeFrame.window.height`) with four `barcodeFrame.cornerLength` corner brackets (`barcodeFrame.cornerWidth` `barcodeFrame.corner`).
+- Hint text above the window (`barcodeFrame.hint`, `barcodeFrame.hintColor`): "Point at the barcode" (proposed).
+- A bottom bar with a torch toggle (`barcodeFrame.torch` 48dp, labelled; focus `barcodeFrame.focus`) + **"Type the barcode"** (secondary on `color.overlay-camera`, always visible).
 
 **Variants:** `camera` (default), `manual` (no camera: a field with a numeric keypad + "Check" primary).
 
@@ -1671,10 +1677,10 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** lets a pharmacist see the user's bands for 30 minutes, with a revoke option.
 
 **Anatomy:**
-- A card (`color.surface-raised`, radius.lg, padding `space.5`).
+- A card (`qrShareCard.bg`, 1dp `qrShareCard.border`, `qrShareCard.radius`, padding `qrShareCard.padding`).
 - A title (`type.headline`): "Show this to the pharmacist" (proposed).
 - The **QR** (≥ 220dp, `color.qr.module` on `color.qr.field`, 16dp quiet zone, inside a 1dp `color.border` frame, radius.md).
-- A countdown (`type.title`, tabular): "29 min left" (proposed format; update each minute, and each second only under 60s *visually*).
+- A countdown (`qrShareCard.countdown` = `type.figure`, Newsreader 26 with tabular figures): "29 min left" (proposed format; update each minute, and each second only under 60s *visually*).
 - A summary line (`type.bodySm`): "Shows score bands only. No photo." (proposed).
 - A text alternative: tertiary "Copy link".
 - **Revoke**: `destructiveNeutral`, full width, 52dp.
@@ -1688,7 +1694,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | creating | QR skeleton + "Creating…"; `busy` |
 | active | as above; brightness raised to max (`expo-brightness`), restored on leave; keep the screen awake |
 | expiringSoon (< 5 min) | the countdown stays `color.text` (**no colour shift, no ochre**); one announcement |
-| expired | the QR is replaced by the sunken square + "This QR has expired." (proposed) + primary "Create a new QR" |
+| expired | the QR is replaced by a `qrShareCard.expired.placeholderBg` square + "This QR has expired." (`qrShareCard.expired.message`, proposed) + primary "Create a new QR" |
 | revoking | Revoke → "Revoking…" |
 | revoked | "Revoked. The link can keep working for up to a minute." (proposed; **never promise "instant"**); `CONFIRM` haptic |
 | offline / error | "The QR page needs a connection." (proposed) + "Try again" |
@@ -1724,7 +1730,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 **Accessibility:**
 - The QR is an image, label "QR code for your shared bands".
-- Countdown announcements go through a live region **at 25, 20, 15, 10, 5 and 1 minutes only, never every second**.
+- The visible countdown is **never** a live region. The screen's hidden live region speaks **at 25, 20, 15, 10, 5 and 1 minutes only** (`motion.timing.qrAnnounceEverySec`, `motion.timing.qrFinalAnnounceSec`).
 - Revoke is large and clearly labelled "Revoke pharmacist access".
 - "Copy link" is the non-visual alternative.
 
@@ -1747,15 +1753,16 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** designed, calm states that always offer a next step.
 
 **Anatomy:**
-- Centred in the content area, max width 320dp.
-- An icon disc (64dp `color.bg-sunken` circle, icon 32dp `color.text`; the paper grain is allowed on the disc's surrounding illustration panel only).
-- A title (`type.headline`).
-- A body (`type.body`, muted).
-- A primary and/or tertiary action.
+- **Left-aligned** in the content column (`stateView.align` start). No centred stack, no icon disc.
+- A title sentence in `stateView.title` (Newsreader 20) that carries a real detail, e.g. "No better matches in our catalogue yet."
+- A body (`stateView.body`, muted) with the honest count: "14 products checked by hand. We add more each week."
+- One **tertiary** action (`stateView.$action`), flush-left with the text.
+- An illustration plate is optional (the only place besides the share illustration where grain may appear).
+- **Offline banner** (`stateView.offlineBanner.*`): a list-row style line, `cloud-off` 20dp + text in `stateView.offlineBanner.type`, a hairline `stateView.offlineBanner.border` under it. Not a tinted slab.
 
 **Variants (copy):**
 
-| Variant | Icon | Title / body | Actions |
+| Variant | Icon (inline, 20dp, optional) | Title / body | Actions |
 |---|---|---|---|
 | `noProfile` | `scan-face` line | "No profile yet" / "You can still check products by name. Scan for reasons based on your readings." (body proposed) | Start scan · Check a product |
 | `profileDeleted` | `check` | "No profile yet" / "Your readings were deleted from this phone." (proposed) | Start scan |
@@ -1763,7 +1770,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `offlineBanner` (inline, top of content) | `cloud-off` 20dp | "You're offline. Catalogue checks still work." (proposed) | none |
 | `error` | `info` | "Something went wrong" / "Try again in a moment." (proposed) | Try again → (2nd failure) Try later |
 | `permissionCamera` / `permissionLocation` | `camera-off` / `map-pin-off` | why it's needed, one sentence | Open settings · Not now |
-| `noMatches` | `search` | "No better matches in our catalogue yet" / "[n] products checked by hand." (proposed) | Back to product |
+| `noMatches` | none | "No better matches in our catalogue yet." / "[n] products checked by hand. We add more each week." (proposed) | tertiary Back to product |
 
 *UNKNOWN is **not** an empty or error state. It uses the Verdict card (§6).*
 
@@ -1817,9 +1824,9 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** brief, non-critical confirmation (M3 snackbar).
 
 **Anatomy:**
-- `color.inverse-surface`, radius.md, padding `space.3` / `space.4`, `elevation.2`.
+- `snackbar.bg`, `snackbar.radius`, padding `snackbar.paddingX`, elevation 3, `snackbar.minHeight` 48.
 - Text in `type.bodySm` `color.inverse-text`, up to 2 lines.
-- An optional action (`type.label`, `color.inverse-link`, 48dp target).
+- An optional action (`snackbar.actionType`, `snackbar.action`, `snackbar.actionTarget` 48dp box). Its focus ring is `snackbar.focus` (`color.focus-ring-inverse`): the normal ring disappears on the inverse surface (2.27:1 light / 1.41:1 dark).
 - It sits above the bottom nav or the sticky action bar, `space.3` gutter.
 
 **Variants:** `info` ("Link copied", "Profile deleted"), `withAction` ("Couldn't open Flipkart." + "Try again", proposed).
@@ -1829,7 +1836,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | State | Spec |
 |---|---|
 | entering | translateY 8dp + opacity, 320ms |
-| visible | **4s**, or **10s** with an action; paused while TalkBack is on (stays until dismissed) |
+| visible | `motion.timing.snackbarMs` (4s), or `motion.timing.snackbarWithActionMs` (10s) with an action, both passed through `AccessibilityInfo.getRecommendedTimeoutMillis` on Android. While TalkBack is on, a snackbar with an action stays until dismissed. |
 | exiting | opacity 200ms, exit easing |
 | action pressed / focused | overlay / focus ring |
 
@@ -1874,25 +1881,29 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 **Purpose:** top-level destinations (M3 navigation bar).
 
+**Where:** top-level screens only: home (Check) and /profile. **Hidden** on pushed details (/check incl. the medicine gate, better matches, try-on, QR share) and during onboarding, camera, capture and processing. M3: a screen never shows a back arrow and a selected tab together.
+
 **Anatomy:**
-- Container: `color.surface-raised`, 1dp top `color.border`, min height 80dp + gesture inset.
-- 3 equal items: a 24dp icon in a 64 × 32dp active indicator pill (`color.bg-sunken`), and a label below (`nav.label.type` = `type.caption` 13/18, 600 when selected).
+- Container: `bottomNav.bg`, 1dp top `bottomNav.border`, `bottomNav.minHeight` 80 + gesture inset (min, so labels can wrap at 2.0×).
+- 3 equal items: a 24dp icon in a 64 × 32dp indicator pill (`bottomNav.indicator.*`), and a label below.
 
 | Item | Icon | Label | Route |
 |---|---|---|---|
-| 1 | `scan-search` | Check | `/` home |
-| 2 | `scan-barcode` | Scan | `/scan` |
+| 1 | `tag` (a product label) | Check | `/` home |
+| 2 | `scan-barcode` | Aisle | `/scan` (Aisle Check) |
 | 3 | `user-round` (neutral) | Profile | `/profile` |
+
+The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph next to Scan with a barcode).
 
 **States:**
 
 | State | Spec |
 |---|---|
-| default | icon + label `color.text-muted` |
-| selected | indicator `color.bg-sunken`; icon filled-weight 2dp stroke `color.link`; label 600 `color.text`. Shown by indicator + weight + colour, never colour alone. |
+| default | icon `bottomNav.iconInactive` at `bottomNav.iconInactiveStrokeWidth`; label `bottomNav.labelInactive` (13/400) in `bottomNav.labelInactiveColor` |
+| selected | pill `bottomNav.indicator.bg` (`color.accent-subtle`, dark = ink.700 so it reads on the bar); icon `bottomNav.iconActive` at `bottomNav.iconActiveStrokeWidth` 2.25; label `bottomNav.labelActive` (13/**600**) in `bottomNav.labelActiveColor`. Selection = pill + weight + stroke + colour; **never colour alone** (lint-enforced). |
 | pressed | ripple inside the indicator |
 | focused | focus ring around the item (≥ 48 × 48) |
-| hidden | during onboarding, camera, capture and processing only; **always shown** on /check, including the medicine gate |
+| hidden | on pushed details and during onboarding, camera, capture and processing |
 
 **Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
@@ -1921,7 +1932,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- /tokens -->
 
 **Accessibility:**
-- `accessibilityRole="tab"` inside `tablist`; `selected` state; label "Check, tab 1 of 3".
+- Container `accessibilityRole="tablist"`. Each item `accessibilityRole="tab"`, label "Check" (not "Check, tab 1 of 3", which makes TalkBack say "tab" twice), `accessibilityState={{selected}}`, position "1 of 3" in `accessibilityHint`.
 - Labels are always shown, never icon-only. At 200% they wrap to 2 lines; the bar grows.
 
 **Copy:** single words, as listed.
@@ -1940,8 +1951,8 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** focused secondary tasks: What we keep, Feels wrong? Edit, the band explainer, the pharmacist and tint consents, the Delete confirm.
 
 **Anatomy:**
-- M3 modal sheet: `color.surface-raised`, top radius.sheet, `elevation.2`, over `color.overlay`.
-- A drag handle (32 × 4dp `color.border-strong`, inside a 48dp tap target that toggles expand).
+- M3 modal sheet: `bottomSheet.bg`, top `bottomSheet.radius`, elevation 3 (dark: `bottomSheet.border` edge instead of a shadow), over `bottomSheet.scrim`.
+- A drag handle (`bottomSheet.handle.width` × `bottomSheet.handle.height` `bottomSheet.handle.color`, inside a `bottomSheet.handle.target` 48dp box that toggles expand).
 - A title (`type.headline`), content, and a sticky action area.
 - Max height 90%; content scrolls.
 
@@ -1962,7 +1973,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | expanded / half | two detents (50% / 90%) for long content |
 | dragging | follows the finger; `GESTURE_END` on dismiss |
 | loading (confirm action) | button loading state |
-| focused | focus is trapped inside the sheet; it returns to the trigger on close |
+| focused | focus is trapped inside the sheet (see Accessibility); it is returned to the trigger on close by the app, because RN does not restore it |
 
 **Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
@@ -1984,14 +1995,16 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- /tokens -->
 
 **Accessibility:**
-- `accessibilityViewIsModal`. Back closes it (and gets predictive back).
+- **Android modality:** `accessibilityViewIsModal` is iOS-only. Render every sheet (consent, pharmacistShare, tintPhoto, Delete confirm, What we keep) inside RN `Modal`, or set `importantForAccessibility="no-hide-descendants"` on the screen root while the sheet is open, so TalkBack can't swipe into the screen behind the scrim.
+- On open, `AccessibilityInfo.setAccessibilityFocus(titleRef)`. On close, put focus back on the trigger's ref.
+- Back closes it (and gets predictive back).
 - **The handle is never the only way to close.** There is a Close icon button (48dp) or a Cancel action.
-- The title is announced on open.
+- The title receives focus on open, so it is read first.
 
 **Copy:** the title says the task. Delete copy names exactly what is removed.
 
 **Motion and haptics:**
-- 300ms standard / exit easing.
+- `motion.duration.sheetEnter` with `motion.ease.decelerate` in, `motion.duration.sheetExit` with `motion.ease.exit` out.
 - Reduce motion: a 120ms crossfade, no slide.
 
 **Do / Don't:**
@@ -2005,9 +2018,9 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 **Purpose:** settings, /about, What we keep, UNKNOWN next steps, the referral checklist, and zone lists.
 
-**Anatomy:** min height 56dp (1-line) / 72dp (2-line), padding x `space.5`. Parts: optional leading icon (`icon.lg`, `color.text`), title (`type.body` or `type.label`), optional supporting text (`type.bodySm`, muted), and an optional trailing element (chevron, external arrow, checkbox, switch, value text). The divider is a `color.border` hairline, inset to the text.
+**Anatomy:** `listRow.minHeight` 56 (grows for 2 lines), padding x `listRow.paddingX`, gap `listRow.gap`. Parts: optional leading icon (`icon.lg`, `color.text`), title (`type.body` or `type.label`), optional supporting text (`type.bodySm`, muted), and an optional trailing element (chevron, external arrow, checkbox, switch, value text). The divider is a `color.border` hairline, inset to the text.
 
-**Variants:** `navigation` (chevron), `external` (arrow-up-right + "opens in browser"), `checkbox` (referral checklist; the whole row toggles), `radio`, `switch`, `value` ("Scan date · 1 Nov"), `nextStep` (UNKNOWN: icon + title + chevron).
+**Variants:** `navigation` (chevron), `external` (arrow-up-right + "opens in browser"), `checkbox` (referral checklist; the whole row toggles), `radio`, `switch` (`switch.*`: 52 × 32 track inside a 48dp row target), `value` ("Scan date · 1 Nov"), `nextStep` (UNKNOWN: icon + title + chevron).
 
 **States:**
 
@@ -2015,9 +2028,9 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 |---|---|
 | default | as above |
 | pressed | full-row `color.state.pressed` |
-| focused | focus ring inset 2dp |
-| checked | checkbox filled `color.accent` + check `color.on-accent`; the row text is unchanged |
-| disabled | `color.text-muted` + reason sub-line |
+| focused | focus ring inset `listRow.focusInset` |
+| checked | ink-filled checkbox (`consentSheet.checkbox.checked` + `consentSheet.checkbox.check`); **no row fill** (`listRow.checkedBg` transparent): a grey row fill reads as disabled |
+| disabled | `listRow.fgDisabled` + reason sub-line |
 
 **Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
@@ -2075,12 +2088,12 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 **Purpose:** small non-interactive qualifiers.
 
-**Anatomy:** min height 24dp, padding x `space.2`, radius.xs, label `type.labelSm` (12dp, the floor), optional 16dp icon.
+**Anatomy:** `tag.visualMinHeight` 24 (not a target), padding x `tag.paddingX`, `tag.radius`, label `tag.type` (13dp), optional `tag.iconSize` icon.
 
 | Variant | Fill / text / border | Example copy |
 |---|---|---|
 | `neutral` | `color.bg-sunken` / `color.text` | "Illustrative example", "Demo profile" |
-| `outline` | transparent / `color.text` / 1dp `color.border-strong` | "Name only", "self-reported, not measured", "estimated from oiliness + moisture" |
+| `outline` | transparent / `color.text` / 1dp `tag.outlineBorder` | "Name only", "self-reported, not measured", "estimated from oiliness + moisture" |
 | `source` | transparent / `color.text-muted` | "Open Beauty Facts (ODbL)" |
 | `verdict` | `color.verdict.<s>.bg` / `color.verdict.<s>.fg` + the state icon 16dp | "FITS" (match cards only) |
 
@@ -2108,18 +2121,19 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Do / Don't:**
 - Do pair a verdict tag with its icon.
 - Don't use a CAUTION tag on match cards.
-- Don't go below 12dp.
+- Don't go below 13dp (12 is for data credits only).
 
 ---
 
 ## 28. QA checklist (per component, before merge)
 
 - [ ] Only tokens are used; there are no hex values or primitives in component code.
-- [ ] Light and dark are both checked. The dark primary is `#86A4A7` / `#0C171A` (6.84:1). The dark focus ring differs from the button fill.
-- [ ] No text under 12dp. Every target is at least 48dp. Tested at 200% font with no truncated verdict label, reason or fixed string.
-- [ ] TalkBack order matches the spec. Decorative icons and meters are hidden. Live regions are polite.
-- [ ] Reduce motion: 120ms crossfades only. Nothing loops. The grain is static and off in dark mode.
-- [ ] No red anywhere. No triangle, shield, pill or mortar. CAUTION tint only in the verdict head.
+- [ ] Light and dark are both checked. The dark primary is `color.accent` / `color.on-accent` as gated in `tokens/contrast-report.md`. The dark focus ring differs from the button fill.
+- [ ] `node tokens/build-tokens.mjs && node tokens/check-contrast.mjs` exits 0 (contrast, rule lints, and every token reference in this file).
+- [ ] No text under 12dp. Every target is a Pressable whose own box is at least 48dp (no hitSlop-only targets, no nested Text links). Tested at 200% font with no truncated verdict label, reason or fixed string.
+- [ ] TalkBack order matches the spec. Only text is grouped; links and buttons are sibling nodes. Decorative icons and meters are hidden. One hidden polite live region per screen. Sheets are modal on Android (RN `Modal`).
+- [ ] Reduce motion: `motion.reducedMotion.duration` crossfades only. Nothing loops. The grain is static, only on `texture.grain.allowed`, and off in dark mode.
+- [ ] No red anywhere. No triangle, shield, pill, cross or mortar. CAUTION tint only in the verdict head; no side stripe. No tracked-caps eyebrows outside ledger keys and the verdict label.
 - [ ] Fixed strings match brief §4.3 character for character (`·`, `→`, `;`, and the `(scan 1 Nov)` style).
 - [ ] The banned-words scan (brief §4.4) passes on every string.
 - [ ] Haptics follow the §1.5 table. There is no `REJECT` on verdicts.
