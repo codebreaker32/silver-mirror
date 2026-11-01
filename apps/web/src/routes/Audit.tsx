@@ -158,7 +158,11 @@ function Results({ summary, rows, csvAvailable }: { summary: AuditSummary; rows:
 
       <FrameStrip />
 
-      <section className="page-section" aria-labelledby="heat-title">
+      {checked === 0 ? (
+        <NothingChecked verified={summary.catalog.verified} frameStatus={summary.frame.status} />
+      ) : (
+        <>
+          <section className="page-section" aria-labelledby="heat-title">
         <h2 id="heat-title">One tag, six readings</h2>
         <p>
           Products flagged CAUTION under each YouCam reading profile, out of {checked} checked, split by the grade of the
@@ -291,6 +295,8 @@ function Results({ summary, rows, csvAvailable }: { summary: AuditSummary; rows:
           Wording is always “doesn't match rule LC-x”. A mismatch is a label note, not a judgement of the brand.
         </p>
       </section>
+        </>
+      )}
 
       <section className="page-section" aria-labelledby="eng-title">
         <h2 id="eng-title">YouCam and Claude counts</h2>
@@ -301,6 +307,20 @@ function Results({ summary, rows, csvAvailable }: { summary: AuditSummary; rows:
         </p>
       </section>
     </>
+  );
+}
+
+/** Zero products checked: show no heatmap and no "0 hits", since a table of zeros would read as a finding. */
+function NothingChecked({ verified, frameStatus }: { verified: number; frameStatus: string }) {
+  return (
+    <section className="page-section" aria-labelledby="nothing-title">
+      <h2 id="nothing-title">Nothing checked yet</h2>
+      <p className="panel-sunken">
+        No product has been run through the rules in this build, so there is no heatmap and no Label Check count. Zero here
+        means “not measured”, not “nothing found”. Products are checked only once a person has matched their ingredient list
+        against the brand's own page ({verified} so far; frame status: {frameStatus}).
+      </p>
+    </section>
   );
 }
 

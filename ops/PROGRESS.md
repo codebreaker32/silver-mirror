@@ -8,7 +8,7 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - [x] 3. Catalog merged + AUDIT.md
 - [x] 4. Tier 1 flows E2E against mock
 - [x] 5. Worker `wrangler dev` mock + smoke script
-- [ ] 6. Web pages + vite build
+- [x] 6. Web pages + vite build
 - [ ] 7. Android debug APK
 - [ ] 8. Quality (copy linter, a11y, secret grep, README)
 
@@ -71,3 +71,15 @@ Each entry: what was done, verification, what's next. Priority list lives in ops
 - Gotcha recorded in the script: the upload slot's `Content-Length` must match the body, otherwise Node fetch fails, so the smoke sends a body of the declared size.
 - Verification: `npm run smoke:mock` → 20/20 checks passed, no wrangler/workerd left running; `npm run typecheck` exit 0; `npx vitest run` 41 files passed, 1 skipped; 473 passed, 1 skipped.
 - Next: item 6 (web: landing, /check, /audit empty state, /rules, /how; `vite build`).
+
+## 2026-11-01 — Iteration 6: web pages + `vite build`
+- The web app already had every page (landing, `/check`, `/audit`, `/rules`, `/how`, `/r/:token`), built on `@skinkey/design/tokens.css`. `app.css` has 0 literal hex colours and 259 `var(--…)` uses. The only hex values in TSX are canvas fallbacks for `cssVar()` in LabelSlot.
+- Re-ran `npm run audit`. The old `audit/summary.json` was stale ("catalog.json not merged yet", 183 rows). Now: `catalog_preview` mode, 176 rows from catalog.json, 0 verified, frame missing, 0 checked.
+- **Honesty fix on `/audit`**: with 0 products checked, the page showed a heatmap of zeros and "No label-claim hits in this run", which reads as a finding. With `population.checked === 0` it now shows "Nothing checked yet" ("zero means not measured, not nothing found"), with the verified count and frame status, and hides the heatmap and Label Check tables. Coverage, the method, git tags and the frame strip still render.
+- New `apps/web/src/routes/render.test.ts` (6 tests) server-renders each route inside the real Layout, through the vite audit plugin, so it uses the real summary.json. The /audit honesty test fails on the previous Audit.tsx and passes on the fix (checked by swapping the file back).
+- Verification:
+  - `npm run build -w @skinkey/web`: tsc + vite build ✓ (built in ~0.3 s).
+  - `vite preview`: `/`, `/check`, `/audit`, `/rules`, `/how`, `/r/abc` → 200 text/html; `/audit/results.csv` → 200 text/csv.
+  - `npm run typecheck` exit 0.
+  - `npx vitest run`: 42 files passed, 1 skipped; 479 passed, 1 skipped.
+- Next: item 7 (Android SDK cmdline-tools + Java 17, `expo prebuild`, `./gradlew assembleDebug`). Item 8 still has the `lint-claims` stub to replace.
