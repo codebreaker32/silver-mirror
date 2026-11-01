@@ -10,7 +10,7 @@ import {
   type ResolveResponse,
 } from '@skinkey/contracts';
 import { facetFor, rank, READING_PROFILES } from '@skinkey/rules';
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { SAMPLE_SHARE } from '../../../../packages/contracts/src/proposals/web';
 import { VerdictCard } from '../components/VerdictCard';
@@ -56,7 +56,7 @@ export function Check() {
   const [chips, setChips] = useState<Chip[] | null>(null);
   const [ledgers, setLedgers] = useState<HowThisWasMade[]>([]);
   const autoRan = useRef(false);
-  const key = keyFor(keyId);
+  const key = useMemo(() => keyFor(keyId), [keyId]);
 
   const resolve = async (body: { source: 'paste' | 'sample'; text: string }) => {
     setStage({ at: 'resolving' });

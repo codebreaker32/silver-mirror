@@ -12,10 +12,9 @@ export const SAMPLE_SHARE_TEXT =
   'Garnier Super UV Invisible Serum Sunscreen SPF 50+ PA++++ 30ml https://www.flipkart.com/garnier-super-uv-invisible-serum-sunscreen/p/skinkey-sample';
 
 /**
- * P2 (scaffold demo.ts, or RULES): DEMO_KEY has no zones and no skinType, so in Demo mode (and copy set B)
- * there is no YouCam class, hence no Flipkart facet link and no class keyword. Either add
- * `skinType: { value: 'Oily', derived: true }` to DEMO_KEY, or export `deriveSkinType(key)` from @skinkey/rules
- * (the "published rule" for G1-fail) and the app will call it.
+ * P2 (scaffold demo.ts, optional): DEMO_KEY has no zones or skinType. The app now derives the class with
+ * @skinkey/rules `deriveSkinType` (Demo Key → Oily → "Oily Skin" facet). Adding
+ * `skinType: { value: 'Oily', derived: true }` to DEMO_KEY would make the web /check agree without that call.
  */
 export interface DemoKeySkinTypeProposal {
   skinType: { value: SkinTypeClass; derived: true };
@@ -38,12 +37,11 @@ export interface CatalogProductsResponseProposal {
 export const WORKER_URL_ENV = 'EXPO_PUBLIC_WORKER_URL';
 
 /**
- * P5 (RULES): store URL builders shared by app, web and rank(). The app's versions live in
- * apps/mobile/src/features/matches/links.ts; rank().searchUrl should use the same flipkartSearchUrl.
+ * P5 (RULES): the app uses rules' flipkartSearchUrl. Proposed: also export the facet, Amazon and Nykaa builders
+ * (today in apps/mobile/src/features/matches/links.ts) so web /check and /r/:token build identical links.
  * Facet pattern (research/skinkey_report.md): `&p%5B%5D=facets.skin_type%255B%255D%3DOily%2BSkin`.
  */
 export type StoreUrlBuilders = {
-  flipkartSearchUrl(q: string): string;
   flipkartFacetUrl(q: string, facet: string): string;
   amazonSearchUrl(q: string): string;
   nykaaSearchUrl(q: string): string;

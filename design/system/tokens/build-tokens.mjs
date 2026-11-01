@@ -2,7 +2,7 @@
 // Generates theme.ts (React Native / Expo) and tokens.css (web) from
 // skinkey.tokens.json. Node 18+, no dependencies.
 //   node build-tokens.mjs
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadTokens, resolve, isAlias, lookup, MODES } from './lib/resolve.mjs';
@@ -490,4 +490,68 @@ lines.push('  .sk-grain::before { display: none; }');
 lines.push('}');
 writeFileSync(join(here, 'tokens.css'), lines.join('\n') + '\n');
 
-console.log('Wrote theme.ts and tokens.css');
+// ============================================================ components.md tables
+// Fills <!-- tokens:<group> [group…] --> … <!-- /tokens --> blocks so the spec can never drift from the tokens.
+{
+  const mdPath = join(here, '..', 'components.md');
+  if (existsSync(mdPath)) {
+    const T = tokens.typography.scale;
+    const fam = (st) => `${tokens.typography.family[st.family].name} ${st.weight}${st.italic ? ' italic' : ''} ${st.size}/${st.lineHeight}${st.transform ? ' caps' : ''}${st.numeric ? ' tabular' : ''}`;
+    const show = (v, mode) => {
+      if (isAlias(v)) {
+        const hit = lookup(tokens, v, mode);
+        if (hit.kind === 'type') return fam(hit.value);
+        if (hit.kind === 'elevation' && typeof hit.value === 'object') return `elevation ${v.slice(11, -1)}`;
+        const r = resolve(tokens, v, mode);
+        return typeof r === 'object' ? JSON.stringify(r) : String(r);
+      }
+      return Array.isArray(v) ? v.join(' / ') : String(v);
+    };
+    const esc = (x) => String(x).replace(/\|/g, '\\|');
+    const rows = [];
+    const walk = (obj, path) => {
+      for (const [k, v] of Object.entries(obj)) {
+        if (k.startsWith('$')) continue;
+        const p = `${path}.${k}`;
+        if (v && typeof v === 'object' && !Array.isArray(v)) { walk(v, p); continue; }
+        const l = show(v, 'light'), d = show(v, 'dark');
+        rows.push(`| \`${p}\` | ${isAlias(v) ? '`' + v.slice(1, -1) + '`' : '—'} | ${esc(l)} | ${l === d ? 'same' : esc(d)} |`);
+      }
+    };
+    const tableFor = (spec) => {
+      rows.length = 0;
+      if (spec === '@semantic') {
+        const out = ['| Token | Light | Dark |', '|---|---|---|'];
+        const L = tokens.semantic.color.light, D = tokens.semantic.color.dark;
+        const flat = (o, pre = '') => Object.entries(o).flatMap(([k, v]) => (k.startsWith('$') ? [] : typeof v === 'object' ? flat(v, `${pre}${k}.`) : [`${pre}${k}`]));
+        for (const k of flat(L)) {
+          const ref = k.startsWith('verdict.') || k.startsWith('meter.') ? k : `color.${k}`;
+          const cell = (mode, raw) => { const r = resolve(tokens, `{${ref}}`, mode); return isAlias(raw) ? `${r} (\`${raw.slice(1, -1)}\`)` : r; };
+          const get = (o) => k.split('.').reduce((a, x) => a[x], o);
+          out.push(`| \`${ref}\` | ${cell('light', get(L))} | ${cell('dark', get(D))} |`);
+        }
+        return out.join('\n');
+      }
+      if (spec === '@type') {
+        const out = ['| Token | RN fontFamily | Family / weight | Size / line (dp) | Tracking | Use |', '|---|---|---|---|---|---|'];
+        for (const [k, st] of Object.entries(T)) out.push(`| \`type.${k}\` | ${FONT[st.font]} | ${tokens.typography.family[st.family].name} ${st.weight}${st.italic ? ' italic' : ''}${st.transform ? ', caps' : ''}${st.numeric ? ', tabular' : ''} | ${st.size} / ${st.lineHeight} | ${st.letterSpacing} | ${esc(st.use)} |`);
+        return out.join('\n');
+      }
+      if (spec === '@motion') {
+        const out = ['| Token | Value |', '|---|---|'];
+        for (const [k, v] of Object.entries(motion.duration)) out.push(`| \`motion.duration.${k}\` | ${v}ms |`);
+        for (const [k, v] of Object.entries(motion.ease)) out.push(`| \`motion.ease.${k}\` | cubic-bezier(${v.bezier.join(', ')}) |`);
+        out.push(`| \`motion.enter.translate\` / \`motion.enter.scaleFrom\` | ${motion.enter.translate}dp / ${motion.enter.scaleFrom} |`);
+        for (const [k, v] of Object.entries(motion.timing)) if (!k.startsWith('$')) out.push(`| \`motion.timing.${k}\` | ${v} |`);
+        out.push(`| \`motion.reducedMotion.duration\` | ${motion.reducedMotion.duration}ms crossfade, no translate, no scale, no stagger |`);
+        return out.join('\n');
+      }
+      for (const g of spec.split(/\s+/)) walk(tokens.component[g], g);
+      return ['| Token | References | Light | Dark |', '|---|---|---|---|', ...rows].join('\n');
+    };
+    const md = readFileSync(mdPath, 'utf8').replace(/<!-- tokens:([^>]+?) -->[\s\S]*?<!-- \/tokens -->/g, (_, spec) => `<!-- tokens:${spec} -->\n${tableFor(spec.trim())}\n<!-- /tokens -->`);
+    writeFileSync(mdPath, md);
+  }
+}
+
+console.log('Wrote theme.ts, tokens.css and the generated tables in components.md');

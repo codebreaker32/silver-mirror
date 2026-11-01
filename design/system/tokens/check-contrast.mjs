@@ -234,7 +234,9 @@ lint(`Touch targets >= ${tokens.touch.min}dp (${targetCount} target tokens + shu
   if (existsSync(mdPath)) {
     const md = readFileSync(mdPath, 'utf8');
     const comps = Object.keys(tokens.component);
-    const heads = new Set(['color', 'type', 'space', 'radius', 'elevation', 'motion', 'touch', 'icon', 'texture', 'verdict', 'meter', 'z', 'typography', ...comps]);
+    // Legacy v1.0 doc names are listed too, so a stale reference fails instead of being skipped.
+    const legacy = ['verdictHead', 'reason', 'reasons', 'ledger', 'sheet', 'nav', 'stepper', 'qrCard', 'matchCard', 'linkOut', 'link', 'consent', 'capture', 'scanner', 'tryOn', 'teachCard', 'forecast', 'disclosure', 'emptyState', 'offlineBanner', 'bandMeter', 'bandGrid', 'checkbox', 'size', 'surface', 'state'];
+    const heads = new Set(['color', 'type', 'space', 'radius', 'elevation', 'motion', 'touch', 'icon', 'texture', 'verdict', 'meter', 'z', 'typography', ...comps, ...legacy]);
     const bad = [];
     let n = 0;
     const dig = (obj, parts) => { let cur = obj; for (const p of parts) { if (cur == null || typeof cur !== 'object' || !(p in cur)) return false; cur = cur[p]; } return true; };
@@ -244,7 +246,8 @@ lint(`Touch targets >= ${tokens.touch.min}dp (${targetCount} target tokens + shu
       if (!heads.has(head) || /\.(md|json|ts|css|mjs|png|ttf)$/.test(ref)) continue;
       n++;
       let ok;
-      if (rest.length === 0) ok = true;
+      if (rest.length === 0) ok = !legacy.includes(head);
+      else if (legacy.includes(head)) ok = false;
       else if (comps.includes(head)) ok = dig(tokens.component, [head, ...rest]);
       else if (head === 'motion') ok = dig(tokens.motion, rest);
       else if (head === 'texture') ok = dig(tokens.texture, rest);

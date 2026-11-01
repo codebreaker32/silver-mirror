@@ -1,13 +1,22 @@
 import { z } from 'zod';
 import { ProductSummary, CatalogProduct } from './catalog';
 import { Claim, InciToken, KeyProfile, BandCutoffs } from './domain';
-import { Caps, DeleteState, HowThisWasMade } from './ledger';
+import { Caps, DeleteState, HowThisWasMade, LedgerResponse } from './ledger';
 import { FacetMapping, ReadingProfile, Rule } from './rules';
 import { LabelCheckHit, VerdictLabel } from './verdict';
 
 export const API_VERSION = 'v1';
 export const INSTALL_HEADER = 'x-skinkey-install';
 export const IDEMPOTENCY_HEADER = 'idempotency-key';
+/** `x-skinkey-demo: 1` on scan/try-on routes runs the chain against the mock and returns the labelled DEMO_KEY. No units, no caps. */
+export const DEMO_HEADER = 'x-skinkey-demo';
+/** Mock mode only: oily | slow | error_src_face_too_small | error_lighting_dark | error_no_face | create_400 | delete_fail. */
+export const MOCK_SCENARIO_HEADER = 'x-mock-scenario';
+export const IDEMPOTENT_ROUTES = ['scanStart', 'tryonStart'] as const;
+
+// POST /v1/install → anonymous HMAC-signed token for x-skinkey-install
+export const InstallResponse = z.object({ installToken: z.string(), caps: Caps });
+export type InstallResponse = z.infer<typeof InstallResponse>;
 
 export const ApiError = z.object({
   error: z.object({
@@ -234,6 +243,11 @@ export const CatalogSearchResponse = z.object({
 });
 export type CatalogSearchResponse = z.infer<typeof CatalogSearchResponse>;
 
+// GET /v1/catalog/products?ids=a,b,c  (batch, max 50)
+export const CatalogProductsQuery = z.object({ ids: z.string() });
+export const CatalogProductsResponse = z.object({ catalogCount: z.number().int(), products: z.array(CatalogProduct) });
+export type CatalogProductsResponse = z.infer<typeof CatalogProductsResponse>;
+
 // GET /v1/catalog/:id
 export const CatalogProductResponse = z.object({ product: CatalogProduct });
 export type CatalogProductResponse = z.infer<typeof CatalogProductResponse>;
@@ -250,17 +264,22 @@ export const SharedResult = z.object({
 export type SharedResult = z.infer<typeof SharedResult>;
 
 export const routes = {
+  install: { method: 'POST', path: '/v1/install', res: InstallResponse },
+  ledger: { method: 'GET', path: '/v1/ledger', res: LedgerResponse },
   scanStart: { method: 'POST', path: '/v1/scan/start', req: ScanStartRequest, res: ScanStartResponse },
   scanSubmit: { method: 'POST', path: '/v1/scan/submit', req: ScanSubmitRequest, res: ScanStatusResponse },
   scanStatus: { method: 'GET', path: '/v1/scan/:id', res: ScanStatusResponse },
+  scanCancel: { method: 'POST', path: '/v1/scan/:id/cancel', res: ScanStatusResponse },
   tryonStart: { method: 'POST', path: '/v1/tryon', req: TryonStartRequest, res: TryonStartResponse },
   tryonSubmit: { method: 'POST', path: '/v1/tryon/:id/submit', res: TryonStatusResponse },
   tryonStatus: { method: 'GET', path: '/v1/tryon/:id', res: TryonStatusResponse },
+  tryonCancel: { method: 'POST', path: '/v1/tryon/:id/cancel', res: TryonStatusResponse },
   resolve: { method: 'POST', path: '/v1/resolve', req: ResolveRequest, res: ResolveResponse },
   labelOcr: { method: 'POST', path: '/v1/label-ocr', req: LabelOcrRequest, res: LabelOcrResponse },
   labelCheck: { method: 'POST', path: '/v1/label-check', req: LabelCheckRequest, res: LabelCheckResponse },
   rules: { method: 'GET', path: '/v1/rules', res: RulesResponse },
   catalogSearch: { method: 'GET', path: '/v1/catalog/search', query: CatalogSearchQuery, res: CatalogSearchResponse },
+  catalogProducts: { method: 'GET', path: '/v1/catalog/products', query: CatalogProductsQuery, res: CatalogProductsResponse },
   catalogProduct: { method: 'GET', path: '/v1/catalog/:id', res: CatalogProductResponse },
 } as const;
 export type RouteName = keyof typeof routes;

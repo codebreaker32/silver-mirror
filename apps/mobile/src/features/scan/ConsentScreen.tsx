@@ -46,7 +46,7 @@ export function ConsentScreen() {
       }
     >
       <Heading>Before your scan</Heading>
-      <Text accessible style={[cs.privacy, { color: cs.privacyColor }]}>
+      <Text accessible style={[cs.privacyLead, { color: cs.privacyColor }]}>
         {COPY.privacyLine}
       </Text>
       <Body muted small>

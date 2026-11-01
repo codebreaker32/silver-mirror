@@ -11,7 +11,7 @@ export function AppBar({ title, onBack }: { title?: string; onBack?: () => void 
   const router = useRouter();
   const back = onBack ?? (() => (router.canGoBack() ? router.back() : router.replace('/')));
   return (
-    <View style={{ minHeight: a.height, flexDirection: 'row', alignItems: 'center', paddingHorizontal: a.paddingX, backgroundColor: a.bg }}>
+    <View style={{ minHeight: a.minHeight, flexDirection: 'row', alignItems: 'center', paddingHorizontal: a.paddingX, backgroundColor: a.bg }}>
       <Pressable
         onPress={back}
         accessibilityRole="button"

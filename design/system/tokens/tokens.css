@@ -957,6 +957,7 @@
   --sk-try-on-compare-note-tracking: var(--sk-type-caption-tracking);
   --sk-try-on-compare-note-color: var(--sk-color-text-muted);
   --sk-try-on-compare-focus: var(--sk-color-focus-ring-overlay);
+  --sk-try-on-compare-preview-tint-opacity: 0.13;
   --sk-product-match-card-bg: var(--sk-elevation-1-surface);
   --sk-product-match-card-border: var(--sk-color-border);
   --sk-product-match-card-radius: var(--sk-radius-lg);

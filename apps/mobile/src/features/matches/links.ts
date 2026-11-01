@@ -1,6 +1,7 @@
-import type { FacetMapping, KeyProfile, ProductCategory, SkinTypeClass } from '@skinkey/contracts';
+import type { Band, Concern, FacetMapping, KeyProfile, ProductCategory, SkinTypeClass } from '@skinkey/contracts';
+import { deriveSkinType, flipkartSearchUrl } from '@skinkey/rules';
 
-export const flipkartSearchUrl = (q: string) => `https://www.flipkart.com/search?q=${encodeURIComponent(q)}`;
+export { flipkartSearchUrl };
 
 /** Facet pattern from research/skinkey_report.md: p[]=facets.skin_type[]=<Facet>, value double-encoded. */
 export const flipkartFacetUrl = (q: string, facet: string) =>
@@ -42,8 +43,11 @@ export function guessCategory(title: string | null | undefined): ProductCategory
 
 export const categoryWord = (c: ProductCategory | null) => CATEGORY_WORD[c ?? 'other'];
 
+/** The Key's YouCam class: the whole-face label if G1 gave one, else the published band-derived class. */
 export function keyClass(key: KeyProfile | null): SkinTypeClass | null {
-  return key?.zones.whole ?? key?.skinType?.value ?? null;
+  if (!key) return null;
+  const levels = Object.fromEntries(Object.entries(key.bands).map(([c, b]) => [c, b.level])) as Record<Concern, Band>;
+  return key.zones.whole ?? key.skinType?.value ?? deriveSkinType(levels);
 }
 
 export function facetFor(key: KeyProfile | null, map: readonly FacetMapping[]): string | null {

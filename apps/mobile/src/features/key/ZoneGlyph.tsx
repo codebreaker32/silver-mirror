@@ -34,7 +34,7 @@ export function ZoneGlyph({ model, highlight = [], width = 200, showLegend = tru
   const height = (width * 240) / 200;
 
   const fillFor = (band: Band | null) =>
-    band === 'High' ? `url(#${ids.high})` : band === 'Medium' ? `url(#${ids.medium})` : band === 'Low' ? m.zoneFill : 'none';
+    band === 'High' ? `url(#${ids.high})` : band === 'Medium' ? `url(#${ids.medium})` : 'none';
 
   return (
     <View
@@ -54,8 +54,8 @@ export function ZoneGlyph({ model, highlight = [], width = 200, showLegend = tru
             <Line x1={0} y1={0} x2={4} y2={0} stroke={ink} strokeWidth={1} />
           </Pattern>
         </Defs>
-        <Path d="M76 196 L72 236 M124 196 L128 236" stroke={m.faceOutline} strokeWidth={m.strokeWidth} strokeLinecap="round" fill="none" />
-        <Ellipse cx={100} cy={112} rx={72} ry={92} stroke={m.faceOutline} strokeWidth={m.strokeWidth} fill="none" />
+        <Path d="M76 196 L72 236 M124 196 L128 236" stroke={m.faceOutline} strokeWidth={m.faceStrokeWidth} strokeLinecap="round" fill="none" />
+        <Ellipse cx={100} cy={112} rx={72} ry={92} stroke={m.faceOutline} strokeWidth={m.faceStrokeWidth} fill="none" />
         <Line x1={100} y1={24} x2={100} y2={200} stroke={m.faceOutline} strokeWidth={0.75} strokeDasharray="2 5" />
         {(Object.keys(SHAPES) as GlyphZone[]).map((zone) => {
           const s = SHAPES[zone];
@@ -63,12 +63,12 @@ export function ZoneGlyph({ model, highlight = [], width = 200, showLegend = tru
           const lit = highlight.includes(zone);
           return (
             <G key={zone}>
-              {lit ? <Ellipse {...s} fill={m.zoneFillHighlight} fillOpacity={m.zoneFillHighlightOpacity} /> : null}
+              {lit ? <Ellipse {...s} fill={m.hatch} fillOpacity={0.12} /> : null}
               <Ellipse
                 {...s}
                 fill={fillFor(band)}
                 stroke={m.zoneStroke}
-                strokeWidth={lit ? m.strokeWidth * 2 : 1}
+                strokeWidth={lit ? m.zoneStrokeWidth * 2 : m.zoneStrokeWidth}
                 strokeDasharray={band === null ? '3 3' : undefined}
               />
             </G>

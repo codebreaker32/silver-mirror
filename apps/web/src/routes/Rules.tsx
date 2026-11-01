@@ -39,7 +39,7 @@ export function Rules() {
         <h1>The rules that make every call.</h1>
         <p>
           Every verdict in SkinKey comes from these rules, applied the same way to every product. Claude reads labels and
-          titles; it never decides. Reasons are fixed templates filled with a rule, a reading band and an ingredient name.
+          titles; it never decides. Reasons are set templates filled with a rule, a reading band and an ingredient name.
         </p>
         <p className="banner">
           {COPY.rulesBanner} No rule here has measured evidence that it changes how skin looks for a given reading. Grades
@@ -171,7 +171,7 @@ function RulesBody({ data }: { data: RulesData }) {
         <p>
           Bands come from YouCam's raw_score only, never ui_score. Low below {data.bandCutoffs.lowBelow}, High from{' '}
           {data.bandCutoffs.highFrom}, Medium between. Which way a score runs is set per concern from gate G1. These cutoffs
-          were fixed before the audit ran and are not tuned to the result.
+          were frozen before the audit ran and are not tuned to the result.
         </p>
         <div className="table-scroll">
           <table className="data">
@@ -206,7 +206,7 @@ function RulesBody({ data }: { data: RulesData }) {
 
       <section className="page-section" aria-labelledby="profiles-title">
         <h2 id="profiles-title">The six reading profiles</h2>
-        <p>Fixed band vectors used by the audit's “one tag, six readings” count. Zone labels apply only when gate G1 passes.</p>
+        <p>Set band vectors used by the audit's “one tag, six readings” count. Zone labels apply only when gate G1 passes.</p>
         <div className="table-scroll">
           <table className="data">
             <thead>

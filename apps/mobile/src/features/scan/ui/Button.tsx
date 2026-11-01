@@ -124,7 +124,7 @@ export function TextLink({ label, onPress, accessibilityLabel, external }: { lab
       accessibilityRole="link"
       accessibilityLabel={accessibilityLabel ?? label}
       onPress={onPress}
-      hitSlop={theme.touch.hitSlopFor32}
+      hitSlop={(theme.touch.min - 32) / 2}
       style={{ minHeight: t.minTarget, justifyContent: 'center', alignSelf: 'flex-start' }}
     >
       {({ pressed }) => (

@@ -29,3 +29,6 @@ export type { MedicineGateResult, RankOptions, VerdictBasis, VerdictInput, Verdi
 export { ALLOWLIST, BANNED_PHRASES, COPY_SET_B_BANNED, lintCopy } from './lint';
 export type { BannedPhrase, LintViolation } from './lint';
 export { sha256Hex, stableStringify } from './sha256';
+export { buildCatalog, catalogId, toCatalogProduct } from './catalog';
+export type { BuiltCatalogRow, ClaimsSource } from './catalog';
+export { claimsFromMarketedFor } from './claims';

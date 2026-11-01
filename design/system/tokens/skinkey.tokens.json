@@ -1380,7 +1380,8 @@
       "note": "{type.caption}",
       "noteColor": "{color.text-muted}",
       "focus": "{color.focus-ring-overlay}",
-      "$rule": "'Preview, not a shade guarantee' is attached to the bottom edge of the frame on the plain surface, never over the photo, and always visible. Hatch is never used here; hatch means skin-map band only."
+      "$rule": "'Preview, not a shade guarantee' is attached to the bottom edge of the frame on the plain surface, never over the photo, and always visible. Hatch is never used here; hatch means skin-map band only.",
+      "previewTintOpacity": 0.13
     },
     "productMatchCard": {
       "bg": "{elevation.1.surface}",

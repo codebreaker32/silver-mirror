@@ -28,7 +28,7 @@ export function TryonResult({ status }: { status: TryonStatusResponse }) {
             <View
               style={{
                 alignSelf: 'flex-start',
-                minHeight: theme.components.tag.height,
+                minHeight: theme.components.tag.visualMinHeight,
                 paddingHorizontal: theme.components.tag.paddingX,
                 borderRadius: theme.components.tag.radius,
                 backgroundColor: theme.components.tag.bg,

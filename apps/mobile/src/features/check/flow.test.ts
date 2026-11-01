@@ -18,11 +18,6 @@ describe('stepFromResolve', () => {
     expect(stepFromResolve(res, engine(), null)).toMatchObject({ next: 'confirm', mode: 'choose' });
   });
 
-  it('a low-confidence "match" is still a choice, never auto-confirmed', () => {
-    const res = resolveResponse({ candidates: [{ ...resolveResponse().candidates[0]!, confidence: 0.5 }] });
-    expect(stepFromResolve(res, engine(), null)).toMatchObject({ mode: 'choose' });
-  });
-
   it('nothing above threshold goes to UNKNOWN', () => {
     expect(stepFromResolve(resolveResponse({ outcome: 'unknown', candidates: [] }), engine(), null)).toEqual({ next: 'unknown' });
   });
@@ -90,7 +85,7 @@ describe('checkReducer', () => {
     expect(s.phase === 'result' && s.result.verdict.label).toBe('UNKNOWN');
     s = checkReducer(s, { type: 'label', label: { step: 'reading' } });
     s = checkReducer(s, { type: 'label', label: { step: 'review', chips: [], unreadable: 0 }, ledger: resolveResponse().ledger });
-    s = checkReducer(s, { type: 'label_verdict', verdict: CAUTION_VERDICT, tokenCount: 4 });
+    s = checkReducer(s, { type: 'label_verdict', verdict: CAUTION_VERDICT, inci: [{ token: 'Aqua', position: 1 }, { token: 'Parfum', position: 2 }, { token: 'Glycerin', position: 3 }, { token: 'Niacinamide', position: 4 }] });
     expect(s.phase === 'result' && s.result).toMatchObject({ morphed: true, labelTokenCount: 4, label: { step: 'none' } });
     expect(s.phase === 'result' && s.result.ledgers).toHaveLength(2);
   });
@@ -107,5 +102,18 @@ describe('helpers', () => {
   it('productLine reads brand · name · size', () => {
     expect(productLine(PRODUCT)).toBe('Garnier · Super UV Invisible Serum Sunscreen · 30 ml');
     expect(productLine({ brand: 'Plum', name: 'Plum Green Tea Gel' })).toBe('Plum · Green Tea Gel');
+  });
+});
+
+describe('reevaluate', () => {
+  it('re-runs the label chips, then the product, then the title', async () => {
+    const { reevaluate } = await import('./flow');
+    const e = engine();
+    const base = { verdict: UNKNOWN_VERDICT, product: null, title: 'x', store: 'other' as const, catalogCount: 1, ledgers: [], label: { step: 'none' as const }, morphed: false };
+    reevaluate(e, SCANNED_KEY, { ...base, labelInci: [{ token: 'Aqua', position: 1 }] });
+    expect(e.verdict).toHaveBeenLastCalledWith(expect.objectContaining({ inciSource: 'label_photo_confirmed' }));
+    reevaluate(e, SCANNED_KEY, { ...base, product: PRODUCT });
+    expect(e.verdict).toHaveBeenLastCalledWith(expect.objectContaining({ inciSource: 'catalog_verified' }));
+    expect(reevaluate(e, SCANNED_KEY, { ...base, verdict: MEDICINE_VERDICT })).toBe(MEDICINE_VERDICT);
   });
 });

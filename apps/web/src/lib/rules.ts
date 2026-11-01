@@ -62,7 +62,7 @@ export interface IngredientLookup {
 
 /**
  * Which published rules read one ingredient, run through the real verdict() for every reading profile.
- * The ingredient is treated as a one-line, user-confirmed label with every label claim present.
+ * The ingredient is read as a one-line, user-confirmed label with every label claim present.
  */
 export function lookupIngredient(token: string): IngredientLookup | null {
   const t = token.trim();

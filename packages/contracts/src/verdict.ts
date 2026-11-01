@@ -47,6 +47,13 @@ export const Verdict = z.object({
 });
 export type Verdict = z.infer<typeof Verdict>;
 
+/** What a verdict rests on. "name_only" stays UNKNOWN (spec §5) with the brief's weaker-check note. */
+export const VerdictBasis = z.enum(['medicine', 'ingredients', 'name_only', 'none', 'no_readings']);
+export type VerdictBasis = z.infer<typeof VerdictBasis>;
+
+export const VerdictResult = Verdict.extend({ basis: VerdictBasis, note: z.string().optional() });
+export type VerdictResult = z.infer<typeof VerdictResult>;
+
 export const LabelCheckHit = z.object({
   ruleId: z.string(),
   claim: z.string(),

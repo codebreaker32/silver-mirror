@@ -23,7 +23,7 @@ export function VerdictSheet({ view, unknown, tryon, matches, glyph, onHowMade }
   return (
     <View testID={`verdict-${view.tone}`} style={{ gap }}>
       <VerdictHead view={view} />
-      {view.label === 'UNKNOWN' && unknown ? unknown : null}
+      {view.unknownKind === 'ingredients' && unknown ? unknown : null}
       {view.showReasons ? <ReasonList reasons={view.reasons} emptyNote={view.emptyReasonsNote} /> : null}
       {view.showReasons && glyph ? glyph : null}
       {tryon ?? null}

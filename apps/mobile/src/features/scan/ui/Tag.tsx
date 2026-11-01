@@ -8,7 +8,7 @@ export function Tag({ label, variant = 'neutral', icon }: { label: string; varia
   return (
     <View
       style={{
-        minHeight: t.height,
+        minHeight: t.visualMinHeight,
         paddingHorizontal: t.paddingX,
         borderRadius: t.radius,
         backgroundColor: variant === 'neutral' ? t.bg : 'transparent',

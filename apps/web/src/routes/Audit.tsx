@@ -47,7 +47,7 @@ export function Audit() {
       </div>
 
       <section className="page-section" aria-labelledby="method-title">
-        <h2 id="method-title">Method, fixed before the run</h2>
+        <h2 id="method-title">Method, frozen before the run</h2>
         <p>Each step is committed and tagged in git before the next one runs. If a count comes out small or zero, it is published anyway.</p>
         <ol className="two-col" style={{ marginTop: 24 }}>
           {METHOD.map((m) => (

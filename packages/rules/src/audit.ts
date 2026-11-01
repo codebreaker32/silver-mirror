@@ -1,7 +1,7 @@
-import { COPY, CatalogProduct, type Claim, type ClaimType, type CopySet, type InciToken, type RowStatus, type VerdictLabel } from '@skinkey/contracts';
+import { COPY, type Claim, type ClaimType, type CopySet, type InciToken, type RowStatus, type VerdictLabel } from '@skinkey/contracts';
 import { BAND_CUTOFFS } from './bands';
 import { labelCheck, medicineGate, rulesetHash, verdict } from './engine';
-import { toInciTokens } from './inci';
+import { toCatalogProduct } from './catalog';
 import { READING_PROFILES, profileKey } from './profiles';
 import { RULES, RULESET_VERSION } from './rules';
 
@@ -17,6 +17,8 @@ export interface AuditInput {
   catalogSource: string;
   generatedAt: string;
   includeUnverified?: boolean;
+  /** Human ticks from data/catalog/verified.json. */
+  verifiedIds?: readonly string[];
   copySet?: CopySet;
 }
 
@@ -35,90 +37,26 @@ export interface AuditRow {
   claims_source: 'catalog' | 'marketed_for_phrase_match';
 }
 
-const FREE_FROM: [ClaimType, RegExp][] = [
-  ['fragrance_free', /\bfragrance[- ]free\b/i],
-  ['alcohol_free', /\balcohol[- ]free\b/i],
-  ['oil_free', /\boil[- ]free\b/i],
-];
-
-const SKIN_TYPE: [ClaimType, RegExp][] = [
-  ['for_oily_skin', /\boily\b/i],
-  ['for_dry_skin', /\bdry\b/i],
-  ['for_combination_skin', /\bcombination\b/i],
-  ['for_sensitive_skin', /\bsensitive\b/i],
-];
-
-const NEGATED = /\bnot (suitable )?for\b/i;
-
-/**
- * Deterministic phrase match for brand rows that predate X5 claim spans, recorded as claims_source so it is visible.
- * Free-from claims are read from the marketed_for phrases and the product name; skin-type claims need the word "skin"
- * or a bare type word ("oily"), so "dry touch finish" is not a dry-skin claim.
- */
-export function claimsFromMarketedFor(phrases: readonly string[], name = ''): Claim[] {
-  const out: Claim[] = [];
-  const add = (type: ClaimType, quote: string) => {
-    if (!out.some((c) => c.type === type)) out.push({ type, quote });
-  };
-  for (const phrase of phrases) {
-    if (NEGATED.test(phrase)) continue;
-    for (const [type, re] of FREE_FROM) if (re.test(phrase)) add(type, phrase);
-    const bare = /^[a-z]+$/i.test(phrase.trim());
-    if (/\ball skin types?\b|\bevery\b.*\bskin type\b|\bany skin type\b/i.test(phrase)) add('for_all_skin_types', phrase);
-    else if (/\bskin\b/i.test(phrase) || bare) for (const [type, re] of SKIN_TYPE) if (re.test(phrase)) add(type, phrase);
-  }
-  for (const [type, re] of FREE_FROM) if (re.test(name)) add(type, name);
-  return out;
-}
-
-const slug = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+export { claimsFromMarketedFor } from './claims';
 
 /** Accepts CatalogProduct rows (catalog.json) and the raw brand rows in data/catalog/brands/*.json. */
-export function adaptRow(raw: unknown): AuditRow | null {
-  const parsed = CatalogProduct.safeParse(raw);
-  if (parsed.success) {
-    const p = parsed.data;
-    return {
-      id: p.id,
-      brand: p.brand,
-      name: p.name,
-      category: p.category,
-      inci: p.inci,
-      claims: p.claims,
-      source_url: p.source_url,
-      ...(p.screenshot_path ? { screenshot_path: p.screenshot_path } : {}),
-      verified: p.verified,
-      status: p.status,
-      aliases: p.aliases ?? [],
-      claims_source: 'catalog',
-    };
-  }
-  if (!raw || typeof raw !== 'object') return null;
-  const r = raw as Record<string, unknown>;
-  if (typeof r.name !== 'string' || typeof r.brand !== 'string') return null;
-  const inci = Array.isArray(r.inci) ? toInciTokens(r.inci.filter((t): t is string => typeof t === 'string')) : [];
-  const complete = r.inci_complete !== false && inci.length > 0;
-  const verified = r.verified === true && complete;
+export function adaptRow(raw: unknown, verifiedIds?: ReadonlySet<string>): AuditRow | null {
+  const p = toCatalogProduct(raw, verifiedIds);
+  if (!p) return null;
+  const tagged = (raw as { claims_source?: unknown }).claims_source;
   return {
-    id: typeof r.id === 'string' ? r.id : slug(`${r.brand} ${r.name}`),
-    brand: r.brand,
-    name: r.name,
-    category: typeof r.category === 'string' ? r.category : 'other',
-    inci,
-    claims: claimsFromMarketedFor(
-      Array.isArray(r.marketed_for) ? r.marketed_for.filter((x): x is string => typeof x === 'string') : [],
-      r.name,
-    ),
-    source_url: typeof r.source_url === 'string' ? r.source_url : '',
-    ...(typeof r.screenshot_path === 'string' ? { screenshot_path: r.screenshot_path } : {}),
-    verified,
-    status: !complete ? 'unverifiable' : verified ? 'verified' : 'unverified',
-    aliases: [typeof r.search_keywords === 'string' ? r.search_keywords : ''].filter(Boolean),
-    claims_source: 'marketed_for_phrase_match',
+    id: p.id,
+    brand: p.brand,
+    name: p.name,
+    category: p.category,
+    inci: p.inci,
+    claims: p.claims,
+    source_url: p.source_url,
+    ...(p.screenshot_path ? { screenshot_path: p.screenshot_path } : {}),
+    verified: p.verified,
+    status: p.status,
+    aliases: p.aliases ?? [],
+    claims_source: tagged === 'marketed_for_phrase_match' ? tagged : p.claims_source,
   };
 }
 
@@ -304,13 +242,14 @@ function frameDate(dir: string): string | null {
 export function runAudit(input: AuditInput): { resultsCsv: string; summary: AuditSummary } {
   const copySet = input.copySet ?? 'B';
   const includeUnverified = input.includeUnverified ?? false;
+  const verifiedIds = new Set(input.verifiedIds ?? []);
   const hash = rulesetHash(RULES);
   const notes: string[] = [];
 
   const rows: AuditRow[] = [];
   const seen = new Set<string>();
   for (const raw of input.catalogRows) {
-    const row = adaptRow(raw);
+    const row = adaptRow(raw, verifiedIds);
     if (!row) continue;
     if (seen.has(row.id)) {
       notes.push(`Duplicate catalogue id skipped: ${row.id}`);

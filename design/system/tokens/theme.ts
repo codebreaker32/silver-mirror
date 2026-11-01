@@ -1558,6 +1558,7 @@ export interface ThemeComponents {
     };
     noteColor: string;
     focus: string;
+    previewTintOpacity: number;
   };
   productMatchCard: {
     bg: string;
@@ -2964,7 +2965,8 @@ export const lightTheme: SkinKeyTheme = {
           "includeFontPadding": false
         },
         "noteColor": "#564D41",
-        "focus": "#FFFFFF"
+        "focus": "#FFFFFF",
+        "previewTintOpacity": 0.13
       },
       "productMatchCard": {
         "bg": "#FAF7F2",
@@ -4358,7 +4360,8 @@ export const darkTheme: SkinKeyTheme = {
           "includeFontPadding": false
         },
         "noteColor": "#B0A595",
-        "focus": "#FFFFFF"
+        "focus": "#FFFFFF",
+        "previewTintOpacity": 0.13
       },
       "productMatchCard": {
         "bg": "#1E1C18",

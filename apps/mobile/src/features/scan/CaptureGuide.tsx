@@ -34,7 +34,7 @@ function OvalMask({ width, height }: { width: number; height: number }) {
   return (
     <Svg width={width} height={height} style={StyleSheet.absoluteFill} pointerEvents="none">
       <Path d={d} fill={g.overlay} fillRule="evenodd" />
-      <Ellipse cx={cx} cy={cy} rx={rx} ry={ry} stroke={g.oval} strokeWidth={g.ovalWidth} fill="none" />
+      <Ellipse cx={cx} cy={cy} rx={rx} ry={ry} stroke={g.oval} strokeWidth={g.ovalStrokeWidth} fill="none" />
     </Svg>
   );
 }
@@ -175,7 +175,7 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
             accessibilityLiveRegion="polite"
             accessibilityLabel={message}
             style={{
-              minHeight: g.hint.height,
+              minHeight: g.hint.visualMinHeight,
               paddingHorizontal: g.hint.paddingX,
               borderRadius: g.hint.radius,
               backgroundColor: g.hint.bg,

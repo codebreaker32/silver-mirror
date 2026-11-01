@@ -1,31 +1,20 @@
 # SkinKey component specifications
 
-*Direction: **Clay & Ink**, with four parts taken from **Deep Teal**. Version 0.1, 1 Nov 2026. Draft until the interview debrief (brief §6 freeze rule).*
+*Direction: **Clay & Ink**, with four parts taken from **Deep Teal**. Version 1.1, 1 Nov 2026 (tokens v1.1.0). Draft until the interview debrief (brief §6 freeze rule).*
 
-**Stack:** Expo / React Native, Android-first, with Material 3 behaviour for share, back, permissions, sheets and snackbars. There is also a small web app (the results/fallback page, the pharmacist QR page and the landing page) that reads the same tokens as CSS variables.
+**Stack:** Expo / React Native, Android-first, with Material 3 behaviour for share, back, permissions, sheets and snackbars. A small web app (results/fallback page, pharmacist QR page, landing) reads the same tokens as CSS variables.
 
-**Sources:**
-- `directions/README.md` (judge fixes)
-- `directions/clay-ink.*`
-- `directions/deep-teal.*`
-- `research/00_research_summary_and_design_brief.md` §3–5 and §7
-- Tokens: `tokens/skinkey.tokens.json`, which is being built in parallel
-
-**What was taken from Deep Teal:**
-1. The provenance ledger is laid out like a **dispensing label**: small-caps keys SKIN / PRODUCT / LIMITS, with hairline rows.
-2. The verdict tint stays **in the verdict head only**. Reasons sit on a plain surface.
-3. Band meters are drawn in **neutral ink**, never in the accent.
-4. The medicine gate uses a **pharmacist-at-counter** icon. It replaces the mortar and pestle.
+**Sources:** `directions/README.md` (judge fixes), `directions/clay-ink.*`, `directions/deep-teal.*`, `research/00_research_summary_and_design_brief.md` §3–5 and §7. **Token source of truth:** `tokens/skinkey.tokens.json`. Every "Component tokens" table, the semantic colour table (§1.3), the type table (§1.4) and the motion table (§1.5) are **generated** into this file by `node tokens/build-tokens.mjs`, so they cannot drift. `node tokens/check-contrast.mjs` fails if any backticked token reference in this file does not resolve. Changelog: `README.md`.
 
 ---
 
 ## 0. Principles
 
 1. **A calm, knowledgeable friend who shows their working.** Every claim names where it came from: the reading and scan date, the product data source, the weather source. Nothing flashes, sells or hurries. The only countdown in the product is the pharmacist QR expiry.
-2. **Reasons before verdicts.** The verdict label frames the reasons; it does not replace them. Reasons are set *larger* than the label (`type.reason` 19dp > `type.verdictLabel` 15dp), and they are numbered in serif (01, 02) so they read as the main content.
+2. **Reasons before verdicts.** The verdict label frames the reasons; it does not replace them. Reasons are set *larger* than the label (`type.reason` 19dp/500 > `type.verdictLabel` 15dp), and they are numbered in serif (01, 02) so they read as the main content.
 3. **Privacy you can see.** Show what is kept before the camera opens. Show the YouCam deletion as its own step in processing. Keep "What we keep" and Delete one tap away. Every new sharing act gets its own consent screen with a preview.
 4. **Honest UNKNOWN.** UNKNOWN and "based on product name only" are designed states, not errors. They always offer a next step and show the real catalogue count. They use no error colour and no error icon.
-5. **Fit, not safety.** CAUTION means "may not suit *this profile*". It is ochre, never red. It never fills the screen. It uses no triangle, no exclamation mark and no shield. The medicine gate is neutral ink with one fixed line.
+5. **Fit, not safety.** CAUTION means "may not suit *this profile*". It is ochre, never red. It never fills the screen. It uses no triangle, no exclamation mark and no shield. The medicine gate is neutral ink with one line.
 
 ---
 
@@ -33,126 +22,163 @@
 
 ### 1.1 Token references
 
-Components reference **semantic, type, space, radius, elevation and motion tokens only**. They never use raw hex values or primitives. Hex values appear in §1.3 only so the token builder can reconcile them.
+Components reference **semantic, type, space, radius, elevation, motion and component tokens only**. They never use raw hex values or primitives. Names in backticks are real paths in `skinkey.tokens.json`.
 
-| Prefix in this doc | Resolves to in `skinkey.tokens.json` | RN | Web CSS |
+| Written here | Lives in `skinkey.tokens.json` | React Native | Web CSS |
 |---|---|---|---|
-| `color.*` | `semantic.light.color.*` / `semantic.dark.color.*`, picked by colour scheme | `useTheme().color.verdict.caution.bg` | `var(--color-verdict-caution-bg)` |
-| `type.*` | `type.*` (family, size, lineHeight, letterSpacing, weight) | spread into `Text` style | `font` shorthand vars `--type-reason-*` |
-| `space.N` | `space.N`, on a 4dp base (`space.1` = 4 … `space.12` = 48) | number (dp) | `--space-N` in `rem` |
-| `radius.*` | `radius.*` | `borderRadius` | `--radius-*` |
-| `elevation.N` | `elevation.N` (tone + border + shadow recipe) | `boxShadow` (new arch) + `elevation` fallback | `--elevation-N` |
-| `motion.*` | `motion.duration.*`, `motion.easing.*` | Reanimated `withTiming` | `--motion-*` |
-| `<component>.<part>.<prop>` | component layer (aliases of the above, defined per component below) | theme `components.*` | `--<component>-<part>-<prop>` |
+| `color.text`, `color.bg-sunken` | `semantic.color.<mode>.*` | `useSkinKeyTheme().colors.text`, `.colors.bgSunken` | `var(--sk-color-text)`, `var(--sk-color-bg-sunken)` |
+| `verdict.caution.bg`, `meter.filled` | `semantic.color.<mode>.verdict.*` / `.meter.*` | `theme.colors.verdict.caution.bg`, `theme.colors.meter.filled` | `var(--sk-verdict-caution-bg)`, `var(--sk-meter-filled)` |
+| `type.reason` | `typography.scale.reason` | `<Text {...textProps.reason} style={typography.reason}>` | `font: var(--sk-type-reason); letter-spacing: var(--sk-type-reason-tracking)` or class `.sk-type-reason` |
+| `space.4`, `space.gutter` | `spacing.scale` / `spacing.semantic` | `space[4]`, `spacing.gutter` (dp numbers) | `var(--sk-space-4)` (px) |
+| `radius.lg` | `radius` | `radius.lg` | `var(--sk-radius-lg)` |
+| `elevation.2` | `elevation.light.2` / `elevation.dark.2` | `theme.elevation[2].style` (or `.boxShadow` on the new architecture, never both) | `--sk-elevation-2-surface / -border / -shadow` |
+| `motion.duration.press`, `motion.ease.standard` | `motion.*` | `motion.duration.press`, `Easing.bezier(...motion.ease.standard)` | `var(--sk-duration-press)`, `var(--sk-ease-standard)` |
+| `touch.min`, `icon.lg` | `touch`, `icon` | `touch.min`, `icon.lg` | `var(--sk-touch-min)`, `var(--sk-icon-lg)` |
+| `<component>.<path>` e.g. `verdictCard.head.caution.bg` | `component.*` | `theme.components.verdictCard.head.caution.bg` | `var(--sk-verdict-card-head-caution-bg)` (camelCase → kebab, dots → dashes) |
 
-When the token file lands and a name differs, reconcile it **in this table and §1.3 only**. Component tables keep their names.
+A component var that aliases a type style also emits `-tracking`, and `-transform` / `-numeric` when the style sets them, e.g. `--sk-verdict-card-head-label-tracking` and `--sk-verdict-card-head-label-transform`. Keys starting with `$` (rules, copy, component cross-references such as `consentSheet.$actions`) are documentation only and are stripped from `theme.ts`.
 
 ### 1.2 Global rules
 
 | Rule | Spec |
 |---|---|
-| **Type floor** | No text under **12dp**. Only `type.overline` and `type.tag` sit at 12. Provenance keys and meter labels are 13dp (`type.ledgerKey`, `type.caption`). |
-| **Touch targets** | Every interactive element is at least **48 × 48dp** (`size.touch.min`). Smaller visuals (Edit link, chips, icon buttons, sheet handle) expand their hit area with `hitSlop` or padding, never with layout overlap. Targets are at least 8dp apart. |
-| **Dynamic type** | `allowFontScaling` stays on. `maxFontSizeMultiplier` is never below **2.0**. Layouts are tested at 1.0, 1.3 and 2.0 (Android 14 non-linear scaling). Use `minHeight`, never a fixed `height`, on any element that contains text. At ≥ 1.3×, button pairs stack vertically. At ≥ 1.5×, ledger keys stack above their values, the chip grid becomes one column, and the bottom nav keeps its labels (they wrap to 2 lines, they never truncate). **Verdict labels, reasons and fixed strings never truncate** (`numberOfLines` is unset). Web: `rem` units, reflow at 200% zoom and at 320 CSS px (WCAG 1.4.4 / 1.4.10). |
-| **Colour never alone** | Every state has a text label, a unique icon silhouette and a hue. |
-| **CAUTION** | Ochre (`color.verdict.caution.*`), **never red**. The tint is confined to the verdict head and never reaches reasons, backgrounds, app bars or buttons. |
-| **Accent use** | `color.accent` is used for primary buttons, links, focus and selected nav **only**. It never marks a verdict, a band, a meter or a chart. |
-| **Numerals** | Dates, prices, counts, indices, SPF and the countdown use `fontVariant: ['tabular-nums']` (`type.*` with the `numeric` modifier). |
-| **Paper grain** | A static PNG tile at **3% opacity** (`surface.grain.opacity` = 0.03 light, **0 dark**). It is only allowed on decorative paper zones: the landing hero, empty-state illustration panels and the share-teaching illustration. It is **never** behind body text, reasons, the ledger, forms or the camera. It never animates and is off when reduce-motion is on. It is not used on low-RAM devices (`ActivityManager.isLowRamDevice`). |
-| **Icons** | Lucide-style line icons, 1.5dp stroke, round caps, sizes `size.icon.sm` 16 / `md` 20 / `lg` 24. One style per hierarchy level. A decorative icon next to text is hidden from TalkBack (`importantForAccessibility="no"`). Icon-only controls carry an `accessibilityLabel`. **Banned glyphs:** shield, warning triangle, exclamation mark, cross or plus-in-circle (medical), pill, mortar and pestle, sparkles ("AI magic"), store logos. |
-| **Focus** | Keyboard, switch access and web focus get a 2dp `color.focus.ring` outline with a 2dp offset over the surrounding surface. Contrast is measured against that surface, not the control fill. |
+| **Type floor** | No text under **12dp**. Only `type.fine` (data credits) sits at 12. Ledger keys, meter labels, tags and nav labels are 13dp. Serif is never below 18dp. |
+| **Touch targets** | Every interactive element is a `Pressable` whose **own box** is at least 48 × 48dp (`touch.min`), reached with `minHeight` / `minWidth` and padding. **hitSlop is not a fix on Android**: touches outside the parent's bounds are never delivered and a nested `<Text onPress>` takes no hitSlop. Use hitSlop only where the parent already has 48dp of room. Never use a nested Text link for an action in RN; move it to its own row. Targets are at least 8dp apart (`touch.gap`). |
+| **Grouping for TalkBack** | In RN Android, `accessible={true}` on a parent makes its children unfocusable. **Group only text.** Render any link or button that belongs to a group as a sibling node after it (ledger PRODUCT source link, forecast "Check a sunscreen", product-header Edit, the noProfile "Start scan" prompt), or expose it through `accessibilityActions` + `onAccessibilityAction`. |
+| **Live regions** | One visually hidden `<Text accessibilityLiveRegion="polite">` per screen. Write to it only on real changes (a processing step, the QR at 25, 20, 15, 10, 5 and 1 min). Never make a list or a visible countdown a live region. For the verdict reveal, call `AccessibilityInfo.setAccessibilityFocus(verdictHeadRef)` when loading ends; do not use `announceForAccessibility` (deprecated on Android 16). |
+| **Dynamic type** | `allowFontScaling` stays on; `maxFontSizeMultiplier` is **2.0** on every style (`textProps` in `theme.ts`). Test at 1.0, 1.3 and 2.0 (Android 14 non-linear scaling). `minHeight`, never a fixed `height`, on anything that contains text (lint-enforced). At ≥ 1.3× button pairs stack. At ≥ 1.5× ledger keys stack above values, the sticky action bar becomes inline at the end of the content (`actionBar.inlineAtFontScale`), and nav labels wrap to 2 lines. **Verdict labels, reasons and fixed strings never truncate.** Web: rem type and unitless line heights in `tokens.css`; reflow at 200% zoom and 320 CSS px (WCAG 1.4.4 / 1.4.10). |
+| **Colour never alone** | Every state has a text label, a unique icon silhouette and a hue. FITS and CAUTION heads have near-equal luminance, so in greyscale the silhouette (seal vs half-filled circle) and the caps label carry the difference. There is no leading stripe. |
+| **CAUTION** | Ochre (`verdict.caution.*`), **never red**. The tint is confined to the verdict head and never reaches reasons, backgrounds, app bars or buttons. |
+| **Accent use** | `color.accent` is for primary buttons, links, focus, selected nav and selected segments **only**. It never marks a verdict, a band, a meter, a processing step or a chart (lint-enforced for the stepper, band list and skin map). |
+| **Eyebrows** | Tracked caps survive only on ledger keys (`type.overline`) and the verdict label. Section heads are sentence-case `type.section` (Newsreader 18/24). No screen-level overlines. |
+| **Numerals** | Dates, prices, counts, indices, SPF and the countdown use tabular figures (`type.reasonIndex`, `type.figure`, or `fontVariant: ['tabular-nums']`). |
+| **Paper grain** | Static 160px PNG tile (`assets/texture/grain-160.png`) at **3%** in light (`texture.grain.light.opacity`), **0** in dark (`texture.grain.dark.opacity`). Allowed only on `texture.grain.allowed`: the share-teaching illustration panel, landing hero margins, the empty-state illustration plate and the splash. **Never** behind body text, reasons, the ledger, forms, cameras or on card and sheet surfaces themselves. It never animates, so reduce motion does not change it. Skip it on low-RAM devices (`ActivityManager.isLowRamDevice`). |
+| **Icons** | Lucide line icons at `icon.stroke` 1.75, round caps, sizes `icon.sm` 16 / `icon.md` 20 / `icon.lg` 24 / `icon.xl` 32. Decorative icons next to text are hidden from TalkBack (`importantForAccessibility="no"`). Icon-only controls carry an `accessibilityLabel`. **Banned:** shield, warning triangle, exclamation mark, medical cross or plus, pill, mortar and pestle, sparkles, store logos, and the share/upload glyph for provenance ("Shared from" uses `arrow-down-left`). |
+| **Focus** | 2dp ring, 2dp offset (`focus.width`, `focus.offset`), measured against the surrounding surface. Three colours: `focus.color` on paper, `focus.inverse` on the snackbar, `focus.overlay` (white + 1dp `focus.overlayHalo`) over the camera or a photo. All gated. |
+| **Navigation** | The bottom nav exists on top-level screens only (home, /profile). /check, better matches, try-on and the QR share are **pushed details**: back arrow, no bottom nav (M3: never show back and a selected tab together). |
 | **Safe areas** | Fixed bars respect the status bar and the gesture inset (`react-native-safe-area-context`). Scroll content gets a bottom inset equal to the sticky bar height. |
-| **Links out** | Store links open the store app or a Chrome Custom Tab. **Never a WebView.** Every link-out shows its destination line *before* the tap. |
+| **Links out** | Store links open the store app or a Chrome Custom Tab, **never a WebView**. Every button that leaves for a store search shows its destination line *before* the tap. |
 
-### 1.3 Semantic tokens this spec relies on
+### 1.3 Semantic colour tokens (generated)
 
-Values are Clay & Ink, with the judge fixes applied. Ratios are WCAG 2.1, computed with `scratchpad/cc.py` and the original `clay-ink.contrast.md`.
+Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 failures at v1.1.0).
 
-| Token | Light | Dark | Note / contrast |
-|---|---|---|---|
-| `color.bg` | #F3EEE6 | #151411 | |
-| `color.surface` | #FAF7F2 | #1E1C18 | |
-| `color.surface.raised` | #FFFCF7 | #28251F | sticky bars, sheets, cards |
-| `color.surface.sunken` | #EAE3D8 | #100F0D | inputs, empty-state discs, disabled fills |
-| `color.text` | #1E1C19 | #F1EBE1 | 14.7 / 15.5 on bg |
-| `color.text.muted` | #655B4D | #B0A595 | ≥ 5.2 on every surface, both modes |
-| `color.border` | #DDD3C5 | #38332B | decorative hairline only, never the only edge of a control |
-| `color.border.strong` | #7E725F | #807464 | control outlines and empty meter segments; ≥ 3.35 on every surface |
-| `color.accent` | #1B2F32 | **#86A4A7** | **Dark fixed**: was #B0C5C7, which looked disabled. The fill is 6.91 on bg and 5.73 on raised. |
-| `color.on.accent` | #F6F1E8 | **#0C171A** | 12.45 light / **6.84 dark** (rechecked) |
-| `color.accent.pressed` | #132326 | #B0C5C7 | text on the pressed fill: 14.40 / 10.11 |
-| `color.accent.text` | #253D41 | #B0C5C7 | links; ≥ 8.48 everywhere |
-| `color.focus.ring` | #43666A | **#B0C5C7** | **Recommend dark = ink.200**, so the ring differs from the new dark button fill (10.23 on bg). |
-| `color.chip.bg` / `color.chip.fg` | #EAE3D8 / #2B2722 | #2E2A24 / #E8E0D4 | 11.64 / 10.89 |
-| `color.meter.on` | = `color.chip.fg` | = `color.chip.fg` | neutral ink, **never accent** |
-| `color.meter.off` | = `color.border.strong` | = `color.border.strong` | full-opacity 1.5dp outline; 3.70 light / 3.12 dark on chip bg |
-| `color.verdict.fits.{bg,fg,border}` | #E5EBDD / #34492A / #B3C4A3 | #1E2A1A / #B9CCA8 / #3F5534 | fg on bg 8.09 / 8.75 |
-| `color.verdict.caution.{bg,fg,border}` | #F3E6CC / #62410A / #DDBE85 | #2D2313 / #E6C482 / #5E4920 | fg on bg 7.46 / 9.24 |
-| `color.verdict.unknown.{bg,fg,border}` | #E6E8E8 / #3B464D / #C1C7CA | #21262A / #BCC5CA / #414C53 | fg on bg 7.87 / 8.71 |
-| `color.verdict.medicine.{bg,fg,border}` | #EFEBE4 / #1E1C19 / #1E1C19 | #211F1B / #F1EBE1 / #B0A595 | border is 1.5dp |
-| `color.verdict.*.rule` | = `.fg` | = `.fg` | **New**: a 3dp leading rule on the verdict head. It fixes the dark CAUTION edge that almost disappeared (caution rule 10.19 on dark surface). |
-| `color.scrim` | rgba(26,24,21,0.48) | rgba(0,0,0,0.60) | behind modal sheets |
-| `color.media.fg` / `color.media.scrim` | #FFFFFF / rgba(0,0,0,0.55) | same | **camera and photo only**. White on the scrim is ≥ 4.74 even over a white scene. |
-| `color.inverse.surface` / `.text` / `.action` | #2B2722 / #F3EEE6 / #B0C5C7 | #E8E0D4 / #1E1C19 / #253D41 | snackbars: 12.84 / 8.23 light, 12.99 / 8.80 dark |
-| `color.qr.bg` / `color.qr.fg` | #FFFFFF / #000000 | same | QR always prints black on white |
-| `color.shadow` | rgba(66,59,50,0.38) | none (tone steps only) | |
+<!-- tokens:@semantic -->
+| Token | Light | Dark |
+|---|---|---|
+| `color.bg` | #F3EEE6 (`sand.100`) | #151411 (`sand.950`) |
+| `color.bg-sunken` | #EAE3D8 (`sand.150`) | #100F0D (`sand.975`) |
+| `color.surface` | #FAF7F2 (`sand.50`) | #1E1C18 (`sand.925`) |
+| `color.surface-raised` | #FFFCF7 (`sand.25`) | #28251F (`sand.900`) |
+| `color.text` | #1E1C18 (`sand.925`) | #F3EEE6 (`sand.100`) |
+| `color.text-muted` | #564D41 (`sand.700`) | #B0A595 (`sand.400`) |
+| `color.text-subtle` | #6B6152 (`sand.600`) | #9E9282 (`sand.450`) |
+| `color.border` | #DDD3C5 (`sand.200`) | #38332B (`sand.800`) |
+| `color.border-strong` | #807464 (`sand.500`) | #807464 (`sand.500`) |
+| `color.accent` | #1B2F32 (`ink.800`) | #86A4A7 (`ink.300`) |
+| `color.on-accent` | #FAF7F2 (`sand.50`) | #0C171A (`ink.950`) |
+| `color.accent-pressed` | #253D41 (`ink.700`) | #6B8C90 (`ink.400`) |
+| `color.accent-subtle` | #D5E0E1 (`ink.100`) | #253D41 (`ink.700`) |
+| `color.on-accent-subtle` | #1B2F32 (`ink.800`) | #D5E0E1 (`ink.100`) |
+| `color.link` | #253D41 (`ink.700`) | #B0C5C7 (`ink.200`) |
+| `color.link-pressed` | #1B2F32 (`ink.800`) | #D5E0E1 (`ink.100`) |
+| `color.focus-ring` | #43666A (`ink.500`) | #B0C5C7 (`ink.200`) |
+| `color.focus-ring-inverse` | #B0C5C7 (`ink.200`) | #253D41 (`ink.700`) |
+| `color.focus-ring-overlay` | #FFFFFF (`white`) | #FFFFFF (`white`) |
+| `color.overlay` | rgba(30, 28, 24, 0.40) | rgba(0, 0, 0, 0.60) |
+| `color.overlay-camera` | rgba(16, 15, 13, 0.62) | rgba(16, 15, 13, 0.62) |
+| `color.on-overlay` | #FFFFFF (`white`) | #FFFFFF (`white`) |
+| `color.overlay-halo` | rgba(0, 0, 0, 0.60) | rgba(0, 0, 0, 0.60) |
+| `color.inverse-surface` | #2E2A24 (`sand.850`) | #EAE3D8 (`sand.150`) |
+| `color.inverse-text` | #F3EEE6 (`sand.100`) | #1E1C18 (`sand.925`) |
+| `color.inverse-link` | #B0C5C7 (`ink.200`) | #253D41 (`ink.700`) |
+| `color.disabled-bg` | #EAE3D8 (`sand.150`) | #2E2A24 (`sand.850`) |
+| `color.disabled-fg` | #6B6152 (`sand.600`) | #9E9282 (`sand.450`) |
+| `color.shadow` | #423B32 (`sand.shadow`) | transparent |
+| `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `color.state.hover` | rgba(30, 28, 24, 0.05) | rgba(243, 238, 230, 0.06) |
+| `color.state.ripple` | rgba(30, 28, 24, 0.12) | rgba(243, 238, 230, 0.14) |
+| `color.state.ripple-on-accent` | rgba(250, 247, 242, 0.18) | rgba(12, 23, 26, 0.16) |
+| `verdict.fits.bg` | #E5EBDD (`moss.100`) | #1F281C (`moss.900`) |
+| `verdict.fits.fg` | #34492A (`moss.700`) | #B9CCA8 (`moss.300`) |
+| `verdict.fits.border` | #6E8659 (`moss.500`) | #6E8659 (`moss.500`) |
+| `verdict.fits.icon` | #4A6339 (`moss.600`) | #9DB58A (`moss.400`) |
+| `verdict.caution.bg` | #F3E6CC (`ochre.100`) | #292217 (`ochre.900`) |
+| `verdict.caution.fg` | #62410A (`ochre.700`) | #E6C482 (`ochre.300`) |
+| `verdict.caution.border` | #A0752A (`ochre.500`) | #A0752A (`ochre.500`) |
+| `verdict.caution.icon` | #8A5D12 (`ochre.600`) | #D9AE5C (`ochre.400`) |
+| `verdict.unknown.bg` | #EAE3D8 (`sand.150`) | #2E2A24 (`sand.850`) |
+| `verdict.unknown.fg` | #3B464D (`slate.700`) | #BCC5CA (`slate.300`) |
+| `verdict.unknown.border` | #76828A (`slate.500`) | #76828A (`slate.500`) |
+| `verdict.unknown.icon` | #56626A (`slate.600`) | #9AA5AC (`slate.400`) |
+| `verdict.medicine.bg` | #F3EEE6 (`sand.100`) | #151411 (`sand.950`) |
+| `verdict.medicine.fg` | #1E1C18 (`sand.925`) | #F3EEE6 (`sand.100`) |
+| `verdict.medicine.border` | #1E1C18 (`sand.925`) | #B0A595 (`sand.400`) |
+| `verdict.medicine.icon` | #1E1C18 (`sand.925`) | #F3EEE6 (`sand.100`) |
+| `meter.filled` | #38332B (`sand.800`) | #EAE3D8 (`sand.150`) |
+| `meter.empty` | #807464 (`sand.500`) | #807464 (`sand.500`) |
+| `color.qr.module` | #000000 (`black`) | #000000 (`black`) |
+| `color.qr.field` | #FFFFFF (`white`) | #FFFFFF (`white`) |
+<!-- /tokens -->
 
-**Non-colour tokens this spec needs.** Flag these to the token builder if they are missing.
+### 1.4 Type styles (generated)
 
-| Token | Value |
-|---|---|
-| `size.touch.min` | 48dp |
-| `size.icon.sm` / `md` / `lg` / `xl` | 16, 20, 24, 32dp |
-| `size.button.primary` | 52dp min height |
-| `size.button.secondary` | 48dp min height |
-| `size.shutter` | 72dp |
-| `surface.grain.opacity` | 0.03 light, 0 dark |
-| `state.pressed.overlay` | `color.text` at 10% (ripple / state layer) |
-| `radius.xs` / `chip` / `button` / `verdict` / `card` / `sheet` / `full` | 2, 6, 8, 10, 12, 24, 999 |
-| `space.gutter` | 20dp (= `space.5`) |
+Android: `includeFontPadding: false`; never set `fontWeight` on a custom family (the weight is in the family key). `Newsreader36pt_500Medium` is a static opsz-36 instance bundled from `assets/fonts/`; everything else ships in `@expo-google-fonts/newsreader` and `@expo-google-fonts/commissioner`. QA: check Commissioner tracking on a real Android phone (judge fix 12).
 
-### 1.4 Type styles used here
-
-| Token | Family / weight | Size / line (dp) | Tracking | Use |
-|---|---|---|---|---|
-| `type.display` | Newsreader 400 | 34 / 40 | −0.5 | landing hero, empty-state title |
-| `type.title` | Newsreader 400 | 26 / 32 | −0.3 | product title, screen titles |
-| `type.headline` | Newsreader 400 | 20 / 27 | −0.1 | section and sheet titles, privacy sentence, forecast sentence |
-| `type.verdictLabel` | Commissioner 600, caps | **15 / 20** | +1.0 | FITS / CAUTION / UNKNOWN. **Fixed**: was 12dp. |
-| `type.verdictSubtitle` | Newsreader 400 | 18 / 25 | 0 | the verdict subtitle, set as **one unit in one style** |
-| `type.medicineLine` | Newsreader 500 | 20 / 27 | −0.1 | "This looks like a medicine. Ask the pharmacist." |
-| `type.reason` | Newsreader 400 | **19 / 26** | −0.1 | reason reading line. **Fixed**: was 20/27, which pushed reason 02 under the sticky bar. |
-| `type.reasonIndex` | Newsreader 400 italic, tabular | 17 / 26 | 0 | 01, 02, 03 |
-| `type.reasonFact` | Commissioner 400 | **16 / 24** | 0 | product fact, in **`color.text`**. **Fixed**: was 14dp muted. |
-| `type.body` | Commissioner 400 | 16 / 24 | 0 | |
-| `type.bodySm` | Commissioner 400 | 14 / 20 | 0 | |
-| `type.label` | Commissioner 600 | 14 / 20 | +0.1 | chips, list-row titles, links |
-| `type.button` | Commissioner 600 | 15 / 20 | +0.1 | |
-| `type.ledgerKey` | Commissioner 600, caps | 13 / 18 | +0.8 | SKIN / PRODUCT / WEATHER / LIMITS |
-| `type.caption` | Commissioner 400 | 13 / 18 | +0.1 | destination lines, fine print, meter labels |
-| `type.overline` | Commissioner 600, caps | 12 / 16 | +1.2 | section kickers |
-| `type.tag` | Commissioner 600 | 12 / 16 | +0.4 | tags |
-
-Android: `includeFontPadding: false`. QA: check Commissioner's tracking on a real Android phone (judge fix 12).
+<!-- tokens:@type -->
+| Token | RN fontFamily | Family / weight | Size / line (dp) | Tracking | Use |
+|---|---|---|---|---|---|
+| `type.display` | Newsreader36pt_500Medium | Newsreader 500 | 34 / 40 | -0.5 | Landing hero, onboarding headline, home 'Check a product' |
+| `type.title` | Newsreader36pt_500Medium | Newsreader 500 | 26 / 32 | -0.3 | Product title on /check, screen titles, the medicine-gate line, consent lead clause |
+| `type.headline` | Newsreader_500Medium | Newsreader 500 | 20 / 26 | -0.1 | Card heads, 'Where this comes from', sheet titles, empty-state sentence, forecast sentence |
+| `type.verdictLine` | Newsreader_400Regular | Newsreader 400 | 20 / 26 | -0.1 | The verdict sentence under the label ('May not suit your readings. This is not a safety warning.'), one unit in one style |
+| `type.section` | Newsreader_500Medium | Newsreader 500 | 18 / 24 | 0 | Sentence-case section heads that replaced tracked-caps eyebrows: 'Why · 2 reasons', 'Readings by zone', 'What we keep' |
+| `type.reason` | Newsreader_500Medium | Newsreader 500 | 19 / 26 | 0 | Reason reading line. Out-sizes the 15dp verdict label (P1); weight 500 so it leads the 16dp fact. |
+| `type.reasonIndex` | Newsreader_400Regular_Italic | Newsreader 400 italic, tabular | 18 / 26 | 0 | 01 / 02 / 03 reason and rank numerals |
+| `type.figure` | Newsreader36pt_500Medium | Newsreader 500, tabular | 26 / 32 | -0.3 | QR countdown ('29 min left') |
+| `type.verdictLabel` | Commissioner_600SemiBold | Commissioner 600, caps | 15 / 20 | 1.2 | FITS / CAUTION / UNKNOWN, with a 24dp icon. Never truncates; wraps at max font scale. |
+| `type.body` | Commissioner_400Regular | Commissioner 400 | 16 / 24 | 0 | Body copy, the product fact in each reason (full text colour), consent body |
+| `type.bodyStrong` | Commissioner_600SemiBold | Commissioner 600 | 16 / 24 | 0 | Band value (High), emphasised step, list row title |
+| `type.bodySm` | Commissioner_400Regular | Commissioner 400 | 14 / 20 | 0.1 | Ledger values, supporting lines, card secondary text |
+| `type.label` | Commissioner_600SemiBold | Commissioner 600 | 14 / 20 | 0.1 | Chip and band names, field labels, snackbar action |
+| `type.labelSm` | Commissioner_600SemiBold | Commissioner 600 | 13 / 16 | 0.2 | Selected bottom-nav label, tags |
+| `type.labelSmRegular` | Commissioner_400Regular | Commissioner 400 | 13 / 16 | 0.2 | Unselected bottom-nav label (selection is weight + stroke + pill, never colour alone) |
+| `type.button` | Commissioner_600SemiBold | Commissioner 600 | 16 / 20 | 0.1 | All buttons |
+| `type.overline` | Commissioner_600SemiBold | Commissioner 600, caps | 13 / 16 | 0.8 | Ledger keys SKIN / PRODUCT / WEATHER / LIMITS only. The verdict label is the only other caps line. No section eyebrows. |
+| `type.caption` | Commissioner_400Regular | Commissioner 400 | 13 / 18 | 0.1 | Destination lines, disclosures, meter labels (Low / Med / High), timestamps |
+| `type.fine` | Commissioner_400Regular | Commissioner 400 | 12 / 16 | 0.2 | Data credits only (Open-Meteo CC BY 4.0, Open Beauty Facts ODbL). The floor: nothing in SkinKey is smaller than 12. |
+<!-- /tokens -->
 
 ### 1.5 Motion and haptics policy
 
-The motion personality is **ink settling**: unhurried, no springs, no overshoot, nothing loops.
+The motion personality is **ink settling**: unhurried, no springs, no overshoot, nothing loops. Reduce motion is read from `AccessibilityInfo.isReduceMotionEnabled()` / Reanimated `useReducedMotion()`; on the web, `prefers-reduced-motion`.
 
-| Token | Value | Use |
-|---|---|---|
-| `motion.duration.press` | 120ms | press scale 0.98 + state layer |
-| `motion.duration.state` | 200ms | colour and state changes, step ticks drawing |
-| `motion.duration.enter` | 320ms | cards and toasts entering |
-| `motion.duration.verdictReveal` | 320ms | verdict head: opacity 0→1 + scale 0.98→1 |
-| `motion.duration.reasonStagger` | 60ms | reasons: opacity + translateY 6dp→0, 60ms apart |
-| `motion.duration.sheet` | 300ms | bottom sheet in/out |
-| `motion.duration.screen` | 360ms | screen transitions (M3 shared-axis X) |
-| `motion.duration.reduced` | 120ms | **reduce motion**: every transition becomes this crossfade. No translate, scale or stagger. |
-| `motion.easing.standard` | cubic-bezier(0.2, 0, 0, 1) | entering and moving |
-| `motion.easing.exit` | cubic-bezier(0.3, 0, 1, 1) | leaving |
-
-Reduce motion is read from `AccessibilityInfo.isReduceMotionEnabled()` / Reanimated `useReducedMotion()`. On the web it is `prefers-reduced-motion`.
+<!-- tokens:@motion -->
+| Token | Value |
+|---|---|
+| `motion.duration.instant` | 0ms |
+| `motion.duration.press` | 100ms |
+| `motion.duration.state` | 160ms |
+| `motion.duration.base` | 240ms |
+| `motion.duration.enter` | 320ms |
+| `motion.duration.verdictReveal` | 320ms |
+| `motion.duration.reasonStagger` | 60ms |
+| `motion.duration.stepTick` | 200ms |
+| `motion.duration.sheetEnter` | 320ms |
+| `motion.duration.sheetExit` | 240ms |
+| `motion.duration.screen` | 320ms |
+| `motion.duration.crossfade` | 120ms |
+| `motion.ease.standard` | cubic-bezier(0.2, 0, 0, 1) |
+| `motion.ease.decelerate` | cubic-bezier(0.05, 0.7, 0.1, 1) |
+| `motion.ease.exit` | cubic-bezier(0.3, 0, 1, 1) |
+| `motion.ease.linear` | cubic-bezier(0, 0, 1, 1) |
+| `motion.enter.translate` / `motion.enter.scaleFrom` | 6dp / 0.98 |
+| `motion.timing.snackbarMs` | 4000 |
+| `motion.timing.snackbarWithActionMs` | 10000 |
+| `motion.timing.qrAnnounceEverySec` | 300 |
+| `motion.timing.qrFinalAnnounceSec` | 60 |
+| `motion.reducedMotion.duration` | 120ms crossfade, no translate, no scale, no stagger |
+<!-- /tokens -->
 
 **Haptics.** Use `View.performHapticFeedback` constants through `expo-haptics` `performAndroidHapticsAsync(AndroidHaptics.*)`, and check the enum names against the installed version. These calls respect the system touch-feedback setting. **Routine taps get no extra haptic**; the M3 ripple is enough. Haptics never encode judgement: every verdict gets the same tick.
 
@@ -171,16 +197,16 @@ Reduce motion is read from `AccessibilityInfo.isReduceMotionEnabled()` / Reanima
 
 ### 1.6 State model (shared by every interactive component)
 
-Priority: disabled > loading > pressed > focused > default. On the web, hover = a 6% state layer.
+Priority: disabled > loading > pressed > focused > default. On the web, hover = `color.state.hover`.
 
 | State | Visual | Semantics |
 |---|---|---|
 | default | the component tokens | |
-| pressed | `state.pressed.overlay` ripple (`android_ripple`, bounded) + scale 0.98, `motion.duration.press`. The bounds never shift. | |
-| focused | 2dp `color.focus.ring`, 2dp offset | TalkBack focus uses the system highlight; never suppress it |
-| disabled | fill `color.surface.sunken`, text `color.text.muted` (5.22 / 7.90, **still readable**), border `color.border` | `accessibilityState={{disabled:true}}`. **Shown, not hidden.** A visible reason line sits nearby when one exists. |
-| loading | the label is replaced by a static progress label ("Checking…"), and the width stays the same. No looping spinner. A 3-dot opacity step at 600ms is allowed, and it is off under reduce motion. | `accessibilityState={{busy:true}}`, live region polite |
-| error | inline message under the control in `color.text`, with an `info` icon. **No red.** | announced through a live region |
+| pressed | `color.state.pressed` layer, Android ripple `color.state.ripple` (bounded), optional scale `motion.enter.scaleFrom` as a transform, `motion.duration.press`. Bounds never shift. | |
+| focused | `focus.color` ring (or `focus.inverse` / `focus.overlay`), `focus.width`, `focus.offset` | TalkBack focus uses the system highlight; never suppress it |
+| disabled | fill `color.disabled-bg`, label `color.disabled-fg` (4.77:1 light / 4.68:1 dark, **still readable**), outline `color.border`. Per component: `button.primary.fgDisabled`, `button.tertiary.fgDisabled`, `textLink.fgDisabled`, `listRow.fgDisabled`, `storeLinkOut.destinationDisabledColor`. | `accessibilityState={{disabled:true}}`. **Shown, not hidden.** A visible reason line sits nearby when one exists. |
+| loading | the label becomes a static progress label ("Checking…"), width kept. No looping spinner. | `accessibilityState={{busy:true}}`; the screen's live region says what is happening |
+| error | inline message under the control in `color.text` with an `info` icon (`stateView.fieldInvalid`). **No red.** | written to the screen's live region |
 
 ---
 
@@ -188,37 +214,50 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 
 **Purpose:** orientation and back. It also shows the source of the current item ("Shared from Flipkart").
 
-**Anatomy:** a container (64dp min height, `color.bg`, no shadow until content scrolls under it, then a hairline `color.border` bottom edge), then a leading back icon button (48dp), then a **left-aligned** title or source line, then 0–1 trailing icon buttons (48dp).
+**Anatomy:** a container (`appBar.minHeight` 56, `color.bg`, no shadow until content scrolls under it, then a hairline `appBar.borderOnScroll` bottom edge), then a leading back icon button (`iconButton.target` 48), then a **left-aligned** title (`appBar.title`) or source line, then 0–1 trailing icon buttons.
 
 **Variants:**
 
 | Variant | Content |
 |---|---|
-| `small` | title in `type.label`, or source line in `type.caption` muted, with a 16dp store-agnostic `share` icon |
+| `small` | title in `appBar.title` (Newsreader 20), or source line in `appBar.source` muted with a 16dp `arrow-down-left` ("arrived from"). **Never the share/upload glyph**: on Android it means "share this", and provenance must not look like an action. |
 | `large` | M3 medium: title in `type.title` below the bar, collapsing on scroll. Used for /profile and /about. |
-| `camera` | transparent over the camera, icons in `color.media.fg`, with a `color.media.scrim` top gradient-free band (a flat scrim) |
+| `camera` | transparent over the camera, icons in `color.on-overlay`, with a `color.overlay-camera` top gradient-free band (a flat scrim) |
 
 **States:**
 
 | State | Spec |
 |---|---|
 | default | as above |
-| scrolled | hairline `color.border` bottom edge; in light only, add `elevation.1` |
+| scrolled | hairline `appBar.borderOnScroll` bottom edge; no shadow |
 | pressed (icon) | circular ripple, radius.full, 48dp |
 | focused (icon) | focus ring, circle |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `appBar.bg` | `color.bg` |
-| `appBar.fg` | `color.text` |
-| `appBar.source.fg` | `color.text.muted` |
-| `appBar.title.type` | `type.label` (small) / `type.title` (large) |
-| `appBar.minHeight` | 64 |
-| `appBar.paddingX` | `space.1` (so the 48dp icon buttons align to a 12dp visual inset) |
-| `appBar.divider` | `color.border` |
-| `appBar.icon.size` | `size.icon.lg` |
+<!-- tokens:appBar iconButton -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `appBar.minHeight` | — | 56 | same |
+| `appBar.bg` | `color.bg` | #F3EEE6 | #151411 |
+| `appBar.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `appBar.title` | `type.headline` | Newsreader 500 20/26 | same |
+| `appBar.titleAlign` | — | start | same |
+| `appBar.source` | `type.caption` | Commissioner 400 13/18 | same |
+| `appBar.sourceColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `appBar.sourceIcon` | — | arrow-down-left | same |
+| `appBar.iconButton` | `touch.min` | 48 | same |
+| `appBar.iconSize` | `icon.lg` | 24 | same |
+| `appBar.borderOnScroll` | `color.border` | #DDD3C5 | #38332B |
+| `appBar.paddingX` | `space.1` | 4 | same |
+| `iconButton.target` | `touch.min` | 48 | same |
+| `iconButton.iconSize` | `icon.lg` | 24 | same |
+| `iconButton.radius` | `radius.full` | 9999 | same |
+| `iconButton.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `iconButton.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `iconButton.ripple` | `color.state.ripple` | rgba(30, 28, 24, 0.12) | rgba(243, 238, 230, 0.14) |
+| `iconButton.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+<!-- /tokens -->
 
 **Accessibility:**
 - Back: `accessibilityRole="button"`, label "Back". The system back gesture and back button behave the same way (M3 predictive back is allowed).
@@ -241,57 +280,125 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 
 **Purpose:** one clear action per region. Buttons stack vertically, full width, inside the sticky action bar or in the content.
 
-**Anatomy:** a container, an optional leading icon (`size.icon.md`), a label (`type.button`), an optional trailing icon (an external-link arrow only on link-outs), and an optional **destination line** below (see §14).
+**Anatomy:** a container, an optional leading icon (`icon.md`), a label (`type.button`), an optional trailing icon (an external-link arrow only on link-outs), and an optional **destination line** below (see §14).
 
 **Variants:**
 
 | Variant | Use | Fill / text / border | Min height |
 |---|---|---|---|
-| `primary` | the one main action per screen (Start scan, Find better matches on CAUTION/UNKNOWN, Back to product on FITS/medicine) | `color.accent` / `color.on.accent` / none | 52 |
-| `secondary` | alternative actions (Back to product when it isn't primary, Paste a link) | transparent / `color.text` / 1.5dp `color.border.strong` | 48 |
-| `tertiary` | low-emphasis text button (Not now *outside* consent, Retake, Try later, Got it) | transparent / `color.accent.text` / none; the 48dp target stays | 48 |
-| `destructiveNeutral` | **Delete** (profile), **Revoke** (QR) | `color.surface` / `color.text` / 1.5dp `color.text` border, plus a `trash-2` or `link-2-off` icon. **Never red.** Severity comes from the confirm step, not from colour. | 52 |
-| `consentPair` | **Start scan / Not now**, which need equal visual weight (brief §5.1) | both: `color.surface.raised` / `color.text` / 1.5dp `color.border.strong`, same size and type | 52 |
+| `primary` | the one main action per screen (Find better matches on CAUTION/UNKNOWN, Back to product on FITS/medicine) | `color.accent` / `color.on-accent` / none | 52 |
+| `secondary` | alternative actions (Back to product when it isn't primary, Paste a link) | transparent / `color.text` / 1.5dp `color.border-strong` | 48 |
+| `tertiary` | low-emphasis text button (Back to product under a link-out primary, Scan in store, Retake, Try later) | transparent / `color.link` / none; the 48dp target stays | 48 |
+| `destructiveNeutral` | **Delete** (profile), **Revoke** (QR) | transparent / `color.text` / 1.5dp `color.text` border, plus a `trash-2` or `link-2-off` icon. **Never red.** Severity comes from the confirm step, not from colour. | 52 |
+| `consentPair` | **Start scan / Not now** on every consent screen, which need equal visual weight (brief §5.1). `consentSheet.$actions` points here; a decline is never styled "destructive". | both: `button.consentPair.bg` / `button.consentPair.fg` / 1.5dp `button.consentPair.border`, same size and type | 52 |
 | `icon` | 48dp circular, icon only | transparent / `color.text` | 48 × 48 |
 
 **States:**
 
 | State | primary | secondary / consentPair / destructiveNeutral | tertiary |
 |---|---|---|---|
-| default | `color.accent` fill | outline as listed | `color.accent.text` |
-| pressed | `color.accent.pressed` + scale 0.98 | `state.pressed.overlay` + scale 0.98 | overlay, radius.button |
-| focused | focus ring 2dp, 2dp offset, radius.button + 2 | same | same |
-| disabled | `color.surface.sunken` / `color.text.muted`, no border | `color.border` outline / `color.text.muted` | `color.text.muted` |
+| default | `color.accent` fill | outline as listed | `color.link` |
+| pressed | `color.accent-pressed` + scale 0.98 | `color.state.pressed` + scale 0.98 | overlay, radius.md |
+| focused | `focus.color` ring 2dp, 2dp offset, `radius.md` + 2 | same | same |
+| disabled | `button.primary.bgDisabled` / `button.primary.fgDisabled`, no border | `button.secondary.borderDisabled` outline / `button.secondary.fgDisabled` | `button.tertiary.fgDisabled` |
 | loading | label → "Checking…", "Creating…" or "Deleting…" with the width kept; `busy` | same | n/a |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `button.primary.bg` / `.fg` / `.pressedBg` | `color.accent` / `color.on.accent` / `color.accent.pressed` |
-| `button.secondary.border` / `.fg` | `color.border.strong` / `color.text` |
-| `button.tertiary.fg` | `color.accent.text` |
-| `button.destructiveNeutral.bg` / `.fg` / `.border` | `color.surface` / `color.text` / `color.text` |
-| `button.consentPair.bg` / `.fg` / `.border` | `color.surface.raised` / `color.text` / `color.border.strong` |
-| `button.disabled.bg` / `.fg` | `color.surface.sunken` / `color.text.muted` |
-| `button.radius` | `radius.button` |
-| `button.paddingX` / `.gap` | `space.5` / `space.2` |
-| `button.type` | `type.button` |
-| `button.minHeight.primary` / `.secondary` | `size.button.primary` / `size.button.secondary` |
-| `button.stackGap` | `space.3` |
-| `actionBar.bg` / `.border` / `.elevation` / `.padding` | `color.surface.raised` / `color.border` (top) / `elevation.2` / `space.4` top, `space.5` x, safe-area bottom |
+<!-- tokens:button actionBar focus -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `button.primary.bg` | `color.accent` | #1B2F32 | #86A4A7 |
+| `button.primary.fg` | `color.on-accent` | #FAF7F2 | #0C171A |
+| `button.primary.bgPressed` | `color.accent-pressed` | #253D41 | #6B8C90 |
+| `button.primary.ripple` | `color.state.ripple-on-accent` | rgba(250, 247, 242, 0.18) | rgba(12, 23, 26, 0.16) |
+| `button.primary.minHeight` | — | 52 | same |
+| `button.primary.paddingX` | `space.5` | 20 | same |
+| `button.primary.radius` | `radius.md` | 8 | same |
+| `button.primary.type` | `type.button` | Commissioner 600 16/20 | same |
+| `button.primary.gap` | `space.2` | 8 | same |
+| `button.primary.bgDisabled` | `color.disabled-bg` | #EAE3D8 | #2E2A24 |
+| `button.primary.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `button.secondary.bg` | — | transparent | same |
+| `button.secondary.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `button.secondary.border` | `color.border-strong` | #807464 | same |
+| `button.secondary.borderWidth` | — | 1.5 | same |
+| `button.secondary.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `button.secondary.minHeight` | — | 48 | same |
+| `button.secondary.paddingX` | `space.5` | 20 | same |
+| `button.secondary.radius` | `radius.md` | 8 | same |
+| `button.secondary.type` | `type.button` | Commissioner 600 16/20 | same |
+| `button.secondary.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `button.secondary.borderDisabled` | `color.border` | #DDD3C5 | #38332B |
+| `button.tertiary.bg` | — | transparent | same |
+| `button.tertiary.fg` | `color.link` | #253D41 | #B0C5C7 |
+| `button.tertiary.fgPressed` | `color.link-pressed` | #1B2F32 | #D5E0E1 |
+| `button.tertiary.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `button.tertiary.minHeight` | — | 48 | same |
+| `button.tertiary.paddingX` | `space.3` | 12 | same |
+| `button.tertiary.radius` | `radius.md` | 8 | same |
+| `button.tertiary.type` | `type.button` | Commissioner 600 16/20 | same |
+| `button.tertiary.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `button.destructiveNeutral.bg` | — | transparent | same |
+| `button.destructiveNeutral.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `button.destructiveNeutral.border` | `color.text` | #1E1C18 | #F3EEE6 |
+| `button.destructiveNeutral.borderWidth` | — | 1.5 | same |
+| `button.destructiveNeutral.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `button.destructiveNeutral.minHeight` | — | 52 | same |
+| `button.destructiveNeutral.paddingX` | `space.5` | 20 | same |
+| `button.destructiveNeutral.radius` | `radius.md` | 8 | same |
+| `button.destructiveNeutral.type` | `type.button` | Commissioner 600 16/20 | same |
+| `button.destructiveNeutral.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `button.destructiveNeutral.borderDisabled` | `color.border` | #DDD3C5 | #38332B |
+| `button.consentPair.bg` | `color.surface-raised` | #FFFCF7 | #28251F |
+| `button.consentPair.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `button.consentPair.border` | `color.border-strong` | #807464 | same |
+| `button.consentPair.borderWidth` | — | 1.5 | same |
+| `button.consentPair.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `button.consentPair.minHeight` | — | 52 | same |
+| `button.consentPair.paddingX` | `space.4` | 16 | same |
+| `button.consentPair.radius` | `radius.md` | 8 | same |
+| `button.consentPair.type` | `type.button` | Commissioner 600 16/20 | same |
+| `button.consentPair.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `button.consentPair.borderDisabled` | `color.border` | #DDD3C5 | #38332B |
+| `button.stackAtFontScale` | — | 1.3 | same |
+| `actionBar.bg` | `elevation.2.surface` | #FFFCF7 | #28251F |
+| `actionBar.border` | `elevation.2.border` | #DDD3C5 | #38332B |
+| `actionBar.shadow` | `elevation.2` | elevation 2 | same |
+| `actionBar.paddingTop` | `space.2` | 8 | same |
+| `actionBar.paddingBottom` | `space.1` | 4 | same |
+| `actionBar.paddingX` | `space.gutter` | 20 | same |
+| `actionBar.gap` | `space.1` | 4 | same |
+| `actionBar.maxHeightAt1x` | — | 136 | same |
+| `actionBar.inlineAtFontScale` | — | 1.5 | same |
+| `focus.color` | `color.focus-ring` | #43666A | #B0C5C7 |
+| `focus.inverse` | `color.focus-ring-inverse` | #B0C5C7 | #253D41 |
+| `focus.overlay` | `color.focus-ring-overlay` | #FFFFFF | same |
+| `focus.overlayHalo` | `color.overlay-halo` | rgba(0, 0, 0, 0.60) | same |
+| `focus.width` | — | 2 | same |
+| `focus.offset` | — | 2 | same |
+| `focus.overlayHaloWidth` | — | 1 | same |
+<!-- /tokens -->
+
+**Sticky action bar (/check).** `actionBar.*`: one primary, then one 48dp tertiary or secondary. **Only the button that leaves for a store search carries a destination line**; "Back to product" explains itself. Target height at 1.0× is `actionBar.maxHeightAt1x` (136dp), so reason 01 and the start of reason 02 sit above the fold on a 390 × 844 screen. The bar has no edge or shadow at rest; it gains `actionBar.border` and `actionBar.shadow` only while content scrolls under it. Render it **after** the ScrollView in JSX so TalkBack reaches it last. At font scale ≥ `actionBar.inlineAtFontScale` the actions move inline to the end of the content instead of being sticky.
+
+| Verdict | Primary | Second action |
+|---|---|---|
+| CAUTION, UNKNOWN | Find better matches + destination line | tertiary Back to product |
+| FITS | Back to product | secondary Find better matches + destination line |
+| medicine | Back to product | none |
 
 **Accessibility:**
 - `accessibilityRole="button"`. The label is the visible text plus the destination where there is one: "Find better matches. Opens a Flipkart search, filtered to Oily Skin."
 - Disabled buttons stay focusable and announce "dimmed" plus the reason line.
 - At ≥ 1.3× font, pairs stack vertically, and Not now stays visible without scrolling on consent.
-- The sticky bar never covers TalkBack focus. The scroll view gets a bottom inset.
+- The sticky bar never covers TalkBack focus. The scroll view gets a bottom inset; at ≥ 1.5× the bar is inline, so nothing can be hidden under it.
 
 **Copy:**
 - Sentence case and verbs: "Start scan", "Not now", "Find better matches", "Back to product", "Paste a link", "Scan in store", "Delete", "Revoke", "Try later", "Retake".
 - No "Buy", no "Shop now", no exclamation marks.
 
-**Motion and haptics:** press 120ms, `motion.easing.standard`. No haptic. Success haptics fire on the *result*, not the tap (§1.5).
+**Motion and haptics:** press `motion.duration.press`, `motion.ease.standard`. No haptic. Success haptics fire on the *result*, not the tap (§1.5).
 
 **Do / Don't:**
 - Do keep one primary per screen.
@@ -306,13 +413,13 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 
 **Purpose:** inline navigation (retention policy, "Ingredient list source", "Feels wrong? Edit", "Edit").
 
-**Anatomy:** label in `type.label`, or the body size when inline in a sentence, in `color.accent.text`. A trailing `arrow-up-right` 16dp marks a link that leaves the app. The hit area is padded to 48dp high.
+**Anatomy:** label in `type.label`, or the body size when inline in a sentence, in `color.link`. A trailing `arrow-up-right` 16dp marks a link that leaves the app. The hit area is padded to 48dp high.
 
 **Variants:**
 
 | Variant | Spec |
 |---|---|
-| `inline` | inside body text, always underlined (1dp, 2dp offset) |
+| `inline` | **web only**: inside body text, always underlined (`textLink.underlineWidth` 1, `textLink.underlineOffset` 3). In RN an action never lives in a nested `<Text onPress>`; it moves to its own standalone row. |
 | `standalone` | no underline, 600 weight, optional leading icon |
 | `external` | standalone + `arrow-up-right`; opens a Chrome Custom Tab |
 
@@ -320,21 +427,27 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 
 | State | Spec |
 |---|---|
-| default | `color.accent.text` |
-| pressed | underline thickens to 2dp + `state.pressed.overlay` behind it, radius.xs |
+| default | `color.link` |
+| pressed | underline thickens to 2dp + `color.state.pressed` behind it, radius.xs |
 | focused | focus ring around the padded hit area |
 | visited | not shown (no visited colour) |
-| disabled (offline external) | `color.text.muted` + caption "Needs a connection" |
+| disabled (offline external) | `textLink.fgDisabled` + caption "Needs a connection" in `textLink.disabledCaption` |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `link.fg` | `color.accent.text` |
-| `link.underline` | `color.accent.text` |
-| `link.type` | `type.label` |
-| `link.minTarget` | `size.touch.min` |
-| `link.icon` | `size.icon.sm` |
+<!-- tokens:textLink -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `textLink.fg` | `color.link` | #253D41 | #B0C5C7 |
+| `textLink.fgPressed` | `color.link-pressed` | #1B2F32 | #D5E0E1 |
+| `textLink.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `textLink.type` | `type.label` | Commissioner 600 14/20 | same |
+| `textLink.disabledCaption` | `type.caption` | Commissioner 400 13/18 | same |
+| `textLink.disabledCaptionColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `textLink.underlineWidth` | — | 1 | same |
+| `textLink.underlineOffset` | — | 3 | same |
+| `textLink.minTarget` | `touch.min` | 48 | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - `accessibilityRole="link"`. External links say so: "Ingredient list source, opens in browser".
@@ -343,7 +456,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 **Copy:** say where the link goes: "Read the full retention policy", not "Learn more".
 
 **Do / Don't:**
-- Do pad to 48dp.
+- Do make the Pressable's own box 48dp (padding, not hitSlop).
 - Don't use colour alone for inline links; underline them.
 - Don't open store or policy links in a WebView.
 
@@ -356,9 +469,12 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 **Purpose:** confirms which product is being checked, and lets the user correct a bad share parse.
 
 **Anatomy:**
-1. Overline "Is this the product?" (`type.overline`, muted), with an **Edit** text link at the trailing edge of the same row, 48dp target.
-2. Product title (`type.title`, `color.text`) as **plain text**. It must not look like a form field (judge fix): no box and no dashed underline.
-3. Meta line (`type.caption`, muted, tabular): "Illustrative example · 50 g · ₹399 on the listing".
+1. Kicker "Is this the product?" (`productHeader.kicker`, 14dp sentence case, muted). No tracked caps.
+2. Product title (`productHeader.title`, Newsreader 26/32) as **plain text**. It must not look like a form field (judge fix): no box and no dashed underline.
+3. Meta line (`productHeader.meta`, muted, tabular): "Illustrative example · 50 g · ₹399 on the listing".
+4. **Edit** text link, visually at the top-right of the kicker row, `productHeader.editTarget` 48dp box.
+
+**TalkBack order:** kicker, title and meta are **one header node** ("Is this the product? Velvet Rose Day Cream with Niacinamide. 50 g, 399 rupees on the listing."); Edit is a **sibling rendered after it** in the tree (absolutely positioned top-right), label "Edit product name".
 
 **Variants:** `display` (default), `editing` (an inline text field replaces the title), `linkOnly` (no title parsed, so the field is focused on arrival).
 
@@ -367,23 +483,40 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | State | Spec |
 |---|---|
 | display | as above |
-| editing | the field takes `color.surface.sunken` fill, a 1.5dp `color.border.strong` bottom edge and radius.button top. Focus: a 2dp `color.focus.ring` bottom edge. "Check again" (secondary) + "Cancel" (tertiary). |
+| editing | `field.*`: `field.bg` fill, a 1.5dp `field.border` bottom edge, `radius.md` top. Focus: a 2dp `field.focusBorder` bottom edge. "Check again" (secondary) + "Cancel" (tertiary). |
 | linkOnly | editing state on arrival, helper "We couldn't read the product name. Type it to check." (proposed) |
-| loading (parsing share) | title skeleton: 2 bars of `color.surface.sunken`, radius.xs, static; label "Reading the shared link…" (proposed) |
+| loading (parsing share) | title skeleton: 2 bars of `color.bg-sunken`, radius.xs, static; label "Reading the shared link…" (proposed) |
 | error (empty submit) | helper in `color.text` + `info` icon: "Type a product name to check." (proposed) |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `productHeader.kicker.type` / `.fg` | `type.overline` / `color.text.muted` |
-| `productHeader.title.type` / `.fg` | `type.title` / `color.text` |
-| `productHeader.meta.type` / `.fg` | `type.caption` / `color.text.muted` |
-| `productHeader.gap` | `space.2` |
-| `field.bg` / `.border` / `.focus` | `color.surface.sunken` / `color.border.strong` / `color.focus.ring` |
+<!-- tokens:productHeader field -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `productHeader.kicker` | `type.bodySm` | Commissioner 400 14/20 | same |
+| `productHeader.kickerColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `productHeader.title` | `type.title` | Newsreader 500 26/32 | same |
+| `productHeader.titleColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `productHeader.meta` | `type.caption` | Commissioner 400 13/18 | same |
+| `productHeader.metaColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `productHeader.gap` | `space.1` | 4 | same |
+| `productHeader.editTarget` | `touch.min` | 48 | same |
+| `field.bg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
+| `field.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `field.border` | `color.border-strong` | #807464 | same |
+| `field.borderWidth` | — | 1.5 | same |
+| `field.focusBorder` | `color.focus-ring` | #43666A | #B0C5C7 |
+| `field.focusBorderWidth` | — | 2 | same |
+| `field.label` | `type.label` | Commissioner 600 14/20 | same |
+| `field.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `field.value` | `type.body` | Commissioner 400 16/24 | same |
+| `field.minHeight` | `touch.min` | 48 | same |
+| `field.radius` | `radius.md` | 8 | same |
+| `field.paddingX` | `space.3` | 12 | same |
+<!-- /tokens -->
 
 **Accessibility:**
-- The title is `accessibilityRole="header"`. Edit's label is "Edit product name".
+- The header group is `accessibilityRole="header"`; Edit follows it as its own node.
 - The field has a visible label ("Product name"), never placeholder-only. Paste is allowed.
 
 **Copy:**
@@ -402,29 +535,28 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 
 **Anatomy:** a composite. Only part (a) is tinted.
 
-(a) **Verdict head** (tinted):
-- `color.verdict.<s>.bg`
-- 1dp `color.verdict.<s>.border`
-- a 3dp leading rule in `color.verdict.<s>.rule`
-- radius.verdict, padding `space.4`
-- Row 1: icon at `size.icon.lg` (24dp) + label in `type.verdictLabel` (15dp, 600, caps), both in `color.verdict.<s>.fg`, gap `space.2`
-- Row 2: subtitle in `type.verdictSubtitle` (`color.text`), as one paragraph
+(a) **Verdict head** (tinted) — `verdictCard.head.<s>.*`:
+- `verdictCard.head.<s>.bg` fill and a **1dp tinted edge** `verdictCard.head.<s>.border` (`borderStyle` solid; **dashed** for UNKNOWN and for name-only)
+- `verdictCard.head.radius` (12), `verdictCard.head.padding` (16)
+- **No leading stripe or rule.** A side stripe on a rounded card is the stock alert pattern; the state is carried by the silhouette, the caps label and the tint.
+- Row 1: icon at `verdictCard.head.<s>.iconSize` (24dp) + label in `verdictCard.head.label` (Commissioner 15/600 caps), both in `verdictCard.head.<s>.fg`, gap `verdictCard.head.iconGap`. **This is the only sans line in the head.**
+- Row 2: the verdict sentence in `verdictCard.head.<s>.subtitle` = `type.verdictLine` (**Newsreader 20/26, weight 400**), `verdictCard.head.subtitleColor`, as one paragraph
 - **Nothing else goes in the tinted area.**
 
-(b) **Reasons section** on the plain screen surface (`color.bg`): the heading "Why" + count in `type.overline`, then 1–3 Reason rows (§7).
+(b) **Reasons section** on the plain screen surface (`color.bg`): the sentence-case heading "Why · 2 reasons" in `reasonRow.heading` (Newsreader 18), then 1–3 Reason rows (§7).
 
 (c) **Provenance ledger** (§10), then the fixed lines.
 
-(d) **Sticky action bar** (§3).
+(d) **Sticky action bar** (§3). No bottom nav: /check is a pushed detail.
 
-**Verdict icon silhouettes.** They are distinct shapes, all in `color.verdict.<s>.fg`, 1.5dp stroke, 24dp.
+**Verdict icon silhouettes.** They are distinct shapes, in `verdictCard.head.<s>.icon`, `icon.stroke` 1.75, 24dp (`icon.verdict.size`); the gate uses 32dp (`icon.verdict.medicineSize`).
 
 | State | Icon | Shape notes |
 |---|---|---|
 | FITS | **seal + check** (Lucide `badge-check`) | scalloped outline; the only non-circle |
 | CAUTION | **half-filled circle** (right half solid) | "partly fits"; no triangle, no "!" |
-| UNKNOWN | **dashed circle + centre dot** | "incomplete information"; not "?" and not an error glyph |
-| MEDICINE | **pharmacist at counter** (head circle r3 at 12,6.5; shoulders arc; counter line y14; counter box; small drawer line), from Deep Teal | no cross, no pill, no mortar |
+| UNKNOWN | **dashed circle + centre dot** | "incomplete information"; not "?" and not an error glyph. Head fill is warm paper (`verdict.unknown.bg` = sand), never cool slate, so it can't read as "info, tap me". |
+| MEDICINE | **pharmacist at counter** (head circle r3 at 10,6.25; shoulders arc; counter line y14; counter box; drawer line; **one small bottle standing on the counter** at x18–21), from Deep Teal. Checked at 20dp. | no cross, no plus, no pill, no mortar |
 | NAME-ONLY | the base state's icon + a 1dp dashed head border | the weaker check is shown by the border *and* the words |
 
 **Variants (copy is fixed: brief §4.3).**
@@ -433,45 +565,86 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 |---|---|---|---|---|
 | `fits` | **FITS** | "Matches your scan on the ingredients we know about. Not a guarantee." | 1–3 reasons: reading → product fact | primary Back to product; secondary Find better matches |
 | `caution` | **CAUTION** | "May not suit your readings. This is not a safety warning." | reason first, for example 01 "Your skin showed some redness in your 1 Nov scan." / "Contains fragrance (parfum), which is often flagged for skin with visible redness." | primary Find better matches; secondary Back to product |
-| `nameOnly` | **FITS · based on product name only** or **CAUTION · based on product name only**. Line 1 is the caps label; line 2 is "based on product name only" in `type.label`, as part of the label node. | "We don't have this product's ingredient list, so this is a weaker check." | name keyword → reading; then "Check the full ingredient list on the product page or pack." + tertiary "Snap the ingredient list" (§7 addendum) | as the base state |
-| `unknown` | **UNKNOWN** (flag `verdict.unknown.label` → "NOT ENOUGH INFO" if sessions fail) | "This product isn't in our catalogue ([n] products) and its name alone isn't enough. This doesn't mean it's bad." | next steps as list rows: "Snap the ingredient list", "Check the pack", "Find products matched to your skin type" | primary Find better matches; secondary Back to product |
-| `medicine` | *(no label)* | **"This looks like a medicine. Ask the pharmacist."** in `type.medicineLine`, `color.verdict.medicine.fg`. 1.5dp border, no leading rule, icon at `size.icon.xl` (32dp). | **nothing**: no reasons, no ledger, no better matches | Back to product only |
+| `nameOnly` | **FITS · based on product name only** or **CAUTION · based on product name only**. Line 1 is the caps label; line 2 is "based on product name only" in `verdictCard.nameOnly.qualifier`, as part of the label node. Dashed edge (`verdictCard.nameOnly.borderStyle`). | "We don't have this product's ingredient list, so this is a weaker check." | name keyword → reading; then "Check the full ingredient list on the product page or pack." + tertiary "Snap the ingredient list" (§7 addendum) | as the base state |
+| `unknown` | **UNKNOWN** (flag `verdictCard.head.unknown.showLabel` → "NOT ENOUGH INFO" if sessions fail) | "This product isn't in our catalogue ([n] products) and its name alone isn't enough. This doesn't mean it's bad." | next steps as list rows: "Snap the ingredient list", "Check the pack", "Find products matched to your skin type" | primary Find better matches; secondary Back to product |
+| `medicine` | *(no label: `verdictCard.head.medicine.showLabel` false)* | **"This looks like a medicine. Ask the pharmacist."** in `verdictCard.medicineGate.line` (Newsreader 26/32). **No box** (`verdictCard.head.medicine.borderWidth` 0, fill = screen bg). The 32dp pharmacist sits above the line (`verdictCard.medicineGate.iconGap`), about a third of the way down the content area (`verdictCard.medicineGate.offsetTopPct`). The brief allows exactly one line, so no explainer line is added (an optional bodySm line "SkinKey doesn't check medicines. A pharmacist can tell you how to use it." is parked pending research sign-off). | **nothing**: no reasons, no ledger, no better matches | Back to product only |
 
 **States:**
 
 | State | Spec |
 |---|---|
-| loading | static head skeleton (`color.surface.sunken`, radius.verdict, no tint, no icon) + "Checking this product…"; `busy`. No shimmer loop. |
+| loading | static head skeleton (`color.bg-sunken`, `radius.lg`, no tint, no icon) + "Checking this product…"; `busy`. No shimmer loop. |
 | revealed | the head fades and scales in (`motion.duration.verdictReveal`), then the reasons stagger in |
-| noProfile | `nameOnly` or `unknown`, plus a prompt row under the subtitle on the plain surface: "Scan for reasons based on your readings" + tertiary Start scan |
+| noProfile | `nameOnly` or `unknown`, plus a prompt row **below the head** on the plain surface: "Scan for reasons based on your readings" + tertiary Start scan, rendered as a sibling node after the head (never inside the grouped head). |
 | offline | catalogue verdicts render normally. Link-out buttons are disabled with the destination line "Needs a connection" (§14). |
 | uv | adds a WEATHER row to the ledger. Only shown when the live Open-Meteo rule fires; never hard-coded. |
 | error (parse failed) | not a verdict. Show the Product header `linkOnly` state, or the §22 error state. |
 | pressed / focused | the head is **not interactive**. TalkBack focuses it as one grouped node. |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `verdictHead.bg` | `color.verdict.<state>.bg` |
-| `verdictHead.border` | `color.verdict.<state>.border`, 1dp (medicine: 1.5dp, `color.verdict.medicine.border`) |
-| `verdictHead.rule` | `color.verdict.<state>.rule`, 3dp leading edge (not on medicine) |
-| `verdictHead.radius` / `.padding` | `radius.verdict` / `space.4` |
-| `verdictHead.icon.size` / `.fg` | `size.icon.lg` (medicine `size.icon.xl`) / `color.verdict.<state>.fg` |
-| `verdictHead.label.type` / `.fg` | `type.verdictLabel` / `color.verdict.<state>.fg` |
-| `verdictHead.subtitle.type` / `.fg` | `type.verdictSubtitle` / `color.text` |
-| `verdictHead.medicine.type` | `type.medicineLine` |
-| `verdictHead.gap` | `space.2` (icon–label), `space.3` (label–subtitle) |
-| `verdictCard.sectionGap` | `space.7` |
-| `verdictCard.reasons.bg` | `color.bg` (**never** the verdict tint) |
-| `verdictCard.nameOnly.borderStyle` | dashed |
+<!-- tokens:verdictCard -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `verdictCard.head.radius` | `radius.lg` | 12 | same |
+| `verdictCard.head.padding` | `space.4` | 16 | same |
+| `verdictCard.head.gap` | `space.2` | 8 | same |
+| `verdictCard.head.label` | `type.verdictLabel` | Commissioner 600 15/20 caps | same |
+| `verdictCard.head.iconGap` | `space.2` | 8 | same |
+| `verdictCard.head.subtitleColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `verdictCard.head.fits.bg` | `verdict.fits.bg` | #E5EBDD | #1F281C |
+| `verdictCard.head.fits.fg` | `verdict.fits.fg` | #34492A | #B9CCA8 |
+| `verdictCard.head.fits.border` | `verdict.fits.border` | #6E8659 | same |
+| `verdictCard.head.fits.icon` | `verdict.fits.icon` | #4A6339 | #9DB58A |
+| `verdictCard.head.fits.borderWidth` | — | 1 | same |
+| `verdictCard.head.fits.borderStyle` | — | solid | same |
+| `verdictCard.head.fits.showLabel` | — | true | same |
+| `verdictCard.head.fits.subtitle` | `type.verdictLine` | Newsreader 400 20/26 | same |
+| `verdictCard.head.fits.iconSize` | `icon.verdict.size` | 24 | same |
+| `verdictCard.head.caution.bg` | `verdict.caution.bg` | #F3E6CC | #292217 |
+| `verdictCard.head.caution.fg` | `verdict.caution.fg` | #62410A | #E6C482 |
+| `verdictCard.head.caution.border` | `verdict.caution.border` | #A0752A | same |
+| `verdictCard.head.caution.icon` | `verdict.caution.icon` | #8A5D12 | #D9AE5C |
+| `verdictCard.head.caution.borderWidth` | — | 1 | same |
+| `verdictCard.head.caution.borderStyle` | — | solid | same |
+| `verdictCard.head.caution.showLabel` | — | true | same |
+| `verdictCard.head.caution.subtitle` | `type.verdictLine` | Newsreader 400 20/26 | same |
+| `verdictCard.head.caution.iconSize` | `icon.verdict.size` | 24 | same |
+| `verdictCard.head.unknown.bg` | `verdict.unknown.bg` | #EAE3D8 | #2E2A24 |
+| `verdictCard.head.unknown.fg` | `verdict.unknown.fg` | #3B464D | #BCC5CA |
+| `verdictCard.head.unknown.border` | `verdict.unknown.border` | #76828A | same |
+| `verdictCard.head.unknown.icon` | `verdict.unknown.icon` | #56626A | #9AA5AC |
+| `verdictCard.head.unknown.borderWidth` | — | 1 | same |
+| `verdictCard.head.unknown.borderStyle` | — | dashed | same |
+| `verdictCard.head.unknown.showLabel` | — | true | same |
+| `verdictCard.head.unknown.subtitle` | `type.verdictLine` | Newsreader 400 20/26 | same |
+| `verdictCard.head.unknown.iconSize` | `icon.verdict.size` | 24 | same |
+| `verdictCard.head.medicine.bg` | `verdict.medicine.bg` | #F3EEE6 | #151411 |
+| `verdictCard.head.medicine.fg` | `verdict.medicine.fg` | #1E1C18 | #F3EEE6 |
+| `verdictCard.head.medicine.border` | `verdict.medicine.border` | #1E1C18 | #B0A595 |
+| `verdictCard.head.medicine.icon` | `verdict.medicine.icon` | #1E1C18 | #F3EEE6 |
+| `verdictCard.head.medicine.borderWidth` | — | 0 | same |
+| `verdictCard.head.medicine.borderStyle` | — | solid | same |
+| `verdictCard.head.medicine.showLabel` | — | false | same |
+| `verdictCard.head.medicine.subtitle` | `type.title` | Newsreader 500 26/32 | same |
+| `verdictCard.head.medicine.iconSize` | `icon.verdict.medicineSize` | 32 | same |
+| `verdictCard.medicineGate.offsetTopPct` | — | 28 | same |
+| `verdictCard.medicineGate.iconGap` | `space.4` | 16 | same |
+| `verdictCard.medicineGate.line` | `type.title` | Newsreader 500 26/32 | same |
+| `verdictCard.medicineGate.lineColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `verdictCard.nameOnly.borderStyle` | — | dashed | same |
+| `verdictCard.nameOnly.qualifier` | `type.label` | Commissioner 600 14/20 | same |
+| `verdictCard.nameOnly.qualifierColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `verdictCard.body.bg` | — | transparent | same |
+| `verdictCard.sectionGap` | `space.7` | 28 | same |
+<!-- /tokens -->
 
 **Accessibility:**
-- TalkBack order: **label → subtitle → reasons → source (ledger) → fixed lines → actions** (brief §5.5).
+- Full /check TalkBack order: **back → product header group → Edit → verdict head → "Why · 2 reasons" heading → reasons → ledger (each row's text, then its link) → fixed lines → disclosure → sticky actions** (brief §5.5). The sticky bar is rendered after the ScrollView in JSX. "Why · 2 reasons" has `accessibilityRole="header"` so heading navigation works (brief §8).
 - The head is one node (`accessible`), `accessibilityRole="header"`. Its label is "Caution. May not suit your readings. This is not a safety warning." The icon is decorative.
 - Medicine: "This looks like a medicine. Ask the pharmacist."
 - Name only: "Fits, based on product name only. We don't have this product's ingredient list, so this is a weaker check."
-- The reveal is announced once through `AccessibilityInfo.announceForAccessibility` after the loading state.
+- When loading ends, call `AccessibilityInfo.setAccessibilityFocus(verdictHeadRef)` so TalkBack lands on the head and carries on in reading order. Do not use `announceForAccessibility` (deprecated on Android 16, API 36).
 - The label never truncates. At 200% the label and the "based on product name only" line wrap.
 
 **Copy rules:**
@@ -481,12 +654,13 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 - Medicine: one line, no additions.
 
 **Motion and haptics:**
-- Reveal: 320ms, standard easing.
+- Reveal: `motion.duration.verdictReveal`, `motion.ease.decelerate`, scale from `motion.enter.scaleFrom`.
 - One `CONTEXT_CLICK` when the head lands, **the same for every state**.
 - Reduce motion: a 120ms crossfade, no scale.
 
 **Do / Don't:**
 - Do keep the tint inside the head.
+- Don't add a side stripe; it is the stock alert pattern.
 - Do let the reasons out-size the label.
 - Do show the catalogue count in UNKNOWN.
 - Don't tint the screen, the reasons, the app bar or the buttons.
@@ -505,7 +679,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 **Anatomy:** a 2-column grid (index 32dp | content), padding `space.4` vertical, with a hairline `color.border` bottom.
 1. Index "01" (`type.reasonIndex`, muted, tabular)
 2. **Reading line** (`type.reason`, `color.text`)
-3. **Product fact** (`type.reasonFact`, 16dp, **`color.text`**): it names the ingredient *and* says in plain words why it matters (§7 addendum)
+3. **Product fact** (`type.body`, 16dp, **`color.text`**): it names the ingredient *and* says in plain words why it matters (§7 addendum)
 4. A reading band chip (§8, `compact`), `space.3` above
 
 **Variants:**
@@ -528,19 +702,25 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | focused | focus ring around the row (if expandable) |
 | loading | not shown; reasons arrive with the verdict |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `reason.index.type` / `.fg` | `type.reasonIndex` / `color.text.muted` |
-| `reason.reading.type` / `.fg` | `type.reason` / `color.text` |
-| `reason.fact.type` / `.fg` | `type.reasonFact` / `color.text` |
-| `reason.paddingY` | `space.4` |
-| `reason.columnGap` | `space.2` |
-| `reason.indexWidth` | 32 |
-| `reason.divider` | `color.border` |
-| `reason.bg` | transparent (sits on `color.bg`) |
-| `reasons.heading.type` / `.fg` | `type.overline` / `color.text.muted` ("Why · 2 reasons") |
+<!-- tokens:reasonRow -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `reasonRow.heading` | `type.section` | Newsreader 500 18/24 | same |
+| `reasonRow.headingColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `reasonRow.index` | `type.reasonIndex` | Newsreader 400 italic 18/26 tabular | same |
+| `reasonRow.indexColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `reasonRow.indexWidth` | — | 32 | same |
+| `reasonRow.reading` | `type.reason` | Newsreader 500 19/26 | same |
+| `reasonRow.readingColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `reasonRow.fact` | `type.body` | Commissioner 400 16/24 | same |
+| `reasonRow.factColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `reasonRow.factGap` | — | 6 | same |
+| `reasonRow.chipGap` | `space.3` | 12 | same |
+| `reasonRow.paddingY` | `space.4` | 16 | same |
+| `reasonRow.divider` | `color.border` | #DDD3C5 | #38332B |
+<!-- /tokens -->
 
 **Accessibility:**
 - One node per reason: "Reason 1 of 2. Your skin looked oily in your 1 Nov scan. Contains isopropyl myristate, which can clog pores. Oiliness reading: high." The index text and the meter are hidden from TalkBack.
@@ -568,9 +748,9 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 **Purpose:** shows one reading as a band (LOW / MEDIUM / HIGH). The text is the information; the meter is a visual echo.
 
 **Anatomy:**
-- Chip: `color.chip.bg`, radius.chip
-- Text "Oiliness · High" (`type.label`, `color.chip.fg`)
-- A trailing **horizontal 3-segment meter**: segments 10 × 6dp, gap 2dp, radius.xs. Filled = `color.meter.on` (neutral ink). Empty = a **full-opacity 1.5dp `color.meter.off` outline**.
+- Chip: `color.bg-sunken`, radius.sm
+- Text "Oiliness · High" (`type.label`, `color.text`)
+- A trailing **horizontal 3-segment meter**: segments 10 × 6dp, gap 2dp, radius.xs. Filled = `meter.filled` (neutral ink). Empty = a **full-opacity 1.5dp `meter.empty` outline**.
 - This replaces Clay & Ink's vertical "signal bars" (judge fix 8).
 
 **Variants:**
@@ -587,24 +767,55 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | State | Spec |
 |---|---|
 | default | as above |
-| pressed (interactive) | `state.pressed.overlay` |
-| focused (interactive) | focus ring, radius.chip + 2 |
+| pressed (interactive) | `color.state.pressed` |
+| focused (interactive) | focus ring, radius.sm + 2 |
 | stale (scan older than 30 days, ASSUMPTION) | caption "Scan [date]" stays visible. No colour change. |
 | noData | "Pores · Not measured" (proposed), all segments empty |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `bandChip.bg` / `.fg` | `color.chip.bg` / `color.chip.fg` |
-| `bandChip.radius` | `radius.chip` |
-| `bandChip.paddingX` | `space.3` |
-| `bandChip.type` | `type.label` |
-| `bandMeter.on` | `color.meter.on` |
-| `bandMeter.off` | `color.meter.off` (1.5dp outline) |
-| `bandMeter.segment` | 10 × 6, `radius.xs`, gap 2 |
-| `bandMeter.scaleLabel.type` / `.fg` | `type.caption` / `color.text.muted` |
-| `bandGrid.gap` | `space.2` |
+<!-- tokens:bandChip bandList -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `bandChip.bg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
+| `bandChip.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `bandChip.radius` | `radius.sm` | 6 | same |
+| `bandChip.paddingX` | `space.3` | 12 | same |
+| `bandChip.visualMinHeight` | — | 32 | same |
+| `bandChip.type` | `type.label` | Commissioner 600 14/20 | same |
+| `bandChip.separatorColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `bandChip.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `bandChip.target` | `touch.min` | 48 | same |
+| `bandChip.meter.orientation` | — | horizontal | same |
+| `bandChip.meter.segments` | — | 3 | same |
+| `bandChip.meter.segmentWidth` | — | 10 | same |
+| `bandChip.meter.segmentHeight` | — | 6 | same |
+| `bandChip.meter.segmentGap` | — | 3 | same |
+| `bandChip.meter.segmentRadius` | `radius.xs` | 2 | same |
+| `bandChip.meter.filled` | `meter.filled` | #38332B | #EAE3D8 |
+| `bandChip.meter.emptyStroke` | `meter.empty` | #807464 | same |
+| `bandChip.meter.emptyStrokeWidth` | — | 1 | same |
+| `bandChip.meter.emptyFill` | — | transparent | same |
+| `bandChip.meter.label` | `type.caption` | Commissioner 400 13/18 | same |
+| `bandChip.meter.labelColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `bandChip.noData.valueColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `bandChip.noData.filledSegments` | — | 0 | same |
+| `bandList.topRule` | `color.text` | #1E1C18 | #F3EEE6 |
+| `bandList.topRuleWidth` | — | 1.5 | same |
+| `bandList.bottomRule` | `color.text` | #1E1C18 | #F3EEE6 |
+| `bandList.bottomRuleWidth` | — | 1.5 | same |
+| `bandList.rowMinHeight` | — | 56 | same |
+| `bandList.rowPaddingY` | `space.2` | 8 | same |
+| `bandList.rowDivider` | `color.border` | #DDD3C5 | #38332B |
+| `bandList.name` | `type.body` | Commissioner 400 16/24 | same |
+| `bandList.nameColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `bandList.value` | `type.section` | Newsreader 500 18/24 | same |
+| `bandList.valueColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `bandList.meterGap` | `space.1` | 4 | same |
+| `bandList.legend` | `type.caption` | Commissioner 400 13/18 | same |
+| `bandList.legendColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `bandList.stackAtFontScale` | — | 1.5 | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - Label: "Oiliness reading: high." The meter is `importantForAccessibility="no"` because it duplicates the text.
@@ -632,9 +843,9 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 > **ASSUMPTION / UNVERIFIED:** this needs YouCam masks to give per-zone values. Masks are turned into zone bands in the proxy and then discarded with the task. Cut this component if zone data isn't available.
 
 **Anatomy:**
-- A frame on `color.surface.sunken`, radius.card, padding `space.4`.
-- A **generic line-art face outline** (oval + neck, no hair, no beard, no features beyond a centre line). Stroke 1.5dp `color.text.muted`.
-- **5 zones**: forehead, nose, left cheek, right cheek, chin. They are filled by **hatch density**, not colour: none = Low, 45° single hatch = Medium, cross-hatch = High. Hatch strokes are 1dp `color.meter.on`.
+- A frame on `color.bg-sunken`, radius.lg, padding `space.4`.
+- A **generic line-art face outline** (oval + neck, no hair, no beard, no features beyond a centre line). Stroke 1.5dp `color.text-muted`.
+- **5 zones**: forehead, nose, left cheek, right cheek, chin. They are filled by **hatch density**, not colour: none = Low, 45° single hatch = Medium, cross-hatch = High. Hatch strokes are 1dp `meter.filled`.
 - A legend row of three swatches + "Low · Medium · High" (`type.caption`).
 - A caption: "Zones from your [date] scan · no photo kept" (proposed).
 - Above the frame, a concern selector: an M3 segmented button of the 7 readings, scrollable, each segment 48dp.
@@ -651,17 +862,40 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | listView | toggle "Show as list" → list rows (§26) "Forehead · High" |
 | focused (segment) | focus ring |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `skinMap.bg` / `.radius` / `.padding` | `color.surface.sunken` / `radius.card` / `space.4` |
-| `skinMap.outline` | `color.text.muted`, 1.5dp |
-| `skinMap.hatch` | `color.meter.on`, 1dp; spacing 6dp (medium) / 4dp cross (high) |
-| `skinMap.zoneBorder` | `color.border.strong`, 1dp |
-| `skinMap.legend.type` | `type.caption` |
-| `segmented.selected.bg` / `.fg` | `color.chip.bg` / `color.text` + check icon |
-| `segmented.border` | `color.border.strong` |
+<!-- tokens:skinMap segmented -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `skinMap.bg` | `color.surface` | #FAF7F2 | #1E1C18 |
+| `skinMap.radius` | `radius.lg` | 12 | same |
+| `skinMap.padding` | `space.4` | 16 | same |
+| `skinMap.border` | `color.border` | #DDD3C5 | #38332B |
+| `skinMap.heading` | `type.section` | Newsreader 500 18/24 | same |
+| `skinMap.listToggleTarget` | `touch.min` | 48 | same |
+| `skinMap.faceOutline` | `color.border-strong` | #807464 | same |
+| `skinMap.faceStrokeWidth` | — | 1.25 | same |
+| `skinMap.zoneStroke` | `color.text` | #1E1C18 | #F3EEE6 |
+| `skinMap.zoneStrokeWidth` | — | 1.25 | same |
+| `skinMap.hatch` | `meter.filled` | #38332B | #EAE3D8 |
+| `skinMap.hatchWidth` | — | 1 | same |
+| `skinMap.hatchSpacingMedium` | — | 6 | same |
+| `skinMap.hatchSpacingHigh` | — | 5 | same |
+| `skinMap.label` | `type.caption` | Commissioner 400 13/18 | same |
+| `skinMap.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `skinMap.legend` | `type.caption` | Commissioner 400 13/18 | same |
+| `skinMap.legendColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `segmented.minHeight` | `touch.min` | 48 | same |
+| `segmented.border` | `color.border-strong` | #807464 | same |
+| `segmented.borderWidth` | — | 1 | same |
+| `segmented.radius` | `radius.full` | 9999 | same |
+| `segmented.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `segmented.type` | `type.label` | Commissioner 600 14/20 | same |
+| `segmented.selectedBg` | `color.accent-subtle` | #D5E0E1 | #253D41 |
+| `segmented.selectedFg` | `color.on-accent-subtle` | #1B2F32 | #D5E0E1 |
+| `segmented.selectedIcon` | — | check | same |
+| `segmented.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+<!-- /tokens -->
 
 **Accessibility:**
 - The diagram is `accessibilityRole="image"`, with a full text alternative: "Oiliness reading by zone: forehead high, nose high, cheeks medium, chin low."
@@ -688,7 +922,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 **Anatomy:**
 - No fill. It sits on `color.bg`.
 - A **1.5dp `color.text` top rule**, then the title "Where this comes from" (`ledger.title.type` = `type.button`, 15/20, 600), `space.3` below.
-- Rows are a 2-column grid: **key column 76dp** with small-caps keys (`type.ledgerKey`, muted), then values (`type.bodySm` 14/20 in `color.text` + `type.caption` muted sub-line). Each row has a `color.border` hairline below and `space.3` vertical padding.
+- Rows are a 2-column grid: **key column 76dp** with small-caps keys (`type.overline`, muted), then values (`type.bodySm` 14/20 in `color.text` + `type.caption` muted sub-line). Each row has a `color.border` hairline below and `space.3` vertical padding.
 - A **1.5dp `color.text` bottom rule** closes the label.
 - Below the ledger, the two fixed lines in `type.caption`, muted.
 
@@ -713,20 +947,31 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 | offline | the external source link is disabled + "Needs a connection" |
 | hidden | under the medicine gate |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `ledger.rule` | `color.text`, 1.5dp (top and bottom) |
-| `ledger.title.type` / `.fg` | `type.button` / `color.text` |
-| `ledger.key.type` / `.fg` | `type.ledgerKey` / `color.text.muted` |
-| `ledger.key.width` | 76 |
-| `ledger.value.type` / `.fg` | `type.bodySm` / `color.text` |
-| `ledger.sub.type` / `.fg` | `type.caption` / `color.text.muted` |
-| `ledger.row.paddingY` | `space.3` |
-| `ledger.row.divider` | `color.border` |
-| `ledger.fixed.type` / `.fg` | `type.caption` / `color.text.muted` |
-| `ledger.marginTop` | `space.7` |
+<!-- tokens:provenanceLedger -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `provenanceLedger.title` | `type.headline` | Newsreader 500 20/26 | same |
+| `provenanceLedger.titleColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `provenanceLedger.topRule` | `color.text` | #1E1C18 | #F3EEE6 |
+| `provenanceLedger.topRuleWidth` | — | 1.5 | same |
+| `provenanceLedger.bottomRule` | `color.text` | #1E1C18 | #F3EEE6 |
+| `provenanceLedger.bottomRuleWidth` | — | 1.5 | same |
+| `provenanceLedger.rowDivider` | `color.border` | #DDD3C5 | #38332B |
+| `provenanceLedger.rowPaddingY` | `space.3` | 12 | same |
+| `provenanceLedger.key` | `type.overline` | Commissioner 600 13/16 caps | same |
+| `provenanceLedger.keyColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `provenanceLedger.keyWidth` | — | 72 | same |
+| `provenanceLedger.keyGap` | `space.3` | 12 | same |
+| `provenanceLedger.value` | `type.bodySm` | Commissioner 400 14/20 | same |
+| `provenanceLedger.valueColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `provenanceLedger.caption` | `type.caption` | Commissioner 400 13/18 | same |
+| `provenanceLedger.captionColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `provenanceLedger.keys` | — | SKIN / PRODUCT / WEATHER / LIMITS | same |
+| `provenanceLedger.stackBelowWidth` | — | 380 | same |
+| `provenanceLedger.stackAtFontScale` | — | 1.5 | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - The title is `accessibilityRole="header"`. Each row is one node: "Skin: Measured by YouCam Skin Analysis, 1 Nov. Photo deleted, score bands only."
@@ -753,7 +998,7 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 **Anatomy:**
 1. Title (`type.title`)
 2. **The privacy sentence in large type** (`type.headline`, `color.text`), read as one block
-3. A "What we keep" box: `color.surface`, 1dp `color.border`, radius.card, padding `space.4`, with an overline "What we keep" + `type.body`
+3. A "What we keep" box: `color.surface`, 1dp `color.border`, radius.lg, padding `space.4`, with an overline "What we keep" + `type.body`
 4. Accessibility / Accuracy note (`type.bodySm`, muted, `info` 16dp)
 5. An "I'm 18 or older" checkbox row, **unticked** (first scan only)
 6. A retention policy link
@@ -777,17 +1022,30 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 | loading | Start scan → "Opening camera…" (proposed) |
 | declined | Not now → home in no-profile mode, with no penalty copy |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `consent.title.type` | `type.title` |
-| `consent.privacy.type` / `.fg` | `type.headline` / `color.text` |
-| `consent.keepBox.bg` / `.border` / `.radius` / `.padding` | `color.surface` / `color.border` / `radius.card` / `space.4` |
-| `consent.note.type` / `.fg` | `type.bodySm` / `color.text.muted` |
-| `consent.buttons` | `button.consentPair.*` |
-| `consent.gap` | `space.6` |
-| `checkbox.box` | 20dp, 1.5dp `color.border.strong`, radius.xs; checked fill `color.accent` + check `color.on.accent` |
+<!-- tokens:consentSheet -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `consentSheet.privacyLead` | `type.title` | Newsreader 500 26/32 | same |
+| `consentSheet.privacyRest` | `type.body` | Commissioner 400 16/24 | same |
+| `consentSheet.privacyColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `consentSheet.keepBox.bg` | `color.surface` | #FAF7F2 | #1E1C18 |
+| `consentSheet.keepBox.border` | `color.border` | #DDD3C5 | #38332B |
+| `consentSheet.keepBox.radius` | `radius.lg` | 12 | same |
+| `consentSheet.keepBox.padding` | `space.4` | 16 | same |
+| `consentSheet.keepBox.title` | `type.section` | Newsreader 500 18/24 | same |
+| `consentSheet.keepList` | `type.body` | Commissioner 400 16/24 | same |
+| `consentSheet.accuracyNote` | `type.bodySm` | Commissioner 400 14/20 | same |
+| `consentSheet.accuracyColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `consentSheet.checkbox.size` | — | 24 | same |
+| `consentSheet.checkbox.target` | `touch.min` | 48 | same |
+| `consentSheet.checkbox.border` | `color.border-strong` | #807464 | same |
+| `consentSheet.checkbox.checked` | `color.accent` | #1B2F32 | #86A4A7 |
+| `consentSheet.checkbox.check` | `color.on-accent` | #FAF7F2 | #0C171A |
+| `consentSheet.checkbox.preTicked` | — | false | same |
+| `consentSheet.checkbox.rowBg` | — | transparent | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - TalkBack reads the privacy sentence as one block.
@@ -820,10 +1078,10 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 
 **Anatomy:**
 - Full-bleed camera.
-- A `color.media.scrim` mask with an **oval cut-out** (width 78% of the frame, aspect 3:4). The oval has a 2dp `color.media.fg` stroke.
-- A tip stack above the oval: three tips in `type.body`, `color.media.fg`.
-- A hint chip below the oval (`color.inverse.surface` / `color.inverse.text`, radius.chip).
-- The bottom bar: shutter at `size.shutter` (72dp; ring 3dp `color.media.fg`, inner disc `color.media.fg`), plus a 48dp flip-camera icon button and a 48dp "Tips" icon button.
+- A `color.overlay-camera` mask with an **oval cut-out** (width 78% of the frame, aspect 3:4). The oval has a 2dp `color.on-overlay` stroke.
+- A tip stack above the oval: three tips in `type.body`, `color.on-overlay`.
+- A hint chip below the oval (`color.inverse-surface` / `color.inverse-text`, radius.sm).
+- The bottom bar: shutter at `captureGuide.shutter.size` (72dp; ring 3dp `color.on-overlay`, inner disc `color.on-overlay`), plus a 48dp flip-camera icon button and a 48dp "Tips" icon button.
 
 **Variants:** `selfie` (default), `tintPhoto` (same guide, with the tag "Preview, not a shade guarantee").
 
@@ -838,17 +1096,34 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 | permissionDenied | no camera. Show an empty state (§22) "SkinKey needs the camera to take one photo for YouCam to analyse." (proposed) + primary "Open settings" + tertiary "Not now". |
 | disabled (offline) | the shutter is disabled + "You need a connection to scan" |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `capture.scrim` | `color.media.scrim` |
-| `capture.oval.stroke` | `color.media.fg`, 2dp |
-| `capture.tip.type` / `.fg` | `type.body` / `color.media.fg` |
-| `capture.hint.bg` / `.fg` | `color.inverse.surface` / `color.inverse.text` |
-| `capture.shutter.size` | `size.shutter` |
-| `capture.shutter.ring` / `.fill` | `color.media.fg` |
-| `capture.iconButton` | 48dp, `color.media.fg` |
+<!-- tokens:captureGuide -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `captureGuide.overlay` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `captureGuide.oval` | `color.on-overlay` | #FFFFFF | same |
+| `captureGuide.ovalStrokeWidth` | — | 2 | same |
+| `captureGuide.ovalWidthPct` | — | 72 | same |
+| `captureGuide.ovalAspect` | — | 0.78 | same |
+| `captureGuide.instruction` | `type.label` | Commissioner 600 14/20 | same |
+| `captureGuide.instructionColor` | `color.on-overlay` | #FFFFFF | same |
+| `captureGuide.hint.bg` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `captureGuide.hint.fg` | `color.on-overlay` | #FFFFFF | same |
+| `captureGuide.hint.type` | `type.bodyStrong` | Commissioner 600 16/24 | same |
+| `captureGuide.hint.radius` | `radius.full` | 9999 | same |
+| `captureGuide.hint.paddingX` | `space.4` | 16 | same |
+| `captureGuide.hint.visualMinHeight` | — | 40 | same |
+| `captureGuide.hint.insetX` | `space.4` | 16 | same |
+| `captureGuide.hint.interactive` | — | false | same |
+| `captureGuide.shutter.size` | — | 72 | same |
+| `captureGuide.shutter.ring` | `color.on-overlay` | #FFFFFF | same |
+| `captureGuide.shutter.ringWidth` | — | 4 | same |
+| `captureGuide.shutter.fill` | `color.on-overlay` | #FFFFFF | same |
+| `captureGuide.iconButtonTarget` | `touch.min` | 48 | same |
+| `captureGuide.iconButtonBg` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `captureGuide.focus` | `color.focus-ring-overlay` | #FFFFFF | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - The shutter label is "Take photo".
@@ -880,14 +1155,14 @@ Fixed lines: "Cosmetic guidance, not medical advice." / "Not affiliated with Fli
 **Anatomy:**
 - A vertical list of 4 steps, each 56dp min.
 - Each step has a 24dp status glyph, a label (`type.body`) and an optional sub-line (`type.caption` muted).
-- A 2dp connector line between glyphs: `color.border.strong` until the step is done, then `color.text`.
+- A 2dp connector line between glyphs: `color.border-strong` until the step is done, then `color.text`.
 - The steps, as fixed in the brief: **Uploading → Analysing → Deleting photo from YouCam ✓ → Done**.
 
 Status glyphs avoid every verdict silhouette.
 
 | Step state | Glyph |
 |---|---|
-| pending | 1.5dp `color.border.strong` ring |
+| pending | 1.5dp `color.border-strong` ring |
 | active | 2dp `color.text` ring + a 6dp `color.text` centre dot (static) |
 | done | `color.text` filled disc + check in `color.bg` |
 | failed | 1.5dp `color.text` ring + a "–" bar |
@@ -905,18 +1180,41 @@ Status glyphs avoid every verdict silhouette.
 | failed / timeout | primary "Try again" (once), then tertiary "Try later" only. The proxy still calls `task/delete`. |
 | offline mid-scan | the step fails + "You're offline. Your photo wasn't kept by SkinKey." (proposed; check against the architecture) + "Try later" |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `stepper.glyph.size` | `size.icon.lg` |
-| `stepper.pending` | `color.border.strong` |
-| `stepper.active` / `.done` | `color.text` |
-| `stepper.connector.todo` / `.done` | `color.border.strong` / `color.text`, 2dp |
-| `stepper.label.type` | `type.body` |
-| `stepper.sub.type` / `.fg` | `type.caption` / `color.text.muted` |
-| `stepper.row.minHeight` | 56 |
-| `stepper.gap` | `space.3` |
+<!-- tokens:processingStepper -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `processingStepper.rowMinHeight` | — | 56 | same |
+| `processingStepper.indicator` | — | 24 | same |
+| `processingStepper.connector` | `color.border-strong` | #807464 | same |
+| `processingStepper.connectorDone` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.connectorWidth` | — | 2 | same |
+| `processingStepper.done.fill` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.done.check` | `color.bg` | #F3EEE6 | #151411 |
+| `processingStepper.done.label` | `type.body` | Commissioner 400 16/24 | same |
+| `processingStepper.done.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.current.ring` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.current.ringWidth` | — | 2 | same |
+| `processingStepper.current.numeral` | `type.labelSm` | Commissioner 600 13/16 | same |
+| `processingStepper.current.numeralColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.current.label` | `type.bodyStrong` | Commissioner 600 16/24 | same |
+| `processingStepper.current.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.pending.ring` | `color.border-strong` | #807464 | same |
+| `processingStepper.pending.ringWidth` | — | 1.5 | same |
+| `processingStepper.pending.numeral` | `type.labelSm` | Commissioner 600 13/16 | same |
+| `processingStepper.pending.numeralColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `processingStepper.pending.label` | `type.body` | Commissioner 400 16/24 | same |
+| `processingStepper.pending.labelColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `processingStepper.failed.ring` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.failed.ringWidth` | — | 1.5 | same |
+| `processingStepper.failed.bar` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.failed.label` | `type.bodyStrong` | Commissioner 600 16/24 | same |
+| `processingStepper.failed.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.deletedStep.label` | `type.bodyStrong` | Commissioner 600 16/24 | same |
+| `processingStepper.deletedStep.caption` | `type.caption` | Commissioner 400 13/18 | same |
+| `processingStepper.deletedStep.captionColor` | `color.text-muted` | #564D41 | #B0A595 |
+<!-- /tokens -->
 
 **Accessibility:**
 - The list is a live region (`accessibilityLiveRegion="polite"`). Each change is announced: "Step 3 of 4, deleting photo from YouCam." then "Photo deleted from YouCam."
@@ -966,14 +1264,19 @@ Status glyphs avoid every verdict silhouette.
 | filterUnverified | if gate G3 shows that the app drops the filter, the line says "Opens a Flipkart search for [Oily Skin]" (no "filtered") |
 | loading | label "Opening…" up to 1s, then hand off |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `linkOut.button` | `button.primary.*` / `button.secondary.*` |
-| `linkOut.icon` | `size.icon.md` |
-| `linkOut.dest.type` / `.fg` | `type.caption` / `color.text.muted` |
-| `linkOut.dest.gap` | `space.2` |
+<!-- tokens:storeLinkOut -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `storeLinkOut.label` | `type.button` | Commissioner 600 16/20 | same |
+| `storeLinkOut.destination` | `type.caption` | Commissioner 400 13/18 | same |
+| `storeLinkOut.destinationColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `storeLinkOut.destinationDisabledColor` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `storeLinkOut.destinationGap` | `space.1` | 4 | same |
+| `storeLinkOut.icon` | — | arrow-up-right | same |
+| `storeLinkOut.iconColor` | `color.text-muted` | #564D41 | #B0A595 |
+<!-- /tokens -->
 
 **Accessibility:** the label merges the button and the destination: "Find better matches. Opens a Flipkart search, filtered to Oily Skin. Leaves SkinKey."
 
@@ -997,7 +1300,7 @@ Status glyphs avoid every verdict silhouette.
 **Purpose:** says plainly how matches are ordered and how money works.
 
 **Anatomy:**
-- An inline note: a 1dp `color.border.strong` leading rule, padding `space.3`.
+- An inline note: a 1dp `color.border-strong` leading rule, padding `space.3`.
 - Lines in `type.bodySm`, `color.text`.
 - An optional link "How ranking works" → /about.
 
@@ -1017,14 +1320,19 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | default | as above |
 | link focused | focus ring |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `disclosure.rule` | `color.border.strong`, 1dp leading edge |
-| `disclosure.type` / `.fg` | `type.bodySm` / `color.text` |
-| `disclosure.padding` | `space.3` |
-| `disclosure.marginBottom` | `space.4` |
+<!-- tokens:rankingDisclosure -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `rankingDisclosure.type` | `type.bodySm` | Commissioner 400 14/20 | same |
+| `rankingDisclosure.color` | `color.text` | #1E1C18 | #F3EEE6 |
+| `rankingDisclosure.rule` | `color.border-strong` | #807464 | same |
+| `rankingDisclosure.ruleWidth` | — | 1 | same |
+| `rankingDisclosure.paddingY` | `space.3` | 12 | same |
+| `rankingDisclosure.paddingX` | `space.3` | 12 | same |
+| `rankingDisclosure.copy` | — | Ranked by fit to your skin. No paid placements. / We may earn a commission; it never changes the ranking. | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - Read before the list (DOM / TalkBack order).
@@ -1044,8 +1352,8 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** teaches the main entry point: **Share → SkinKey** from the store app.
 
 **Anatomy:**
-- A card (`color.surface.raised`, 1dp `color.border`, radius.card, padding `space.5`, `elevation.1`).
-- An illustration panel (`color.surface.sunken`, radius.button; **paper grain allowed here**). It shows a generic, store-agnostic share sheet with a highlighted "SkinKey" tile outlined 2dp `color.text`. There are no store logos and no real app icons except our own.
+- A card (`color.surface-raised`, 1dp `color.border`, radius.lg, padding `space.5`, `elevation.1`).
+- An illustration panel (`color.bg-sunken`, radius.md; **paper grain allowed here**). It shows a generic, store-agnostic share sheet with a highlighted "SkinKey" tile outlined 2dp `color.text`. There are no store logos and no real app icons except our own.
 - A title (`type.headline`).
 - A 3-step numbered list (`type.reasonIndex` numerals + `type.body`).
 - Actions: primary "Got it", tertiary "Paste a link instead".
@@ -1061,16 +1369,25 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | pressed / focused (actions) | §3 |
 | clipboardFound | a row "Use the copied link?" (proposed) + "Check it" (secondary). **Only after** the user opens the app; ask once per link. |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `teachCard.bg` / `.border` / `.radius` / `.padding` | `color.surface.raised` / `color.border` / `radius.card` / `space.5` |
-| `teachCard.elevation` | `elevation.1` |
-| `teachCard.art.bg` | `color.surface.sunken` + `surface.grain.opacity` |
-| `teachCard.highlight` | `color.text`, 2dp |
-| `teachCard.title.type` | `type.headline` |
-| `teachCard.step.index` | `type.reasonIndex` |
+<!-- tokens:shareTeachingCard -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `shareTeachingCard.bg` | `elevation.1.surface` | #FAF7F2 | #1E1C18 |
+| `shareTeachingCard.border` | `color.border` | #DDD3C5 | #38332B |
+| `shareTeachingCard.radius` | `radius.lg` | 12 | same |
+| `shareTeachingCard.padding` | `space.4` | 16 | same |
+| `shareTeachingCard.stepIndex` | `type.reasonIndex` | Newsreader 400 italic 18/26 tabular | same |
+| `shareTeachingCard.stepIndexColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `shareTeachingCard.body` | `type.body` | Commissioner 400 16/24 | same |
+| `shareTeachingCard.title` | `type.headline` | Newsreader 500 20/26 | same |
+| `shareTeachingCard.illustrationBg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
+| `shareTeachingCard.illustrationStroke` | `color.border-strong` | #807464 | same |
+| `shareTeachingCard.highlight` | `color.text` | #1E1C18 | #F3EEE6 |
+| `shareTeachingCard.highlightWidth` | — | 2 | same |
+| `shareTeachingCard.grain` | — | true | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - The illustration is `accessibilityRole="image"`, label "Share menu with SkinKey highlighted".
@@ -1094,7 +1411,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** a live, sourced weather nudge tied to the user's readings. It is optional and 5th on the cut list.
 
 **Anatomy:**
-- A card (`color.surface`, 1dp `color.border`, radius.card, padding `space.4`).
+- A card (`color.surface`, 1dp `color.border`, radius.lg, padding `space.4`).
 - Overline "Skin forecast · [city]" (`type.overline`).
 - The main sentence (`type.headline`): "UV high today in [city]".
 - A supporting line (`type.body`): "Humidity 78%. Your skin looked oily in your 1 Nov scan." (proposed; tabular numerals).
@@ -1107,7 +1424,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 | State | Spec |
 |---|---|
-| loading | static skeleton lines (`color.surface.sunken`) |
+| loading | static skeleton lines (`color.bg-sunken`) |
 | default | as above |
 | noLocation | the card shows "Add location for a daily UV and humidity note." (proposed) + tertiary "Add location" |
 | offline | **hidden** |
@@ -1115,15 +1432,23 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | stale (> 6h) | "Updated [time]" stays; refresh on focus |
 | pressed / focused | the whole card is not pressable; only the tertiary button is |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `forecast.bg` / `.border` / `.radius` / `.padding` | `color.surface` / `color.border` / `radius.card` / `space.4` |
-| `forecast.kicker.type` | `type.overline` |
-| `forecast.main.type` | `type.headline` |
-| `forecast.body.type` | `type.body` |
-| `forecast.credit.type` / `.fg` | `type.caption` / `color.text.muted` |
+<!-- tokens:forecastCard -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `forecastCard.bg` | `elevation.1.surface` | #FAF7F2 | #1E1C18 |
+| `forecastCard.border` | `color.border` | #DDD3C5 | #38332B |
+| `forecastCard.radius` | `radius.lg` | 12 | same |
+| `forecastCard.padding` | `space.4` | 16 | same |
+| `forecastCard.kicker` | `type.label` | Commissioner 600 14/20 | same |
+| `forecastCard.kickerColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `forecastCard.figure` | `type.headline` | Newsreader 500 20/26 | same |
+| `forecastCard.figureColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `forecastCard.body` | `type.body` | Commissioner 400 16/24 | same |
+| `forecastCard.credit` | `type.fine` | Commissioner 400 12/16 | same |
+| `forecastCard.creditColor` | `color.text-muted` | #564D41 | #B0A595 |
+<!-- /tokens -->
 
 **Accessibility:**
 - Readable as one sentence: the card is grouped, label "UV high today in Pune. Humidity 78 percent. Weather: Open-Meteo."
@@ -1145,9 +1470,9 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** a preview of a tinted product on the user's second photo (F3b, gate G5).
 
 **Anatomy:**
-- An image frame (radius.card, 4:5).
-- **Split view**: the left side is "Without", the right side is "With tint". There is a vertical 2dp `color.media.fg` divider with a 48dp circular handle (`color.inverse.surface`, chevrons `color.inverse.text`).
-- Corner labels in hint chips (`color.inverse.*`): "Without" / "With tint".
+- An image frame (radius.lg, 4:5).
+- **Split view**: the left side is "Without", the right side is "With tint". There is a vertical 2dp `color.on-overlay` divider with a 48dp circular handle (`color.inverse-surface`, chevrons `color.inverse-text`).
+- Corner labels in hint chips (`color.inverse-surface / color.inverse-text`): "Without" / "With tint".
 - **A permanent caption bar under the image**: "Preview, not a shade guarantee" (`type.label`, `color.text`).
 - A view switcher: an M3 segmented button "Without · Split · With tint", each 48dp.
 - A note (`type.caption`, muted): "This preview is deleted from YouCam when you leave." (proposed; it must match `task/delete` behaviour).
@@ -1165,16 +1490,34 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | failed | §22 error: "We couldn't make a preview." (proposed) + "Try again" / "Not now" |
 | deleted / left | the image is cleared from memory; returning needs a new photo |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `tryOn.frame.radius` | `radius.card` |
-| `tryOn.divider` | `color.media.fg`, 2dp |
-| `tryOn.handle.bg` / `.fg` / `.size` | `color.inverse.surface` / `color.inverse.text` / `size.touch.min` |
-| `tryOn.label.bg` / `.fg` | `color.inverse.surface` / `color.inverse.text` |
-| `tryOn.caption.type` / `.fg` | `type.label` / `color.text` |
-| `tryOn.note.type` | `type.caption` |
+<!-- tokens:tryOnCompare -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `tryOnCompare.radius` | `radius.lg` | 12 | same |
+| `tryOnCompare.frameBorder` | `color.border` | #DDD3C5 | #38332B |
+| `tryOnCompare.divider` | `color.on-overlay` | #FFFFFF | same |
+| `tryOnCompare.dividerWidth` | — | 2 | same |
+| `tryOnCompare.dividerHalo` | `color.overlay-halo` | rgba(0, 0, 0, 0.60) | same |
+| `tryOnCompare.dividerHaloWidth` | — | 1 | same |
+| `tryOnCompare.handle` | `touch.min` | 48 | same |
+| `tryOnCompare.handleBg` | `color.inverse-surface` | #2E2A24 | #EAE3D8 |
+| `tryOnCompare.handleFg` | `color.inverse-text` | #F3EEE6 | #1E1C18 |
+| `tryOnCompare.handleRing` | `color.on-overlay` | #FFFFFF | same |
+| `tryOnCompare.handleRingWidth` | — | 2 | same |
+| `tryOnCompare.badge.bg` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `tryOnCompare.badge.fg` | `color.on-overlay` | #FFFFFF | same |
+| `tryOnCompare.badge.type` | `type.labelSm` | Commissioner 600 13/16 | same |
+| `tryOnCompare.badge.radius` | `radius.sm` | 6 | same |
+| `tryOnCompare.disclaimer` | `type.label` | Commissioner 600 14/20 | same |
+| `tryOnCompare.disclaimerColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `tryOnCompare.disclaimerBg` | `color.surface` | #FAF7F2 | #1E1C18 |
+| `tryOnCompare.note` | `type.caption` | Commissioner 400 13/18 | same |
+| `tryOnCompare.noteColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `tryOnCompare.focus` | `color.focus-ring-overlay` | #FFFFFF | same |
+| `tryOnCompare.previewTintOpacity` | — | 0.13 | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - **Dragging is never the only path.** The segmented switcher does the same thing.
@@ -1203,15 +1546,15 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** one ranked alternative from the catalogue, with its reason.
 
 **Anatomy:**
-- A card (`color.surface`, 1dp `color.border`, radius.card, padding `space.4`).
+- A card (`color.surface`, 1dp `color.border`, radius.lg, padding `space.4`).
 - Rank index "01" (`type.reasonIndex`).
 - Product name (`type.headline`, up to 3 lines).
 - Meta (`type.caption`, muted, tabular): "50 ml · ₹349 on the listing".
 - A FITS tag (§27, `verdict` variant: seal icon 16dp + "FITS").
-- **One reason line** (`type.reasonFact`, `color.text`).
+- **One reason line** (`type.body`, `color.text`).
 - A band chip (`compact`).
 - A divider.
-- The link-out row: label "See it in Flipkart search" (proposed, `type.label`, `color.accent.text`) + `arrow-up-right` + the destination line.
+- The link-out row: label "See it in Flipkart search" (proposed, `type.label`, `color.link`) + `arrow-up-right` + the destination line.
 
 **Variants:** `catalogue` (default), `nameOnly` (tag "Name only" + weaker reason), `compact` (no reason, for horizontal lists; **not used on /check**).
 
@@ -1220,22 +1563,32 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | State | Spec |
 |---|---|
 | default | as above |
-| pressed | the whole card is pressable (one target, ≥ 48dp tall), with `state.pressed.overlay` + scale 0.98 |
-| focused | focus ring, radius.card + 2 |
+| pressed | the whole card is pressable (one target, ≥ 48dp tall), with `color.state.pressed` + scale 0.98 |
+| focused | focus ring, radius.lg + 2 |
 | offline | the link row is disabled + "Needs a connection"; the card content stays readable |
 | outOfStock / unknown availability | not shown. We don't know stock. |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `matchCard.bg` / `.border` / `.radius` / `.padding` | `color.surface` / `color.border` / `radius.card` / `space.4` |
-| `matchCard.index.type` | `type.reasonIndex` |
-| `matchCard.name.type` | `type.headline` |
-| `matchCard.meta.type` / `.fg` | `type.caption` / `color.text.muted` |
-| `matchCard.reason.type` / `.fg` | `type.reasonFact` / `color.text` |
-| `matchCard.link.fg` | `color.accent.text` |
-| `matchCard.gap` | `space.2`; list gap `space.3` |
+<!-- tokens:productMatchCard -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `productMatchCard.bg` | `elevation.1.surface` | #FAF7F2 | #1E1C18 |
+| `productMatchCard.border` | `color.border` | #DDD3C5 | #38332B |
+| `productMatchCard.radius` | `radius.lg` | 12 | same |
+| `productMatchCard.padding` | `space.4` | 16 | same |
+| `productMatchCard.index` | `type.reasonIndex` | Newsreader 400 italic 18/26 tabular | same |
+| `productMatchCard.indexColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `productMatchCard.name` | `type.headline` | Newsreader 500 20/26 | same |
+| `productMatchCard.nameColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `productMatchCard.fit` | `type.body` | Commissioner 400 16/24 | same |
+| `productMatchCard.fitColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `productMatchCard.meta` | `type.caption` | Commissioner 400 13/18 | same |
+| `productMatchCard.metaColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `productMatchCard.verdictTagIcon` | `icon.sm` | 16 | same |
+| `productMatchCard.minHeight` | — | 96 | same |
+| `productMatchCard.listGap` | `space.3` | 12 | same |
+<!-- /tokens -->
 
 **Accessibility:** one node: "Match 1. Minimalist Oil-Free Moisturiser. Fits. Oil-free gel, listed as non-comedogenic. Opens a Flipkart search for this product." Role `link`.
 
@@ -1258,10 +1611,10 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** Aisle Check. It finds a product by barcode in-store.
 
 **Anatomy:**
-- A full-bleed camera with a `color.media.scrim` mask.
-- A **rectangular window** (80% width, 5:3) with four 24dp corner brackets (3dp `color.media.fg`).
-- Hint text above the window (`type.body`, `color.media.fg`): "Point at the barcode" (proposed).
-- A bottom bar with a torch toggle (48dp icon button, labelled) + **"Type the barcode"** (secondary on `color.media.scrim`, always visible).
+- A full-bleed camera with a `color.overlay-camera` mask.
+- A **rectangular window** (80% width, 5:3) with four 24dp corner brackets (3dp `color.on-overlay`).
+- Hint text above the window (`type.body`, `color.on-overlay`): "Point at the barcode" (proposed).
+- A bottom bar with a torch toggle (48dp icon button, labelled) + **"Type the barcode"** (secondary on `color.overlay-camera`, always visible).
 
 **Variants:** `camera` (default), `manual` (no camera: a field with a numeric keypad + "Check" primary).
 
@@ -1277,15 +1630,23 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | offline | catalogue-only; note "Open Beauty Facts lookup needs a connection." (proposed) |
 | invalid entry | inline helper "Barcodes have 8 or 13 digits." (proposed) + `REJECT` haptic |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `scanner.scrim` | `color.media.scrim` |
-| `scanner.bracket` | `color.media.fg`, 3dp, 24dp arms |
-| `scanner.hint.type` / `.fg` | `type.body` / `color.media.fg` |
-| `scanner.torch.size` | `size.touch.min` |
-| `scanner.manual.field` | `field.*` (§5) |
+<!-- tokens:barcodeFrame -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `barcodeFrame.overlay` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `barcodeFrame.corner` | `color.on-overlay` | #FFFFFF | same |
+| `barcodeFrame.cornerWidth` | — | 3 | same |
+| `barcodeFrame.cornerLength` | — | 24 | same |
+| `barcodeFrame.radius` | `radius.xl` | 16 | same |
+| `barcodeFrame.window.width` | — | 280 | same |
+| `barcodeFrame.window.height` | — | 160 | same |
+| `barcodeFrame.hint` | `type.bodyStrong` | Commissioner 600 16/24 | same |
+| `barcodeFrame.hintColor` | `color.on-overlay` | #FFFFFF | same |
+| `barcodeFrame.torch` | `touch.min` | 48 | same |
+| `barcodeFrame.focus` | `color.focus-ring-overlay` | #FFFFFF | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - Manual entry can be reached without the camera, and is first in TalkBack order when the camera is denied.
@@ -1310,9 +1671,9 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** lets a pharmacist see the user's bands for 30 minutes, with a revoke option.
 
 **Anatomy:**
-- A card (`color.surface.raised`, radius.card, padding `space.5`).
+- A card (`color.surface-raised`, radius.lg, padding `space.5`).
 - A title (`type.headline`): "Show this to the pharmacist" (proposed).
-- The **QR** (≥ 220dp, `color.qr.fg` on `color.qr.bg`, 16dp quiet zone, inside a 1dp `color.border` frame, radius.button).
+- The **QR** (≥ 220dp, `color.qr.module` on `color.qr.field`, 16dp quiet zone, inside a 1dp `color.border` frame, radius.md).
 - A countdown (`type.title`, tabular): "29 min left" (proposed format; update each minute, and each second only under 60s *visually*).
 - A summary line (`type.bodySm`): "Shows score bands only. No photo." (proposed).
 - A text alternative: tertiary "Copy link".
@@ -1332,16 +1693,34 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | revoked | "Revoked. The link can keep working for up to a minute." (proposed; **never promise "instant"**); `CONFIRM` haptic |
 | offline / error | "The QR page needs a connection." (proposed) + "Try again" |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `qrCard.bg` / `.radius` / `.padding` | `color.surface.raised` / `radius.card` / `space.5` |
-| `qrCard.qr.bg` / `.fg` | `color.qr.bg` / `color.qr.fg` |
-| `qrCard.qr.minSize` | 220 |
-| `qrCard.countdown.type` | `type.title` + numeric |
-| `qrCard.summary.type` / `.fg` | `type.bodySm` / `color.text.muted` |
-| `qrCard.revoke` | `button.destructiveNeutral.*` |
+<!-- tokens:qrShareCard -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `qrShareCard.bg` | `elevation.1.surface` | #FAF7F2 | #1E1C18 |
+| `qrShareCard.border` | `color.border` | #DDD3C5 | #38332B |
+| `qrShareCard.radius` | `radius.lg` | 12 | same |
+| `qrShareCard.padding` | `space.5` | 20 | same |
+| `qrShareCard.title` | `type.headline` | Newsreader 500 20/26 | same |
+| `qrShareCard.qrModule` | `color.qr.module` | #000000 | same |
+| `qrShareCard.qrField` | `color.qr.field` | #FFFFFF | same |
+| `qrShareCard.qrSize` | — | 240 | same |
+| `qrShareCard.quietZone` | — | 16 | same |
+| `qrShareCard.countdown` | `type.figure` | Newsreader 500 26/32 tabular | same |
+| `qrShareCard.countdownColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `qrShareCard.countdownLabel` | `type.caption` | Commissioner 400 13/18 | same |
+| `qrShareCard.countdownLabelColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `qrShareCard.timeRule.filled` | `meter.filled` | #38332B | #EAE3D8 |
+| `qrShareCard.timeRule.track` | `color.border` | #DDD3C5 | #38332B |
+| `qrShareCard.timeRule.height` | — | 4 | same |
+| `qrShareCard.summary` | `type.bodySm` | Commissioner 400 14/20 | same |
+| `qrShareCard.summaryColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `qrShareCard.expired.placeholderBg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
+| `qrShareCard.expired.message` | `type.body` | Commissioner 400 16/24 | same |
+| `qrShareCard.expired.messageColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `qrShareCard.brightnessBoost` | — | true | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - The QR is an image, label "QR code for your shared bands".
@@ -1369,7 +1748,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 **Anatomy:**
 - Centred in the content area, max width 320dp.
-- An icon disc (64dp `color.surface.sunken` circle, icon 32dp `color.text`; the paper grain is allowed on the disc's surrounding illustration panel only).
+- An icon disc (64dp `color.bg-sunken` circle, icon 32dp `color.text`; the paper grain is allowed on the disc's surrounding illustration panel only).
 - A title (`type.headline`).
 - A body (`type.body`, muted).
 - A primary and/or tertiary action.
@@ -1390,16 +1769,30 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 **States:** default; action pressed / focused / loading per §3.
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `emptyState.disc.bg` / `.size` | `color.surface.sunken` / 64 |
-| `emptyState.icon.fg` / `.size` | `color.text` / `size.icon.xl` |
-| `emptyState.title.type` | `type.headline` |
-| `emptyState.body.type` / `.fg` | `type.body` / `color.text.muted` |
-| `emptyState.gap` | `space.4` |
-| `offlineBanner.bg` / `.fg` / `.border` | `color.surface` / `color.text` / `color.border.strong` (1dp bottom) |
+<!-- tokens:stateView -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `stateView.align` | — | start | same |
+| `stateView.title` | `type.headline` | Newsreader 500 20/26 | same |
+| `stateView.titleColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `stateView.body` | `type.body` | Commissioner 400 16/24 | same |
+| `stateView.bodyColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `stateView.gap` | `space.2` | 8 | same |
+| `stateView.offlineBanner.bg` | — | transparent | same |
+| `stateView.offlineBanner.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `stateView.offlineBanner.border` | `color.border` | #DDD3C5 | #38332B |
+| `stateView.offlineBanner.type` | `type.bodySm` | Commissioner 400 14/20 | same |
+| `stateView.offlineBanner.icon` | — | cloud-off | same |
+| `stateView.offlineBanner.iconColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `stateView.offlineBanner.minHeight` | — | 48 | same |
+| `stateView.fieldInvalid.border` | `color.text` | #1E1C18 | #F3EEE6 |
+| `stateView.fieldInvalid.borderWidth` | — | 2 | same |
+| `stateView.fieldInvalid.message` | `type.caption` | Commissioner 400 13/18 | same |
+| `stateView.fieldInvalid.messageColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `stateView.fieldInvalid.icon` | — | info | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - The title is a heading.
@@ -1424,9 +1817,9 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** brief, non-critical confirmation (M3 snackbar).
 
 **Anatomy:**
-- `color.inverse.surface`, radius.button, padding `space.3` / `space.4`, `elevation.2`.
-- Text in `type.bodySm` `color.inverse.text`, up to 2 lines.
-- An optional action (`type.label`, `color.inverse.action`, 48dp target).
+- `color.inverse-surface`, radius.md, padding `space.3` / `space.4`, `elevation.2`.
+- Text in `type.bodySm` `color.inverse-text`, up to 2 lines.
+- An optional action (`type.label`, `color.inverse-link`, 48dp target).
 - It sits above the bottom nav or the sticky action bar, `space.3` gutter.
 
 **Variants:** `info` ("Link copied", "Profile deleted"), `withAction` ("Couldn't open Flipkart." + "Try again", proposed).
@@ -1440,14 +1833,24 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | exiting | opacity 200ms, exit easing |
 | action pressed / focused | overlay / focus ring |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `snackbar.bg` / `.fg` / `.action` | `color.inverse.surface` / `color.inverse.text` / `color.inverse.action` |
-| `snackbar.radius` / `.padding` / `.elevation` | `radius.button` / `space.3`, `space.4` / `elevation.2` |
-| `snackbar.type` | `type.bodySm` |
-| `snackbar.duration` | 4000 / 10000 |
+<!-- tokens:snackbar -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `snackbar.bg` | `color.inverse-surface` | #2E2A24 | #EAE3D8 |
+| `snackbar.fg` | `color.inverse-text` | #F3EEE6 | #1E1C18 |
+| `snackbar.action` | `color.inverse-link` | #B0C5C7 | #253D41 |
+| `snackbar.actionType` | `type.label` | Commissioner 600 14/20 | same |
+| `snackbar.actionTarget` | `touch.min` | 48 | same |
+| `snackbar.focus` | `color.focus-ring-inverse` | #B0C5C7 | #253D41 |
+| `snackbar.type` | `type.bodySm` | Commissioner 400 14/20 | same |
+| `snackbar.radius` | `radius.md` | 8 | same |
+| `snackbar.minHeight` | — | 48 | same |
+| `snackbar.paddingX` | `space.4` | 16 | same |
+| `snackbar.elevation` | — | 3 | same |
+| `snackbar.z` | `z.snackbar` | 50 | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - Announced as a polite live region. Never the only place critical information appears: revoked, deleted and offline status are also shown on screen.
@@ -1472,8 +1875,8 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** top-level destinations (M3 navigation bar).
 
 **Anatomy:**
-- Container: `color.surface.raised`, 1dp top `color.border`, min height 80dp + gesture inset.
-- 3 equal items: a 24dp icon in a 64 × 32dp active indicator pill (`color.chip.bg`), and a label below (`nav.label.type` = `type.caption` 13/18, 600 when selected).
+- Container: `color.surface-raised`, 1dp top `color.border`, min height 80dp + gesture inset.
+- 3 equal items: a 24dp icon in a 64 × 32dp active indicator pill (`color.bg-sunken`), and a label below (`nav.label.type` = `type.caption` 13/18, 600 when selected).
 
 | Item | Icon | Label | Route |
 |---|---|---|---|
@@ -1485,21 +1888,37 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 | State | Spec |
 |---|---|
-| default | icon + label `color.text.muted` |
-| selected | indicator `color.chip.bg`; icon filled-weight 2dp stroke `color.accent.text`; label 600 `color.text`. Shown by indicator + weight + colour, never colour alone. |
+| default | icon + label `color.text-muted` |
+| selected | indicator `color.bg-sunken`; icon filled-weight 2dp stroke `color.link`; label 600 `color.text`. Shown by indicator + weight + colour, never colour alone. |
 | pressed | ripple inside the indicator |
 | focused | focus ring around the item (≥ 48 × 48) |
 | hidden | during onboarding, camera, capture and processing only; **always shown** on /check, including the medicine gate |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `nav.bg` / `.border` | `color.surface.raised` / `color.border` |
-| `nav.indicator` | `color.chip.bg`, `radius.full`, 64 × 32 |
-| `nav.icon.default` / `.selected` | `color.text.muted` / `color.accent.text` |
-| `nav.label.type` / `.default` / `.selected` | `type.caption` (600 when selected) / `color.text.muted` / `color.text` |
-| `nav.minHeight` | 80 |
+<!-- tokens:bottomNav -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `bottomNav.minHeight` | — | 80 | same |
+| `bottomNav.bg` | `elevation.2.surface` | #FFFCF7 | #28251F |
+| `bottomNav.border` | `color.border` | #DDD3C5 | #38332B |
+| `bottomNav.items` | — | 3 | same |
+| `bottomNav.itemMinWidth` | — | 64 | same |
+| `bottomNav.itemTarget` | `touch.min` | 48 | same |
+| `bottomNav.indicator.bg` | `color.accent-subtle` | #D5E0E1 | #253D41 |
+| `bottomNav.indicator.width` | — | 64 | same |
+| `bottomNav.indicator.height` | — | 32 | same |
+| `bottomNav.indicator.radius` | `radius.full` | 9999 | same |
+| `bottomNav.iconActive` | `color.on-accent-subtle` | #1B2F32 | #D5E0E1 |
+| `bottomNav.iconInactive` | `color.text-muted` | #564D41 | #B0A595 |
+| `bottomNav.iconActiveStrokeWidth` | — | 2.25 | same |
+| `bottomNav.iconInactiveStrokeWidth` | — | 1.75 | same |
+| `bottomNav.labelActive` | `type.labelSm` | Commissioner 600 13/16 | same |
+| `bottomNav.labelInactive` | `type.labelSmRegular` | Commissioner 400 13/16 | same |
+| `bottomNav.labelActiveColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `bottomNav.labelInactiveColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `bottomNav.labels` | — | Check / Aisle / Profile | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - `accessibilityRole="tab"` inside `tablist`; `selected` state; label "Check, tab 1 of 3".
@@ -1521,8 +1940,8 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 **Purpose:** focused secondary tasks: What we keep, Feels wrong? Edit, the band explainer, the pharmacist and tint consents, the Delete confirm.
 
 **Anatomy:**
-- M3 modal sheet: `color.surface.raised`, top radius.sheet, `elevation.2`, over `color.scrim`.
-- A drag handle (32 × 4dp `color.border.strong`, inside a 48dp tap target that toggles expand).
+- M3 modal sheet: `color.surface-raised`, top radius.sheet, `elevation.2`, over `color.overlay`.
+- A drag handle (32 × 4dp `color.border-strong`, inside a 48dp tap target that toggles expand).
 - A title (`type.headline`), content, and a sticky action area.
 - Max height 90%; content scrolls.
 
@@ -1539,21 +1958,30 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 | State | Spec |
 |---|---|
-| opening / closing | translateY over `motion.duration.sheet`; scrim fades |
+| opening / closing | translateY over `motion.duration.sheetEnter`; scrim fades |
 | expanded / half | two detents (50% / 90%) for long content |
 | dragging | follows the finger; `GESTURE_END` on dismiss |
 | loading (confirm action) | button loading state |
 | focused | focus is trapped inside the sheet; it returns to the trigger on close |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `sheet.bg` / `.radius` / `.elevation` | `color.surface.raised` / `radius.sheet` / `elevation.2` |
-| `sheet.scrim` | `color.scrim` |
-| `sheet.handle` | `color.border.strong`, 32 × 4, target `size.touch.min` |
-| `sheet.padding` | `space.5`; bottom = safe area + `space.4` |
-| `sheet.title.type` | `type.headline` |
+<!-- tokens:bottomSheet -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `bottomSheet.bg` | `elevation.3.surface` | #FFFCF7 | #28251F |
+| `bottomSheet.border` | `elevation.3.border` | #DDD3C5 | #807464 |
+| `bottomSheet.radius` | `radius.sheet` | 24 | same |
+| `bottomSheet.padding` | `space.6` | 24 | same |
+| `bottomSheet.scrim` | `color.overlay` | rgba(30, 28, 24, 0.40) | rgba(0, 0, 0, 0.60) |
+| `bottomSheet.title` | `type.headline` | Newsreader 500 20/26 | same |
+| `bottomSheet.handle.width` | — | 32 | same |
+| `bottomSheet.handle.height` | — | 4 | same |
+| `bottomSheet.handle.color` | `color.border-strong` | #807464 | same |
+| `bottomSheet.handle.target` | `touch.min` | 48 | same |
+| `bottomSheet.maxHeightPct` | — | 90 | same |
+| `bottomSheet.closeTarget` | `touch.min` | 48 | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - `accessibilityViewIsModal`. Back closes it (and gets predictive back).
@@ -1577,7 +2005,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 **Purpose:** settings, /about, What we keep, UNKNOWN next steps, the referral checklist, and zone lists.
 
-**Anatomy:** min height 56dp (1-line) / 72dp (2-line), padding x `space.5`. Parts: optional leading icon (`size.icon.lg`, `color.text`), title (`type.body` or `type.label`), optional supporting text (`type.bodySm`, muted), and an optional trailing element (chevron, external arrow, checkbox, switch, value text). The divider is a `color.border` hairline, inset to the text.
+**Anatomy:** min height 56dp (1-line) / 72dp (2-line), padding x `space.5`. Parts: optional leading icon (`icon.lg`, `color.text`), title (`type.body` or `type.label`), optional supporting text (`type.bodySm`, muted), and an optional trailing element (chevron, external arrow, checkbox, switch, value text). The divider is a `color.border` hairline, inset to the text.
 
 **Variants:** `navigation` (chevron), `external` (arrow-up-right + "opens in browser"), `checkbox` (referral checklist; the whole row toggles), `radio`, `switch`, `value` ("Scan date · 1 Nov"), `nextStep` (UNKNOWN: icon + title + chevron).
 
@@ -1586,21 +2014,45 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | State | Spec |
 |---|---|
 | default | as above |
-| pressed | full-row `state.pressed.overlay` |
+| pressed | full-row `color.state.pressed` |
 | focused | focus ring inset 2dp |
-| checked | checkbox filled `color.accent` + check `color.on.accent`; the row text is unchanged |
-| disabled | `color.text.muted` + reason sub-line |
+| checked | checkbox filled `color.accent` + check `color.on-accent`; the row text is unchanged |
+| disabled | `color.text-muted` + reason sub-line |
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `listRow.minHeight.one` / `.two` | 56 / 72 |
-| `listRow.paddingX` / `.gap` | `space.5` / `space.4` |
-| `listRow.title.type` / `.fg` | `type.body` / `color.text` |
-| `listRow.support.type` / `.fg` | `type.bodySm` / `color.text.muted` |
-| `listRow.divider` | `color.border` |
-| `listRow.trailing.fg` | `color.text.muted` |
+<!-- tokens:listRow switch -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `listRow.minHeight` | — | 56 | same |
+| `listRow.paddingX` | `space.gutter` | 20 | same |
+| `listRow.paddingY` | `space.3` | 12 | same |
+| `listRow.gap` | `space.4` | 16 | same |
+| `listRow.title` | `type.bodyStrong` | Commissioner 600 16/24 | same |
+| `listRow.titleColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `listRow.supporting` | `type.bodySm` | Commissioner 400 14/20 | same |
+| `listRow.supportingColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `listRow.leadingIcon` | `icon.lg` | 24 | same |
+| `listRow.trailingIcon` | `icon.md` | 20 | same |
+| `listRow.trailingColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `listRow.divider` | `color.border` | #DDD3C5 | #38332B |
+| `listRow.dividerInset` | `space.gutter` | 20 | same |
+| `listRow.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `listRow.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `listRow.focusInset` | — | 2 | same |
+| `listRow.checkedBg` | — | transparent | same |
+| `switch.minTarget` | `touch.min` | 48 | same |
+| `switch.trackWidth` | — | 52 | same |
+| `switch.trackHeight` | — | 32 | same |
+| `switch.trackBorderWidth` | — | 2 | same |
+| `switch.radius` | `radius.full` | 9999 | same |
+| `switch.offTrackBorder` | `color.border-strong` | #807464 | same |
+| `switch.offThumb` | `color.border-strong` | #807464 | same |
+| `switch.offThumbSize` | — | 16 | same |
+| `switch.onTrack` | `color.accent` | #1B2F32 | #86A4A7 |
+| `switch.onThumb` | `color.on-accent` | #FAF7F2 | #0C171A |
+| `switch.onThumbSize` | — | 24 | same |
+<!-- /tokens -->
 
 **Accessibility:**
 - The whole row is the target, with a native role (`button`, `link`, `checkbox`, `radio`, `switch`).
@@ -1623,28 +2075,31 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 
 **Purpose:** small non-interactive qualifiers.
 
-**Anatomy:** min height 24dp, padding x `space.2`, radius.xs, label `type.tag` (12dp, the floor), optional 16dp icon.
+**Anatomy:** min height 24dp, padding x `space.2`, radius.xs, label `type.labelSm` (12dp, the floor), optional 16dp icon.
 
 | Variant | Fill / text / border | Example copy |
 |---|---|---|
-| `neutral` | `color.chip.bg` / `color.chip.fg` | "Illustrative example", "Demo profile" |
-| `outline` | transparent / `color.text` / 1dp `color.border.strong` | "Name only", "self-reported, not measured", "estimated from oiliness + moisture" |
-| `source` | transparent / `color.text.muted` | "Open Beauty Facts (ODbL)" |
+| `neutral` | `color.bg-sunken` / `color.text` | "Illustrative example", "Demo profile" |
+| `outline` | transparent / `color.text` / 1dp `color.border-strong` | "Name only", "self-reported, not measured", "estimated from oiliness + moisture" |
+| `source` | transparent / `color.text-muted` | "Open Beauty Facts (ODbL)" |
 | `verdict` | `color.verdict.<s>.bg` / `color.verdict.<s>.fg` + the state icon 16dp | "FITS" (match cards only) |
 
 **States:** static only. A tag is never a button; if it needs to be tappable, use a band chip (`interactive`) or a text link.
 
-**Component tokens:**
+**Component tokens** (generated from `skinkey.tokens.json`; RN `theme.components.*`, web `--sk-<group>-<path>`):
 
-| Token | Value |
-|---|---|
-| `tag.minHeight` | 24 |
-| `tag.paddingX` | `space.2` |
-| `tag.radius` | `radius.xs` |
-| `tag.type` | `type.tag` |
-| `tag.neutral.bg` / `.fg` | `color.chip.bg` / `color.chip.fg` |
-| `tag.outline.border` | `color.border.strong` |
-| `tag.verdict.bg` / `.fg` | `color.verdict.<state>.bg` / `.fg` |
+<!-- tokens:tag -->
+| Token | References | Light | Dark |
+|---|---|---|---|
+| `tag.bg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
+| `tag.fg` | `color.text` | #1E1C18 | #F3EEE6 |
+| `tag.radius` | `radius.sm` | 6 | same |
+| `tag.visualMinHeight` | — | 24 | same |
+| `tag.paddingX` | `space.2` | 8 | same |
+| `tag.type` | `type.labelSm` | Commissioner 600 13/16 | same |
+| `tag.outlineBorder` | `color.border-strong` | #807464 | same |
+| `tag.iconSize` | `icon.sm` | 16 | same |
+<!-- /tokens -->
 
 **Accessibility:** tags are read inline with their parent node, not as separate stops.
 

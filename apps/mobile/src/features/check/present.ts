@@ -42,6 +42,8 @@ export interface VerdictView {
   ledger: LedgerRow[];
   fixedLines: string[];
   showMatches: boolean;
+  /** UNKNOWN because the ingredients are missing (offer the label photo) or because there is no Key (offer a scan). */
+  unknownKind: 'ingredients' | 'readings' | null;
   announce: string;
 }
 
@@ -58,7 +60,17 @@ export const shortHash = (hash: string) => hash.slice(0, 7);
 
 function subtitleFor(v: Verdict): string {
   if (v.label === 'MEDICINE') return COPY.medicine(v.medicineToken ?? 'a medicine ingredient');
-  return COPY.subtitle[v.label];
+  return v.subtitle?.trim() || COPY.subtitle[v.label];
+}
+
+/** Rules may return `basis` (VerdictResult). `no_readings` means INCI is known but there is no Key. */
+const basisOf = (v: Verdict): string | null => ('basis' in v && typeof v.basis === 'string' ? v.basis : null);
+
+/** Rules write "<reading lead>. <fact>" in one string; the sheet sets the reading in serif above the fact. */
+export function splitPlain(plain: string): { lead: string | null; fact: string } {
+  const text = plain.trim();
+  const m = /^((?:[^.]*?\breading: [^.]*)|(?:Listing says '[^']*'))\.\s+(.+)$/s.exec(text);
+  return m ? { lead: `${m[1]}.`, fact: m[2]! } : { lead: null, fact: text };
 }
 
 function orderedReasons(v: Verdict): Reason[] {
@@ -74,10 +86,8 @@ function orderedReasons(v: Verdict): Reason[] {
 }
 
 function reasonView(r: Reason, i: number, total: number, scanDate: string | null): ReasonView {
-  const fact = r.plain.trim();
-  const rawReading = readingLine(r.reading, scanDate);
-  const duplicated = /reading:|^listing says/i.test(fact);
-  const reading = duplicated ? null : rawReading;
+  const { lead, fact } = splitPlain(r.plain);
+  const reading = lead ?? readingLine(r.reading, scanDate);
   const isLabel = r.kind === 'LABEL_CHECK';
   const info = isLabel && !r.counted;
   const kindNote = isLabel ? (info ? 'Label check · for information' : 'Label check') : null;
@@ -171,6 +181,7 @@ export function presentVerdict(v: Verdict, ctx: PresentContext): VerdictView {
       ledger: [],
       fixedLines,
       showMatches: false,
+      unknownKind: null,
       announce: headA11y,
     };
   }
@@ -195,6 +206,7 @@ export function presentVerdict(v: Verdict, ctx: PresentContext): VerdictView {
     ledger,
     fixedLines,
     showMatches: true,
+    unknownKind: v.label !== 'UNKNOWN' ? null : basisOf(v) === 'no_readings' ? 'readings' : 'ingredients',
     announce: reasons[0] ? `${headA11y} ${reasons[0].a11y}` : headA11y,
   };
 }

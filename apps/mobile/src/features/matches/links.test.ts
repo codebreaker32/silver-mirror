@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { COPY, DEMO_KEY, type FacetMapping, type KeyProfile, type RankedMatch } from '@skinkey/contracts';
 import { PRODUCT, TINTED } from '../check/fixtures';
-import { amazonSearchUrl, facetFor, flipkartFacetUrl, guessCategory, nykaaSearchUrl, storeKeywords, storeLinks } from './links';
+import { amazonSearchUrl, facetFor, flipkartFacetUrl, flipkartSearchUrl, guessCategory, nykaaSearchUrl, storeKeywords, storeLinks } from './links';
 import { selectMatches } from './select';
 
 const MAP: FacetMapping[] = [
@@ -19,6 +19,7 @@ describe('store links', () => {
   });
 
   it('keyword URLs for Amazon and Nykaa', () => {
+    expect(flipkartSearchUrl('face wash')).toBe('https://www.flipkart.com/search?q=face+wash');
     expect(amazonSearchUrl('face wash')).toBe('https://www.amazon.in/s?k=face%20wash');
     expect(nykaaSearchUrl('face wash')).toBe('https://www.nykaa.com/search/result/?q=face%20wash');
   });
@@ -26,7 +27,8 @@ describe('store links', () => {
   it('maps the Key class to a facet, and redness classes to no facet', () => {
     expect(facetFor(oily, MAP)).toBe('Oily Skin');
     expect(facetFor({ ...DEMO_KEY, zones: { whole: 'Oily & Redness' } }, MAP)).toBeNull();
-    expect(facetFor(DEMO_KEY, MAP)).toBeNull();
+    expect(facetFor(DEMO_KEY, MAP)).toBe('Oily Skin');
+    expect(facetFor({ ...DEMO_KEY, bands: { ...DEMO_KEY.bands, oiliness: { level: 'Low', region: 'whole', selfReported: false } } }, MAP)).toBeNull();
   });
 
   it('facet link uses the exact disclosure string and destination line', () => {
@@ -38,7 +40,7 @@ describe('store links', () => {
   });
 
   it('falls back to a Flipkart keyword search with no facet', () => {
-    const links = storeLinks({ category: null, key: DEMO_KEY, facetMap: MAP, facetLabel: COPY.flipkartFacetLink });
+    const links = storeLinks({ category: null, key: null, facetMap: MAP, facetLabel: COPY.flipkartFacetLink });
     expect(links[0]).toMatchObject({ id: 'flipkart', url: 'https://www.flipkart.com/search?q=skincare' });
   });
 

@@ -183,16 +183,10 @@ export interface VerdictInput {
   rules?: readonly Rule[];
 }
 
-/** What the verdict rests on. `name_only` is the brief's "based on product name only" state: it stays UNKNOWN (spec §5 step 2). */
-export type VerdictBasis = 'medicine' | 'ingredients' | 'name_only' | 'none' | 'no_readings';
+export type { VerdictBasis, VerdictResult };
 
-export interface VerdictResult extends Verdict {
-  basis: VerdictBasis;
-  note?: string;
-}
-
-export const NO_READINGS_SUBTITLE = 'We need your readings to check fit. Scan, or try the Demo Key.';
-export const NAME_ONLY_NOTE = "We don't have this product's ingredient list, so this is a weaker check.";
+export const NO_READINGS_SUBTITLE = COPY.noReadingsSubtitle;
+export const NAME_ONLY_NOTE = COPY.nameOnlyNote;
 
 function provenanceLine(key: KeyProfile | null, inciSource: InciSource | null, hash: string): string {
   const parts: string[] = [];

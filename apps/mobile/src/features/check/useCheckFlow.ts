@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import type { KeyProfile, ResolveCandidate, ResolveRequest, Store } from '@skinkey/contracts';
 import type { CheckInput } from '@/features/share/parse';
 import { toResolveRequest } from '@/features/share/parse';
@@ -9,6 +9,7 @@ import {
   evaluateLabel,
   evaluateProduct,
   evaluateTitleOnly,
+  reevaluate,
   stepFromResolve,
   type CheckState,
   type Engine,
@@ -146,13 +147,27 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
       const inci = chipsToInci(chips);
       try {
         const verdict = evaluateLabel(engine, keyRef.current, inci, s.result.product, s.result.title);
-        dispatch({ type: 'label_verdict', verdict, tokenCount: inci.length });
+        dispatch({ type: 'label_verdict', verdict, inci });
       } catch (e) {
         dispatch({ type: 'label', label: { step: 'error', message: errorMessage(e) } });
       }
     },
     [engine],
   );
+
+  const keySig = key ? `${key.source}|${key.scanDate}|${key.selfReported.join(',')}|${Object.values(key.bands).map((b) => b.level).join(',')}` : 'none';
+  const lastSig = useRef(keySig);
+  useEffect(() => {
+    if (lastSig.current === keySig) return;
+    lastSig.current = keySig;
+    const s = stateRef.current;
+    if (s.phase !== 'result') return;
+    try {
+      dispatch({ type: 'reverdict', verdict: reevaluate(engine, keyRef.current, s.result) });
+    } catch {
+      // Keep the verdict on screen if the engine can't run.
+    }
+  }, [keySig, engine]);
 
   const reset = useCallback(() => dispatch({ type: 'reset' }), []);
 

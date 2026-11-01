@@ -41,6 +41,7 @@ export interface CheckResult {
   ledgers: HowThisWasMade[];
   label: LabelState;
   labelTokenCount?: number;
+  labelInci?: InciToken[];
   /** True once a label-photo verdict replaced an UNKNOWN (the card "morphs"). */
   morphed: boolean;
 }
@@ -71,17 +72,16 @@ export type CheckAction =
   | { type: 'product'; product: CatalogProduct; verdict: Verdict }
   | { type: 'unknown'; verdict: Verdict }
   | { type: 'label'; label: LabelState; ledger?: HowThisWasMade }
-  | { type: 'label_verdict'; verdict: Verdict; tokenCount: number }
+  | { type: 'label_verdict'; verdict: Verdict; inci: InciToken[] }
+  | { type: 'reverdict'; verdict: Verdict }
   | { type: 'error'; message: string; retry: 'start' | 'product' };
-
-export const CONFIRM_THRESHOLD = 0.8;
 
 export function stepFromResolve(res: ResolveResponse, engine: Engine, titleHint: string | null): ResolveStep {
   const title = res.extractedTitle ?? titleHint;
   if (title && engine.medicineGate(null, title).gated) return { next: 'medicine', title };
   if (res.outcome === 'not_skincare') return { next: 'not_skincare' };
   const candidates = res.candidates.slice(0, 3);
-  if (res.outcome === 'match' && candidates[0] && candidates[0].confidence >= CONFIRM_THRESHOLD) {
+  if (res.outcome === 'match' && candidates[0]) {
     return { next: 'confirm', candidates, mode: 'single' };
   }
   if (candidates.length) return { next: 'confirm', candidates, mode: 'choose' };
@@ -123,6 +123,14 @@ export function evaluateLabel(
     claims: product && usableInci(product) ? product.claims : [],
     title: title ?? undefined,
   });
+}
+
+/** Re-run the same inputs when the Key changes (for example the user switches to the Demo Key). */
+export function reevaluate(engine: Engine, key: KeyProfile | null, r: CheckResult): Verdict {
+  if (r.verdict.label === 'MEDICINE') return r.verdict;
+  if (r.labelInci) return evaluateLabel(engine, key, r.labelInci, r.product, r.title);
+  if (r.product) return evaluateProduct(engine, key, r.product);
+  return evaluateTitleOnly(engine, key, r.title);
 }
 
 export function tryonEntry(product: CatalogProduct | null): { mode: TryonMode; label: string } | null {
@@ -213,9 +221,18 @@ export function checkReducer(state: CheckState, action: CheckAction): CheckState
       if (state.phase !== 'result') return state;
       return {
         ...state,
-        result: { ...state.result, verdict: action.verdict, label: { step: 'none' }, labelTokenCount: action.tokenCount, morphed: true },
+        result: {
+          ...state.result,
+          verdict: action.verdict,
+          label: { step: 'none' },
+          labelInci: action.inci,
+          labelTokenCount: action.inci.length,
+          morphed: true,
+        },
       };
     }
+    case 'reverdict':
+      return state.phase === 'result' ? { ...state, result: { ...state.result, verdict: action.verdict } } : state;
     case 'error':
       return { phase: 'error', message: action.message, retry: action.retry };
   }

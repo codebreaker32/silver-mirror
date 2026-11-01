@@ -63,3 +63,17 @@ export const Caps = z.object({
   tryonsLeft: z.number().int(),
 });
 export type Caps = z.infer<typeof Caps>;
+
+/** GET /v1/ledger: global unit ledger. `?verify=1` with `x-skinkey-admin` also reads YouCam's credit endpoint (0 units). */
+export const LedgerResponse = z.object({
+  mode: z.enum(['mock', 'live']),
+  spentUnits: z.number(),
+  byFeature: z.record(z.string(), z.number()),
+  successfulTasks: z.number().int(),
+  deletesConfirmed: z.number().int(),
+  deletesFailed: z.number().int(),
+  claudeCalls: z.number().int(),
+  budget: z.object({ startBalance: z.number(), spentUnits: z.number(), remaining: z.number(), floor: z.number(), alert: z.boolean() }),
+  youcamCredit: z.number().nullable().optional(),
+});
+export type LedgerResponse = z.infer<typeof LedgerResponse>;

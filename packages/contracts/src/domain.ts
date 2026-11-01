@@ -59,8 +59,13 @@ export type BandReading = z.infer<typeof BandReading>;
 export const CopySet = z.enum(['A', 'B']);
 export type CopySet = z.infer<typeof CopySet>;
 
-export const KeySource = z.enum(['youcam_hd', 'demo']);
+/** 'mock' = built from mock YouCam fixtures; never shown as a real reading. */
+export const KeySource = z.enum(['youcam_hd', 'demo', 'mock']);
 export type KeySource = z.infer<typeof KeySource>;
+
+/** hd_skin_type labels per region, passed to buildKeyProfile separately from raw_score rows. */
+export const SkinTypeZones = z.partialRecord(SkinTypeZone, SkinTypeClass);
+export type SkinTypeZones = z.infer<typeof SkinTypeZones>;
 
 export const KeyProfile = z.object({
   version: z.literal(1),
