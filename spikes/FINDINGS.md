@@ -39,3 +39,22 @@ Input: Perfect Corp's official docs sample face (`https://plugins-media.makeupar
 - `adb shell am start -a VIEW -d 'https://www.flipkart.com/search?q=moisturizer&p%5B%5D=facets.skin_type%255B%255D%3DOily%2BSkin'` opened the **native Flipkart app** (`com.flipkart.android/.activity.HomeFragmentHolderActivity`). It went straight to the moisturizer results with **"1 Filter" applied**. Screenshot: `spikes/s2/flipkart_oily.png`.
 - Observation (one screenshot, not a finding): under the "Oily Skin" filter, the second result (marked Sponsored) is a moisturiser whose own pack text reads "Dry to Normal, Sensitive Skin". This is the kind of mismatch the audit counts. The audit only counts it through the pre-registered method.
 - Caveat: Android may not bring the app to the foreground if another app is in front (background activity launch limits). In the app, links open from a user tap, which is allowed.
+
+## S1: share payloads from the native store apps (Samsung SM-A276B, Android 16, 2026-11-01 ~23:10 IST)
+**Flipkart app → Share → Samsung Notes**
+- The payload is **only a short link**, e.g. `https://dl.flipkart.com/s/qPYPSuNNNN`. There is no title.
+- Resolve it from the **redirect header only**: one GET with redirects off returns `Location: https://dl.flipkart.com/dl/<product-slug>/p/<itm-id>?pid=<PID>&lid=…`. The slug gives the product name (`vaseline-gluta-hya-dewy-radiance`) and `pid` the Flipkart id.
+- We never load or scrape the product page. A HEAD request returned 504; a GET with manual redirect works. Following all hops also lands on www.flipkart.com/…/p/… with HTTP 200, but we stop at the first Location header.
+
+**Amazon.in app → Share**
+- Amazon shows its **own share panel** (WhatsApp, Telegram, Snapchat, Facebook, Reddit, Messages, Email, Copy, **More**). Third-party apps like SkinKey appear only after **More**, which opens the Android system chooser (`com.android.intentresolver`). The onboarding coach mark has to teach this: "Amazon: Share → More → SkinKey".
+- The system chooser shows "Sharing text" with the payload:
+  `Check this out at Amazon` + newline + `<full product title> https://amzn.in/d/<code>`
+  e.g. "Minimalist SPF 30 Body Sunscreen, UVA & UVB Protection | Nourishing Lotion | Broad Spectrum PA+++ Sunscreen for All Skin Types | For Men & Women | 150 g https://amzn.in/d/05kxo4QC".
+- **The full title is in the payload**, so no network resolution is needed. Parse the title text and strip "Check this out at Amazon" and the URL.
+
+**Parser rules**
+- `dl.flipkart.com/s/` → resolve the redirect header, then take the slug and pid.
+- `amzn.in/d/` or `amazon.in` → take the title from the text before the URL.
+- Anything else → paste-link field or screenshot with a crop step.
+- Privacy: the chooser also shows direct-share contact suggestions. Never capture or log the chooser UI.
