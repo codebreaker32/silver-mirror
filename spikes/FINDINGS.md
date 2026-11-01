@@ -58,3 +58,17 @@ Input: Perfect Corp's official docs sample face (`https://plugins-media.makeupar
 - `amzn.in/d/` or `amazon.in` → take the title from the text before the URL.
 - Anything else → paste-link field or screenshot with a crop step.
 - Privacy: the chooser also shows direct-share contact suggestions. Never capture or log the chooser UI.
+
+**Nykaa app (`com.fsn.nykaa`) → product page Share icon**
+- Nykaa uses the Android system chooser directly, so SkinKey appears in the normal app row with no extra "More" step.
+- Payload: `Check out <full product title> on Nykaa` + newline + `https://www.nykaa.com/<slug>/p/<productId>?skuId=<skuId>&se=0`
+  e.g. "Check out Minimalist SPF 50 PA++++ Sunscreen With Niacinamide - Lightweight & No White Cast For All Skin Types on Nykaa"
+- The full title and the canonical product URL are both in the payload, so no network call is needed.
+- **Outbound:** `https://www.nykaa.com/search/result/?q=…` opened the Nykaa **app's home screen, not the search results**. So the Nykaa "better matches" link should open the browser via a Custom Tab, or link to a specific product URL (`/p/<id>`), which is UNVERIFIED for app deep-linking. Keyword search in the app doesn't carry through.
+
+**Summary of share entry by store**
+| Store | Share UI | Payload | Title available |
+|---|---|---|---|
+| Flipkart | system chooser | short link only | via the redirect header slug |
+| Amazon.in | custom panel → **More** → chooser | "Check this out at Amazon" + title + amzn.in/d link | yes, in the text |
+| Nykaa | system chooser | "Check out <title> on Nykaa" + product URL | yes, in the text |
