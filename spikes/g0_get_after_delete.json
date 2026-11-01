@@ -1,0 +1,125 @@
+{
+ "status": 200,
+ "body": {
+  "status": 200,
+  "data": {
+   "error": null,
+   "results": {
+    "output": [
+     {
+      "ui_score": 94,
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "raw_score": 96.19693756103516,
+      "type": "hd_redness",
+      "url": null
+     },
+     {
+      "ui_score": 98,
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "raw_score": 99.51248931884766,
+      "type": "hd_oiliness",
+      "url": null
+     },
+     {
+      "ui_score": 82,
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "raw_score": 80.68523406982422,
+      "type": "hd_moisture",
+      "url": null
+     },
+     {
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "type": "hd_skin_type",
+      "region": "whole",
+      "skin_type": "Normal",
+      "url": null
+     },
+     {
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "type": "hd_skin_type",
+      "region": "t_zone",
+      "skin_type": "Normal",
+      "url": null
+     },
+     {
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "type": "hd_skin_type",
+      "region": "u_zone",
+      "skin_type": "Normal",
+      "url": null
+     },
+     {
+      "ui_score": 99,
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "raw_score": 100.0,
+      "type": "hd_pore",
+      "region": "forehead",
+      "url": null
+     },
+     {
+      "ui_score": 96,
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "raw_score": 97.79637145996094,
+      "type": "hd_pore",
+      "region": "nose",
+      "url": null
+     },
+     {
+      "ui_score": 99,
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "raw_score": 100.0,
+      "type": "hd_pore",
+      "region": "cheek",
+      "url": null
+     },
+     {
+      "ui_score": 98,
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "raw_score": 99.4490966796875,
+      "type": "hd_pore",
+      "region": "whole",
+      "url": null
+     },
+     {
+      "score": 93.0,
+      "type": "all",
+      "url": null
+     },
+     {
+      "score": 28,
+      "type": "skin_age",
+      "url": null
+     },
+     {
+      "mask_urls": [
+       "https://redacted.invalid/presigned-url-redacted"
+      ],
+      "type": "resize_image",
+      "url": null
+     }
+    ]
+   },
+   "task_status": "success"
+  }
+ }
+}
