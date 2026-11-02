@@ -1,6 +1,6 @@
 # Silver Mirror: design system of record
 
-Version 2.2 · 2 Nov 2026 · tokens `2.2.0` (palette from `design/reference/colors-reference.png`, §2.0) · was tokens `2.1.0` (`design/system/tokens/skinkey.tokens.json`) · 2.1 = the showcase delta (`design/reference/showcase-delta.md`): the app now follows Aman's showcase (`design/reference/silver-mirror-showcase.png`)
+Version 2.3 · 2 Nov 2026 · tokens `2.3.0` (Silver & graphite, §2.0) · was tokens `2.2.0` (pink-lavender glass, retired) and `2.1.0` (`design/system/tokens/skinkey.tokens.json`) · 2.1 = the showcase delta (`design/reference/showcase-delta.md`): the app now follows Aman's showcase (`design/reference/silver-mirror-showcase.png`)
 
 Silver Mirror is the user-facing name of the app formerly called SkinKey. This file owns the durable visual decisions. Product truth lives in `PRODUCT.md` and `research/skinkey_v2_spec.md`; copy rules and banned words in `design/research/00_research_summary_and_design_brief.md` §4. Where the moodboard and product law disagree, **product law wins** (the conflicts are listed in §11).
 
@@ -34,27 +34,27 @@ The product is a **mirror that shows its working**: you hold a product up to you
 
 ## 2. Colour
 
-### 2.0 Palette 2.2: pink-lavender glass (supersedes the light values below)
+### 2.0 Palette 2.3: Silver & graphite (supersedes the light values below)
 
-Tokens `2.2.0` re-map light to `design/reference/colors-reference.png`. The app ships **light only**; dark tokens are kept but unused. Where a light value in §2.1 to §2.3 disagrees with this table, this table wins (the token file is the source).
+Tokens `2.3.0`. Aman retired the 2.2 pink-lavender glass as feminine-coded and the glass cards as generic. The light world is now gender-neutral, mirror-like and calm: flat cool greys, graphite ink, one steel accent for selection. The app ships **light only**; dark tokens are kept but unused. Where a light value in §2.1 to §2.3 disagrees with this table, this table wins (the token file is the source; ramp `primitive.color.mirror`).
 
 | Role (token → `theme.colors.*`) | Light | Notes |
 |---|---|---|
-| `color.page-top` → `pageTop` / `color.page-bottom` → `pageBottom` | `#F8F1F9` → `#EDDCF3` | Vertical page gradient, drawn by `PageBackdrop` (Screen, CheckScreen) with a `page-glow` `#F9D3E4` radial top-left |
-| `color.bg` | blush.150 `#F3E7F7` | Solid mid tone for fallbacks, camera masks, navigator scenes |
-| `color.glass` / `color.glass-edge` | `#FCF8FE` / `rgba(255,255,255,0.70)` | Card fill and its 1dp white hairline; elevation.1 adds a plum shadow `#5A3F6B` |
-| `color.accent` = `color.plum` / `color.plum-pressed` | plum.600 `#67506F` / `#574260` | Primary pill, active tab, round Scan button, links; white label 7.1:1 (reference `#776083` darkened for the 7:1 lint) |
-| `color.tile-pink` / `tile-lilac` / `tile-lavender` | `#F8D9DF` / `#EADEEA` / `#DCCFE9` | Pastel product and icon tiles; plum glyph `#6A4673` ≥5:1 on each |
-| `color.accent-pink` | `#F7B3CC` | Small fill accents only, never text or a meaningful edge |
-| `color.text` / `text-muted` / `text-subtle` | mauve `#241B29` / `#54475B` / `#67596E` | AA on page-top, bg, page-bottom, glass and the sunken well (lowest 4.79:1) |
-| `color.icon-disc` / `on-icon-disc` | `#F3DDEC` / `#6A4673` | Pinker lilac disc |
-| `color.border-strong` / `tab-inactive` | mauve.500 `#85768D` | ≥3:1 on every page stop |
-| Verdicts | FITS sage, CAUTION amber (unchanged); UNKNOWN blush neutral `#F3ECF5` with a plum fg; MEDICINE on the page bg | All AA |
-| `color.sheen.start / lavender / silver / end` | `#FDF8FD` `#F3E6F5` `#F6DDEB` `#EEDFF2` | Face-frame, empty-state and try-on plates (`SheenBackdrop`). No grey stop: the `silver` role is blush pink since 2.2.1. The mist ramp is retired |
-| `color.secondary-translucent` / `-edge` | `rgba(252,240,248,0.70)` / `rgba(255,255,255,0.70)` | Blush glass: welcome Demo pill, consent pair, Home sample pill |
-| `color.welcome-wash` | `rgba(246,221,235,0.30)` | Pink-lavender wash over the cool welcome photo |
+| `color.bg` = `page-top` = `page-bottom` | `#ECEDF0` | The page. Flat: no gradient, `page-glow` and `welcome-wash` are transparent |
+| `color.surface` = `surface-raised` = `glass` | `#F8F8FA` | One tone step up: every card, sheet, list group, verdict head |
+| `color.bg-sunken` = `secondary-bg` = `segment-track` = `thumb-tile` = `icon-disc` | `#E1E3E8` | One tone step down: wells, chips, secondary pills, thumbnails, discs. `tile-lilac` `#DADDE3`, `tile-lavender` `#E6E7EB` |
+| `color.text` / `text-muted` / `text-subtle` | `#15161A` / `#565964` / `#5F626C` | Running text in full ink; subtle ≥4.74:1 on all three tones |
+| `color.accent` = `plum` / pressed | `#1E2026` / `#34363E` | The one primary pill and the round Scan button, white label 16.3:1 |
+| `color.tab-active` = `link` = `focus-ring` | steel `#44607A` | Only the selected tab, links and the focus ring (≥5.1:1 on every tone) |
+| `color.border-strong` / `tab-inactive` | `#7A7E89` | Meaningful edges only (input focus, meters); ≥3.16:1 |
+| `color.border` | `#E1E3E8` | Decorative; not drawn around cards in light |
+| `color.secondary-translucent` | `rgba(248,248,250,0.72)` | Welcome Demo pill over the liquid-silver photo; consent pair |
+| `color.sheen.*` | `#F8F8FA` `#EEEFF2` `#E6E8EC` `#ECEDF0` | Neutral silver only |
+| Verdicts | FITS sage, CAUTION amber (unchanged, AA); UNKNOWN well `#E1E3E8` with graphite fg `#30333B`; MEDICINE ink | No violet, lavender or pink anywhere in light |
 
-`check-contrast.mjs` (2.2) gates 462 pairs + 31 lints, 0 failures, including the page stops, glass, the plum button and the three tiles.
+Rules of the world. Surfaces separate by a **tone step** (page → surface → well), never by a line or a shadow: elevation 1 and 2 cast nothing and carry no border; only what truly floats (sheets, dialogs, the snackbar) casts one soft graphite shadow. No gradients except the welcome photo, no glass, no blur, no hairline dividers (lists are rows on one surface separated by spacing), no nested cards, no rows of identical icon-topped cards, no tracked uppercase labels, no eyebrows. One radius set: surfaces 16, thumbnails 12, buttons fully round. Type: Geist for UI, Noto Serif Display only for the wordmark and the Home greeting; steps 34 / 28 / 22 / 17 / 15 / 13, small type at normal tracking. Verdict heads carry by glyph + word (13 semibold) + a small tinted disc.
+
+`check-contrast.mjs` (2.3) gates 462 pairs + 31 lints, 0 failures.
 
 Restrained strategy, tuned to the showcase: a lavender-grey **mist** page, clean white cards, one deep slate accent, lavender icon discs, one soft lavender gradient (skin-type card only), and four verdict roles. All values below are generated from the token file; never type a hex in UI code (use `theme.colors.*` / `var(--sk-color-*)`). `check-contrast.mjs` gates 370 pairs + 31 lints, 0 failures.
 

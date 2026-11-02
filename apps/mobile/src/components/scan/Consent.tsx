@@ -1,6 +1,6 @@
 import { Fragment, useState, type ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
-import { FaceFrame, SheenBackdrop } from '@/brand';
+import { FaceFrame } from '@/brand';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from '../Icon';
 import { useCardStyle } from '../Card';
@@ -8,7 +8,7 @@ import { ThumbTile } from '../ListRow';
 import { Txt } from '../Text';
 
 /**
- * Face-frame plate on the sheen (consent hero, showcase 03_analyze frame language): a 200dp, radius-28 plate with the
+ * Face-frame plate (consent hero, tokens 2.3): a 200dp plate on the flat surface tone with the
  * bracket illustration centred. Decorative: the app-bar title says what happens.
  */
 export function FaceFramePlate({ height = 200 }: { height?: number; /** @deprecated plate is sized by height now */ maxWidth?: number }) {
@@ -21,16 +21,16 @@ export function FaceFramePlate({ height = 200 }: { height?: number; /** @depreca
       accessibilityElementsHidden
       style={{
         height,
-        borderRadius: t.radius.xl,
+        borderRadius: t.radius.lg,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: t.dark ? t.colors.border : t.colors.surface,
-        borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.surface,
+        backgroundColor: t.colors.surface,
+        borderWidth: t.dark ? 1 : 0,
+        borderColor: t.colors.border,
+        borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
       }}
     >
-      <SheenBackdrop radius={t.radius.xl} />
       <FaceFrame width={frame} tile={false} />
     </View>
   );
@@ -42,8 +42,8 @@ export interface PromiseItem {
 }
 
 /**
- * The three promises ("One photo, analysed by YouCam" …) as one white card of thumb-tile rows (showcase list rows:
- * soft square tile, lavender icon, inset dividers). A 48dp tile and body weight keep each promise on one line at 1.0x.
+ * The three promises ("One photo, analysed by YouCam" …) as rows on one surface-tone card (well-tone square tile,
+ * ink icon, rows separated by spacing, no dividers). A 48dp tile and body weight keep each promise on one line at 1.0x.
  * One TalkBack node per row.
  */
 export function PromiseList({ items }: { items: readonly PromiseItem[] }) {
@@ -56,7 +56,6 @@ export function PromiseList({ items }: { items: readonly PromiseItem[] }) {
     <View accessibilityRole="list" style={[card, { paddingHorizontal: 0, paddingVertical: t.space[1], gap: 0 }]}>
       {items.map((it, i) => (
         <Fragment key={it.label}>
-          {i > 0 ? <View importantForAccessibility="no" style={{ height: 1, marginLeft: padX + tile + gap, marginRight: padX, backgroundColor: t.components.listRow.divider }} /> : null}
           <View accessible accessibilityLabel={it.label} style={{ flexDirection: 'row', alignItems: 'center', gap, minHeight: t.space[16], paddingHorizontal: padX, paddingVertical: t.space[2] }}>
             <ThumbTile thumb={{ icon: it.icon }} size={tile} />
             <Txt variant="body" style={{ flex: 1 }}>
@@ -91,12 +90,11 @@ export function KeepCard({ title, kept, dropped, footnote }: { title: string; ke
       accessible
       accessibilityLabel={a11y}
       style={{
-        ...(t.dark ? null : t.elevation['1'].style),
-        backgroundColor: k.bg,
-        borderRadius: k.radius,
+        backgroundColor: t.dark ? k.bg : t.colors.surface,
+        borderRadius: t.radius.lg,
         padding: k.padding,
         gap: t.space[2],
-        borderWidth: 1,
+        borderWidth: t.dark ? 1 : 0,
         borderColor: k.border,
         borderTopColor: t.dark ? t.colors.sheenEdge : k.border,
       }}
@@ -105,7 +103,7 @@ export function KeepCard({ title, kept, dropped, footnote }: { title: string; ke
         {title}
       </Txt>
       <View style={{ gap: t.space[1] }}>{kept.map((l) => row(l, true))}</View>
-      <View style={{ height: 1, backgroundColor: t.colors.border, marginVertical: t.space[1] }} />
+      <View style={{ height: t.space[2] }} />
       <View style={{ gap: t.space[1] }}>{dropped.map((l) => row(l, false))}</View>
       {footnote ? (
         <Txt variant="bodySm" tone="muted">

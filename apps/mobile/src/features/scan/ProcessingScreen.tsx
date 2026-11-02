@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { View, useWindowDimensions } from 'react-native';
-import { SheenBackdrop } from '@/brand';
 import { useRouter } from 'expo-router';
 import { COPY, type YouCamErrorCode } from '@skinkey/contracts';
 import { demo } from '@/demo';
@@ -122,16 +121,16 @@ export function ProcessingScreen() {
       <View
         style={{
           height: plateH,
-          borderRadius: theme.radius.xl,
+          borderRadius: theme.radius.lg,
           overflow: 'hidden',
           alignItems: 'center',
           justifyContent: 'center',
-          borderWidth: 1,
-          borderColor: theme.dark ? theme.colors.border : theme.colors.surface,
-          borderTopColor: theme.dark ? theme.colors.sheenEdge : theme.colors.surface,
+          backgroundColor: theme.colors.surface,
+          borderWidth: theme.dark ? 1 : 0,
+          borderColor: theme.colors.border,
+          borderTopColor: theme.dark ? theme.colors.sheenEdge : theme.colors.border,
         }}
       >
-        <SheenBackdrop radius={theme.radius.xl} />
         <ResolvingFaceFrame tile={false} width={frameW} progress={failed ? 0 : doneCount / progress.steps.length} />
       </View>
       {failed ? (

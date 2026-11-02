@@ -10,12 +10,12 @@ import { textStyle, Txt } from './Text';
 const LABEL: Record<Exclude<Verdict, 'medicine'>, string> = { fits: 'FITS', caution: 'CAUTION', unknown: 'UNKNOWN' };
 const SPOKEN: Record<Verdict, string> = { fits: 'Fits', caution: 'Caution', unknown: 'Unknown', medicine: 'Medicine' };
 
-// Showcase 04_report card language: radius 18, hairline, a 36dp icon disc, a small tracked label and a 16 medium line.
-const RADIUS = 18;
+// Silver & graphite (2.3): the head is a surface-tone card (radius 16, no hairline, no shadow). The verdict carries by
+// its glyph in a small tinted disc plus the word, set 13 semibold at normal tracking; the sentence is the 17 line.
 const DISC = 36;
-const LABEL_TYPE = { fontFamily: 'Geist_500Medium', fontSize: 12, lineHeight: 16, letterSpacing: 1 } as const;
-const QUALIFIER_TYPE = { fontFamily: 'Geist_400Regular', fontSize: 12, lineHeight: 16, letterSpacing: 0 } as const;
-const LINE_TYPE = { fontFamily: 'Geist_500Medium', fontSize: 16, lineHeight: 22, letterSpacing: -0.1 } as const;
+const LABEL_TYPE = { fontFamily: 'Geist_600SemiBold', fontSize: 13, lineHeight: 18, letterSpacing: 0 } as const;
+const QUALIFIER_TYPE = { fontFamily: 'Geist_400Regular', fontSize: 13, lineHeight: 18, letterSpacing: 0 } as const;
+const LINE_TYPE = { fontFamily: 'Geist_500Medium', fontSize: 17, lineHeight: 24, letterSpacing: 0 } as const;
 
 export interface VerdictHeadProps {
   tone: Verdict;
@@ -37,18 +37,18 @@ export interface VerdictHeadProps {
 }
 
 /**
- * Verdict head (component.verdictCard.head, showcase 04_report): the same white card as every other card (hairline +
- * the very soft shadow; graphite + sheen edge in dark), radius 18, padding 16. The verdict lives in a 36dp tinted disc
- * (grey for UNKNOWN) holding the 20dp verdict icon, a small tracked label in the verdict fg, then the sentence in 16
- * medium. No dashed edges, no leading stripe; name-only is carried by the qualifier line. MEDICINE: no box and no label, the 32dp
- * pharmacist icon over one title line.
+ * Verdict head (component.verdictCard.head, tokens 2.3): the same surface-tone card as every other card, radius 16,
+ * padding 16, no hairline and no shadow (graphite + sheen edge in dark). The verdict lives in a 36dp tinted disc
+ * (the neutral well for UNKNOWN, solid, never dashed) holding the 20dp verdict icon, the word in the verdict fg at 13
+ * semibold, then the sentence at 17 medium. No leading stripe; name-only is carried by the qualifier line. MEDICINE:
+ * no box and no label, the 32dp pharmacist icon over one title line.
  */
 export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = 'based on product name only', demo = false, accessibilityLabel, revealStyle, testID = 'verdict-head' }: VerdictHeadProps) {
   const t = useTheme();
   const head = t.components.verdictCard.head;
   const c = head[tone];
   const a11y = accessibilityLabel ?? `${SPOKEN[tone]}. ${nameOnly ? `${qualifier}. ` : ''}${line}`;
-  const raised = useCardStyle('raised', RADIUS);
+  const raised = useCardStyle('raised');
 
   if (tone === 'medicine') {
     const g = t.components.verdictCard.medicineGate;
@@ -81,11 +81,11 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
         raised,
         {
           backgroundColor: t.dark ? c.bg : t.colors.surface,
-          borderWidth: 1,
+          // Light: a tone step only (tokens 2.3); the verdict colour lives in the icon disc and the word.
+          borderWidth: t.dark ? 1 : 0,
           borderStyle: 'solid' as const,
-          // Light: the glass card's white hairline (tokens 2.2); the verdict colour lives in the icon disc and label.
-          borderColor: t.dark ? t.colors.border : t.colors.glassEdge,
-          borderRadius: RADIUS,
+          borderColor: t.dark ? t.colors.border : 'transparent',
+          borderRadius: t.radius.lg,
           paddingHorizontal: t.space[4],
           paddingVertical: t.space[4],
           gap: t.space[3],
@@ -95,7 +95,7 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
       ]}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: head.iconGap }}>
-        <View testID={`${testID}-disc`} style={{ width: DISC, height: DISC, borderRadius: t.radius.full, backgroundColor: tone === 'unknown' ? t.colors.secondaryBg : c.iconDisc, alignItems: 'center', justifyContent: 'center' }}>
+        <View testID={`${testID}-disc`} style={{ width: DISC, height: DISC, borderRadius: t.radius.full, backgroundColor: c.iconDisc, alignItems: 'center', justifyContent: 'center' }}>
           <VerdictIcon tone={tone} size={20} color={c.icon} />
         </View>
         <View style={{ flex: 1, gap: 2 }}>

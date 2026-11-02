@@ -30,7 +30,7 @@ interface RowProps {
 }
 
 /**
- * Settings row: 44dp rounded-square lavender tile (hairline, sheen top edge in dark) with a 20dp iris line icon, title (bodyStrong) over supporting (bodySm muted),
+ * Settings row: 44dp rounded-square well tile (sheen top edge in dark) with a 20dp ink line icon, title (bodyStrong) over supporting (bodySm muted),
  * trailing chevron when it opens a screen. ≥64dp, one TalkBack node. Tokens from component.listRow / iconDisc.
  */
 function SettingsRow({ title, supporting, icon, onPress, chevron = true, testID }: RowProps) {
@@ -48,7 +48,7 @@ function SettingsRow({ title, supporting, icon, onPress, chevron = true, testID 
           height: TILE,
           borderRadius: TILE_RADIUS,
           backgroundColor: d.bg,
-          borderWidth: 1,
+          borderWidth: t.dark ? 1 : 0,
           borderColor: t.colors.border,
           borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
           alignItems: 'center',

@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { Image } from 'expo-image';
 import Svg, { Ellipse } from 'react-native-svg';
-import { FaceFrame, SheenBackdrop } from '@/brand';
+import { FaceFrame } from '@/brand';
 import { COPY, type TryonStatusResponse } from '@skinkey/contracts';
 import { Body, Chip, StepChecklist, Txt, useCardStyle } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -10,7 +10,7 @@ import type { DisplayStep } from '../scan/steps';
 export const SINGLE_CAPTION = 'Preview, not a shade guarantee.';
 
 /**
- * Drawn stand-in for a render (web `?demo=` only, where no photo exists): the face-frame plate on the sheen with the
+ * Drawn stand-in for a render (web `?demo=` only, where no photo exists): the face-frame plate in the well with the
  * oval washed in a lighter or deeper token tone, labelled "Sample preview". Never a face, never raster.
  */
 function SamplePreview({ index }: { index: number }) {
@@ -20,7 +20,6 @@ function SamplePreview({ index }: { index: number }) {
   const opacity = index % 2 ? 0.55 : 0.2;
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <SheenBackdrop />
       <Svg width="70%" height="70%" viewBox="0 0 100 133" style={{ position: 'absolute' }}>
         <Ellipse cx={50} cy={66} rx={24} ry={45} fill={theme.colors.textMuted} fillOpacity={opacity} />
       </Svg>
@@ -45,7 +44,7 @@ export function TryonResult({ status, steps }: { status: TryonStatusResponse; st
   const t = theme.components.tryOnCompare;
   const card = useCardStyle('raised');
   const caption = status.renders.length >= 2 ? COPY.tryonCaption : SINGLE_CAPTION;
-  const wellRadius = theme.radius.tile;
+  const wellRadius = theme.radius.md;
   return (
     <View style={{ gap: theme.space[5] }}>
       <View style={{ flexDirection: 'row', gap: theme.space[3] }}>

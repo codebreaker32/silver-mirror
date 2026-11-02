@@ -4,12 +4,13 @@ import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName, type LegacyIconName } from './Icon';
 
 /**
- * primary: the one slate pill per screen state (pearl in dark), 52dp with a 15dp label (showcase); pass trailingIcon="arrow-right"
- * when it moves forward ("Get started", "Start scan", "Check a product").
- * secondary: tonal mist pill, 52dp, no outline. tertiary: text + optional chevron in a 48dp box.
- * translucent: welcome only, a borderless frosted pill over the liquid backdrop (light); sheen edge in dark.
+ * Tokens 2.3 Silver & graphite: every button is flat, one fill, no outline, no shadow.
+ * primary: the one graphite pill per screen state (#1E2026, white label), 52dp with a 15dp label; pass
+ * trailingIcon="arrow-right" when it moves forward ("Get started", "Start scan", "Check a product").
+ * secondary: the well-tone pill (#E1E3E8), 52dp. tertiary: steel text + optional chevron in a 48dp box.
+ * translucent: welcome only, the translucent silver pill over the liquid-silver photo (light); sheen edge in dark.
  * destructiveNeutral: text pill with a leading trash icon, never red; always followed by a confirm sheet.
- * consentPair: two identical white-glass pills, the welcome secondary's fill (Start scan / Not now at equal weight).
+ * consentPair: two identical pills at equal weight (Start scan / Not now).
  */
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'destructiveNeutral' | 'consentPair' | 'translucent';
 
@@ -60,9 +61,8 @@ export function PillButton({
 
   const fg = disabled ? (variant === 'primary' ? b.primary.fgDisabled : t.colors.disabledFg) : v.fg;
   const bg = disabled && variant === 'primary' ? b.primary.bgDisabled : v.bg;
-  // Light translucent (welcome): a borderless frosted pill over the liquid backdrop, as in showcase 01_welcome. Dark
-  // keeps its sheen edge so the pill does not dissolve into graphite.
-  const borderWidth = variant === 'translucent' && !t.dark ? 0 : 'borderWidth' in v ? v.borderWidth : 0;
+  // Light: flat fills only, never an outline (tokens 2.3). Dark keeps its sheen edge on the translucent pill.
+  const borderWidth = !t.dark ? 0 : 'borderWidth' in v ? v.borderWidth : 0;
   const borderColor = 'border' in v ? (disabled && 'borderDisabled' in v ? v.borderDisabled : v.border) : 'transparent';
   const a11y = accessibilityLabel ?? [busy && busyLabel ? busyLabel : label, destination].filter(Boolean).join('. ');
   const stretch = fullWidth ?? (variant !== 'tertiary' && variant !== 'destructiveNeutral');

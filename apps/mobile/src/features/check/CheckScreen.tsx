@@ -336,10 +336,10 @@ export default function CheckScreen() {
     dockActions && !inlineDock ? (
       <View
         style={{
-          // The dock floats on the page (DESIGN.md §8.7, showcase 04_report): page fill, no shadow, and a 1dp top
-          // hairline (the sheen edge in dark) only while content scrolls under it.
-          backgroundColor: t.components.actionBar.bg,
-          borderTopWidth: contentUnder ? 1 : 0,
+          // The dock sits on the flat page tone (tokens 2.3): no shadow and no hairline in light; dark keeps its sheen
+          // edge while content scrolls under it.
+          backgroundColor: contentUnder ? t.colors.bg : t.components.actionBar.bg,
+          borderTopWidth: contentUnder && t.dark ? 1 : 0,
           borderTopColor: t.dark ? t.colors.sheenEdge : t.components.actionBar.border,
           paddingTop: t.components.actionBar.paddingTop,
           paddingHorizontal: t.components.actionBar.paddingX,

@@ -45,7 +45,7 @@ interface StepChecklistProps {
 
 /**
  * Processing checklist card (component.checklistCard + processingStepper, showcase 03_analyze): a raised white card,
- * radius 24, rows of 52dp+ with dividers. Leading: done = drawn check-circle, current = ring + centre dot in semibold,
+ * radius 16, rows of 52dp+ separated by spacing (no dividers in light). Leading: done = drawn check-circle, current = ring + centre dot in semibold,
  * pending = empty ring, failed = minus ring with a text-colour bar (never red). Trailing state mark: done = a tick in
  * the FITS icon colour, current = three muted dots, pending = nothing. Never a spinner. Each row is one TalkBack node
  * (the marks are decorative); step changes are announced politely.
@@ -78,7 +78,7 @@ export function StepChecklist({ steps, announcement, bare = false, testID }: Ste
           : [
               t.dark
                 ? { backgroundColor: t.colors.surfaceRaised, borderWidth: 1, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge }
-                : t.elevation['1'].style,
+                : { backgroundColor: t.colors.surface },
               { borderRadius: c.radius, paddingHorizontal: c.padding, paddingVertical: t.space[1] },
             ]
       }
@@ -99,7 +99,7 @@ export function StepChecklist({ steps, announcement, bare = false, testID }: Ste
               alignItems: 'center',
               gap: t.space[3],
               paddingVertical: t.space[2],
-              borderTopWidth: i > 0 ? 1 : 0,
+              borderTopWidth: t.dark && i > 0 ? 1 : 0,
               borderTopColor: t.colors.border,
             }}
           >

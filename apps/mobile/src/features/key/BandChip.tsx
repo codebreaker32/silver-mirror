@@ -24,7 +24,7 @@ export function BandList({ keyProfile }: { keyProfile: KeyProfile }) {
       style={{
         backgroundColor: t.colors.surface,
         borderRadius: t.radius.lg,
-        borderWidth: 1,
+        borderWidth: t.dark ? 1 : 0,
         borderColor: t.colors.border,
         borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
         paddingHorizontal: t.spacing.insetCard,
@@ -45,7 +45,7 @@ export function BandList({ keyProfile }: { keyProfile: KeyProfile }) {
             style={{
               minHeight: l.rowMinHeight,
               paddingVertical: l.rowPaddingY,
-              borderTopWidth: 1,
+              borderTopWidth: t.dark ? 1 : 0,
               borderTopColor: l.rowDivider,
               flexDirection: stack ? 'column' : 'row',
               alignItems: stack ? 'flex-start' : 'center',

@@ -30,7 +30,7 @@ interface LedgerProps {
 const openUrl = (url: string) => void Linking.openURL(url).catch(() => undefined);
 
 /**
- * Receipt card (component.provenanceLedger): rounded raised card, hairline dividers, a wide key column
+ * Receipt card (component.provenanceLedger): the surface tone, rows separated by spacing (no rules in light), a wide key column
  * (keyWidth 96, grows to the longest key and never breaks a key mid-word), values in bodySm.
  * Below 360dp or at 1.5× font scale the key stacks above its value. Links are sibling nodes after the row text.
  */
@@ -47,7 +47,8 @@ export function Ledger({ rows, title = 'Where this comes from', onOpenLink = ope
         backgroundColor: l.bg,
         borderRadius: l.radius,
         paddingHorizontal: l.paddingX,
-        borderWidth: 1,
+        // Tokens 2.3: a tone step, no hairline box; rows are separated by their padding, not rules.
+        borderWidth: t.dark ? 1 : 0,
         borderColor: l.topRule,
         borderTopColor: t.dark ? t.colors.sheenEdge : l.topRule,
       }}
@@ -60,7 +61,7 @@ export function Ledger({ rows, title = 'Where this comes from', onOpenLink = ope
       {rows.map((row, i) => (
         <View
           key={`${row.key}-${i}`}
-          style={{ paddingVertical: l.rowPaddingY, borderTopWidth: i > 0 || title ? 1 : 0, borderTopColor: l.rowDivider, gap: t.space[1] }}
+          style={{ paddingVertical: l.rowPaddingY, borderTopWidth: t.dark && (i > 0 || title) ? 1 : 0, borderTopColor: l.rowDivider, gap: t.space[1] }}
         >
           <View
             accessible

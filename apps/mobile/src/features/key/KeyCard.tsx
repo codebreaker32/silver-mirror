@@ -27,12 +27,12 @@ interface Props {
 const HERO_LABEL = 'Skin type';
 const BAND_RANK: Record<Band, number> = { High: 0, Medium: 1, Low: 2 };
 
-/** Small lavender-grey "Demo reading" chip inside the hero (12/16 medium, iris ink on the icon-disc lavender). */
+/** Small "Demo reading" chip inside the hero (13/18 medium, ink on the well tone). */
 function DemoChip({ label }: { label: string }) {
   const t = useTheme();
   return (
     <View style={{ alignSelf: 'flex-start', minHeight: 24, paddingHorizontal: t.space[3] - 2, borderRadius: t.radius.full, backgroundColor: t.colors.iconDisc, justifyContent: 'center' }}>
-      <Text {...t.textProps.labelSmRegular} style={{ fontFamily: t.typography.labelSmRegular.fontFamily, fontSize: 12, lineHeight: 16, color: t.colors.onIconDisc }}>
+      <Text {...t.textProps.labelSmRegular} style={{ fontFamily: t.typography.labelSmRegular.fontFamily, fontSize: 13, lineHeight: 18, color: t.colors.onIconDisc }}>
         {label}
       </Text>
     </View>

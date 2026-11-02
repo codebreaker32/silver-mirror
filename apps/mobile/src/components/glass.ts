@@ -2,21 +2,20 @@ import type { ViewStyle } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 
 /**
- * Frosted card of the dashboard (colors reference): the near-white lilac glass fill, a 1dp white hairline at ~70% and
- * a soft plum-tinted offset shadow. Used by the Home cards and the floating tab bar.
+ * Legacy name kept so callers compile. Silver & graphite (tokens 2.3) has no glass: a card is the flat surface tone
+ * (#F8F8FA) one step up from the page, no border and no shadow. Only the floating tab bar ('bar') lifts, with one
+ * soft neutral graphite shadow, because it truly floats over scrolling content.
  */
 export function useGlass(radius: number, lift: 'card' | 'bar' = 'card'): ViewStyle {
   const t = useTheme();
-  const bar = lift === 'bar';
+  if (lift === 'card') return { backgroundColor: t.colors.surface, borderRadius: radius };
   return {
-    backgroundColor: t.colors.glass,
+    backgroundColor: t.colors.surface,
     borderRadius: radius,
-    borderWidth: 1,
-    borderColor: t.colors.glassEdge,
-    shadowColor: t.colors.plum,
-    shadowOpacity: bar ? 0.16 : 0.1,
-    shadowRadius: bar ? 24 : 18,
-    shadowOffset: { width: 0, height: bar ? 10 : 6 },
-    elevation: bar ? 8 : 3,
+    shadowColor: t.colors.shadow,
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
   };
 }

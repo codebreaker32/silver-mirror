@@ -15,15 +15,16 @@ interface ChipProps {
   accessibilityLabel?: string;
   testID?: string;
   /**
-   * Fill: 'tonal' (default) is the secondary-bg pill; 'glass' is the frosted card fill with its 1dp white hairline, for
-   * action chips that sit straight on the page gradient (the /check store searches), where the tonal pill nearly vanishes.
+   * Fill: 'tonal' (default) is the well-tone pill (#E1E3E8); 'glass' (legacy name) is the surface tone (#F8F8FA), one
+   * step up from the page, for action chips that sit straight on the page (the /check store searches). No border.
    */
   fill?: 'tonal' | 'glass';
 }
 
 /**
- * Pill chip (component.chip): light mist pill, 36dp visual in a 48dp target, label 14/20 600. Selected = slate fill +
- * check + weight, so the state never rests on colour alone. Static chips are read with their card.
+ * Pill chip (component.chip, tokens 2.3): the well-tone pill, 36dp visual in a 48dp target, label 13 semibold at normal
+ * tracking, no border. Selected = graphite fill + check + weight, so the state never rests on colour alone. Static
+ * chips are read with their card.
  */
 export function Chip({ label, onPress, selected = false, icon, disabled = false, accessibilityLabel, testID, fill = 'tonal' }: ChipProps) {
   const t = useTheme();
@@ -31,7 +32,7 @@ export function Chip({ label, onPress, selected = false, icon, disabled = false,
   const fg = disabled ? t.colors.disabledFg : selected ? c.selectedFg : c.fg;
   const lead: IconName | LegacyIconName | undefined = selected ? (c.selectedIcon as IconName) : icon;
   const glass = fill === 'glass' && !selected;
-  const rest = glass ? t.colors.glass : c.bg;
+  const rest = glass ? t.colors.surface : c.bg;
   const down = glass ? t.colors.secondaryBgPressed : t.colors.state.pressed;
   const pill = (pressed: boolean) => (
     <View
@@ -41,8 +42,6 @@ export function Chip({ label, onPress, selected = false, icon, disabled = false,
         paddingHorizontal: c.paddingX,
         borderRadius: c.radius,
         backgroundColor: selected ? c.selectedBg : pressed ? down : rest,
-        borderWidth: glass ? 1 : 0,
-        borderColor: t.colors.glassEdge,
         flexDirection: 'row',
         alignItems: 'center',
         gap: t.space[1] + 2,
@@ -103,12 +102,12 @@ export function ChipRow({ children }: { children: ReactNode }) {
   return <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: t.components.chip.gap, rowGap: t.space[1] }}>{children}</View>;
 }
 
-const TAG_TYPE = { fontFamily: 'Geist_500Medium', fontSize: 12, lineHeight: 16, letterSpacing: 0 } as const;
+const TAG_TYPE = { fontFamily: 'Geist_600SemiBold', fontSize: 13, lineHeight: 18, letterSpacing: 0 } as const;
 
 type TagVariant = 'neutral' | 'outline' | 'demo' | { verdict: Verdict };
 
 /**
- * Small 24dp tag (component.tag): neutral fill, outline (self-reported, flagged), demo (lavender-grey Demo reading chip)
+ * Small 24dp tag (component.tag): neutral well fill, outline (self-reported, flagged), demo (well-tone Demo reading chip)
  * or a verdict tag (icon + label in the verdict colours). Not interactive.
  */
 export function Tag({ label, variant = 'neutral', icon, accessibilityLabel }: { label: string; variant?: TagVariant; icon?: IconName | LegacyIconName; accessibilityLabel?: string }) {
@@ -116,7 +115,7 @@ export function Tag({ label, variant = 'neutral', icon, accessibilityLabel }: { 
   const tag = t.components.tag;
   const tone = typeof variant === 'object' ? variant.verdict : null;
   const v = tone ? t.colors.verdict[tone] : null;
-  // Demo reading: a small lavender-grey chip (showcase 04_report chips), not the old greige badge.
+  // Demo reading: a small well-tone chip.
   const demo = variant === 'demo' ? { bg: t.colors.iconDisc, fg: t.colors.onIconDisc } : null;
   // Verdict tags are the same light grey pill as every other chip (2.1 round 1); the verdict glyph in its own ink
   // carries the state, the label stays in text colour.

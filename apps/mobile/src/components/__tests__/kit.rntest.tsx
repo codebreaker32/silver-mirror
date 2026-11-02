@@ -58,11 +58,12 @@ describe('kit', () => {
     expect(b.props.accessibilityState).toEqual({ disabled: true, busy: false });
   });
 
-  it('UNKNOWN head is the same solid hairline card and never uses the primary pill fill; medicine has no label', async () => {
+  it('UNKNOWN head is the same flat surface card (no hairline) and never uses the primary pill fill; medicine has no label', async () => {
     await wrap(<VerdictHead tone="unknown" line="We can't read this listing." />);
     const head = flat(screen.getByTestId('verdict-head').props.style);
     expect(head.borderStyle).toBe('solid');
-    expect(head.borderColor).toBe(lightTheme.colors.glassEdge);
+    expect(head.borderWidth).toBe(0);
+    expect(head.backgroundColor).toBe(lightTheme.colors.surface);
     expect(head.backgroundColor).not.toBe(lightTheme.colors.accent);
     expect(screen.getByText('UNKNOWN')).toBeTruthy();
     await screen.unmount();
@@ -101,7 +102,7 @@ describe('kit', () => {
     expect(screen.getByRole('button', { name: 'Fragrance-free' }).props.accessibilityState).toEqual({ selected: true, disabled: false });
   });
 
-  it('glass chip: card fill and white hairline so it stands off the page; tonal chip keeps secondary-bg', async () => {
+  it('surface chip (legacy "glass" fill): the surface tone with no border; tonal chip keeps the well tone', async () => {
     await wrap(
       <>
         <Chip testID="glass" label="Nykaa" icon="arrow-up-right" fill="glass" onPress={() => undefined} />
@@ -109,8 +110,10 @@ describe('kit', () => {
       </>,
     );
     const pillOf = (id: string) => flat(screen.getByTestId(`${id}-pill`).props.style);
-    expect(pillOf('glass')).toMatchObject({ backgroundColor: lightTheme.colors.glass, borderWidth: 1, borderColor: lightTheme.colors.glassEdge });
-    expect(pillOf('tonal')).toMatchObject({ backgroundColor: lightTheme.components.chip.bg, borderWidth: 0 });
+    expect(pillOf('glass')).toMatchObject({ backgroundColor: lightTheme.colors.surface });
+    expect(pillOf('glass').borderWidth ?? 0).toBe(0);
+    expect(pillOf('tonal')).toMatchObject({ backgroundColor: lightTheme.components.chip.bg });
+    expect(pillOf('tonal').borderWidth ?? 0).toBe(0);
   });
 
   it('skin-type card is one target read in visual order; the empty card keeps its actions separate', async () => {

@@ -51,13 +51,13 @@ describe('VerdictSheet', () => {
     expect(screen.getByText('MATCHES')).toBeTruthy();
   });
 
-  it('keeps the verdict tint inside the head (a glass card; the tint lives in its icon disc)', async () => {
+  it('keeps the verdict tint inside the head (a flat surface card; the tint lives in its icon disc)', async () => {
     await wrap(<VerdictSheet view={presentVerdict(CAUTION_VERDICT, ctx)} />);
     const tint = lightTheme.colors.verdict.caution.bg;
     const head = flat(screen.getByTestId('verdict-head').props.style);
     // Palette 2.2: the head is a glass card with the white hairline.
-    expect(head.backgroundColor).toBe(lightTheme.colors.glass);
-    expect(head.borderColor).toBe(lightTheme.colors.glassEdge);
+    expect(head.backgroundColor).toBe(lightTheme.colors.surface);
+    expect(head.borderWidth).toBe(0);
     expect(flat(screen.getByTestId('verdict-head-disc').props.style).backgroundColor).toBe(tint);
     expect(flat(screen.getByTestId('reason-01').props.style).backgroundColor).not.toBe(tint);
     expect(flat(screen.getByTestId('verdict-caution').props.style).backgroundColor).toBeUndefined();

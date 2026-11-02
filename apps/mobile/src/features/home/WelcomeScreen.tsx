@@ -15,7 +15,7 @@ const SWASH_S = require('../../../assets/images/silver-s.png');
 
 /**
  * First-run welcome (DESIGN.md §9.1, showcase 01_welcome): the liquid-silver backdrop, the swash S, the serif
- * wordmark and the brand line in one centred block, then slate "Get started" and a translucent "Use the Demo reading"
+ * wordmark and the brand line in one centred block, then the graphite "Get started" pill and a translucent silver "Use the Demo reading"
  * at the bottom. No carousel, no account step. Both actions land on Home; Android back counts as Get started.
  */
 export default function WelcomeScreen() {
@@ -48,8 +48,7 @@ export default function WelcomeScreen() {
   return (
     <View testID="welcome" style={{ flex: 1, backgroundColor: t.colors.bg }}>
       <Image source={BACKDROP} resizeMode="cover" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }} />
-      {/* Palette 2.2: a pink-lavender wash warms the cool silver photo; the Demo pill is blush glass (secondary-translucent). */}
-      <View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: t.colors.welcomeWash }} />
+      {/* Tokens 2.3: the liquid-silver photo stands on its own (no tinted wash); the Demo pill is translucent silver. */}
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: t.space[8], paddingTop: insets.top + t.space[6], paddingBottom: t.space[12] }}>
         <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
           <Image source={SWASH_S} resizeMode="contain" style={{ width: 72, height: 104 }} />

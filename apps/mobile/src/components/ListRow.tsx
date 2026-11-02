@@ -107,9 +107,9 @@ export function ListRow({ title, supporting, leadingIcon, thumb, trailing = 'che
 }
 
 /**
- * Grouped card of rows with inset hairlines between them (listRow.groupBg / groupRadius, raised: hairline + violet
- * shadow in light, sheen edge in dark), optional sans group head. `thumbs` insets the dividers to the text column
- * (gutter + 56 + 16), as in the showcase list.
+ * Grouped rows on ONE surface (tokens 2.3): the surface tone, radius 16, no hairline, no shadow and no dividers; the
+ * rows' own vertical padding separates them. Optional sans group head. `thumbs` / `inset` are kept for callers (they
+ * used to inset the dividers) and are ignored in light.
  */
 export function ListGroup({
   title,
@@ -141,18 +141,18 @@ export function ListGroup({
       <View
         accessibilityLabel={accessibilityLabel}
         style={{
-          ...(t.dark ? null : t.elevation['1'].style),
-          backgroundColor: t.dark ? r.groupBg : t.colors.glass,
-          borderRadius: r.groupRadius,
+          backgroundColor: t.dark ? r.groupBg : t.colors.surface,
+          borderRadius: t.radius.lg,
           overflow: 'hidden',
-          borderWidth: 1,
-          borderColor: t.dark ? t.colors.border : t.colors.glassEdge,
-          borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.glassEdge,
+          paddingVertical: t.dark ? 0 : t.space[1],
+          borderWidth: t.dark ? 1 : 0,
+          borderColor: t.colors.border,
+          borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
         }}
       >
         {rows.map((row, i) => (
           <Fragment key={i}>
-            {i > 0 ? <View style={{ height: 1, marginLeft: inset, marginRight: r.paddingX, backgroundColor: r.divider }} importantForAccessibility="no" /> : null}
+            {i > 0 && t.dark ? <View style={{ height: 1, marginLeft: inset, marginRight: r.paddingX, backgroundColor: r.divider }} importantForAccessibility="no" /> : null}
             {row}
           </Fragment>
         ))}

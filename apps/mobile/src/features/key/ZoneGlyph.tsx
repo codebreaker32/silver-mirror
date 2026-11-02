@@ -69,7 +69,7 @@ export function ZoneGlyph({ model, highlight = [], width = 200, showLegend = tru
       style={{
         backgroundColor: m.bg,
         borderRadius: m.radius,
-        borderWidth: 1,
+        borderWidth: theme.dark ? 1 : 0,
         borderColor: m.border,
         borderTopColor: theme.dark ? theme.colors.sheenEdge : m.border,
         padding: m.padding,

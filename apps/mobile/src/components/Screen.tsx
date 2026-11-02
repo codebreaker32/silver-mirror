@@ -2,7 +2,7 @@ import { createContext, useContext, useId, useRef, useState, type ReactNode } fr
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Defs, LinearGradient, RadialGradient, Rect, Stop } from 'react-native-svg';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import { IconButton } from './IconButton';
 import { tabBarSpace, tabScrollTail } from './TabBar';
@@ -21,34 +21,18 @@ export function useInTabScene(): boolean {
 }
 
 /**
- * The page (tokens 2.2, design/reference/colors-reference.png): a vertical gradient from color.page-top (blush) into
- * color.page-bottom (lavender), with one soft blush glow breathing in from the top-left corner. An absolute-fill layer
- * behind the content: decorative, untouchable, hidden from TalkBack. In dark every stop is the graphite page, so it
- * draws flat. Put it first inside any full-page root that used to paint colors.bg.
+ * The page (tokens 2.3 Silver & graphite): one flat tone, colors.bg (#ECEDF0). No gradient, no glow. Kept as a
+ * component so every full-page root that used to paint the gradient keeps compiling; it paints the flat page.
  */
 export function PageBackdrop() {
   const t = useTheme();
-  const c = t.colors;
-  const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   return (
-    <View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={StyleSheet.absoluteFill}>
-      <Svg width="100%" height="100%" preserveAspectRatio="none">
-        <Defs>
-          <LinearGradient id={`page${uid}`} x1="0" y1="0" x2="0" y2="1">
-            <Stop offset={0} stopColor={c.pageTop} />
-            <Stop offset={0.45} stopColor={c.bg} />
-            <Stop offset={1} stopColor={c.pageBottom} />
-          </LinearGradient>
-          <RadialGradient id={`glow${uid}`} cx="0.08" cy="0.04" rx="0.85" ry="0.42" fx="0.08" fy="0.04">
-            <Stop offset={0} stopColor={c.pageGlow} stopOpacity={t.dark ? 0 : 0.7} />
-            <Stop offset={0.55} stopColor={c.pageGlow} stopOpacity={t.dark ? 0 : 0.18} />
-            <Stop offset={1} stopColor={c.pageGlow} stopOpacity={0} />
-          </RadialGradient>
-        </Defs>
-        <Rect x="0" y="0" width="100%" height="100%" fill={`url(#page${uid})`} />
-        <Rect x="0" y="0" width="100%" height="100%" fill={`url(#glow${uid})`} />
-      </Svg>
-    </View>
+    <View
+      pointerEvents="none"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={[StyleSheet.absoluteFill, { backgroundColor: t.colors.bg }]}
+    />
   );
 }
 
@@ -113,7 +97,7 @@ interface ScreenProps {
 }
 
 /**
- * Screen scaffold: the page gradient (PageBackdrop) over a solid colors.bg fallback, top safe area, app bar, scrolling body with the 20dp gutter, optional sticky footer
+ * Screen scaffold: the flat page tone (PageBackdrop), top safe area, app bar, scrolling body with the 20dp gutter, optional sticky footer
  * that owns the bottom inset. Inside a TabScene the bottom inset belongs to the tab bar.
  */
 export function Screen({ title, appBar = true, onBack, actions, appBarCenter, children, footer, scroll = true, testID }: ScreenProps) {
@@ -123,8 +107,7 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
   const bottom = inTab ? 0 : insets.bottom;
   // Tab scenes run under the floating tab bar (TabBar.tsx): the scroll leaves its height free so the last line clears it.
   const barSpace = inTab ? tabBarSpace(insets.bottom) : 0;
-  // Tab scenes have no app bar, so scrolled content meets the status-bar strip directly. Like Home's status-bar scrim,
-  // a hairline marks that edge once the body has scrolled, so no heading reads as sliding under the status icons.
+  // Tab scenes have no app bar; the scroll state is tracked for callers, but no hairline is drawn (2.3: no thin rules).
   const edge = inTab && !appBar;
   const [scrolled, setScrolled] = useState(false);
   // The footer dock floats on the page (DESIGN.md §8.7, showcase 04_report): its top hairline shows only while the body
@@ -174,14 +157,6 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
             {body}
           </ScrollView>
           {footer && under ? <FooterFade /> : null}
-          {edge && scrolled ? (
-            <View
-              pointerEvents="none"
-              accessibilityElementsHidden
-              importantForAccessibility="no-hide-descendants"
-              style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, backgroundColor: t.dark ? t.colors.sheenEdge : t.colors.border }}
-            />
-          ) : null}
         </View>
       ) : (
         <View style={{ flex: 1 }}>{body}</View>
@@ -189,10 +164,8 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
       {footer ? (
         <View
           style={{
-            // Transparent: the dock floats on the page gradient (actionBar.bg).
-            backgroundColor: t.components.actionBar.bg,
-            borderTopWidth: scroll && under ? 1 : 0,
-            borderTopColor: t.dark ? t.colors.sheenEdge : t.components.actionBar.border,
+            // The dock sits on the flat page tone; while content runs under it the fade above carries the edge (no hairline).
+            backgroundColor: scroll && under ? t.colors.bg : t.components.actionBar.bg,
             paddingTop: t.components.actionBar.paddingTop,
             paddingHorizontal: t.components.actionBar.paddingX,
             paddingBottom: bottom + t.components.actionBar.paddingBottom,

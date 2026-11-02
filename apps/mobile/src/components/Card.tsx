@@ -4,14 +4,11 @@ import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 
 /**
- * raised: frosted glass card (tokens 2.2, colors reference): glass fill, a 1dp white hairline at 70% and the soft
- *   plum-tinted shadow (elevation.1) in light; graphite-850 with a hairline and the 1dp sheen edge in dark.
- * surface: the same glass fill and white hairline with no shadow (graphite-900 with a hairline in dark).
- * sunken: bg-sunken well, no edge (chips track, thumbnails, quiet rows).
- * hero: the flat skin-gradient mid tone (legacy first match card).
- * gradient: the skin-type gradient (120 deg lavender -> mist -> white; lavender-graphite in dark), a light edge, no
- *   shadow. Allowed on the skin-type card and the better-matches banner only; never behind reasons, the ledger,
- *   forms or the verdict head. No nested cards.
+ * Silver & graphite (tokens 2.3): a card is a tone step, never a line or a shadow.
+ * raised / surface: the surface tone (#F8F8FA) one step up from the page, radius 16, no border, no shadow.
+ * sunken: the well tone (#E1E3E8) one step down (chip tracks, thumbnails, quiet rows).
+ * hero / gradient: legacy names; both draw the flat surface tone now (no gradient fill).
+ * Never nest a card inside a card: group with spacing, or use a sunken well for the inner thing.
  */
 export type CardVariant = 'raised' | 'surface' | 'sunken' | 'hero' | 'gradient';
 
@@ -45,7 +42,7 @@ export interface CardProps {
   variant?: CardVariant;
   /** Inner padding; defaults to spacing.insetCard (20). */
   padding?: number;
-  /** Corner radius; defaults to radius.lg (20). */
+  /** Corner radius; defaults to radius.lg (16). */
   radius?: number;
   /** Gap between children; defaults to space.3. */
   gap?: number;
@@ -61,20 +58,12 @@ export interface CardProps {
 export function useCardStyle(variant: CardVariant, radius?: number): ViewStyle {
   const t = useTheme();
   const r = radius ?? t.radius.lg;
-  switch (variant) {
-    case 'raised':
-      return t.dark
-        ? { backgroundColor: t.colors.surfaceRaised, borderRadius: r, borderWidth: 1, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge }
-        : { ...t.elevation['1'].style, borderRadius: r };
-    case 'surface':
-      return { backgroundColor: t.colors.surface, borderRadius: r, borderWidth: 1, borderColor: t.dark ? t.colors.border : t.colors.glassEdge };
-    case 'sunken':
-      return { backgroundColor: t.colors.bgSunken, borderRadius: r };
-    case 'hero':
-      return { backgroundColor: t.components.productMatchCard.heroBg, borderRadius: r };
-    case 'gradient':
-      return { backgroundColor: t.colors.skinGradient.mid, borderRadius: r, borderWidth: 1, borderColor: t.colors.skinGradient.edge, overflow: 'hidden' };
+  if (t.dark) {
+    if (variant === 'sunken') return { backgroundColor: t.colors.bgSunken, borderRadius: r };
+    return { backgroundColor: t.colors.surfaceRaised, borderRadius: r, borderWidth: 1, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge };
   }
+  if (variant === 'sunken') return { backgroundColor: t.colors.bgSunken, borderRadius: r };
+  return { backgroundColor: t.colors.surface, borderRadius: r };
 }
 
 export function Card({
@@ -93,7 +82,7 @@ export function Card({
   const t = useTheme();
   const base = useCardStyle(variant, radius);
   const inner: ViewStyle = { padding: padding ?? t.spacing.insetCard, gap: gap ?? t.space[3] };
-  const fill = variant === 'gradient' ? <SkinGradient radius={(base.borderRadius as number) ?? t.radius.lg} /> : null;
+  const fill = null;
   if (!onPress) {
     return (
       <View testID={testID} accessible={accessibilityLabel ? true : undefined} accessibilityLabel={accessibilityLabel} style={[base, inner, style]}>

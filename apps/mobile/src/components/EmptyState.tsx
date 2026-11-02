@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { View, useWindowDimensions } from 'react-native';
-import { FaceFrame, SheenBackdrop, SilverMark } from '@/brand';
+import { FaceFrame, SilverMark } from '@/brand';
 import { useTheme } from '@/theme/ThemeProvider';
 import { IconDisc } from './IconButton';
 import type { IconName } from './Icon';
@@ -21,7 +21,7 @@ interface EmptyStateProps {
 }
 
 /**
- * Empty / error state (DESIGN.md §8.10, component.stateView): a plate on the sheen, one sans display line, one muted line,
+ * Empty / error state (DESIGN.md §8.10, component.stateView): a plate on the flat surface tone, one sans display line, one muted line,
  * one pill action. Left-aligned text. Neutral, never red.
  */
 export function EmptyState({ title, body, plate = 'face', children, testID }: EmptyStateProps) {
@@ -35,10 +35,9 @@ export function EmptyState({ title, body, plate = 'face', children, testID }: Em
         <View
           importantForAccessibility="no-hide-descendants"
           accessibilityElementsHidden
-          style={{ borderRadius: s.plateRadius, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', paddingVertical: t.space[6] }}
+          style={{ borderRadius: t.radius.lg, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', paddingVertical: t.space[6], backgroundColor: t.colors.surface }}
         >
-          <SheenBackdrop radius={s.plateRadius} />
-          {plate === 'face' ? <FaceFrame width={Math.round(plateWidth * 0.42)} /> : <SilverMark size={96} />}
+          {plate === 'face' ? <FaceFrame width={Math.round(plateWidth * 0.42)} tile={false} /> : <SilverMark size={96} />}
         </View>
       ) : plate !== 'none' ? (
         <IconDisc icon={plate.icon} large />

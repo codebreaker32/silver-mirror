@@ -27,15 +27,14 @@ function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
       style={[
         {
           backgroundColor: r.bg,
-          borderRadius: 18,
+          borderRadius: t.radius.lg,
           paddingHorizontal: r.paddingX,
           paddingVertical: r.paddingY,
           gap: 4,
-          borderWidth: 1,
+          borderWidth: t.dark ? 1 : 0,
           borderColor: t.colors.border,
           borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
         },
-        !t.dark ? t.elevation['1'].style : null,
         { backgroundColor: r.bg },
         reveal,
       ]}
@@ -58,7 +57,7 @@ function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
           rowGap: t.space[2],
           marginTop: t.space[2],
           paddingTop: t.space[2] + 2,
-          borderTopWidth: 1,
+          borderTopWidth: t.dark ? 1 : 0,
           borderTopColor: r.divider,
         }}
       >

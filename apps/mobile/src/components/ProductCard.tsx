@@ -28,25 +28,24 @@ export interface ProductCardProps {
 }
 
 /**
- * Better-matches product row (component.productMatchCard, showcase 02_home / 06_discover): glass, radius 18, the white
- * hairline + the soft plum shadow (graphite-850 + sheen edge in dark), a 44dp pastel thumb tile (radius 12) with a plum glyph, the name on
+ * Better-matches product row (component.productMatchCard, tokens 2.3): the surface tone, radius 16, no hairline and no
+ * shadow (graphite-850 + sheen edge in dark), a 44dp well-tone thumb tile (radius 12) with an ink glyph, the name on
  * one line in 15 medium, then one reason line with the grey verdict chip inline after it, destination caption. No ratings, review counts, ribbons or logos.
  * One target with one label in visual order.
  */
 export function ProductCard({ name, reason, verdict, destination, linkOut = !!destination, image, glyph = 'bottle', hero = false, onPress, accessibilityLabel, accessibilityHint, testID }: ProductCardProps) {
   const t = useTheme();
   const m = t.components.productMatchCard;
-  // Showcase 02_home product rows: radius 18, a 44dp grey tile (radius 12), a 15 medium name.
-  const radius = 18;
+  // Product rows: radius 16, a 44dp well tile (radius 12), a 15 medium name.
+  const radius = t.radius.lg;
   const thumb = 44;
   const surface = hero
     ? { backgroundColor: m.heroBg, borderRadius: radius }
     : t.dark
       ? { backgroundColor: t.colors.surfaceRaised, borderRadius: radius, borderWidth: 1, borderColor: m.border, borderTopColor: t.colors.sheenEdge }
-      : { ...t.elevation['1'].style, borderRadius: radius };
-  // Pastel product tile (colors reference): pink, lilac or lavender, picked from the name so a product keeps its tile.
-  const tiles = [t.colors.tilePink, t.colors.tileLilac, t.colors.tileLavender];
-  const tile = t.dark ? m.thumbBg : tiles[[...name].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7) % tiles.length];
+      : { backgroundColor: t.colors.surface, borderRadius: radius };
+  // One neutral well tile for every product (tokens 2.3): no pastel rotation.
+  const tile = t.dark ? m.thumbBg : t.colors.thumbTile;
   const label = accessibilityLabel ?? [name, verdict?.label, reason, destination].filter(Boolean).join('. ');
   const body = (
     <>

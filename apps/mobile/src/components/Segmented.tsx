@@ -12,8 +12,8 @@ export interface SegmentedProps<T extends string> {
 }
 
 /**
- * Segmented control (component.segmented, showcase AM / PM switch): a lavender-grey 48dp pill track with a 4dp inset;
- * the selected segment is a white raised pill with its own soft violet shadow (graphite-700 with a sheen edge in dark),
+ * Segmented control (component.segmented, tokens 2.3): a well-tone 48dp pill track with a 4dp inset; the selected
+ * segment is the surface-tone pill, a tone step and no shadow (graphite-700 with a sheen edge in dark),
  * a 16dp check and a 600 label; unselected labels are 500 in text-muted. Selection never rests on colour alone. Each
  * segment is a tab with selected state; testIDs are `${testID}-${option.toLowerCase()}`.
  */
@@ -21,14 +21,6 @@ export function Segmented<T extends string>({ options, value, onChange, accessib
   const t = useTheme();
   const s = t.components.segmented;
   const inset = t.space[1];
-  // The thumb's own soft violet shadow (light only; dark uses a sheen edge).
-  const thumbShadow = {
-    shadowColor: s.thumbShadow.shadowColor,
-    shadowOpacity: s.thumbShadow.shadowOpacity,
-    shadowRadius: s.thumbShadow.shadowRadius,
-    shadowOffset: { width: 0, height: s.thumbShadow.shadowOffsetY },
-    elevation: s.thumbShadow.elevation,
-  };
   return (
     <View
       testID={testID}
@@ -58,7 +50,6 @@ export function Segmented<T extends string>({ options, value, onChange, accessib
                 paddingHorizontal: t.space[2],
                 backgroundColor: selected ? s.selectedBg : pressed ? s.bgPressed : 'transparent',
               },
-              selected && !t.dark ? thumbShadow : null,
               selected && t.dark ? { borderWidth: 1, borderColor: 'transparent', borderTopColor: t.colors.sheenEdge } : null,
             ]}
           >
