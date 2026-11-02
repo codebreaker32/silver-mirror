@@ -21,7 +21,7 @@ describe('with the real @skinkey/rules engine', () => {
     const occ = v.reasons.find((r) => r.ruleTag.startsWith('Rule OCC-2'))!;
     expect(occ.reading).toMatch(/^Oiliness reading: High \(whole face/);
     expect(occ.fact).toMatch(/^Contains .*isopropyl myristate/i);
-    expect(v.provenanceLine).toMatch(/Demo Key/);
+    expect(v.provenanceLine).toMatch(/Demo reading/);
   });
 
   it('no Key + verified INCI → UNKNOWN for readings, not for ingredients', () => {

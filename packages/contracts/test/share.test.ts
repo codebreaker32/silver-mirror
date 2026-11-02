@@ -81,7 +81,7 @@ describe('other payloads', () => {
 
 describe('share coach marks (FINDINGS S1)', () => {
   it('teaches the Amazon More step', () => {
-    expect(COPY.amazonCoachMark).toBe('Amazon: Share → More → SkinKey');
-    expect(COPY.sharePaths).toContain('Amazon: Share → More → SkinKey');
+    expect(COPY.amazonCoachMark).toBe('Amazon: Share → More → Silver Mirror');
+    expect(COPY.sharePaths).toContain('Amazon: Share → More → Silver Mirror');
   });
 });

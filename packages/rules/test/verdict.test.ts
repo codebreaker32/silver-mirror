@@ -173,10 +173,10 @@ describe('reason phrasing (brief P1, spec §2B)', () => {
     expect(v2.reasons[0]!.plain).toMatch(/^Moisture reading: Low \(whole face, self-reported\)\./);
   });
 
-  it('Demo Key reasons are labelled as sample readings', () => {
+  it("Demo reading reasons are labelled as sample readings", () => {
     const v = run('fx-heavy-cream', DEMO_KEY);
     expect(v.reasons[0]!.plain).toContain('sample reading');
-    expect(v.provenance.line).toBe(`Sample readings (Demo Key) · rules v${rulesetHash()}`);
+    expect(v.provenance.line).toBe(`Sample readings (Demo reading) · rules v${rulesetHash()}`);
   });
 
   it('formats scan dates in IST', () => {

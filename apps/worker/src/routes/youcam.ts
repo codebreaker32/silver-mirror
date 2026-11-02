@@ -26,9 +26,9 @@ const budgetFor = async (ctx: AppCtx) =>
 const reserve = async (ctx: AppCtx, installId: string, kind: 'scan' | 'tryon', cost: number, simulated: boolean): Promise<{ caps: Caps; consumed: boolean }> => {
   if (simulated) return { caps: await ctx.caps.caps(installId), consumed: false };
   if (wouldBreachFloor(await budgetFor(ctx), cost))
-    throw new HttpError('cap_reached', 'Live YouCam calls are paused to protect the judging reserve. Try the Demo Key.');
+    throw new HttpError('cap_reached', 'Live YouCam calls are paused to protect the judging reserve. Try the Demo reading.');
   const caps = await ctx.caps.consume(installId, kind);
-  if (!caps) throw new HttpError('cap_reached', kind === 'scan' ? 'This install has used its real scan. Try the Demo Key.' : 'This install has used its try-ons.');
+  if (!caps) throw new HttpError('cap_reached', kind === 'scan' ? 'This install has used its real scan. Try the Demo reading.' : 'This install has used its try-ons.');
   return { caps, consumed: true };
 };
 

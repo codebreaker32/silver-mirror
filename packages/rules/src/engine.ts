@@ -193,7 +193,7 @@ export const NAME_ONLY_NOTE = COPY.nameOnlyNote;
 function provenanceLine(key: KeyProfile | null, inciSource: InciSource | null, hash: string): string {
   const parts: string[] = [];
   if (!key) parts.push('No readings');
-  else if (key.source === 'demo') parts.push('Sample readings (Demo Key)');
+  else if (key.source === 'demo') parts.push('Sample readings (Demo reading)');
   else {
     parts.push(`Measured by YouCam Skin Analysis HD, ${formatScanDate(key.scanDate)}`);
     parts.push(key.photoDeleted ? 'photo deleted' : 'photo delete pending');
