@@ -34,7 +34,25 @@ The product is a **mirror that shows its working**: you hold a product up to you
 
 ## 2. Colour
 
-### 2.0 Palette 2.3: Silver & graphite (supersedes the light values below)
+### 2.0 Palette 2.4: Lavender-grey & charcoal (supersedes 2.3 and the light values below)
+
+Tokens `2.4.0`, from `design/reference/experience-reference.png`. The silver-mirror identity keeps its lavender-grey, silver, near-white and charcoal: a flat lavender-grey page, near-white surfaces one tone up, wells one tone down, charcoal-aubergine ink and primary. No pink, no saturated violet, no gradients (except the welcome photo and the drawn product art), no glass, no shadow at rest. Light only. Token names are unchanged; the `primitive.color.mirror` ramp carries the new values.
+
+| Role | Tokens | Value |
+|---|---|---|
+| Page | `bg`, `page-top`, `page-bottom` (`page-glow`, `welcome-wash` transparent) | `#EDECF2` |
+| Surface (cards, sheets, tab bar) | `surface`, `surface-raised`, `glass`, `segment-thumb` | `#F7F6FA` |
+| Well (chips, thumbnails, discs, secondary pill) | `bg-sunken`, `thumb-tile`, `segment-track`, `icon-disc`, `tile-*`, `secondary-bg`, `border` | `#E4E2EB` |
+| Product-art plate | `mirror.150` | `#E9E7F0` |
+| Text / muted / subtle | `text`, `text-muted`, `text-subtle` | `#1B1A22` / `#575566` / `#625F70` (4.5:1 on every tone; lowest 4.83:1) |
+| Primary pill, selected tab, link, focus | `accent`, `plum`, `tab-active`, `link`, `focus-ring` | `#3A3546`, pressed `#2C2836`, white label |
+| Icon glyph on a disc | `on-icon-disc` | `#4A4658` |
+| Meaningful edge | `border-strong` | `#7D7A8A` (3:1 on every tone) |
+| Verdicts | FITS sage, CAUTION amber, UNKNOWN well + ink, MEDICINE ink | AA on their fills |
+
+Shape: cards radius 16, thumbnails 12, pills fully round. Surfaces separate by tone; a card lifts with one soft shadow only while pressed (`PressableScale`). Screen titles are Noto Serif Display (`type.display` 32/38, `type.title` 26/32); everything else is Geist. Product imagery is always the drawn `ProductArt` (dropper bottle, jar, pump bottle, tube, tinted tube), never a photo.
+
+### 2.0.1 Palette 2.3: Silver & graphite (superseded by 2.4)
 
 Tokens `2.3.0`. Aman retired the 2.2 pink-lavender glass as feminine-coded and the glass cards as generic. The light world is now gender-neutral, mirror-like and calm: flat cool greys, graphite ink, one steel accent for selection. The app ships **light only**; dark tokens are kept but unused. Where a light value in §2.1 to §2.3 disagrees with this table, this table wins (the token file is the source; ramp `primitive.color.mirror`).
 
@@ -168,10 +186,23 @@ Rules: sp scaling on, `maxFontSizeMultiplier` 2.0; buttons stack at 1.3×. No ki
 
 ## 6. Motion
 
-Personality: **mirror settling**: light glides across and comes to rest. Decelerating curves, no springs, no overshoot, nothing loops.
+Personality: **calm, responsive, precise, satisfying**. Things answer the finger at once, settle with an ease-out, and stop. No springs, no bounce, no parallax, no floating elements, nothing loops (the skeleton pulse is the only repeat, and only while loading). Built with react-native-reanimated 4 and `components/haptics.ts`; every component reads `useReduceMotion()`.
 
-| Token | Value | Use |
+| Moment | Duration / curve | Component |
 |---|---|---|
+| Pill press | 150ms ease-out: scale 0.97 + step to the pressed tone (`#2C2836` primary, `#DAD7E2` secondary); light haptic on primary | `PillButton` |
+| Card / tile press | 150ms ease-out: scale 0.98 + one soft shadow while held | `PressableScale`, `Card onPress` |
+| Toast | rises 8dp + fades in over 180ms, holds 1.8s, fades out; polite live region | `Toast` (`useToast().show`) |
+| Sheet | rises over 280ms ease-out while the scrim dims in; leaves over 220ms ease-in-out | `Sheet` |
+| Skeleton | opacity 1 → 0.55 → 1 over 1.2s ease-in-out, no shimmer | `Skeleton` |
+| Content entrance | 200–300ms ease-out, opacity + ≤8dp rise | screens |
+| Screen | 250–350ms ease-in-out | router |
+| `verdictReveal` | 320ms decelerate, one light haptic | verdict head |
+| `bracketResolve` | 420ms glide | the one authored moment on the scan face frame |
+
+Reduce motion: no scale, no travel; toasts and sheets crossfade, the skeleton holds still, brackets jump to their end state.
+
+---|---|---|
 | `motion.duration.press` | 100ms | Press state, scale 0.98 transform only |
 | `state` / `base` / `enter` | 160 / 220 / 300ms | State changes, entrances |
 | `verdictReveal` | 320ms, ease decelerate | Verdict head opacity + 0.98→1, one light haptic |
