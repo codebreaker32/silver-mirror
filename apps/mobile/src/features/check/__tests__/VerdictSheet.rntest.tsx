@@ -83,7 +83,12 @@ describe('VerdictSheet', () => {
 
   it('MEDICINE: one fixed line, nothing else', async () => {
     await wrap(<VerdictSheet view={presentVerdict(MEDICINE_VERDICT, ctx)} onHowMade={jest.fn()} matches={<Text>MATCHES</Text>} />);
-    expect(screen.getByText(COPY.medicine('adapalene'))).toBeTruthy();
+    // Shown as a serif first sentence plus the rest as body, word for word; TalkBack hears the whole fixed string once.
+    const line = COPY.medicine('adapalene');
+    const cut = line.indexOf('. ');
+    expect(screen.getByText(line.slice(0, cut + 1))).toBeTruthy();
+    expect(screen.getByText(line.slice(cut + 2))).toBeTruthy();
+    expect(screen.getByTestId('verdict-head').props.accessibilityLabel).toBe(line);
     expect(screen.queryByText('MEDICINE')).toBeNull();
     expect(screen.queryByTestId('reasons')).toBeNull();
     expect(screen.queryByText('Where this comes from')).toBeNull();

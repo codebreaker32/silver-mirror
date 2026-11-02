@@ -346,6 +346,7 @@
   --sk-verdict-unknown-fg: var(--sk-slate-800);
   --sk-verdict-unknown-border: var(--sk-slate-500);
   --sk-verdict-unknown-icon: var(--sk-slate-600);
+  --sk-verdict-unknown-disc: var(--sk-white);
   --sk-verdict-medicine-bg: var(--sk-pearl-50);
   --sk-verdict-medicine-fg: var(--sk-graphite-900);
   --sk-verdict-medicine-border: var(--sk-graphite-900);
@@ -441,6 +442,7 @@
   --sk-verdict-unknown-fg: var(--sk-slate-200);
   --sk-verdict-unknown-border: var(--sk-slate-400);
   --sk-verdict-unknown-icon: var(--sk-slate-300);
+  --sk-verdict-unknown-disc: var(--sk-graphite-975);
   --sk-verdict-medicine-bg: var(--sk-graphite-950);
   --sk-verdict-medicine-fg: var(--sk-pearl-100);
   --sk-verdict-medicine-border: var(--sk-pearl-300);
@@ -536,6 +538,7 @@
     --sk-verdict-unknown-fg: var(--sk-slate-200);
     --sk-verdict-unknown-border: var(--sk-slate-400);
     --sk-verdict-unknown-icon: var(--sk-slate-300);
+    --sk-verdict-unknown-disc: var(--sk-graphite-975);
     --sk-verdict-medicine-bg: var(--sk-graphite-950);
     --sk-verdict-medicine-fg: var(--sk-pearl-100);
     --sk-verdict-medicine-border: var(--sk-pearl-300);
@@ -786,7 +789,7 @@
   --sk-verdict-card-head-unknown-fg: var(--sk-verdict-unknown-fg);
   --sk-verdict-card-head-unknown-border: var(--sk-verdict-unknown-border);
   --sk-verdict-card-head-unknown-icon: var(--sk-verdict-unknown-icon);
-  --sk-verdict-card-head-unknown-icon-disc: var(--sk-color-surface-raised);
+  --sk-verdict-card-head-unknown-icon-disc: var(--sk-verdict-unknown-disc);
   --sk-verdict-card-head-unknown-icon-disc-size: 40px;
   --sk-verdict-card-head-unknown-border-width: 1px;
   --sk-verdict-card-head-unknown-border-style: dashed;

@@ -220,7 +220,8 @@
             "bg": "{pearl.100}",
             "fg": "{slate.800}",
             "border": "{slate.500}",
-            "icon": "{slate.600}"
+            "icon": "{slate.600}",
+            "disc": "{white}"
           },
           "medicine": {
             "bg": "{pearl.50}",
@@ -319,7 +320,8 @@
             "bg": "{graphite.850}",
             "fg": "{slate.200}",
             "border": "{slate.400}",
-            "icon": "{slate.300}"
+            "icon": "{slate.300}",
+            "disc": "{graphite.975}"
           },
           "medicine": {
             "bg": "{graphite.950}",
@@ -1165,7 +1167,7 @@
           "fg": "{verdict.unknown.fg}",
           "border": "{verdict.unknown.border}",
           "icon": "{verdict.unknown.icon}",
-          "iconDisc": "{color.surface-raised}",
+          "iconDisc": "{verdict.unknown.disc}",
           "iconDiscSize": 40,
           "borderWidth": 1,
           "borderStyle": "dashed",

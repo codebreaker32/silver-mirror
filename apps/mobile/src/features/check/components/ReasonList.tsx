@@ -9,8 +9,8 @@ import { useReveal } from './useReveal';
 const VISIBLE = 3;
 
 /**
- * One reason (component.reasonRow) as a quiet surface row: reading line (type.reason, larger than the verdict label)
- * → product fact (type.body) → band chip and rule tag. No decorative numerals; one TalkBack node in visual order.
+ * One reason (component.reasonRow) as a quiet surface row, three tiers: reading line (type.reason, larger than the
+ * verdict label) → product fact (type.body) → under a 1dp rule (reasonRow.divider), the meta row: band chip and rule tag. No decorative numerals; one TalkBack node in visual order.
  */
 function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
   const t = useTheme();
@@ -46,7 +46,19 @@ function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
       <Txt variant="body" style={[r.fact, { color: r.factColor }]}>
         {reason.fact}
       </Txt>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: r.chipGap, rowGap: t.space[2], marginTop: t.space[1] }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          columnGap: r.chipGap,
+          rowGap: t.space[2],
+          marginTop: t.space[2],
+          paddingTop: t.space[3],
+          borderTopWidth: 1,
+          borderTopColor: r.divider,
+        }}
+      >
         {reason.chip ? <BandChip {...reason.chip} /> : null}
         <Txt variant="caption" tone="muted">
           {reason.ruleTag}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { COPY, type FacetMapping, type KeyProfile, type ProductCategory } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Body, Caption, Card, Chip, ChipRow, ProductCard, SectionHeader, Txt } from '@/components';
+import { Body, Caption, Card, Chip, ChipRow, Icon, ProductCard, SectionHeader, Txt } from '@/components';
 import { categoryGlyph } from '@/features/check/display';
 import { applyReadingFilter, readingFilters } from './filters';
 import { storeKeywords, storeLinks } from './links';
@@ -42,8 +42,38 @@ function Honesty() {
 }
 
 /**
- * Better matches (DESIGN.md §9.5): section head, honesty line, reading filter chips, product cards (first on the sheen
- * lavender), then the store searches as one chip row with a shared destination line.
+ * Every match card opens the same store (the one the product was shared from), so the destination is said once above
+ * the list ("Each card opens a Nykaa search for that product."), not repeated on each card. TalkBack still hears it on
+ * every card through the card label.
+ */
+export function matchDestinationLine(destination: string): string {
+  const rest = destination.charAt(0).toLowerCase() + destination.slice(1);
+  return `Each card ${rest.replace(/this product$/, 'that product')}.`;
+}
+
+function MatchDestination({ destination }: { destination: string }) {
+  const t = useTheme();
+  const s = t.components.storeLinkOut;
+  return (
+    <View
+      testID="match-destination"
+      style={{ flexDirection: 'row', gap: s.destinationGap + 2, alignItems: 'flex-start' }}
+      importantForAccessibility="no-hide-descendants"
+      accessibilityElementsHidden
+    >
+      <View style={{ paddingTop: 1 }}>
+        <Icon name="arrow-up-right" size={t.icon.sm} color={s.destinationColor} />
+      </View>
+      <Txt variant="caption" style={[s.destination, { color: s.destinationColor, flex: 1 }]}>
+        {matchDestinationLine(destination)}
+      </Txt>
+    </View>
+  );
+}
+
+/**
+ * Better matches (DESIGN.md §9.5): section head, honesty line, reading filter chips, one shared destination line,
+ * product cards (all on the same surface, so none reads as featured or paid), then the store searches as one chip row with a shared destination line.
  */
 export function BetterMatches({ state, keyProfile, category, facetMap }: Props) {
   const t = useTheme();
@@ -90,6 +120,7 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
       ) : null}
       {shown.length ? (
         <View style={{ gap: t.components.productMatchCard.listGap }}>
+          <MatchDestination destination={shown[0]!.destination} />
           {shown.map((m, i) => (
             <ProductCard
               key={m.productId}
@@ -97,9 +128,8 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
               name={m.name}
               reason={m.shortReason}
               verdict={{ tone: 'fits', label: 'FITS' }}
-              destination={m.destination}
+              linkOut
               glyph={categoryGlyph(m.category ?? category)}
-              hero={i === 0}
               accessibilityLabel={m.a11y}
               onPress={() => open(m.url)}
             />

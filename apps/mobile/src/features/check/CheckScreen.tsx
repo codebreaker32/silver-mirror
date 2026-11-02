@@ -303,6 +303,9 @@ export default function CheckScreen() {
   const inlineDock = fontScale >= t.components.actionBar.inlineAtFontScale;
   const showMore = !!view && view.showMatches;
   const showPill = !!view && view.showMatches && !matchesOnScreen && !inlineDock;
+  // UNKNOWN puts its next step (Snap the ingredient list, or Start scan) in the content as the one primary, so the
+  // dock's way back steps down to the tonal pill there (one filled primary per view, DESIGN.md §8.1).
+  const inContentPrimary = !!view && view.unknownKind != null;
   const dockActions =
     view && result ? (
       <View style={{ gap: t.space[1] }}>
@@ -311,6 +314,7 @@ export default function CheckScreen() {
         <View style={{ flex: 1 }}>
           <PillButton
             label={backLabel}
+            variant={inContentPrimary ? 'secondary' : 'primary'}
             onPress={backToProduct}
             trailingIcon={toListing ? 'arrow-up-right' : undefined}
             accessibilityHint={backDestination}

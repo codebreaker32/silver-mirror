@@ -99,6 +99,17 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
     }
   };
 
+  // A device (or emulator) with no front lens fails to bind and the viewfinder stays black. Fall back to the back
+  // camera once instead; the flip button still lets the user try the front again.
+  const triedBack = useRef(false);
+  const onMountError = () => {
+    setReady(false);
+    if (facing === 'front' && !triedBack.current) {
+      triedBack.current = true;
+      setFacing('back');
+    }
+  };
+
   const shoot = async () => {
     if (!camera.current || capturing) return;
     setCapturing(true);
@@ -197,6 +208,7 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
             pictureSize={pictureSize}
             animateShutter={!reduced}
             onCameraReady={() => void onReady()}
+            onMountError={onMountError}
             accessibilityElementsHidden
             importantForAccessibility="no-hide-descendants"
           />

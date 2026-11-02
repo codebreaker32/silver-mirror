@@ -137,6 +137,7 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 | `verdict.unknown.fg` | #2F3243 (`slate.800`) | #C7CCDB (`slate.200`) |
 | `verdict.unknown.border` | #666E88 (`slate.500`) | #848CA5 (`slate.400`) |
 | `verdict.unknown.icon` | #50576F (`slate.600`) | #A6ADC2 (`slate.300`) |
+| `verdict.unknown.disc` | #FFFFFF (`white`) | #0E0F14 (`graphite.975`) |
 | `verdict.medicine.bg` | #F6F5F8 (`pearl.50`) | #121319 (`graphite.950`) |
 | `verdict.medicine.fg` | #1A1B23 (`graphite.900`) | #EFEEF3 (`pearl.100`) |
 | `verdict.medicine.border` | #1A1B23 (`graphite.900`) | #C6C3CF (`pearl.300`) |
@@ -657,7 +658,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.head.unknown.fg` | `verdict.unknown.fg` | #2F3243 | #C7CCDB |
 | `verdictCard.head.unknown.border` | `verdict.unknown.border` | #666E88 | #848CA5 |
 | `verdictCard.head.unknown.icon` | `verdict.unknown.icon` | #50576F | #A6ADC2 |
-| `verdictCard.head.unknown.iconDisc` | `color.surface-raised` | #FFFFFF | #20212A |
+| `verdictCard.head.unknown.iconDisc` | `verdict.unknown.disc` | #FFFFFF | #0E0F14 |
 | `verdictCard.head.unknown.iconDiscSize` | — | 40 | same |
 | `verdictCard.head.unknown.borderWidth` | — | 1 | same |
 | `verdictCard.head.unknown.borderStyle` | — | dashed | same |

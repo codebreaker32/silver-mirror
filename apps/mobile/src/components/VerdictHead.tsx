@@ -4,7 +4,7 @@ import type { Verdict } from '@skinkey/design';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Tag } from './Chip';
 import { VerdictIcon } from './Icon';
-import { textStyle } from './Text';
+import { textStyle, Txt } from './Text';
 
 const LABEL: Record<Exclude<Verdict, 'medicine'>, string> = { fits: 'FITS', caution: 'CAUTION', unknown: 'UNKNOWN' };
 const SPOKEN: Record<Verdict, string> = { fits: 'Fits', caution: 'Caution', unknown: 'Unknown', medicine: 'Medicine' };
@@ -42,12 +42,20 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
 
   if (tone === 'medicine') {
     const g = t.components.verdictCard.medicineGate;
+    // The serif title is only the first sentence ("This looks like a medicine (contains adapalene)."); the rest of the
+    // fixed string follows as body, word for word, so the gate doesn't read as a five-line headline.
+    const cut = line.indexOf('. ');
+    const lead = cut > 0 ? line.slice(0, cut + 1) : line;
+    const rest = cut > 0 ? line.slice(cut + 2) : '';
     return (
       <Animated.View testID={testID} accessible accessibilityRole="header" accessibilityLabel={accessibilityLabel ?? line} style={[{ gap: g.iconGap }, revealStyle]}>
         <VerdictIcon tone="medicine" size={c.iconSize} color={c.icon} />
-        <Text {...t.textProps.title} style={[g.line, { color: g.lineColor }]}>
-          {line}
-        </Text>
+        <View style={{ gap: t.space[2] }}>
+          <Text {...t.textProps.title} style={[g.line, { color: g.lineColor }]}>
+            {lead}
+          </Text>
+          {rest ? <Txt variant="body">{rest}</Txt> : null}
+        </View>
       </Animated.View>
     );
   }

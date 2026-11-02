@@ -88,8 +88,9 @@ export default function KitGallery() {
           <VerdictHead tone="fits" line={COPY.subtitle.FITS} />
           <VerdictHead tone="caution" line={COPY.subtitle.CAUTION} demo />
           <VerdictHead tone="unknown" line={COPY.subtitle.UNKNOWN} />
-          <VerdictHead tone="fits" line={COPY.subtitle.FITS} nameOnly />
+          {/* MEDICINE before the name-only variant: the kit-2 web shot is one viewport tall and cut it off last. */}
           <VerdictHead tone="medicine" line={COPY.medicine('adapalene')} />
+          <VerdictHead tone="fits" line={COPY.subtitle.FITS} nameOnly />
           <Ledger
             rows={[
               { key: 'Reading', value: 'Your scan, 1 Nov', sub: 'Bands only, on this phone' },

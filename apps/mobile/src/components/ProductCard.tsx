@@ -12,8 +12,10 @@ export interface ProductCardProps {
   reason?: string;
   /** Verdict tag (icon + label). */
   verdict?: { tone: Verdict; label: string };
-  /** Muted destination caption ("Opens an Amazon.in search"). */
+  /** Muted destination caption ("Opens an Amazon.in search"). Lists with a shared destination line leave it out. */
   destination?: string;
+  /** The card opens a store outside the app (arrow-up-right, link role) even without its own destination caption. */
+  linkOut?: boolean;
   /** Product image; otherwise a category glyph on the sunken tile. */
   image?: ImageSourcePropType;
   glyph?: IconName;
@@ -30,7 +32,7 @@ export interface ProductCardProps {
  * name in bodyStrong, one reason line, verdict tag, destination caption. No ratings, review counts, ribbons or logos.
  * One target with one label in visual order.
  */
-export function ProductCard({ name, reason, verdict, destination, image, glyph = 'bottle', hero = false, onPress, accessibilityLabel, accessibilityHint, testID }: ProductCardProps) {
+export function ProductCard({ name, reason, verdict, destination, linkOut = !!destination, image, glyph = 'bottle', hero = false, onPress, accessibilityLabel, accessibilityHint, testID }: ProductCardProps) {
   const t = useTheme();
   const m = t.components.productMatchCard;
   const surface = hero ? { backgroundColor: m.heroBg, borderRadius: m.radius } : t.dark ? { backgroundColor: m.bg, borderRadius: m.radius, borderWidth: 1, borderColor: m.border, borderTopColor: t.colors.sheenEdge } : { ...t.elevation['1'].style, backgroundColor: m.bg, borderRadius: m.radius };
@@ -60,7 +62,7 @@ export function ProductCard({ name, reason, verdict, destination, image, glyph =
           </Txt>
         ) : null}
       </View>
-      {onPress ? <Icon name={destination ? 'arrow-up-right' : 'chevron-right'} size={t.icon.md} color={t.colors.textMuted} /> : null}
+      {onPress ? <Icon name={linkOut ? 'arrow-up-right' : 'chevron-right'} size={t.icon.md} color={t.colors.textMuted} /> : null}
     </>
   );
   const box = { ...surface, minHeight: m.minHeight, padding: m.padding, flexDirection: 'row' as const, alignItems: 'flex-start' as const, gap: t.space[3] };
@@ -75,7 +77,7 @@ export function ProductCard({ name, reason, verdict, destination, image, glyph =
     <Pressable
       testID={testID}
       onPress={onPress}
-      accessibilityRole={destination ? 'link' : 'button'}
+      accessibilityRole={linkOut ? 'link' : 'button'}
       accessibilityLabel={label}
       accessibilityHint={accessibilityHint}
       android_ripple={{ color: t.colors.state.ripple }}

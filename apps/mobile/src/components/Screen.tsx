@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -79,14 +79,40 @@ export function Screen({ title, appBar = true, onBack, actions, children, footer
   const insets = useSafeAreaInsets();
   const inTab = useInTabScene();
   const bottom = inTab ? 0 : insets.bottom;
+  // Tab scenes have no app bar, so scrolled content meets the status-bar strip directly. Like Home's status-bar scrim,
+  // a hairline marks that edge once the body has scrolled, so no heading reads as sliding under the status icons.
+  const edge = inTab && !appBar;
+  const [scrolled, setScrolled] = useState(false);
   const body = <View style={{ paddingHorizontal: t.spacing.gutter, paddingBottom: t.spacing.section, gap: t.spacing.stackLg }}>{children}</View>;
   return (
     <SafeAreaView testID={testID} edges={['top', 'left', 'right']} style={{ flex: 1, backgroundColor: t.colors.bg }}>
       {appBar ? <AppBar title={title} onBack={onBack} trailing={actions} /> : null}
       {scroll ? (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-          {body}
-        </ScrollView>
+        <View style={{ flex: 1 }}>
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            scrollEventThrottle={32}
+            onScroll={
+              edge
+                ? (e) => {
+                    const past = e.nativeEvent.contentOffset.y > t.space[2];
+                    if (past !== scrolled) setScrolled(past);
+                  }
+                : undefined
+            }
+          >
+            {body}
+          </ScrollView>
+          {edge && scrolled ? (
+            <View
+              pointerEvents="none"
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+              style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, backgroundColor: t.dark ? t.colors.sheenEdge : t.colors.border }}
+            />
+          ) : null}
+        </View>
       ) : (
         <View style={{ flex: 1 }}>{body}</View>
       )}

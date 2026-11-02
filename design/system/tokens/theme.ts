@@ -623,6 +623,7 @@ export interface ThemeColors {
       fg: string;
       border: string;
       icon: string;
+      disc: string;
     };
     medicine: {
       bg: string;
@@ -2192,7 +2193,8 @@ export const lightTheme: SkinKeyTheme = {
           "bg": "#EFEEF3",
           "fg": "#2F3243",
           "border": "#666E88",
-          "icon": "#50576F"
+          "icon": "#50576F",
+          "disc": "#FFFFFF"
         },
         "medicine": {
           "bg": "#F6F5F8",
@@ -3819,7 +3821,8 @@ export const darkTheme: SkinKeyTheme = {
           "bg": "#20212A",
           "fg": "#C7CCDB",
           "border": "#848CA5",
-          "icon": "#A6ADC2"
+          "icon": "#A6ADC2",
+          "disc": "#0E0F14"
         },
         "medicine": {
           "bg": "#121319",
@@ -4302,7 +4305,7 @@ export const darkTheme: SkinKeyTheme = {
             "fg": "#C7CCDB",
             "border": "#848CA5",
             "icon": "#A6ADC2",
-            "iconDisc": "#20212A",
+            "iconDisc": "#0E0F14",
             "iconDiscSize": 40,
             "borderWidth": 1,
             "borderStyle": "dashed",

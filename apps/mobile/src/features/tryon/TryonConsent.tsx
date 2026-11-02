@@ -12,7 +12,10 @@ const PROMISES = [
   { icon: 'phone-lock', label: 'Previews stay on screen, never saved' },
 ] as const;
 
-/** Try-on consent: the scan consent pattern (face-frame hero, promise rows, 18+ box above an equal-weight pair). */
+/**
+ * Try-on consent: the scan consent pattern (face-frame hero, promise rows, 18+ box above an equal-weight pair).
+ * "Previews stay on screen, never saved" is said once, in the promise rows.
+ */
 export function TryonConsent({ productName, mode, onAccept, onDecline }: { productName?: string; mode: 'multi' | 'single'; onAccept: () => void; onDecline: () => void }) {
   const theme = useTheme();
   const cs = theme.components.consentSheet;
@@ -47,9 +50,6 @@ export function TryonConsent({ productName, mode, onAccept, onDecline }: { produ
         </Body>
         <DetailsRow>{COPY.privacyQualifier}</DetailsRow>
       </View>
-      <Body muted small>
-        The previews stay on screen only. There is no save button, and they are gone when you close this screen.
-      </Body>
       <Note>Preview, not a shade guarantee.</Note>
       <Note>{COPY.accuracyNote}</Note>
     </Screen>
