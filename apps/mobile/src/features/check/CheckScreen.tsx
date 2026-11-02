@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY, DEMO_KEY, type HowThisWasMade, type Store } from '@skinkey/contracts';
 import { FACET_MAP, medicineGate, rank, verdict } from '@skinkey/rules';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Body, Card, EmptyState, Icon, IconButton, IconDisc, PillButton, Tag, Txt, type IconName } from '@/components';
+import { AppBar, Body, Card, EmptyState, Icon, IconButton, IconDisc, PillButton, Tag, Txt, type IconName } from '@/components';
 import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
 import { BetterMatches, guessCategory, storeLinks, StoreSearchSheet, useBetterMatches } from '@/features/matches';
 import { openStoreUrl } from '@/features/matches/openStoreUrl';
@@ -43,36 +43,34 @@ function sourceLine(origin: Origin | null, store: Store): string {
 
 const SOURCE_ICON: Record<Origin, IconName> = { share: 'arrow-down-left', screenshot: 'arrow-down-left', paste: 'paste', sample: 'tag-check' };
 
-/** App bar (component.appBar): one chevron-left back button and the store source as a small sunken chip. */
-function CheckAppBar({ label, icon, onBack }: { label: string; icon: IconName | null; onBack: () => void }) {
+/**
+ * Source chip in the kit app bar's centred slot (DESIGN.md §8.9, §9.4): a light grey pill ("Shared from Nykaa",
+ * "Sample share", "Pasted link") with a 16dp icon, centred beside the back arrow. TalkBack reads it as the screen header.
+ */
+function SourceChip({ label, icon }: { label: string; icon: IconName }) {
   const t = useTheme();
-  const a = t.components.appBar;
-  const h = t.components.productHeader;
+  // The kit chip fill (secondary-bg: mist.150 / graphite.750), so the chip reads as a chip in dark too; the old
+  // productHeader source-chip fill sat almost on the graphite page.
+  const bg = t.colors.secondaryBg;
+  const fg = t.colors.textMuted;
   return (
-    <View style={{ minHeight: a.minHeight, paddingHorizontal: a.paddingX, flexDirection: 'row', alignItems: 'center', gap: t.space[1], backgroundColor: a.bg }}>
-      <IconButton icon="chevron-left" accessibilityLabel="Back" onPress={onBack} color={a.fg} />
-      {icon ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: t.space[1] + 2,
-            paddingHorizontal: t.space[3],
-            minHeight: t.components.tag.visualMinHeight + t.space[2],
-            borderRadius: t.radius.full,
-            backgroundColor: h.sourceChipBg,
-          }}
-        >
-          <Icon name={icon} size={t.icon.sm} color={h.sourceChipFg} />
-          <Txt accessibilityRole="header" variant="label" numberOfLines={1} style={{ color: h.sourceChipFg }}>
-            {label}
-          </Txt>
-        </View>
-      ) : (
-        <Txt accessibilityRole="header" variant="headline" numberOfLines={1} style={[a.title, { color: a.fg }]}>
-          {label}
-        </Txt>
-      )}
+    <View
+      testID="source-chip"
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: t.space[1] + 2,
+        paddingHorizontal: t.space[3],
+        minHeight: t.components.tag.visualMinHeight + t.space[2],
+        borderRadius: t.radius.full,
+        backgroundColor: bg,
+        maxWidth: '100%',
+      }}
+    >
+      <Icon name={icon} size={t.icon.sm} color={fg} />
+      <Txt accessibilityRole="header" variant="label" numberOfLines={1} style={{ color: fg, flexShrink: 1 }}>
+        {label}
+      </Txt>
     </View>
   );
 }
@@ -162,19 +160,16 @@ export default function CheckScreen() {
   }, [storedKey?.source, storedKey?.scanId]);
   const { state, start, reset } = flow;
 
-  // Scroll geometry: the "Better matches" pill shows only while that section is off screen, and the dock edge only
-  // while content scrolls under it (component.actionBar).
+  // Scroll geometry: the "Better matches" pill shows only while that section is off screen (component.actionBar).
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const sheetY = useRef(0);
   const matchesY = useRef<number | null>(null);
   const geo = useRef({ y: 0, viewport: 0, content: 0 });
   const [matchesOnScreen, setMatchesOnScreen] = useState(false);
-  const [under, setUnder] = useState(false);
   const measure = useCallback(() => {
-    const { y, viewport, content } = geo.current;
+    const { y, viewport } = geo.current;
     const top = matchesY.current == null ? null : sheetY.current + matchesY.current;
     setMatchesOnScreen(top != null && y + viewport > top + t.space[12]);
-    setUnder(content - (y + viewport) > 1);
   }, [t.space]);
 
   const begin = useCallback(
@@ -288,7 +283,11 @@ export default function CheckScreen() {
   // Catalogue product: brand · name in the title, the pack size in the meta line (DESIGN.md §9.4). Raw listing titles
   // lose their SEO tail here; the ledger's Product row keeps the full text.
   const nameOnly = (p: { brand: string; name: string }) => productLine({ brand: p.brand, name: p.name });
-  const rawTitle = result?.title ?? (state.phase === 'resolving' ? state.title : null);
+  const rawTitle =
+    result?.title ?? (state.phase === 'resolving' ? state.title : state.phase === 'confirm' || state.phase === 'loading' ? state.resolve.extractedTitle : null);
+  // A share with no readable title (resolve gave no extractedTitle) gets a plain "<Store> product" once loading ends;
+  // the grey skeleton bars only stand in while the link is still being read.
+  const fallbackTitle = state.phase === 'resolving' ? null : `${storeName ?? 'Shared'} product`;
   const header =
     result?.product != null
       ? nameOnly(result.product)
@@ -296,7 +295,7 @@ export default function CheckScreen() {
         ? nameOnly(state.candidate.product)
         : rawTitle
           ? shortListingTitle(rawTitle)
-          : null;
+          : fallbackTitle;
   const headerProduct = result?.product ?? (state.phase === 'loading' ? state.candidate.product : null);
   const headerMeta = headerProduct ? sizeMeta(headerProduct.size) : origin === 'sample' ? 'Sample listing' : null;
 
@@ -330,10 +329,10 @@ export default function CheckScreen() {
     dockActions && !inlineDock ? (
       <View
         style={{
-          ...(under && !t.dark ? t.components.actionBar.shadow : null),
+          // Level 2 is flat (DESIGN.md §5, §8.7): no shadow, one 1dp top hairline (the sheen edge in dark).
           backgroundColor: t.components.actionBar.bg,
           borderTopWidth: 1,
-          borderTopColor: under ? (t.dark ? t.colors.sheenEdge : t.components.actionBar.border) : 'transparent',
+          borderTopColor: t.dark ? t.colors.sheenEdge : t.components.actionBar.border,
           paddingTop: t.components.actionBar.paddingTop,
           paddingHorizontal: t.components.actionBar.paddingX,
           paddingBottom: insets.bottom + t.components.actionBar.paddingBottom + t.space[1],
@@ -347,10 +346,10 @@ export default function CheckScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: t.colors.bg, paddingTop: insets.top }}>
-      <CheckAppBar
-        label={state.phase === 'idle' ? 'Check a product' : sourceLine(origin, store)}
-        icon={state.phase === 'idle' || !origin ? null : SOURCE_ICON[origin]}
+      <AppBar
         onBack={goBack}
+        title={state.phase === 'idle' || !origin ? 'Check a product' : undefined}
+        center={state.phase === 'idle' || !origin ? undefined : <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} />}
       />
 
       {state.phase === 'crop' ? (

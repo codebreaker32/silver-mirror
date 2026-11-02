@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { View } from 'react-native';
 import { COPY } from '@skinkey/contracts';
-import { Body, Button, ButtonPair, Heading, Note, Screen } from '@/components';
-import { CheckboxRow, DetailsRow, FaceFramePlate, PromiseList } from '@/components/scan';
+import { Body, Button, ButtonPair, Heading, ListGroup, ListRow, Note, Screen } from '@/components';
+import { CheckboxRow, DetailsRow, FaceFramePlate } from '@/components/scan';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ADULT_HELPER, ADULT_LABEL } from '../scan/consent';
 
@@ -13,8 +13,9 @@ const PROMISES = [
 ] as const;
 
 /**
- * Try-on consent: the scan consent pattern (face-frame hero, promise rows, 18+ box above an equal-weight pair).
- * "Previews stay on screen, never saved" is said once, in the promise rows.
+ * Try-on consent (DESIGN.md §9.11, showcase 03_analyze language): back arrow + centred "Try-on", the face-frame plate,
+ * the title in type.title, the three facts as thumb-tile rows in one white card, and a sticky 18+ box above the
+ * equal-weight "Take photo" / "Not now" pair. "Previews stay on screen, never saved" is said once, in the rows.
  */
 export function TryonConsent({ productName, mode, onAccept, onDecline }: { productName?: string; mode: 'multi' | 'single'; onAccept: () => void; onDecline: () => void }) {
   const theme = useTheme();
@@ -22,6 +23,7 @@ export function TryonConsent({ productName, mode, onAccept, onDecline }: { produ
   const [adult, setAdult] = useState(false);
   return (
     <Screen
+      title="Try-on"
       onBack={onDecline}
       footer={
         <>
@@ -38,7 +40,11 @@ export function TryonConsent({ productName, mode, onAccept, onDecline }: { produ
         <Heading>This needs a second photo</Heading>
         {productName ? <Body muted>{productName}</Body> : null}
       </View>
-      <PromiseList items={PROMISES} />
+      <ListGroup thumbs>
+        {PROMISES.map((p) => (
+          <ListRow key={p.label} title={p.label} thumb={{ icon: p.icon }} trailing="none" />
+        ))}
+      </ListGroup>
       <Body>
         {mode === 'multi'
           ? 'YouCam reads your skin tone once to pick two shades, then renders both on the same photo. The tone is used for this try-on only and is never shown or kept.'

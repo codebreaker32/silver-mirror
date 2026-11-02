@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { COPY, TryonMode, type ConsentRecord } from '@skinkey/contracts';
 import { demo } from '@/demo';
@@ -12,6 +13,7 @@ import { recordLedger } from '../scan/ledgerStore';
 import { deleteLocal, sleep, uploadToSlot } from '../scan/native';
 import { tryonDisplaySteps } from '../scan/steps';
 import { Body, Button, EmptyState, Heading, Screen, haptic } from '@/components';
+import { useTheme } from '@/theme/ThemeProvider';
 import { Stepper } from '../scan/ui';
 import { prepareSelfie } from './prepareSelfie';
 import { runTryon, type TryonDeps, type TryonProgress } from './runTryon';
@@ -35,6 +37,7 @@ const tryonDeps: TryonDeps = {
 type Phase = { name: 'consent' } | { name: 'capture'; hint: string | null } | { name: 'running'; progress: TryonProgress };
 
 export function TryonScreen() {
+  const theme = useTheme();
   const router = useRouter();
   const params = useLocalSearchParams<{ productId?: string; mode?: string; shadeName?: string; productName?: string; productSize?: string }>();
   // Pack size on its own meta line (DESIGN.md §9.3), never inline in the heading where " ·" can dangle at a wrap.
@@ -126,13 +129,15 @@ export function TryonScreen() {
   if (progress.phase === 'done') {
     return (
       <Screen title="Try-on" onBack={close} footer={<Button label="Close" onPress={close} />}>
-        <Heading>{params.productName ?? 'Your preview'}</Heading>
-        {params.productName && productSize ? (
-          <Body muted small>
-            {productSize}
-          </Body>
-        ) : null}
-        <TryonResult status={progress.status} />
+        <View style={{ gap: theme.space[2] }}>
+          <Heading numberOfLines={2}>{params.productName ?? 'Your preview'}</Heading>
+          {params.productName && productSize ? (
+            <Body muted small>
+              {productSize}
+            </Body>
+          ) : null}
+        </View>
+        <TryonResult status={progress.status} steps={progress.steps} />
         <Button label="How this was made" variant="tertiary" trailingIcon="chevron-right" onPress={() => router.push('/how')} />
         <Body muted small>
           {COPY.footer}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import type { ResolveCandidate } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Body, ButtonPair, Icon, PillButton, Sheet, Txt } from '@/components';
+import { Body, ButtonPair, Icon, PillButton, Sheet, Txt, useCardStyle } from '@/components';
 import { categoryGlyph, displayTitle, markMismatches } from '../display';
 import { productLine } from '../flow';
 
@@ -19,15 +19,18 @@ interface SkuConfirmSheetProps {
 
 const nameOf = (c: ResolveCandidate) => displayTitle(productLine({ brand: c.product.brand, name: c.product.name }));
 
-/** Sunken category-glyph tile (no product photo, no "01 / 02" numerals). */
+/**
+ * 56dp soft square thumb tile (listRow thumb tokens) with the category glyph in muted ink, the same tile language as
+ * the better-matches cards. No product photo, no "01 / 02" numerals. Decorative.
+ */
 function GlyphTile({ c }: { c: ResolveCandidate }) {
   const t = useTheme();
-  const m = t.components.productMatchCard;
+  const r = t.components.listRow;
   return (
     <View
       importantForAccessibility="no-hide-descendants"
       accessibilityElementsHidden
-      style={{ width: m.thumbSize, height: m.thumbSize, borderRadius: m.thumbRadius, backgroundColor: m.thumbBg, alignItems: 'center', justifyContent: 'center' }}
+      style={{ width: r.thumbSize, height: r.thumbSize, borderRadius: r.thumbRadius, backgroundColor: r.thumbBg, alignItems: 'center', justifyContent: 'center' }}
     >
       <Icon name={categoryGlyph(c.product.category)} size={t.icon.lg} color={t.colors.textMuted} />
     </View>
@@ -68,9 +71,10 @@ export function SkuConfirmSheet({ visible, mode, candidates, sharedTitle, onConf
   const t = useTheme();
   const [picked, setPicked] = useState<string | null>(null);
   const top = candidates[0];
+  // Candidate rows are thumb-tile rows in white radius-24 cards (DESIGN.md §9.3): the kit raised card, radio at right.
+  const raised = useCardStyle('raised');
   const card = {
-    backgroundColor: t.colors.surface,
-    borderRadius: t.radius.lg,
+    ...raised,
     borderWidth: 1,
     borderColor: t.colors.border,
     padding: t.space[4],
@@ -136,7 +140,8 @@ export function SkuConfirmSheet({ visible, mode, candidates, sharedTitle, onConf
                 borderWidth: on ? 2 : 1,
                 padding: on ? t.space[4] - 1 : t.space[4],
                 borderColor: on ? t.colors.accent : t.colors.border,
-                backgroundColor: pressed ? t.colors.state.pressed : t.colors.surface,
+                borderTopColor: on ? t.colors.accent : (raised.borderTopColor ?? t.colors.border),
+                backgroundColor: pressed ? t.colors.state.pressed : (raised.backgroundColor as string),
                 transform: [{ scale: pressed ? 0.99 : 1 }],
               })}
             >

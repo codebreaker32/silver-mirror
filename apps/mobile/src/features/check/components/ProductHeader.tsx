@@ -4,7 +4,7 @@ import { Txt } from '@/components';
 import { displayTitle } from '../display';
 
 /**
- * Product header (component.productHeader): the product name in the serif title, title-cased, then one muted meta
+ * Product header (component.productHeader): the product name in type.title (Geist 600 22/28, left), title-cased, then one muted meta
  * line. Plain text, never a form field, and no "Is this the product?" kicker (the SKU sheet already asked).
  */
 export function ProductHeader({ title, meta }: { title: string | null; meta?: string | null }) {
