@@ -29,7 +29,7 @@ const engine: Engine = { verdict, medicineGate };
 
 /**
  * The real merged catalogue. It has 0 human ticks today (see PROGRESS "Needs Aman"), so this test simulates
- * ticks on brand-page sunscreen rows only. Plus the Plum lip tint test row, because no real row has shade colours yet.
+ * ticks on brand-page sunscreen rows only. Plus the Plum lip tint test row (a lip tint, the other VTO kind).
  */
 const plum = TEST_PRODUCTS.find((p) => p.id === 'plum-lip-tint-candy')!;
 const CATALOG: CatalogProduct[] = [
@@ -191,6 +191,47 @@ describe('Tier 1 flows against the mock Worker (phone logic + Worker in-process)
     expect(JSON.stringify({ ...progress.status, renders: [] })).not.toMatch(/#[0-9a-f]{6}/i);
     expect(w.deleted).toContain('mem://tryon.jpg');
     expect(progress.status.deleteState).toBe('deleted');
+  });
+
+  it('try-on is offered and renders for real tinted rows whose shade colours come from the brand', async () => {
+    const rows = catalogRows as CatalogProduct[];
+    const row = (id: string) => rows.find((p) => p.id === id)!;
+    const foxtale = row('foxtale-spf-50-tinted-fluid-sunscreen-with-niacinamide');
+    const pilgrim = row('pilgrim-korean-white-lotus-tinted-sunscreen-spf-50-pa');
+    expect(foxtale.category).toBe('tinted_spf');
+    expect(tryonEntry(foxtale)).toEqual({ mode: 'multi', label: COPY.tryonMulti });
+    expect(tryonEntry(pilgrim)).toEqual({ mode: 'single', label: COPY.tryonSingleClaim });
+
+    // Every colour on file records where it came from (the brand's own swatch or image), never a guess.
+    const coloured = rows.flatMap((p) => p.shades.filter((s) => s.hex).map((s) => ({ p, s })));
+    expect(coloured.length).toBeGreaterThan(0);
+    for (const { p, s } of coloured) {
+      expect(p.source_kind, p.id).toBe('brand_official');
+      expect(s.hex_source?.url, `${p.id} ${s.name}`).toMatch(/^https:\/\//);
+      if (s.hex_source?.kind === 'brand_image_median') expect(s.hex_source.crop, `${p.id} ${s.name}`).toHaveLength(4);
+    }
+
+    const w = await world();
+    for (const p of [foxtale, pilgrim]) {
+      const { product } = await w.call('catalogProduct', undefined, { id: p.id });
+      const entry = tryonEntry(product)!;
+      const progress = await runTryon(
+        {
+          ...w.job,
+          start: (b) => w.call('tryonStart', b),
+          submit: (id) => w.call('tryonSubmit', undefined, { id }),
+          status: (id) => w.call('tryonStatus', undefined, { id }),
+        },
+        { productId: product.id, mode: entry.mode, selfie: { uri: `mem://tryon-${p.id}.jpg`, fileSize: 150_000 }, consent },
+        () => {},
+        w.poll,
+      );
+      expect(progress.phase, JSON.stringify(progress).slice(0, 800)).toBe('done');
+      if (progress.phase !== 'done') continue;
+      expect(progress.status.renders.length).toBe(entry.mode === 'multi' ? 2 : 1);
+      const names = new Set(product.shades.map((s) => s.name));
+      for (const r of progress.status.renders) expect(names.has(r.shadeName)).toBe(true);
+    }
   });
 
   it('try-on is not offered for real tinted catalogue rows that have no shade colours on file', () => {

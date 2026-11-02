@@ -3,6 +3,7 @@
     "brand": "Bioderma",
     "name": "Photoderm Aquafluide SPF50+ Claire",
     "category": "tinted_sunscreen",
+    "shades": [{"name": "Claire", "no_hex_reason": "The brand page (bioderma.ae) shows only pack shots; no swatch or texture image of the product. Not sampled from the tube print."}],
     "size": "40 ml",
     "mrp_inr": 1999,
     "spf": "SPF 50+ (PA++++ per Nykaa India listing)",

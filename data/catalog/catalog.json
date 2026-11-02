@@ -891,7 +891,24 @@
         "quote": "All Skin Types"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "Beige",
+        "hex": "#CA8B63",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0670/3287/5233/files/BEIGE_FOP_WITHOUT_TEXT.jpg?v=1784626077",
+          "crop": [
+            240,
+            240,
+            350,
+            440
+          ],
+          "read_at": "2026-11-02",
+          "note": "Beige front-of-pack image on the Beige product page; crop inside the large product smear left of the cap."
+        }
+      }
+    ],
     "source_url": "https://aqualogica.in/products/aqualogica-3-in-1-tinted-sun-serum-50ml-beige",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": false,
@@ -2167,7 +2184,12 @@
         "quote": "normal to oily skin (UAE/Egypt pages)"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "Claire",
+        "no_hex_reason": "The brand page (bioderma.ae) shows only pack shots; no swatch or texture image of the product. Not sampled from the tube print."
+      }
+    ],
     "source_url": "https://www.bioderma.ae/our-products/photoderm/aquafluide-spf50-claire",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": true,
@@ -5709,7 +5731,18 @@
         "quote": "All Skin Types"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "Warm Ivory",
+        "hex": "#F0CBA8",
+        "hex_source": {
+          "kind": "brand_swatch_colour",
+          "url": "https://www.dotandkey.com/products/strawberry-dew-tinted-sunscreen-spf-50-warm-ivory-pack-of-2",
+          "read_at": "2026-11-02",
+          "note": "Shade-picker CSS on the page: .option-value[data-value=\"Warm Ivory  - 02 Light with Warm Undertone\"] { background-color: #F0CBA8 }. That option belongs to the single-unit Strawberry Dew Tinted Sunscreen (SKU DK_SDTS02); this row is the pack of 2 (DK_SDTS02_2)."
+        }
+      }
+    ],
     "source_url": "https://www.dotandkey.com/products/strawberry-dew-tinted-sunscreen-spf-50-warm-ivory-pack-of-2",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": true,
@@ -6704,7 +6737,93 @@
         "quote": "sensitive skin (claims to keep sensitive skin calm)"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "Vanilla",
+        "hex": "#F1BF9A",
+        "swatch_img_url": "https://earthrhythm.com/cdn/shop/files/Vanilla.png?v=1764577449",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://earthrhythm.com/cdn/shop/files/Vanilla.png?v=1764577449",
+          "crop": [
+            0,
+            0,
+            180,
+            180
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on earthrhythm.com (label data-color = shade name); a flat colour fill, transparent corners ignored."
+        }
+      },
+      {
+        "name": "Milk",
+        "hex": "#FCDAB5",
+        "swatch_img_url": "https://earthrhythm.com/cdn/shop/files/8904391104656_milklightest.avif?v=1791377133",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://earthrhythm.com/cdn/shop/files/8904391104656_milklightest.avif?v=1791377133",
+          "crop": [
+            0,
+            0,
+            200,
+            200
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on earthrhythm.com (label data-color = shade name); a flat colour fill, transparent corners ignored."
+        }
+      },
+      {
+        "name": "Oats",
+        "hex": "#F1B994",
+        "swatch_img_url": "https://earthrhythm.com/cdn/shop/files/8904391104700_oatslighter.avif?v=1791377210",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://earthrhythm.com/cdn/shop/files/8904391104700_oatslighter.avif?v=1791377210",
+          "crop": [
+            0,
+            0,
+            200,
+            200
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on earthrhythm.com (label data-color = shade name); a flat colour fill, transparent corners ignored."
+        }
+      },
+      {
+        "name": "Almond",
+        "hex": "#AA7251",
+        "swatch_img_url": "https://earthrhythm.com/cdn/shop/files/Almond.png?v=1764577479",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://earthrhythm.com/cdn/shop/files/Almond.png?v=1764577479",
+          "crop": [
+            0,
+            0,
+            180,
+            180
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on earthrhythm.com (label data-color = shade name); a flat colour fill, transparent corners ignored."
+        }
+      },
+      {
+        "name": "Honey",
+        "hex": "#B68250",
+        "swatch_img_url": "https://earthrhythm.com/cdn/shop/files/Honey.png?v=1764577502",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://earthrhythm.com/cdn/shop/files/Honey.png?v=1764577502",
+          "crop": [
+            0,
+            0,
+            180,
+            180
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on earthrhythm.com (label data-color = shade name); a flat colour fill, transparent corners ignored."
+        }
+      }
+    ],
     "source_url": "https://earthrhythm.com/products/rosy-ritual-glow-tinted-sunscreen-spf-50-pa-with-vitamin-c-no-oxybenzone",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": true,
@@ -7758,7 +7877,161 @@
         "quote": "every Indian skin type"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "Sand-01",
+        "hex": "#E9A372",
+        "swatch_img_url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_02_eae9144650.jpg?v=1765793208",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_02_eae9144650.jpg?v=1765793208",
+          "crop": [
+            118,
+            118,
+            1063,
+            1063
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on foxtale.in (img alt = shade name); full-frame product texture, central 80% sampled."
+        }
+      },
+      {
+        "name": "Oat-02",
+        "hex": "#F0A787",
+        "swatch_img_url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/TSS_OAT_ce772f54f6.jpg?v=1791370302",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/TSS_OAT_ce772f54f6.jpg?v=1791370302",
+          "crop": [
+            39,
+            39,
+            358,
+            358
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on foxtale.in (img alt = shade name); full-frame product texture, central 80% sampled."
+        }
+      },
+      {
+        "name": "Caramel-03",
+        "hex": "#E79B6A",
+        "swatch_img_url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_03_3ad1913c08.jpg?v=1765793208",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_03_3ad1913c08.jpg?v=1765793208",
+          "crop": [
+            118,
+            118,
+            1063,
+            1063
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on foxtale.in (img alt = shade name); full-frame product texture, central 80% sampled."
+        }
+      },
+      {
+        "name": "Fig-04",
+        "hex": "#E17E61",
+        "swatch_img_url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/TSS_FIG_9af8478424.jpg?v=1791370302",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/TSS_FIG_9af8478424.jpg?v=1791370302",
+          "crop": [
+            39,
+            39,
+            358,
+            358
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on foxtale.in (img alt = shade name); full-frame product texture, central 80% sampled."
+        }
+      },
+      {
+        "name": "Clay-05",
+        "hex": "#CA6931",
+        "swatch_img_url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_04_fc84ae2f71.jpg?v=1765793208",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_04_fc84ae2f71.jpg?v=1765793208",
+          "crop": [
+            118,
+            118,
+            1063,
+            1063
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on foxtale.in (img alt = shade name); full-frame product texture, central 80% sampled."
+        }
+      },
+      {
+        "name": "Mocha-06",
+        "hex": "#BA6639",
+        "swatch_img_url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_05_7110a8f7ec.jpg?v=1765793209",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_05_7110a8f7ec.jpg?v=1765793209",
+          "crop": [
+            118,
+            118,
+            1063,
+            1063
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on foxtale.in (img alt = shade name); full-frame product texture, central 80% sampled."
+        }
+      },
+      {
+        "name": "Coco-07",
+        "hex": "#AF592A",
+        "swatch_img_url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_06_b526e6dab8.jpg?v=1765793209",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/SHADE_06_b526e6dab8.jpg?v=1765793209",
+          "crop": [
+            118,
+            118,
+            1063,
+            1063
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on foxtale.in (img alt = shade name); full-frame product texture, central 80% sampled."
+        }
+      },
+      {
+        "name": "Espresso-08",
+        "hex": "#AA5944",
+        "swatch_img_url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/TSS_ESPRESSO_e085b81611.jpg?v=1791370302",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/TSS_ESPRESSO_e085b81611.jpg?v=1791370302",
+          "crop": [
+            39,
+            39,
+            358,
+            358
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on foxtale.in (img alt = shade name); full-frame product texture, central 80% sampled."
+        }
+      },
+      {
+        "name": "Truffle-09",
+        "hex": "#4C2916",
+        "swatch_img_url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/TSS_TRUFLE_d30b3f9666.jpg?v=1791370302",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0609/6096/4855/files/TSS_TRUFLE_d30b3f9666.jpg?v=1791370302",
+          "crop": [
+            39,
+            39,
+            358,
+            358
+          ],
+          "read_at": "2026-11-02",
+          "note": "Shade-picker swatch image on foxtale.in (img alt = shade name); full-frame product texture, central 80% sampled."
+        }
+      }
+    ],
     "source_url": "https://foxtale.in/products/spf-50-tinted-fluid-sunscreen-with-niacinamide",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": true,
@@ -9298,7 +9571,12 @@
         "quote": "oily skin"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "One shade",
+        "no_hex_reason": "Sold in one unnamed shade (variants are sizes only). The brand page shows only pack shots; no swatch or texture image."
+      }
+    ],
     "source_url": "https://www.garnier.in/about-our-brands/skin-naturals/bb-cream",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": false,
@@ -10353,7 +10631,12 @@
       }
     ],
     "claims": [],
-    "shades": [],
+    "shades": [
+      {
+        "name": "Light Tint",
+        "no_hex_reason": "The brand page images are pack shots and back-of-pack text only; no swatch or texture image of the Light Tint."
+      }
+    ],
     "source_url": "https://himalayawellness.in/products/himalaya-sun-protect-ultra-light-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": true,
@@ -13177,7 +13460,16 @@
         "quote": "oily, dry, combination, acne-prone, and sensitive skin"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "S1",
+        "no_hex_reason": "lotus.in uses pixel-identical images for S1 and S2 (product smear included), so no image shows S1 as distinct from S2; no swatch colour is published."
+      },
+      {
+        "name": "S2",
+        "no_hex_reason": "lotus.in uses pixel-identical images for S1 and S2 (product smear included), so no image shows S2 as distinct from S1; no swatch colour is published."
+      }
+    ],
     "source_url": "https://www.lotus.in/products/safe-sun-ultrarx-tinted-sunscreen-spf-50",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": true,
@@ -18060,7 +18352,24 @@
         "quote": "All skin types"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "One shade",
+        "hex": "#F0D7C3",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0620/1629/1045/files/5_1f5e9f61-f20b-4dd6-b69e-55f5a65bd604.jpg?v=1750913416",
+          "crop": [
+            594,
+            378,
+            730,
+            459
+          ],
+          "read_at": "2026-11-02",
+          "note": "Sold in one shade. \"Texture: Lightweight Fluid\" image on the brand page; crop inside the dense part of the product smear."
+        }
+      }
+    ],
     "source_url": "https://discoverpilgrim.com/products/korean-white-lotus-tinted-sunscreen-spf-50-pa",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": false,
@@ -19898,7 +20207,24 @@
         "quote": "sensitive skin"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "One shade",
+        "hex": "#CA8B70",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0306/6262/3364/files/5_4f5e13de-8566-43ee-8db7-4a6453994922.jpg?v=1779699174",
+          "crop": [
+            570,
+            795,
+            600,
+            830
+          ],
+          "read_at": "2026-11-02",
+          "note": "Sold in one shade. \"No harsh additives\" image on the brand page; crop inside the product smear beside the tube, clear of the highlight streak."
+        }
+      }
+    ],
     "source_url": "https://www.reequil.com/products/zinc-mineral-tinted-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": true,
@@ -22447,7 +22773,24 @@
         "quote": "sensitive, acne-prone, blemish-prone, and oily skin"
       }
     ],
-    "shades": [],
+    "shades": [
+      {
+        "name": "One shade",
+        "hex": "#EAAA94",
+        "hex_source": {
+          "kind": "brand_image_median",
+          "url": "https://cdn.shopify.com/s/files/1/0888/8057/8807/files/1__hyaluronic_tinted_sunscreen_gel.jpg?v=1772438875",
+          "crop": [
+            60,
+            900,
+            360,
+            1050
+          ],
+          "read_at": "2026-11-02",
+          "note": "Sold in one shade. Brand hero image with the tube laid on smeared product; crop inside the smear left of the tube. The smear is styled as the product texture; the page does not label it."
+        }
+      }
+    ],
     "source_url": "https://thedermaco.com/products/1-hyaluronic-tinted-sunscreen-gel-for-broad-spectrum-protection-50g",
     "fetched_at": "2026-11-01T00:00:00.000Z",
     "verified": true,

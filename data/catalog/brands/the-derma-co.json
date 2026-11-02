@@ -35,6 +35,7 @@
     "brand": "The Derma Co",
     "name": "1% Hyaluronic Tinted Sunscreen Gel for Broad Spectrum Protection - 50g",
     "category": "tinted_sunscreen",
+    "shades": [{"name": "One shade", "hex": "#EAAA94", "hex_source": {"kind": "brand_image_median", "url": "https://cdn.shopify.com/s/files/1/0888/8057/8807/files/1__hyaluronic_tinted_sunscreen_gel.jpg?v=1772438875", "crop": [60, 900, 360, 1050], "read_at": "2026-11-02", "note": "Sold in one shade. Brand hero image with the tube laid on smeared product; crop inside the smear left of the tube. The smear is styled as the product texture; the page does not label it."}}],
     "size": "50 g",
     "mrp_inr": 699,
     "spf": "SPF 60 PA+++",

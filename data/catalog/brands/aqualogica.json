@@ -50,6 +50,7 @@
   {
     "brand": "Aqualogica",
     "category": "tinted_sunscreen",
+    "shades": [{"name": "Beige", "hex": "#CA8B63", "hex_source": {"kind": "brand_image_median", "url": "https://cdn.shopify.com/s/files/1/0670/3287/5233/files/BEIGE_FOP_WITHOUT_TEXT.jpg?v=1784626077", "crop": [240, 240, 350, 440], "read_at": "2026-11-02", "note": "Beige front-of-pack image on the Beige product page; crop inside the large product smear left of the cap."}}],
     "name": "3-in-1 Tinted Sun Serum - Beige | 50g",
     "size": "50 ml (page title says 50g; structured data says 50 MLT/ml)",
     "mrp_inr": 549,

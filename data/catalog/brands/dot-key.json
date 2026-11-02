@@ -86,6 +86,7 @@
   {
     "brand": "Dot & Key",
     "category": "tinted_sunscreen",
+    "shades": [{"name": "Warm Ivory", "hex": "#F0CBA8", "hex_source": {"kind": "brand_swatch_colour", "url": "https://www.dotandkey.com/products/strawberry-dew-tinted-sunscreen-spf-50-warm-ivory-pack-of-2", "read_at": "2026-11-02", "note": "Shade-picker CSS on the page: .option-value[data-value=\"Warm Ivory  - 02 Light with Warm Undertone\"] { background-color: #F0CBA8 }. That option belongs to the single-unit Strawberry Dew Tinted Sunscreen (SKU DK_SDTS02); this row is the pack of 2 (DK_SDTS02_2)."}}],
     "name": "Strawberry Dew Tinted Sunscreen SPF 50+, Warm Ivory- Pack of 2",
     "size": "50ml (More Information net qty; listing sold as 2 x 50ml = 100ml)",
     "mrp_inr": 549,

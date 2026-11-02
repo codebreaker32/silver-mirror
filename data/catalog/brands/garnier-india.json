@@ -209,6 +209,7 @@
     "brand": "Garnier",
     "name": "Garnier Skin Naturals BB Cream",
     "category": "tinted_sunscreen",
+    "shades": [{"name": "One shade", "no_hex_reason": "Sold in one unnamed shade (variants are sizes only). The brand page shows only pack shots; no swatch or texture image."}],
     "size": "30g",
     "mrp_inr": 275,
     "spf": "SPF 24 (brand claim)",

@@ -45,6 +45,7 @@
     "brand": "Lotus Herbals",
     "name": "Safe Sun UltraRx Tinted Sunscreen SPF 50+",
     "category": "tinted_sunscreen",
+    "shades": [{"name": "S1", "no_hex_reason": "lotus.in uses pixel-identical images for S1 and S2 (product smear included), so no image shows S1 as distinct from S2; no swatch colour is published."}, {"name": "S2", "no_hex_reason": "lotus.in uses pixel-identical images for S1 and S2 (product smear included), so no image shows S2 as distinct from S1; no swatch colour is published."}],
     "size": "50 g (also 75 g); shades S1 and S2",
     "mrp_inr": 455,
     "spf": "SPF 50+ PA++++",

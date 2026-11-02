@@ -15,11 +15,31 @@ export const ProductCategory = z.enum([
 ]);
 export type ProductCategory = z.infer<typeof ProductCategory>;
 
+/**
+ * Where a shade's `hex` came from. Never guessed, never from a retailer:
+ * - `brand_swatch_colour`: a colour the brand itself publishes for that shade (variant swatch, CSS swatch fill).
+ * - `brand_image_median`: per-channel median of a crop of the brand's own swatch or texture image of that shade
+ *   (transparent pixels ignored), `crop` being the pixel box [x0, y0, x1, y1] in the image as served at `url`.
+ */
+export const ShadeHexSource = z.object({
+  kind: z.enum(['brand_swatch_colour', 'brand_image_median']),
+  /** The brand page that publishes the colour, or the brand image that was sampled. */
+  url: z.string(),
+  crop: z.tuple([z.number(), z.number(), z.number(), z.number()]).optional(),
+  /** ISO date the colour was read. */
+  read_at: z.string(),
+  note: z.string().optional(),
+});
+export type ShadeHexSource = z.infer<typeof ShadeHexSource>;
+
 export const Shade = z.object({
   name: z.string(),
   swatch_img_url: z.string().optional(),
   hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
   hex_sampled_at: z.object({ url: z.string(), x: z.number(), y: z.number() }).optional(),
+  hex_source: ShadeHexSource.optional(),
+  /** Why a shade the brand sells has no `hex` (no brand-published swatch or texture image for it). */
+  no_hex_reason: z.string().optional(),
 });
 export type Shade = z.infer<typeof Shade>;
 

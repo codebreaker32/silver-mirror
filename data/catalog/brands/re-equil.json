@@ -105,6 +105,7 @@
   {
     "brand": "Re'equil",
     "category": "tinted_sunscreen",
+    "shades": [{"name": "One shade", "hex": "#CA8B70", "hex_source": {"kind": "brand_image_median", "url": "https://cdn.shopify.com/s/files/1/0306/6262/3364/files/5_4f5e13de-8566-43ee-8db7-4a6453994922.jpg?v=1779699174", "crop": [570, 795, 600, 830], "read_at": "2026-11-02", "note": "Sold in one shade. \"No harsh additives\" image on the brand page; crop inside the product smear beside the tube, clear of the highlight streak."}}],
     "name": "Sheer Zinc Tinted Sunscreen",
     "size": "50g",
     "mrp_inr": 695,

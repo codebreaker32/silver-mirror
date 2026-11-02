@@ -81,6 +81,7 @@
     "brand": "Himalaya",
     "name": "Himalaya Sun Protect+ Ultra-Light Sunscreen (Light Tint)",
     "category": "tinted_sunscreen",
+    "shades": [{"name": "Light Tint", "no_hex_reason": "The brand page images are pack shots and back-of-pack text only; no swatch or texture image of the Light Tint."}],
     "size": "50g",
     "mrp_inr": 349,
     "spf": "SPF 50 PA++++",

@@ -141,6 +141,7 @@
     "brand": "Pilgrim",
     "name": "Korean White Lotus Tinted Sunscreen SPF 50+ PA++++",
     "category": "tinted_sunscreen",
+    "shades": [{"name": "One shade", "hex": "#F0D7C3", "hex_source": {"kind": "brand_image_median", "url": "https://cdn.shopify.com/s/files/1/0620/1629/1045/files/5_1f5e9f61-f20b-4dd6-b69e-55f5a65bd604.jpg?v=1750913416", "crop": [594, 378, 730, 459], "read_at": "2026-11-02", "note": "Sold in one shade. \"Texture: Lightweight Fluid\" image on the brand page; crop inside the dense part of the product smear."}}],
     "size": "50 ml (1.69 fl. oz.)",
     "mrp_inr": 495,
     "spf": "SPF 50+ PA++++",
