@@ -242,7 +242,7 @@ export const RULES: readonly Rule[] = [
     counted: false,
     triggers: [{ on: 'any' }],
     inciSet: { names: [], patterns: MEDICINE_TOKENS.map((t) => `^${t}\\b`), excludes: [] },
-    template: "This looks like a medicine (contains {ingredient}). SkinKey doesn't check medicines. Ask a pharmacist or doctor.",
+    template: "This looks like a medicine (contains {ingredient}). We don't check medicines. Ask a pharmacist or doctor.",
     sources: [SOURCES.cfrAcneActives, SOURCES.euCosmeticsRegulation],
   }),
 ];

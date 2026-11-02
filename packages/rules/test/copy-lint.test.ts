@@ -95,8 +95,8 @@ describe('all rule text is clean', () => {
   });
 
   it('audit summary text passes the linter', () => {
-    const csv = 'rank,name\n' + PRODUCTS.map((p, i) => `${i + 1},${p.name}`).join('\n');
-    const { summary } = runAudit({ frames: [{ dir: 'data/frame/x_2026-11-01', namesCsv: csv, files: [] }], catalogRows: PRODUCTS, catalogSource: 'fixture', generatedAt: 'now' });
+    const { summary } = runAudit({ brandFiles: [{ file: 'fixture.json', rows: PRODUCTS }], generatedAt: 'now' });
+    expect(summary.population.checked).toBeGreaterThan(0);
     for (const t of Object.values(summary.text)) if (t) expect(lintCopy(t), t).toEqual([]);
   });
 });

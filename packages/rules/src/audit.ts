@@ -1,63 +1,173 @@
-import { COPY, type Claim, type ClaimType, type CopySet, type InciToken, type RowStatus, type VerdictLabel } from '@skinkey/contracts';
+import { COPY, type Claim, type CopySet, type VerdictLabel } from '@skinkey/contracts';
 import { BAND_CUTOFFS } from './bands';
+import { toCatalogProduct, type BuiltCatalogRow } from './catalog';
+import { sourceKindOf } from './catalogMerge';
+import { AUDIT_CLAIM_TYPES, auditClaims, type AuditClaim, type AuditClaimType } from './claims';
 import { labelCheck, medicineGate, rulesetHash, verdict } from './engine';
-import { toCatalogProduct } from './catalog';
 import { READING_PROFILES, profileKey } from './profiles';
-import { RULES, RULESET_VERSION } from './rules';
+import { CLAIM_PHRASE, RULES, RULESET_VERSION } from './rules';
 
-export interface FrameInput {
-  dir: string;
-  namesCsv: string | null;
-  files: readonly string[];
+/**
+ * The pre-registered audit, method `brand-claims-1` (audit/METHOD.md): claims on a brand's own page checked against the
+ * ingredient list on that page with the published rules. Pure and deterministic; scripts/audit.mjs does the file I/O.
+ */
+export const AUDIT_METHOD = 'brand-claims-1';
+
+export { AUDIT_CLAIM_TYPES, auditClaims, claimsFromMarketedFor } from './claims';
+export type { AuditClaim, AuditClaimType } from './claims';
+
+export interface BrandFile {
+  file: string;
+  rows: readonly unknown[];
+}
+
+/** audit/rules-frozen.json, written at the rules-frozen tag. */
+export interface FrozenRecord {
+  method: string;
+  ruleset_hash: string;
+  ruleset_version: string;
+  files: Record<string, string>;
 }
 
 export interface AuditInput {
-  frames: readonly FrameInput[];
-  catalogRows: readonly unknown[];
-  catalogSource: string;
+  brandFiles: readonly BrandFile[];
   generatedAt: string;
-  includeUnverified?: boolean;
-  /** Human ticks from data/catalog/verified.json. */
+  /** Human ticks from data/catalog/verified.json. They set review status only; they don't gate the counts. */
   verifiedIds?: readonly string[];
+  frozen?: FrozenRecord | null;
+  /** SHA-256 of the frozen files as they are now, keyed like FrozenRecord.files. */
+  currentFiles?: Record<string, string>;
   copySet?: CopySet;
 }
 
-export interface AuditRow {
-  id: string;
+export type ExcludeReason =
+  | 'not_a_product_row'
+  | 'no_https_source'
+  | 'retailer_source'
+  | 'third_party_source'
+  | 'out_of_scope_category'
+  | 'duplicate_id'
+  | 'duplicate_gtin';
+
+/** Brand-page claim → the reading profiles it points to (audit/METHOD.md). Free-from claims go to the Label Check. */
+export const CLAIM_PROFILES: Partial<Record<AuditClaimType, readonly string[]>> = {
+  for_oily_skin: ['oily', 'oily-redness'],
+  for_combination_skin: ['combination', 'combination-redness'],
+  for_dry_skin: ['dry'],
+  for_sensitive_skin: ['oily-redness', 'combination-redness'],
+  non_comedogenic: ['oily', 'oily-redness'],
+  for_all_skin_types: READING_PROFILES.map((p) => p.id),
+};
+
+export const claimLabel = (t: AuditClaimType): string => (t === 'non_comedogenic' ? 'non-comedogenic' : (CLAIM_PHRASE[t] ?? t));
+
+export const PILOT_BELOW = 25;
+
+export const RESULTS_HEADER = [
+  'catalog_id',
+  'brand',
+  'product_name',
+  'category',
+  'rule_id',
+  'kind',
+  'grade',
+  'counted',
+  'contested',
+  'profile_ids',
+  'claim_matched_profiles',
+  'matched_token',
+  'position',
+  'claim_type',
+  'claim_quote',
+  'source_url',
+  'review_status',
+  'ruleset_hash',
+] as const;
+
+export interface HeatmapCell {
+  profile_id: string;
+  label: string;
+  CAUTION: number;
+  FITS: number;
+  by_top_grade: { R: number; L: number; T: number };
+  rule_ids: Record<string, number>;
+}
+
+export interface ClaimMatrixRow {
+  claim: AuditClaimType;
+  label: string;
+  /** Rows in N with this claim. */
+  N: number;
+  /** Checked rows with this claim. */
+  checked: number;
+  profiles_matched: string[];
+  caution: Record<string, number>;
+  /** Checked rows with this claim flagged CAUTION for a profile the claim points to (null: the claim maps to none). */
+  claim_matched_caution: number | null;
+}
+
+export type ReviewStatus = 'ticked' | 'pending';
+
+export interface ReviewItem {
+  catalog_id: string;
+  brand: string;
+  product_name: string;
+  kind: 'LABEL_CHECK' | 'CLAIM_PROFILE';
+  rule_id: string;
+  grade: string;
+  counted: boolean;
+  contested: boolean;
+  claim_type: string;
+  claim_quote: string;
+  matched_token: string;
+  position: number | null;
+  profile_ids: string[];
+  source_url: string;
+  review_status: ReviewStatus;
+}
+
+export interface AuditProduct {
+  file: string;
+  catalog_id: string | null;
   brand: string;
   name: string;
   category: string;
-  inci: InciToken[];
-  claims: Claim[];
   source_url: string;
-  screenshot_path?: string;
-  verified: boolean;
-  status: RowStatus;
-  aliases: string[];
-  claims_source: 'catalog' | 'marketed_for_phrase_match';
+  excluded: ExcludeReason | null;
+  excluded_detail?: string;
+  claims: AuditClaim[];
+  inci_complete: boolean;
+  in_N: boolean;
+  in_a: boolean;
+  checked: boolean;
+  medicine_token: string | null;
+  verdicts: Record<string, VerdictLabel>;
+  label_hits: string[];
+  claim_matched_profiles: string[];
 }
 
-export { claimsFromMarketedFor } from './claims';
-
-/** Accepts CatalogProduct rows (catalog.json) and the raw brand rows in data/catalog/brands/*.json. */
-export function adaptRow(raw: unknown, verifiedIds?: ReadonlySet<string>): AuditRow | null {
-  const p = toCatalogProduct(raw, verifiedIds);
-  if (!p) return null;
-  const tagged = (raw as { claims_source?: unknown }).claims_source;
-  return {
-    id: p.id,
-    brand: p.brand,
-    name: p.name,
-    category: p.category,
-    inci: p.inci,
-    claims: p.claims,
-    source_url: p.source_url,
-    ...(p.screenshot_path ? { screenshot_path: p.screenshot_path } : {}),
-    verified: p.verified,
-    status: p.status,
-    aliases: p.aliases ?? [],
-    claims_source: tagged === 'marketed_for_phrase_match' ? tagged : p.claims_source,
-  };
+export interface AuditSummary {
+  schema: 2;
+  method: string;
+  generated_at: string;
+  ruleset_hash: string;
+  ruleset_version: string;
+  band_cutoffs: typeof BAND_CUTOFFS;
+  copy_set: CopySet;
+  frozen: { status: 'match' | 'mismatch' | 'missing'; ruleset_hash: string | null; changed_files: string[] };
+  headline: boolean;
+  pilot: boolean;
+  input: { files: number; rows: number };
+  excluded: Partial<Record<ExcludeReason, number>>;
+  population: { brand_rows: number; N: number; a: number; unverifiable: number; medicine: number; checked: number };
+  label_check: { c: number; d: number; by_rule: Record<string, number> };
+  heatmap: HeatmapCell[];
+  claim_matrix: ClaimMatrixRow[];
+  claim_profile: { b: number; e: number };
+  review: { items: number; products: number; ticked: number; pending: number; list: ReviewItem[] };
+  text: { coverage: string; label_check: string | null; claim_profile: string | null; six_readings: string | null; caption: string };
+  notes: string[];
+  products: AuditProduct[];
 }
 
 export function parseCsv(text: string): Record<string, string>[] {
@@ -105,196 +215,96 @@ export function toCsv(header: readonly string[], rows: readonly Record<string, u
   return [header.join(','), ...rows.map((r) => header.map((h) => cell(r[h])).join(','))].join('\n') + '\n';
 }
 
-const nameKey = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/&/g, ' and ')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
+const str = (v: unknown) => (typeof v === 'string' ? v : '');
 
-const words = (s: string) => new Set(nameKey(s).split(' ').filter((w) => w.length > 1));
-
-function jaccard(a: Set<string>, b: Set<string>): number {
-  let inter = 0;
-  for (const w of a) if (b.has(w)) inter++;
-  const union = a.size + b.size - inter;
-  return union ? inter / union : 0;
-}
-
-/** Pre-registered matching: catalog_id column, then exact normalised name or alias, then word overlap ≥ 0.75. */
-export const FUZZY_MATCH_THRESHOLD = 0.75;
-
-export function matchFrameRow(
-  frameRow: Record<string, string>,
-  rows: readonly AuditRow[],
-): { row: AuditRow | null; method: 'catalog_id' | 'exact_name' | 'word_overlap' | 'none'; score?: number } {
-  const id = frameRow.catalog_id;
-  if (id) {
-    const row = rows.find((r) => r.id === id);
-    if (row) return { row, method: 'catalog_id' };
+/** Brand rows carry marketed_for. Already-built CatalogProduct rows (test fixtures) carry contract claims instead. */
+function claimsOf(raw: Record<string, unknown>, row: BuiltCatalogRow): AuditClaim[] {
+  if (Array.isArray(raw.marketed_for)) {
+    return auditClaims(
+      raw.marketed_for.filter((x): x is string => typeof x === 'string'),
+      row.name,
+    );
   }
-  const name = frameRow.name ?? frameRow.product_name ?? '';
-  const k = nameKey(name);
-  if (!k) return { row: null, method: 'none' };
-  const exact = rows.find((r) => nameKey(r.name) === k || r.aliases.some((a) => nameKey(a) === k));
-  if (exact) return { row: exact, method: 'exact_name' };
-  const target = words(name);
-  let best: { row: AuditRow; score: number } | null = null;
-  for (const r of rows) {
-    const score = Math.max(jaccard(target, words(r.name)), ...r.aliases.map((a) => jaccard(target, words(a))));
-    if (score >= FUZZY_MATCH_THRESHOLD && (!best || score > best.score || (score === best.score && r.id < best.row.id))) best = { row: r, score };
-  }
-  return best ? { row: best.row, method: 'word_overlap', score: Number(best.score.toFixed(3)) } : { row: null, method: 'none' };
+  return AUDIT_CLAIM_TYPES.flatMap((type) => {
+    const c = row.claims.find((x) => x.type === type);
+    return c ? [{ type, quote: c.quote ?? claimLabel(type) }] : [];
+  });
 }
 
-export const RESULTS_HEADER = [
-  'population',
-  'frame_dir',
-  'frame_rank',
-  'product_name',
-  'catalog_id',
-  'row_status',
-  'rule_id',
-  'kind',
-  'grade',
-  'counted',
-  'contested',
-  'profile_ids',
-  'matched_token',
-  'position',
-  'claim_type',
-  'claim_quote',
-  'claim_url',
-  'claims_source',
-  'screenshot_path',
-  'ruleset_hash',
-] as const;
+const toContractClaims = (claims: readonly AuditClaim[]): Claim[] =>
+  claims.flatMap((c) => (c.type === 'non_comedogenic' ? [] : [{ type: c.type, quote: c.quote }]));
 
-export type FrameStatus = 'missing' | 'empty' | 'partial' | 'complete';
-
-export interface HeatmapCell {
-  profile_id: string;
-  label: string;
-  CAUTION: number;
-  FITS: number;
-  by_top_grade: { R: number; L: number; T: number };
-  rule_ids: Record<string, number>;
-}
-
-export interface AuditProduct {
-  frame_dir: string | null;
-  frame_rank: string | null;
-  name: string;
-  catalog_id: string | null;
-  row_status: RowStatus | 'no_row';
-  match_method: string;
-  checked: boolean;
-  medicine_token: string | null;
-  verdicts: Record<string, VerdictLabel>;
-  label_hits: string[];
-}
-
-export interface AuditSummary {
-  schema: 1;
-  generated_at: string;
-  ruleset_hash: string;
-  ruleset_version: string;
-  band_cutoffs: typeof BAND_CUTOFFS;
-  copy_set: CopySet;
-  include_unverified: boolean;
-  mode: 'frame' | 'catalog_preview';
-  headline: boolean;
-  catalog: { source: string; rows: number; verified: number; unverified: number; unverifiable: number };
-  frame: {
-    status: FrameStatus;
-    dirs: { dir: string; names_csv: boolean; rows: number; screenshots: number; sha256_manifest: boolean }[];
-    N: number;
-    matched: number;
-    a: number;
-    unverified: number;
-    unverifiable: number;
-    no_row: number;
-    pilot: boolean;
-  };
-  population: { checked: number; medicine: number };
-  heatmap: HeatmapCell[];
-  label_check: { c: number; d: number; by_rule: Record<string, number> };
-  text: { coverage: string | null; lead: string | null; label_check: string | null; caption: string };
-  notes: string[];
-  products: AuditProduct[];
-}
-
-const PILOT_BELOW = 25;
-
-function claimTypeOf(ruleId: string): ClaimType | undefined {
-  for (const t of RULES.find((r) => r.ruleId === ruleId)?.triggers ?? []) if (t.on === 'claim') return t.claim;
-  return undefined;
-}
-const IMAGE_RE = /\.(png|jpe?g|webp)$/i;
-
-function frameDate(dir: string): string | null {
-  const m = dir.match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (!m) return null;
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${Number(m[3])} ${months[Number(m[2]) - 1]}`;
-}
+const profileLabel = (pid: string) => READING_PROFILES.find((p) => p.id === pid)?.label ?? pid;
 
 export function runAudit(input: AuditInput): { resultsCsv: string; summary: AuditSummary } {
   const copySet = input.copySet ?? 'B';
-  const includeUnverified = input.includeUnverified ?? false;
-  const verifiedIds = new Set(input.verifiedIds ?? []);
+  const ticked = new Set(input.verifiedIds ?? []);
   const hash = rulesetHash(RULES);
   const notes: string[] = [];
+  const reviewOf = (id: string): ReviewStatus => (ticked.has(id) ? 'ticked' : 'pending');
 
-  const rows: AuditRow[] = [];
-  const seen = new Set<string>();
-  for (const raw of input.catalogRows) {
-    const row = adaptRow(raw, verifiedIds);
-    if (!row) continue;
-    if (seen.has(row.id)) {
-      notes.push(`Duplicate catalogue id skipped: ${row.id}`);
-      continue;
+  // 1. Population: every brand row, with the exclusions of audit/METHOD.md applied in order.
+  const products: AuditProduct[] = [];
+  const built = new Map<AuditProduct, BuiltCatalogRow>();
+  const excluded: Partial<Record<ExcludeReason, number>> = {};
+  const ids = new Map<string, string>();
+  const gtins = new Map<string, string>();
+  let inputRows = 0;
+  for (const { file, rows } of input.brandFiles) {
+    for (const raw of rows) {
+      inputRows++;
+      const rec = (raw && typeof raw === 'object' ? raw : {}) as Record<string, unknown>;
+      const p = toCatalogProduct(raw);
+      const product: AuditProduct = {
+        file,
+        catalog_id: p?.id ?? null,
+        brand: p?.brand ?? str(rec.brand),
+        name: p?.name ?? str(rec.name),
+        category: p?.category ?? str(rec.category),
+        source_url: p?.source_url ?? str(rec.source_url),
+        excluded: null,
+        claims: p ? claimsOf(rec, p) : [],
+        inci_complete: !!p && p.status !== 'unverifiable' && p.inci.length > 0,
+        in_N: false,
+        in_a: false,
+        checked: false,
+        medicine_token: null,
+        verdicts: {},
+        label_hits: [],
+        claim_matched_profiles: [],
+      };
+      products.push(product);
+      const exclude = (reason: ExcludeReason, detail?: string) => {
+        product.excluded = reason;
+        if (detail) product.excluded_detail = detail;
+        excluded[reason] = (excluded[reason] ?? 0) + 1;
+      };
+      if (!p) {
+        exclude('not_a_product_row');
+        continue;
+      }
+      built.set(product, p);
+      const kind = sourceKindOf(p.source_url);
+      const gtin = str(rec.gtin_barcode);
+      if (!kind) exclude('no_https_source', p.source_url || undefined);
+      else if (kind === 'retailer') exclude('retailer_source', p.source_url);
+      else if (kind === 'third_party') exclude('third_party_source', p.source_url);
+      else if (p.category === 'other') exclude('out_of_scope_category', str(rec.category));
+      else if (ids.has(p.id)) exclude('duplicate_id', `same id as a row in ${ids.get(p.id)}`);
+      else if (gtin && gtins.has(gtin)) exclude('duplicate_gtin', `GTIN ${gtin} already used by ${gtins.get(gtin)}`);
+      if (product.excluded) continue;
+      ids.set(p.id, file);
+      if (gtin) gtins.set(gtin, p.id);
     }
-    seen.add(row.id);
-    rows.push(row);
-  }
-  if (rows.some((r) => r.claims_source === 'marketed_for_phrase_match')) {
-    notes.push('Some rows have no X5 claim spans yet; their claims come from a deterministic phrase match on marketed_for (claims_source column).');
   }
 
-  const frameDirs = input.frames.map((f) => {
-    const parsed = f.namesCsv ? parseCsv(f.namesCsv) : [];
-    return {
-      dir: f.dir,
-      rows: parsed.filter((r) => (r.name ?? r.product_name ?? '').trim()),
-      names_csv: f.namesCsv !== null,
-      screenshots: f.files.filter((x) => IMAGE_RE.test(x)).length,
-      sha256_manifest: f.files.some((x) => /sha256/i.test(x)),
-    };
-  });
-  const frameRows = frameDirs.flatMap((d) =>
-    d.rows.map((r, i) => ({ dir: d.dir, rank: r.rank ?? r.position ?? String(i + 1), screenshot: r.screenshot ?? r.screenshot_path ?? '', csv: r })),
-  );
+  const kept = products.filter((x) => !x.excluded);
+  const inN = kept.filter((x) => x.claims.length > 0);
+  for (const x of inN) x.in_N = true;
+  const inA = inN.filter((x) => x.inci_complete);
+  for (const x of inA) x.in_a = true;
 
-  const mode: AuditSummary['mode'] = frameRows.length ? 'frame' : 'catalog_preview';
-  if (input.frames.length === 0) notes.push('No frame found under data/frame/*/names.csv. This run is a catalogue preview, not the headline.');
-  else if (!frameRows.length) notes.push('Frame directories exist but names.csv has no rows yet. This run is a catalogue preview, not the headline.');
-  for (const d of frameDirs) {
-    if (!d.names_csv) notes.push(`${d.dir}: names.csv missing.`);
-    if (d.names_csv && !d.sha256_manifest) notes.push(`${d.dir}: no SHA-256 manifest for the screenshots yet.`);
-  }
-
-  const population = mode === 'frame'
-    ? frameRows.map((f) => {
-        const m = matchFrameRow(f.csv, rows);
-        return { frame: f, row: m.row, method: m.method };
-      })
-    : rows.map((row) => ({ frame: null, row, method: 'catalog' }));
-
-  const checkable = (r: AuditRow | null): r is AuditRow =>
-    !!r && r.inci.length > 0 && (r.status === 'verified' || (includeUnverified && r.status === 'unverified'));
-
-  const keys = READING_PROFILES.map((p) => ({ profile: p, key: profileKey(p, copySet) }));
+  // 2. Rules over every row in a: medicine gate, Label Check, then the six reading profiles.
   const heatmap: HeatmapCell[] = READING_PROFILES.map((p) => ({
     profile_id: p.id,
     label: p.label,
@@ -303,169 +313,182 @@ export function runAudit(input: AuditInput): { resultsCsv: string; summary: Audi
     by_top_grade: { R: 0, L: 0, T: 0 },
     rule_ids: {},
   }));
+  const keys = READING_PROFILES.map((p) => profileKey(p, copySet));
   const byRule: Record<string, number> = {};
+  const results: Record<string, unknown>[] = [];
+  const review: ReviewItem[] = [];
   let c = 0;
   let d = 0;
   let medicine = 0;
-  const results: Record<string, unknown>[] = [];
-  const products: AuditProduct[] = [];
+  let b = 0;
+  let e = 0;
 
-  for (const item of population) {
-    const { row, frame } = item;
+  for (const prod of inA) {
+    const row = built.get(prod)!;
     const base = {
-      population: mode,
-      frame_dir: frame?.dir ?? '',
-      frame_rank: frame?.rank ?? '',
-      product_name: frame?.csv.name ?? frame?.csv.product_name ?? row?.name ?? '',
-      catalog_id: row?.id ?? '',
-      row_status: row?.status ?? 'no_row',
-      claims_source: row?.claims_source ?? '',
-      screenshot_path: frame?.screenshot || row?.screenshot_path || '',
-      claim_url: row?.source_url ?? '',
+      catalog_id: row.id,
+      brand: row.brand,
+      product_name: row.name,
+      category: row.category,
+      source_url: row.source_url,
+      review_status: reviewOf(row.id),
       ruleset_hash: hash,
     };
-    const product: AuditProduct = {
-      frame_dir: frame?.dir ?? null,
-      frame_rank: frame?.rank ?? null,
-      name: base.product_name,
-      catalog_id: row?.id ?? null,
-      row_status: row?.status ?? 'no_row',
-      match_method: item.method,
-      checked: false,
-      medicine_token: null,
-      verdicts: {},
-      label_hits: [],
-    };
-    products.push(product);
-    if (!checkable(row)) continue;
-    product.checked = true;
-
     const gate = medicineGate(row.inci, row.name);
     if (gate.gated) {
       medicine++;
-      product.medicine_token = gate.token!;
-      results.push({ ...base, rule_id: 'MED-1', kind: 'MEDICINE', grade: '', counted: false, contested: false, matched_token: gate.token, position: '' });
+      prod.medicine_token = gate.token!;
+      results.push({ ...base, rule_id: 'MED-1', kind: 'MEDICINE', counted: false, contested: false, matched_token: gate.token });
       continue;
     }
+    prod.checked = true;
+    const claims = toContractClaims(prod.claims);
 
-    const hits = labelCheck(row.claims, row.inci, RULES);
-    product.label_hits = hits.map((h) => h.ruleId);
-    const strict = hits.filter((h) => h.counted);
-    if (strict.length) c++;
+    const hits = labelCheck(claims, row.inci, RULES);
+    prod.label_hits = hits.map((h) => h.ruleId);
+    if (hits.some((h) => h.counted)) c++;
     else if (hits.some((h) => h.ruleId === 'LC-1b')) d++;
     for (const h of hits) {
       byRule[h.ruleId] = (byRule[h.ruleId] ?? 0) + 1;
-      const claimType = claimTypeOf(h.ruleId);
-      results.push({
-        ...base,
+      const trigger = RULES.find((r) => r.ruleId === h.ruleId)?.triggers.find((t) => t.on === 'claim');
+      const claimType = trigger?.on === 'claim' ? trigger.claim : '';
+      const quote = prod.claims.find((x) => x.type === claimType)?.quote ?? h.quote ?? '';
+      const item = {
         rule_id: h.ruleId,
-        kind: 'LABEL_CHECK',
         grade: h.grade ?? '',
         counted: h.counted,
         contested: h.contested,
-        profile_ids: '',
         matched_token: h.matchedToken,
-        position: h.position ?? '',
-        claim_type: claimType ?? '',
-        claim_quote: h.quote ?? '',
-      });
+        claim_type: claimType,
+        claim_quote: quote,
+      };
+      results.push({ ...base, ...item, kind: 'LABEL_CHECK', position: h.position ?? '' });
+      review.push({ ...base, ...item, kind: 'LABEL_CHECK', position: h.position ?? null, profile_ids: [] });
     }
 
-    const fired = new Map<string, { profiles: string[]; token: string; position: number; grade: string }>();
-    keys.forEach(({ profile, key }, i) => {
-      const v = verdict({ key, inci: row.inci, inciSource: 'catalog_verified', inciSourceUrl: row.source_url, claims: row.claims, title: row.name });
-      product.verdicts[profile.id] = v.label;
+    const matchedProfiles = new Set(prod.claims.flatMap((x) => CLAIM_PROFILES[x.type] ?? []));
+    if (matchedProfiles.size) b++;
+    const fired = new Map<string, { profiles: string[]; token: string; position: number | null; grade: string }>();
+    keys.forEach((key, i) => {
+      const profile = READING_PROFILES[i]!;
+      const v = verdict({ key, inci: row.inci, inciSource: 'catalog_verified', inciSourceUrl: row.source_url, claims, title: row.name });
+      prod.verdicts[profile.id] = v.label;
       const cell = heatmap[i]!;
       if (v.label === 'FITS') cell.FITS++;
       if (v.label !== 'CAUTION') return;
       cell.CAUTION++;
       const top = v.reasons[0]?.grade;
       if (top) cell.by_top_grade[top]++;
+      if (matchedProfiles.has(profile.id)) prod.claim_matched_profiles.push(profile.id);
       for (const r of v.reasons) {
         cell.rule_ids[r.ruleId] = (cell.rule_ids[r.ruleId] ?? 0) + 1;
-        const tokenPos = row.inci.find((t) => t.token === r.ingredient)?.position ?? 0;
-        const entry = fired.get(r.ruleId) ?? { profiles: [], token: r.ingredient ?? '', position: tokenPos, grade: r.grade ?? '' };
+        const position = row.inci.find((t) => t.token === r.ingredient)?.position ?? null;
+        const entry = fired.get(r.ruleId) ?? { profiles: [], token: r.ingredient ?? '', position, grade: r.grade ?? '' };
         entry.profiles.push(profile.id);
         fired.set(r.ruleId, entry);
       }
     });
-    for (const [ruleId, e] of [...fired].sort(([a], [b]) => (a < b ? -1 : 1))) {
+    if (prod.claim_matched_profiles.length) e++;
+
+    for (const [ruleId, f] of [...fired].sort(([x], [y]) => (x < y ? -1 : 1))) {
       const rule = RULES.find((r) => r.ruleId === ruleId)!;
+      const matched = f.profiles.filter((pid) => matchedProfiles.has(pid));
+      const claimsHere = prod.claims.filter((x) => (CLAIM_PROFILES[x.type] ?? []).some((pid) => matched.includes(pid)));
+      const item = {
+        rule_id: ruleId,
+        grade: f.grade,
+        contested: rule.contested,
+        matched_token: f.token,
+        claim_type: claimsHere.map((x) => x.type).join(';'),
+        claim_quote: claimsHere.map((x) => x.quote).join(' | '),
+      };
       results.push({
         ...base,
-        rule_id: ruleId,
+        ...item,
         kind: 'FIT_CAUTION',
-        grade: e.grade,
         counted: rule.counted,
-        contested: rule.contested,
-        profile_ids: e.profiles.join(';'),
-        matched_token: e.token,
-        position: e.position || '',
-        claim_type: '',
-        claim_quote: '',
+        profile_ids: f.profiles.join(';'),
+        claim_matched_profiles: matched.join(';'),
+        position: f.position ?? '',
       });
+      if (matched.length) review.push({ ...base, ...item, kind: 'CLAIM_PROFILE', counted: false, position: f.position, profile_ids: matched });
     }
   }
 
-  const N = mode === 'frame' ? population.length : 0;
-  const a = mode === 'frame' ? population.filter((p) => checkable(p.row)).length : 0;
-  const checked = population.filter((p) => checkable(p.row)).length;
-  const frameStatus: FrameStatus =
-    input.frames.length === 0 ? 'missing' : !frameRows.length ? 'empty' : a < N || frameDirs.some((x) => !x.names_csv) ? 'partial' : 'complete';
-  const pilot = mode === 'frame' && a < PILOT_BELOW;
-  if (checked === 0 && rows.length) notes.push('No catalogue row is human-verified yet, so nothing was checked. --include-unverified gives a preview.');
-  if (pilot) notes.push(`Pilot: ${a} of ${N} frame products verified (fewer than ${PILOT_BELOW}). Same method, reported as a pilot.`);
-  if (includeUnverified) notes.push('include_unverified is on: rows not yet ticked by a human are counted. Not for the headline.');
-  if (copySet === 'A') notes.push('Copy set A: zone labels from the profiles are used as triggers (only valid if gate G1 passed).');
+  // 3. Counts and the pre-registered sentences.
+  const checkedRows = inA.filter((x) => x.checked);
+  const checked = checkedRows.length;
+  const claimMatrix: ClaimMatrixRow[] = AUDIT_CLAIM_TYPES.map((claim) => {
+    const withClaim = checkedRows.filter((x) => x.claims.some((k) => k.type === claim));
+    const mapped = [...(CLAIM_PROFILES[claim] ?? [])];
+    return {
+      claim,
+      label: claimLabel(claim),
+      N: inN.filter((x) => x.claims.some((k) => k.type === claim)).length,
+      checked: withClaim.length,
+      profiles_matched: mapped,
+      caution: Object.fromEntries(READING_PROFILES.map((p) => [p.id, withClaim.filter((x) => x.verdicts[p.id] === 'CAUTION').length])),
+      claim_matched_caution: mapped.length ? withClaim.filter((x) => mapped.some((pid) => x.verdicts[pid] === 'CAUTION')).length : null,
+    };
+  });
 
-  const date = frameDirs.map((x) => frameDate(x.dir)).find(Boolean) ?? null;
-  const headline = mode === 'frame' && !includeUnverified;
-  const text = {
-    coverage: headline
-      ? `Flipkart's 'Oily Skin' filter showed us ${N} moisturisers and sunscreens${date ? ` on ${date}` : ''}. We could verify full ingredient lists from brand pages for ${a} of them.${pilot ? ` (pilot: ${a} of ${N} verified)` : ''}`
+  const frozen = input.frozen ?? null;
+  const frozenStatus: AuditSummary['frozen']['status'] = !frozen ? 'missing' : frozen.ruleset_hash === hash ? 'match' : 'mismatch';
+  const current = input.currentFiles;
+  const changedFiles =
+    frozen && current
+      ? [...new Set([...Object.keys(frozen.files), ...Object.keys(current)])].filter((f) => frozen.files[f] !== current[f]).sort()
+      : [];
+  if (frozenStatus === 'missing') notes.push('No audit/rules-frozen.json: the rules were not frozen before this run, so it is not the headline.');
+  if (frozenStatus === 'mismatch') notes.push(`Ruleset hash ${hash} differs from the frozen ${frozen!.ruleset_hash}, so this run is not the headline.`);
+  if (changedFiles.length) notes.push(`Files that differ from the rules-frozen record: ${changedFiles.join(', ')}.`);
+  const pilot = checked < PILOT_BELOW;
+  if (pilot) notes.push(`Pilot: ${checked} products checked (fewer than ${PILOT_BELOW}). Same method, reported as a pilot.`);
+  if (medicine) notes.push(`${medicine} of the ${inA.length} products stopped at the medicine gate (MED-1) and get no further counts.`);
+  const tickedItems = review.filter((r) => r.review_status === 'ticked').length;
+  notes.push(
+    `Ingredient lists were copied from brand pages by the catalogue workflow. A person has reviewed ${tickedItems} of the ${review.length} flagged rows so far; the rest are pending (audit/review.md).`,
+  );
+
+  const text: AuditSummary['text'] = {
+    coverage: `${inN.length} products in our brand-page catalogue make a skin-type or free-from claim on their own brand page. ${inA.length} of them have a complete ingredient list there.`,
+    label_check: checked
+      ? `${c} of ${checked} make a claim their own ingredient list doesn't match (strict rules LC-1a / LC-2 / LC-3), plus ${d} more list a fragrance substance or essential oil under a 'fragrance-free' claim (LC-1b, informational).`
       : null,
-    lead: headline
-      ? `Flipkart shows the same ${a} products to everyone who picks 'Oily Skin'. Under our published rules, the number flagged CAUTION is ${heatmap
-          .map((h) => `${h.CAUTION} for a YouCam '${h.label}' reading profile`)
-          .join(', ')}.`
+    claim_profile: b
+      ? `${e} of ${b} products that name a skin type or 'non-comedogenic' on their brand page are flagged CAUTION by our published rules for a reading profile their own claim points to.`
       : null,
-    label_check: headline
-      ? `${c} of ${a} make a claim their own ingredient list doesn't match (strict rules LC-1a / LC-2 / LC-3), plus ${d} more have a listed allergen under a 'fragrance-free' claim (LC-1b, informational).`
+    six_readings: checked
+      ? `Across the ${checked} checked products, the number flagged CAUTION is ${heatmap.map((h) => `${h.CAUTION} for a YouCam '${profileLabel(h.profile_id)}' reading profile`).join(', ')}.`
       : null,
     caption: COPY.auditCaption,
   };
 
   const summary: AuditSummary = {
-    schema: 1,
+    schema: 2,
+    method: AUDIT_METHOD,
     generated_at: input.generatedAt,
     ruleset_hash: hash,
     ruleset_version: RULESET_VERSION,
     band_cutoffs: BAND_CUTOFFS,
     copy_set: copySet,
-    include_unverified: includeUnverified,
-    mode,
-    headline,
-    catalog: {
-      source: input.catalogSource,
-      rows: rows.length,
-      verified: rows.filter((r) => r.status === 'verified').length,
-      unverified: rows.filter((r) => r.status === 'unverified').length,
-      unverifiable: rows.filter((r) => r.status === 'unverifiable').length,
-    },
-    frame: {
-      status: frameStatus,
-      dirs: frameDirs.map((x) => ({ dir: x.dir, names_csv: x.names_csv, rows: x.rows.length, screenshots: x.screenshots, sha256_manifest: x.sha256_manifest })),
-      N,
-      matched: mode === 'frame' ? population.filter((p) => p.row).length : 0,
-      a,
-      unverified: mode === 'frame' ? population.filter((p) => p.row?.status === 'unverified').length : 0,
-      unverifiable: mode === 'frame' ? population.filter((p) => p.row?.status === 'unverifiable').length : 0,
-      no_row: mode === 'frame' ? population.filter((p) => !p.row).length : 0,
-      pilot,
-    },
-    population: { checked, medicine },
-    heatmap,
+    frozen: { status: frozenStatus, ruleset_hash: frozen?.ruleset_hash ?? null, changed_files: changedFiles },
+    headline: frozenStatus === 'match',
+    pilot,
+    input: { files: input.brandFiles.length, rows: inputRows },
+    excluded,
+    population: { brand_rows: kept.length, N: inN.length, a: inA.length, unverifiable: inN.length - inA.length, medicine, checked },
     label_check: { c, d, by_rule: byRule },
+    heatmap,
+    claim_matrix: claimMatrix,
+    claim_profile: { b, e },
+    review: {
+      items: review.length,
+      products: new Set(review.map((r) => r.catalog_id)).size,
+      ticked: tickedItems,
+      pending: review.length - tickedItems,
+      list: review,
+    },
     text,
     notes,
     products,
@@ -473,3 +496,34 @@ export function runAudit(input: AuditInput): { resultsCsv: string; summary: Audi
   return { resultsCsv: toCsv(RESULTS_HEADER, results), summary };
 }
 
+const mdCell = (s: string) => s.replace(/\|/g, '/').replace(/\s+/g, ' ').trim();
+
+/** audit/review.md: every flagged row, for a person to check against the brand page. */
+export function reviewMarkdown(summary: AuditSummary): string {
+  const r = summary.review;
+  const lines = [
+    '# Audit review list',
+    '',
+    `Generated by \`npm run audit\` (method ${summary.method}, ruleset ${summary.ruleset_hash}, ${summary.generated_at}). Do not hand-edit. To tick a product, add its id to \`data/catalog/verified.json\` and run the audit again.`,
+    '',
+    `${r.items} flagged rows on ${r.products} products. Reviewed by a person: ${r.ticked}. Pending: ${r.pending}.`,
+    '',
+    'For each row, open the brand page and check three things: the claim quote is on the page, the ingredient is in the ingredient list on the page, and its position is right.',
+    '',
+  ];
+  if (!r.list.length) return [...lines, 'Nothing was flagged.', ''].join('\n');
+  const kind = (x: ReviewItem) =>
+    x.kind === 'LABEL_CHECK'
+      ? `Label Check${x.counted ? ', strict' : ', informational'}${x.contested ? ', contested definition' : ''}`
+      : 'Claim vs reading profile';
+  lines.push(
+    '| Status | Product | Kind | Rule | Claim quote | Ingredient (position) | Profiles | Brand page |',
+    '|---|---|---|---|---|---|---|---|',
+    ...r.list.map(
+      (x) =>
+        `| ${x.review_status === 'ticked' ? '[x]' : '[ ]'} ${x.review_status} | ${mdCell(`${x.brand}: ${x.product_name}`)} (\`${x.catalog_id}\`) | ${kind(x)} | ${x.rule_id} (${x.grade || 'n/a'}) | "${mdCell(x.claim_quote)}" | ${mdCell(x.matched_token)}${x.position ? ` (${x.position})` : ''} | ${x.profile_ids.map(profileLabel).join(', ') || 'n/a'} | ${x.source_url} |`,
+    ),
+    '',
+  );
+  return lines.join('\n');
+}
