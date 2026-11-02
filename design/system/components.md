@@ -431,7 +431,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.translucent.type` | `type.button` | Geist 600 16/20 | same |
 | `button.translucent.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
 | `button.translucent.borderDisabled` | `color.disabled-bg` | #E7E5EC | #30313C |
-| `actionBar.bg` | `elevation.2.surface` | #FFFFFF | #20212A |
+| `actionBar.bg` | `color.bg` | #EFECF2 | #121319 |
 | `actionBar.border` | `elevation.2.border` | #E3DFE9 | #30313C |
 | `actionBar.shadow` | `elevation.2` | elevation 2 | same |
 | `actionBar.paddingTop` | `space.3` | 12 | same |

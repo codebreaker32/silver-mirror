@@ -130,10 +130,10 @@ export function TryonScreen() {
     return (
       <Screen title="Try-on" onBack={close} footer={<Button label="Close" onPress={close} />}>
         <View style={{ gap: theme.space[2] }}>
-          <Heading numberOfLines={2}>{params.productName ?? 'Your preview'}</Heading>
-          {params.productName && productSize ? (
-            <Body muted small>
-              {productSize}
+          <Heading>Your preview</Heading>
+          {params.productName ? (
+            <Body muted numberOfLines={2}>
+              {[params.productName, productSize].filter(Boolean).join(' · ')}
             </Body>
           ) : null}
         </View>

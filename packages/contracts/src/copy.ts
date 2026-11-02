@@ -91,8 +91,8 @@ export const COPY = {
       { title: 'Pick Silver Mirror', supporting: store === 'Amazon' ? 'Tap More first, then Silver Mirror' : 'Pin it so it stays first' },
       { title: 'See if it fits', supporting: 'Your check opens here, with the reasons' },
     ] as const,
-  /** Title of the gradient banner above Better matches. */
-  matchesBanner: (skinType: string) => `Better matches for ${skinType.toLowerCase()} skin`,
+  /** Title of the gradient banner inside Better matches (the section head already says "Better matches"; showcase "Top Picks for …"). */
+  matchesBanner: (skinType: string) => `Picks for ${skinType.toLowerCase()} skin`,
   shareTo: 'In Flipkart, Amazon or Nykaa, tap Share → Silver Mirror.',
   scanSteps: {
     upload: 'Uploading',

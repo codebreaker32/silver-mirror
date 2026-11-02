@@ -2638,7 +2638,7 @@ export const lightTheme: SkinKeyTheme = {
         }
       },
       "actionBar": {
-        "bg": "#FFFFFF",
+        "bg": "#EFECF2",
         "border": "#E3DFE9",
         "shadow": {
           "backgroundColor": "#FFFFFF",
@@ -4358,7 +4358,7 @@ export const darkTheme: SkinKeyTheme = {
         }
       },
       "actionBar": {
-        "bg": "#20212A",
+        "bg": "#121319",
         "border": "#30313C",
         "shadow": {
           "backgroundColor": "#20212A",

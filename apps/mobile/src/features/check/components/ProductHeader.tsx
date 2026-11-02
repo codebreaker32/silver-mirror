@@ -1,17 +1,21 @@
 import { View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Txt } from '@/components';
+import { Icon, Txt, type IconName } from '@/components';
 import { displayTitle } from '../display';
 
 /**
- * Product header (component.productHeader): the product name in type.title (Geist 600 22/28, left), title-cased, then one muted meta
- * line. Plain text, never a form field, and no "Is this the product?" kicker (the SKU sheet already asked).
+ * Product header (component.productHeader): a 64dp soft thumb tile (listRow.thumbBg, radius.tile, the category glyph in
+ * lavender; the showcase 06_discover product-tile language, same as the Better matches cards), then beside it the product
+ * name in type.title (Geist 600 22/28, left), title-cased, and one muted meta line. Plain text, never a form field, and
+ * no "Is this the product?" kicker (the SKU sheet already asked).
  */
-export function ProductHeader({ title, meta }: { title: string | null; meta?: string | null }) {
+export function ProductHeader({ title, meta, glyph }: { title: string | null; meta?: string | null; glyph?: IconName }) {
   const t = useTheme();
   const h = t.components.productHeader;
-  return (
-    <View style={{ gap: t.space[2] }}>
+  const row = t.components.listRow;
+  const thumb = 64;
+  const text = (
+    <View style={{ gap: t.space[2], flex: glyph ? 1 : undefined }}>
       {title ? (
         <Txt accessibilityRole="header" variant="title" numberOfLines={3} style={[h.title, { color: h.titleColor }]}>
           {displayTitle(title)}
@@ -27,6 +31,27 @@ export function ProductHeader({ title, meta }: { title: string | null; meta?: st
           {meta}
         </Txt>
       ) : null}
+    </View>
+  );
+  if (!glyph) return text;
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[4] }}>
+      <View
+        importantForAccessibility="no-hide-descendants"
+        accessibilityElementsHidden
+        style={{
+          width: thumb,
+          height: thumb,
+          borderRadius: t.radius.tile,
+          backgroundColor: row.thumbBg,
+          alignItems: 'center',
+          justifyContent: 'center',
+          ...(t.dark ? { borderWidth: 1, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge } : null),
+        }}
+      >
+        <Icon name={glyph} size={t.icon.lg + 4} color={row.thumbIcon} />
+      </View>
+      {text}
     </View>
   );
 }

@@ -18,7 +18,7 @@ import { HeadSkeleton, ProductHeader } from './components/ProductHeader';
 import { SkuConfirmSheet } from './components/SkuConfirmSheet';
 import { UnknownPanel } from './components/UnknownPanel';
 import { VerdictSheet } from './components/VerdictSheet';
-import { shortListingTitle, sizeMeta } from './display';
+import { categoryGlyph, shortListingTitle, sizeMeta } from './display';
 import { productLine, tryonEntry, type Engine } from './flow';
 import { contextClick } from './haptics';
 import { documentScannerAvailable, scanLabel } from './media';
@@ -44,8 +44,9 @@ function sourceLine(origin: Origin | null, store: Store): string {
 const SOURCE_ICON: Record<Origin, IconName> = { share: 'arrow-down-left', screenshot: 'arrow-down-left', paste: 'paste', sample: 'tag-check' };
 
 /**
- * Source chip in the kit app bar's centred slot (DESIGN.md §8.9, §9.4): a light grey pill ("Shared from Nykaa",
- * "Sample share", "Pasted link") with a 16dp icon, centred beside the back arrow. TalkBack reads it as the screen header.
+ * Source chip (DESIGN.md §8.9, §9.4): a light grey pill ("Shared from Nykaa", "Sample share", "Pasted link") with a
+ * 16dp icon, left-aligned at the top of the scroll content above the product header. The centred app-bar title
+ * ("Your check") is the screen header, so the chip is plain text.
  */
 function SourceChip({ label, icon }: { label: string; icon: IconName }) {
   const t = useTheme();
@@ -65,10 +66,11 @@ function SourceChip({ label, icon }: { label: string; icon: IconName }) {
         borderRadius: t.radius.full,
         backgroundColor: bg,
         maxWidth: '100%',
+        alignSelf: 'flex-start',
       }}
     >
       <Icon name={icon} size={t.icon.sm} color={fg} />
-      <Txt accessibilityRole="header" variant="label" numberOfLines={1} style={{ color: fg, flexShrink: 1 }}>
+      <Txt variant="label" numberOfLines={1} style={{ color: fg, flexShrink: 1 }}>
         {label}
       </Txt>
     </View>
@@ -166,10 +168,13 @@ export default function CheckScreen() {
   const matchesY = useRef<number | null>(null);
   const geo = useRef({ y: 0, viewport: 0, content: 0 });
   const [matchesOnScreen, setMatchesOnScreen] = useState(false);
+  // The dock floats on the page (showcase 04_report); its top hairline shows only while content sits under it.
+  const [contentUnder, setContentUnder] = useState(false);
   const measure = useCallback(() => {
-    const { y, viewport } = geo.current;
+    const { y, viewport, content } = geo.current;
     const top = matchesY.current == null ? null : sheetY.current + matchesY.current;
     setMatchesOnScreen(top != null && y + viewport > top + t.space[12]);
+    setContentUnder(viewport > 0 && y + viewport < content - 1);
   }, [t.space]);
 
   const begin = useCallback(
@@ -329,9 +334,10 @@ export default function CheckScreen() {
     dockActions && !inlineDock ? (
       <View
         style={{
-          // Level 2 is flat (DESIGN.md §5, §8.7): no shadow, one 1dp top hairline (the sheen edge in dark).
+          // The dock floats on the page (DESIGN.md §8.7, showcase 04_report): page fill, no shadow, and a 1dp top
+          // hairline (the sheen edge in dark) only while content scrolls under it.
           backgroundColor: t.components.actionBar.bg,
-          borderTopWidth: 1,
+          borderTopWidth: contentUnder ? 1 : 0,
           borderTopColor: t.dark ? t.colors.sheenEdge : t.components.actionBar.border,
           paddingTop: t.components.actionBar.paddingTop,
           paddingHorizontal: t.components.actionBar.paddingX,
@@ -346,11 +352,7 @@ export default function CheckScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: t.colors.bg, paddingTop: insets.top }}>
-      <AppBar
-        onBack={goBack}
-        title={state.phase === 'idle' || !origin ? 'Check a product' : undefined}
-        center={state.phase === 'idle' || !origin ? undefined : <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} />}
-      />
+      <AppBar onBack={goBack} title="Your check" />
 
       {state.phase === 'crop' ? (
         <CropStep uri={state.image.uri} width={state.image.width} height={state.image.height} onCropped={flow.sendCrop} onCancel={goBack} />
@@ -376,7 +378,12 @@ export default function CheckScreen() {
           }}
         >
           {state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
-            <ProductHeader title={header} meta={headerMeta} />
+            <View style={{ gap: t.space[3] }}>
+              {origin ? <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} /> : null}
+              <ProductHeader title={header} meta={headerMeta} glyph={categoryGlyph(headerProduct?.category ?? category)} />
+            </View>
+          ) : origin && state.phase !== 'idle' ? (
+            <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} />
           ) : null}
 
           {usingDemo && state.phase === 'confirm' ? <Tag label={`${COPY.reading.demo}: labelled sample readings`} variant="demo" /> : null}

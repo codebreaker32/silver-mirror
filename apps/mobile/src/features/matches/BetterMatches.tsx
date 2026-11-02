@@ -103,8 +103,8 @@ function MatchDestination({ destination }: { destination: string }) {
 }
 
 /**
- * Better matches (DESIGN.md §9.5, showcase 06_discover): section head, the gradient banner with the honesty line, one
- * scrolling rail of reading filter chips (selected = slate + check), one shared destination line, product cards (all
+ * Better matches (DESIGN.md §9.5, showcase 06_discover order): section head, one scrolling rail of reading filter chips
+ * (selected = slate + check), the gradient banner with the honesty line, one shared destination line, product cards (all
  * alike, so none reads as featured or paid; no stars, hearts or ratings), then the store searches as one chip row
  * with a shared destination line.
  */
@@ -122,6 +122,21 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
     <View testID="better-matches" style={{ gap: t.space[4] }}>
       <View style={{ gap: t.space[3] }}>
         <SectionHeader title="Better matches" />
+        {filters.length && ready.length > 1 ? (
+          <ChipRail accessibilityLabel="Filter matches by reading">
+            <Chip label="All" selected={!active} onPress={() => setReading(null)} testID="match-filter-all" />
+            {filters.map((f) => (
+              <Chip
+                key={f.reading}
+                label={f.label}
+                selected={active === f.reading}
+                onPress={() => setReading(active === f.reading ? null : f.reading)}
+                accessibilityLabel={`${f.label}: ${f.count} of ${ready.length} matches`}
+                testID={`match-filter-${f.reading.toLowerCase().replace(/\s+/g, '-')}`}
+              />
+            ))}
+          </ChipRail>
+        ) : null}
         {skinType ? <MatchesBanner skinType={skinType} /> : <Honesty />}
       </View>
       {!keyProfile ? <Body muted>Scan, or use the Demo reading, to rank catalogue products by fit to your readings.</Body> : null}
@@ -136,21 +151,6 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
           <Txt variant="bodyStrong">{COPY.noMatches}</Txt>
           <Caption>{COPY.catalogCount(state.catalogCount)}</Caption>
         </Card>
-      ) : null}
-      {filters.length && ready.length > 1 ? (
-        <ChipRail accessibilityLabel="Filter matches by reading">
-          <Chip label="All" selected={!active} onPress={() => setReading(null)} testID="match-filter-all" />
-          {filters.map((f) => (
-            <Chip
-              key={f.reading}
-              label={f.label}
-              selected={active === f.reading}
-              onPress={() => setReading(active === f.reading ? null : f.reading)}
-              accessibilityLabel={`${f.label}: ${f.count} of ${ready.length} matches`}
-              testID={`match-filter-${f.reading.toLowerCase().replace(/\s+/g, '-')}`}
-            />
-          ))}
-        </ChipRail>
       ) : null}
       {shown.length ? (
         <View style={{ gap: t.components.productMatchCard.listGap }}>

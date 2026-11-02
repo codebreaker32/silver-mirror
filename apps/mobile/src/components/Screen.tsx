@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useRef, useState, type ReactNode } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -72,7 +72,7 @@ interface ScreenProps {
   /** A node in the centred app-bar title slot instead of `title`. */
   appBarCenter?: ReactNode;
   children: ReactNode;
-  /** Sticky footer (the action dock / consent pair) on surface-raised with a hairline. */
+  /** Sticky footer (the action dock / consent pair) floating on the page; a hairline only while content sits under it. */
   footer?: ReactNode;
   scroll?: boolean;
   testID?: string;
@@ -91,6 +91,15 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
   // a hairline marks that edge once the body has scrolled, so no heading reads as sliding under the status icons.
   const edge = inTab && !appBar;
   const [scrolled, setScrolled] = useState(false);
+  // The footer dock floats on the page (DESIGN.md §8.7, showcase 04_report): its top hairline shows only while the body
+  // has content under it (offset + viewport < content height).
+  const geo = useRef({ y: 0, viewport: 0, content: 0 });
+  const [under, setUnder] = useState(false);
+  const measure = () => {
+    const { y, viewport, content } = geo.current;
+    const next = viewport > 0 && y + viewport < content - 1;
+    if (next !== under) setUnder(next);
+  };
   const body = <View style={{ paddingHorizontal: t.spacing.gutter, paddingBottom: t.spacing.section, gap: t.spacing.stackLg }}>{children}</View>;
   return (
     <SafeAreaView testID={testID} edges={['top', 'left', 'right']} style={{ flex: 1, backgroundColor: t.colors.bg }}>
@@ -101,11 +110,29 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="handled"
             scrollEventThrottle={32}
-            onScroll={
-              edge
+            onScroll={(e) => {
+              if (edge) {
+                const past = e.nativeEvent.contentOffset.y > t.space[2];
+                if (past !== scrolled) setScrolled(past);
+              }
+              if (footer) {
+                geo.current.y = e.nativeEvent.contentOffset.y;
+                measure();
+              }
+            }}
+            onLayout={
+              footer
                 ? (e) => {
-                    const past = e.nativeEvent.contentOffset.y > t.space[2];
-                    if (past !== scrolled) setScrolled(past);
+                    geo.current.viewport = e.nativeEvent.layout.height;
+                    measure();
+                  }
+                : undefined
+            }
+            onContentSizeChange={
+              footer
+                ? (_w, h) => {
+                    geo.current.content = h;
+                    measure();
                   }
                 : undefined
             }
@@ -127,9 +154,8 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
       {footer ? (
         <View
           style={{
-            ...t.components.actionBar.shadow,
-            borderWidth: 0,
-            borderTopWidth: 1,
+            backgroundColor: t.colors.bg,
+            borderTopWidth: scroll && under ? 1 : 0,
             borderTopColor: t.dark ? t.colors.sheenEdge : t.components.actionBar.border,
             paddingTop: t.components.actionBar.paddingTop,
             paddingHorizontal: t.components.actionBar.paddingX,

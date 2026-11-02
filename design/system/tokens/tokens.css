@@ -760,7 +760,7 @@
   --sk-button-translucent-type-tracking: var(--sk-type-button-tracking);
   --sk-button-translucent-fg-disabled: var(--sk-color-disabled-fg);
   --sk-button-translucent-border-disabled: var(--sk-color-disabled-bg);
-  --sk-action-bar-bg: var(--sk-elevation-2-surface);
+  --sk-action-bar-bg: var(--sk-color-bg);
   --sk-action-bar-border: var(--sk-elevation-2-border);
   --sk-action-bar-shadow: var(--sk-elevation-2-shadow);
   --sk-action-bar-padding-top: var(--sk-space-3);

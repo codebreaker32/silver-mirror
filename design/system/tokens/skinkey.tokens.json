@@ -1129,8 +1129,8 @@
       }
     },
     "actionBar": {
-      "$rule": "Sticky dock on /check: ONE primary pill naming its destination ('Back to Nykaa listing'), plus a 48dp round tonal 'More' button that opens the store-search sheet. 'Better matches' pill hides once that section is on screen. Border-top and elevation.2 appear only while content scrolls under it. Rendered after the ScrollView so TalkBack reaches it last. At font scale >= 1.5 the actions move inline.",
-      "bg": "{elevation.2.surface}",
+      "$rule": "Sticky dock on /check: ONE primary pill naming its destination ('Back to Nykaa listing'), plus a 48dp round tonal 'More' button that opens the store-search sheet. 'Better matches' pill hides once that section is on screen. It floats on the page (showcase 04_report): page fill, no shadow; a 1dp top hairline (sheen edge in dark) appears only while content scrolls under it. Rendered after the ScrollView so TalkBack reaches it last. At font scale >= 1.5 the actions move inline.",
+      "bg": "{color.bg}",
       "border": "{elevation.2.border}",
       "shadow": "{elevation.2}",
       "paddingTop": "{space.3}",
