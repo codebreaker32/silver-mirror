@@ -14,15 +14,15 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "peerDependencies": {
-    "@expo-google-fonts/commissioner": "*",
-    "@expo-google-fonts/newsreader": "*",
+    "@expo-google-fonts/geist": "*",
+    "@expo-google-fonts/noto-serif-display": "*",
     "react-native": "*"
   },
   "peerDependenciesMeta": {
-    "@expo-google-fonts/commissioner": {
+    "@expo-google-fonts/geist": {
       "optional": true
     },
-    "@expo-google-fonts/newsreader": {
+    "@expo-google-fonts/noto-serif-display": {
       "optional": true
     },
     "react-native": {

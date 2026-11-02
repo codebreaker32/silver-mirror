@@ -1,38 +1,26 @@
 {
   "$meta": {
-    "name": "SkinKey",
-    "version": "1.1.0",
-    "date": "2026-11-01",
-    "direction": "Clay & Ink, with four grafts from Deep Teal",
-    "grafts": [
-      "Provenance 'Where this comes from' ledger set like a dispensing label: small-caps keys SKIN / PRODUCT / LIMITS, a 1dp ink rule on top and hairline rows (component.provenanceLedger)",
-      "Verdict tint confined to the verdict HEAD; reasons sit on the plain screen surface (component.verdictCard.body has no tint)",
-      "Band meters drawn in neutral ink, never the accent (semantic meter.*)",
-      "Pharmacist-at-counter icon (with one bottle on the counter) for the medicine gate; the mortar and pestle is retired (icon.verdict.medicine)"
-    ],
+    "name": "Silver Mirror",
+    "version": "2.0.0",
+    "date": "2026-11-02",
+    "direction": "Silver Mirror: pearl and lavender-silver surfaces, liquid-silver brand sheen, deep slate pills, greige warmth, a designed graphite dark",
+    "lineage": "Replaces Clay & Ink v1.1 (archived in design/system/directions/). Same three layers and the same component keys, so the app re-skins without code changes; new roles are additive. Product law kept: CAUTION never red, UNKNOWN never an error, MEDICINE is ink only, colour never alone, 48dp targets, 12dp type floor.",
     "units": "All sizes are dp (React Native density-independent px). CSS output converts 1dp = 1px. letterSpacing is in dp, as React Native expects; CSS output also gives em.",
     "aliasSyntax": {
-      "{sand.100}": "primitive colour (primitive.color.<ramp>.<step>)",
+      "{pearl.50}": "primitive colour (primitive.color.<ramp>.<step>)",
       "{color.text}": "semantic colour in the active mode (semantic.color.<mode>.<path>)",
       "{space.4} {radius.md} {type.button} {elevation.1} {duration.press} {ease.standard} {touch.min} {icon.lg} {z.sheet}": "cross-references inside the component layer"
     },
     "tuningHistory": [
-      "Started from clay-ink.tokens.json values (86 pairs, all passing) and applied the judge fixes before gating.",
-      "text-muted light #655B4D -> #564D41 (sand.700) so a real third level fits: text-subtle #6B6152 still reaches 4.77:1 on bg-sunken. Dark text-subtle sand.450 #9E9282 reaches 5.01:1 on surface-raised (and 4.68:1 as disabled-fg on the sand.850 disabled fill).",
-      "border-strong unified to sand.500 #807464 in both modes (lowest: 3.35:1 on dark surface-raised; 3.58:1 on light bg-sunken).",
-      "Dark accent #B0C5C7 (read as disabled) -> ink.300 #86A4A7 with ink.950 #0C171A text, 6.84:1. Dark accent-pressed ink.400 redefined #5E8286 -> #6B8C90 so the label still reaches 5.01:1. Dark focus ring moved to ink.200 so it stays visible around the deepened button.",
-      "Verdict borders raised from decorative hairlines (#3F5534 / #5E4920 in dark, about 1.4:1) to the 500 step of each hue, gated at 3:1 against bg and surface in both modes. Fixes the dark CAUTION edge that disappeared.",
-      "Verdict icons get their own 600 (light) / 400 (dark) step: CAUTION icon #8A5D12 is 4.65:1 on its tint, above the Deep Teal fix target #95620F (4.22:1 here).",
-      "Meter filled moved from chip-fg to sand.800 / sand.150 (neutral ink); empty stays a full-opacity border-strong outline.",
-      "Checker first run: 228 pairs, 0 contrast failures, 2 lint failures (both rule false-positives: HSL saturation overstated near-white sand; the mortar-and-pestle test matched the 'no mortar' note). Rules corrected; negative test with six planted defects caught all six.",
-      "v1.1 (critique round 2). Verdict head: inset 3dp stripe deleted (no rule token); sentence set in Newsreader type.verdictLine 20/26; 1dp tinted border; radius.lg 12. FITS and CAUTION heads have near-equal luminance, so the 24dp silhouette and the caps label carry the difference in greyscale (documented, not hidden).",
-      "v1.1. UNKNOWN head moved off cool slate onto warm paper (sand.150 light / sand.850 dark) with a dashed border, so it no longer reads as the ink 'info, tap me' family. Dark FITS and CAUTION fills desaturated about 30% (moss.900 #1E2A1A -> #1F281C, ochre.900 #2D2313 -> #292217).",
-      "v1.1. Dark accent-subtle ink.900 -> ink.700 #253D41 so the selected nav pill reads (1.33:1 on the bar, matching light); ink.100 on it is 8.55:1. Nav selection is carried by weight (600 vs 400) and a 2.25 stroke, not colour alone.",
-      "v1.1. New focus-ring-inverse (ink.200 light / ink.700 dark) for the snackbar, and focus-ring-overlay (white + 1dp rgba(0,0,0,0.6) halo) for camera controls; both gated.",
-      "v1.1. Medicine head is no longer a box: verdict.medicine.bg = the screen bg and component borderWidth 0. The pharmacist icon gains one bottle on the counter.",
-      "v1.1. Shadow colour is a primitive (sand.shadow #423B32) aliased through color.shadow; dark is transparent.",
-      "v1.1. Reason line 18/26 400 -> 19/26 500 with a 6dp fact gap; display and title use a bundled Newsreader 36pt optical-size instance in RN (opsz axis on the web).",
-      "v1.1. Every fixed height on a text-bearing part is now minHeight (appBar, bottomNav, tag/hint use visualMinHeight because they are not targets). A lint fails any 'height' key next to a type token."
+      "v2.0 Silver Mirror (2026-11-02). Source: design/reference/silver-mirror-moodboard.md (Aman's moodboard), critique-current.md and dribbble-patterns.md.",
+      "Neutrals are one cool ramp with a faint lavender cast (hue about 250 degrees, saturation under 12%): pearl (light surfaces), silver (mid greys, text levels), graphite (dark surfaces). No warm/cool mixing inside a theme.",
+      "Primary = deep slate #3B3F52 pill with pearl label (9.6:1). Dark primary is inverted: pearl #F6F5F8 pill with slate #2F3243 label (10.9:1), so the one action per screen is the brightest object in a graphite room.",
+      "UNKNOWN head is pearl/graphite neutral with a dashed slate edge, not a slate fill, so it can never be mistaken for the slate primary pill (critique S10 / 5.3). FITS = muted sage, CAUTION = soft amber (hue 37-39 degrees in every role), MEDICINE = ink outline only.",
+      "Greige #CFC4BB is a fill only (1.6:1 on pearl): Demo-reading badge, focus tiles. Never text, never a meaningful edge.",
+      "Dark theme is graphite #121319 with surfaces stepping lighter (#1A1B23, #20212A), a lavender-silver sheen gradient on hero zones and a 1dp top highlight on raised cards. No shadows in dark; elevation is tone.",
+      "Type: Noto Serif Display (high-contrast, has the rupee sign) for the wordmark, display and title only, never below 20dp. Geist (has the rupee sign, tabular figures) for every control, label, reason and body line.",
+      "Paper grain retired (opacity 0 in both modes); depth now comes from soft slate-tinted offset shadows in light and tone steps in dark.",
+      "Icon stroke 1.5 (moodboard thin line); active tab 2.0 so selection is stroke + weight + pill, never colour alone."
     ],
     "sourceOfTruth": "This file. theme.ts and tokens.css are generated by build-tokens.mjs; check-contrast.mjs gates every pair. Do not hand-edit the outputs."
   },
@@ -40,152 +28,209 @@
     "color": {
       "white": "#FFFFFF",
       "black": "#000000",
-      "sand": {
-        "$description": "Warm paper neutrals. Half steps (25, 150, 450, 850, 925, 975) exist because the light and dark surface stacks need finer tone steps than a plain 11-step ramp gives. 'shadow' is the clay shadow tint used by light-mode elevation only.",
-        "25": "#FFFCF7",
-        "50": "#FAF7F2",
-        "100": "#F3EEE6",
-        "150": "#EAE3D8",
-        "200": "#DDD3C5",
-        "300": "#C4B8A6",
-        "400": "#B0A595",
-        "450": "#9E9282",
-        "500": "#807464",
-        "600": "#6B6152",
-        "700": "#564D41",
-        "800": "#38332B",
-        "850": "#2E2A24",
-        "900": "#28251F",
-        "925": "#1E1C18",
-        "950": "#151411",
-        "975": "#100F0D",
-        "shadow": "#423B32"
+      "pearl": {
+        "$description": "Light surfaces. Cool off-white with a faint lavender cast (moodboard #F6F5F8).",
+        "25": "#FCFBFD",
+        "50": "#F6F5F8",
+        "100": "#EFEEF3",
+        "150": "#E7E5EC",
+        "200": "#DCDAE3",
+        "300": "#C6C3CF"
       },
-      "ink": {
-        "$description": "The single accent: deep blue-green printing ink. Used for buttons, links, focus and selection only. Never a verdict, never a meter.",
-        "50": "#EDF2F2",
-        "100": "#D5E0E1",
-        "200": "#B0C5C7",
-        "300": "#86A4A7",
-        "400": "#6B8C90",
-        "500": "#43666A",
-        "600": "#324F53",
-        "700": "#253D41",
-        "800": "#1B2F32",
-        "900": "#132326",
-        "950": "#0C171A"
+      "silver": {
+        "$description": "Mid greys from the same cool ramp: secondary text levels and meaningful edges.",
+        "400": "#A8A5B3",
+        "450": "#9895A4",
+        "500": "#7E7B8B",
+        "600": "#636070",
+        "700": "#4B4958"
       },
-      "moss": {
-        "$description": "FITS. Muted moss green, kept well away from the ink accent's hue.",
-        "50": "#F2F5EE",
-        "100": "#E5EBDD",
-        "200": "#CEDAC2",
-        "300": "#B9CCA8",
-        "400": "#9DB58A",
-        "500": "#6E8659",
-        "600": "#4A6339",
-        "700": "#34492A",
-        "800": "#283A21",
-        "900": "#1F281C",
-        "950": "#131B10"
-      },
-      "ochre": {
-        "$description": "CAUTION. Ochre or turmeric, hue 35 to 45 degrees. Never red, never an alarm.",
-        "50": "#FAF3E5",
-        "100": "#F3E6CC",
-        "200": "#EDD6A6",
-        "300": "#E6C482",
-        "400": "#D9AE5C",
-        "500": "#A0752A",
-        "600": "#8A5D12",
-        "700": "#62410A",
-        "800": "#47300B",
-        "900": "#292217",
-        "950": "#1D160B"
+      "graphite": {
+        "$description": "Dark theme surfaces and light-theme ink. Deep slate-graphite, never pure black.",
+        "700": "#3A3B47",
+        "750": "#30313C",
+        "800": "#272832",
+        "850": "#20212A",
+        "900": "#1A1B23",
+        "925": "#16171E",
+        "950": "#121319",
+        "975": "#0E0F14"
       },
       "slate": {
-        "$description": "UNKNOWN icon, label and dashed edge only. The UNKNOWN head fill is warm sand, so slate never reads as the ink accent family.",
-        "50": "#F2F4F4",
-        "100": "#E6E8E8",
-        "200": "#D2D8DB",
-        "300": "#BCC5CA",
-        "400": "#9AA5AC",
-        "500": "#76828A",
-        "600": "#56626A",
-        "700": "#3B464D",
-        "800": "#2C353B",
-        "900": "#21262A",
-        "950": "#15191C"
+        "$description": "Deep slate navy (moodboard #3B3F52): primary pills, the active tab, links, focus. UNKNOWN uses it only for its icon, label and dashed edge. 'shadow' tints light-mode elevation.",
+        "50": "#F0F1F6",
+        "100": "#E1E4EE",
+        "200": "#C7CCDB",
+        "300": "#A6ADC2",
+        "400": "#848CA5",
+        "500": "#666E88",
+        "600": "#50576F",
+        "700": "#3B3F52",
+        "800": "#2F3243",
+        "900": "#242635",
+        "950": "#1A1C27",
+        "shadow": "#2A2D40"
+      },
+      "lavender": {
+        "$description": "Low-saturation lavender-silver: icon discs, the dark focus ring, the brand sheen. Kept under 30% saturation (no 'AI purple').",
+        "50": "#F4F2FA",
+        "100": "#ECE9F5",
+        "200": "#DDD8EE",
+        "300": "#BEB6DE",
+        "400": "#9C93C6",
+        "600": "#5D5585",
+        "700": "#463F69",
+        "800": "#34304F",
+        "900": "#28253D"
+      },
+      "greige": {
+        "$description": "Warm greige/taupe (moodboard #CFC4BB). A fill only: badges and focus tiles. Never text on pearl, never a meaningful edge.",
+        "100": "#F3EFEB",
+        "200": "#E4DCD5",
+        "300": "#CFC4BB",
+        "400": "#B3A69B",
+        "600": "#7A6C60",
+        "700": "#5E5248",
+        "800": "#4A4038",
+        "900": "#2E2823"
+      },
+      "chrome": {
+        "$description": "Liquid-silver gradient stops for the brand mark and the pearl hero. Decorative only; never carries text contrast on its own.",
+        "50": "#FBFBFD",
+        "100": "#EEEDF3",
+        "200": "#D9D8E1",
+        "300": "#BDBBC9",
+        "400": "#9F9DAE",
+        "500": "#838194",
+        "600": "#686678",
+        "700": "#4F4D5E",
+        "lav": "#CBC5E0"
+      },
+      "sage": {
+        "$description": "FITS. Muted sage-teal, far from the slate accent's hue.",
+        "50": "#F0F6F3",
+        "100": "#E2EEE8",
+        "200": "#C4DDD2",
+        "300": "#97C0B0",
+        "400": "#74A593",
+        "500": "#568676",
+        "600": "#3D6B5C",
+        "700": "#2B5145",
+        "800": "#213E35",
+        "900": "#1A2A25",
+        "950": "#121D19"
+      },
+      "amber": {
+        "$description": "CAUTION. Soft amber, hue 37-39 degrees in every step. Never red, never an alarm.",
+        "50": "#FBF5EA",
+        "100": "#F5EAD6",
+        "200": "#EDD6AE",
+        "300": "#E3C186",
+        "400": "#D4A65A",
+        "500": "#A57A2F",
+        "600": "#8A6118",
+        "700": "#66460C",
+        "800": "#4A340E",
+        "900": "#2A2317",
+        "950": "#1E180C"
       }
     }
   },
   "semantic": {
     "color": {
       "light": {
-        "bg": "{sand.100}",
-        "bg-sunken": "{sand.150}",
-        "surface": "{sand.50}",
-        "surface-raised": "{sand.25}",
-        "text": "{sand.925}",
-        "text-muted": "{sand.700}",
-        "text-subtle": "{sand.600}",
-        "border": "{sand.200}",
-        "border-strong": "{sand.500}",
-        "accent": "{ink.800}",
-        "on-accent": "{sand.50}",
-        "accent-pressed": "{ink.700}",
-        "accent-subtle": "{ink.100}",
-        "on-accent-subtle": "{ink.800}",
-        "link": "{ink.700}",
-        "link-pressed": "{ink.800}",
-        "focus-ring": "{ink.500}",
-        "focus-ring-inverse": "{ink.200}",
+        "bg": "{pearl.50}",
+        "bg-sunken": "{pearl.100}",
+        "surface": "{pearl.25}",
+        "surface-raised": "{white}",
+        "text": "{graphite.900}",
+        "text-muted": "{silver.700}",
+        "text-subtle": "{silver.600}",
+        "border": "{pearl.200}",
+        "border-strong": "{silver.500}",
+        "accent": "{slate.700}",
+        "on-accent": "{pearl.50}",
+        "accent-pressed": "{slate.600}",
+        "accent-subtle": "{slate.100}",
+        "on-accent-subtle": "{slate.800}",
+        "secondary-bg": "{pearl.150}",
+        "secondary-bg-pressed": "{pearl.200}",
+        "on-secondary": "{graphite.900}",
+        "accent-warm": "{greige.300}",
+        "on-accent-warm": "{greige.800}",
+        "icon-disc": "{lavender.100}",
+        "on-icon-disc": "{slate.700}",
+        "bracket": "{slate.500}",
+        "link": "{slate.600}",
+        "link-pressed": "{slate.700}",
+        "focus-ring": "{slate.500}",
+        "focus-ring-inverse": "{lavender.300}",
         "focus-ring-overlay": "{white}",
-        "overlay": "rgba(30, 28, 24, 0.40)",
-        "overlay-camera": "rgba(16, 15, 13, 0.62)",
+        "overlay": "rgba(18, 19, 25, 0.40)",
+        "overlay-camera": "rgba(14, 15, 20, 0.62)",
         "on-overlay": "{white}",
-        "overlay-halo": "rgba(0, 0, 0, 0.60)",
-        "inverse-surface": "{sand.850}",
-        "inverse-text": "{sand.100}",
-        "inverse-link": "{ink.200}",
-        "disabled-bg": "{sand.150}",
-        "disabled-fg": "{sand.600}",
-        "shadow": "{sand.shadow}",
+        "overlay-halo": "rgba(14, 15, 20, 0.60)",
+        "inverse-surface": "{graphite.850}",
+        "inverse-text": "{pearl.100}",
+        "inverse-link": "{lavender.200}",
+        "disabled-bg": "{pearl.150}",
+        "disabled-fg": "{silver.600}",
+        "shadow": "{slate.shadow}",
+        "sheen-edge": "rgba(255, 255, 255, 0.00)",
         "state": {
-          "pressed": "rgba(30, 28, 24, 0.08)",
-          "hover": "rgba(30, 28, 24, 0.05)",
-          "ripple": "rgba(30, 28, 24, 0.12)",
-          "ripple-on-accent": "rgba(250, 247, 242, 0.18)"
+          "pressed": "rgba(26, 27, 35, 0.08)",
+          "hover": "rgba(26, 27, 35, 0.05)",
+          "ripple": "rgba(26, 27, 35, 0.12)",
+          "ripple-on-accent": "rgba(246, 245, 248, 0.18)"
+        },
+        "sheen": {
+          "start": "#FDFCFE",
+          "lavender": "#ECE8F4",
+          "silver": "#E4E3EA",
+          "end": "{pearl.50}"
+        },
+        "mark": {
+          "tile-top": "{white}",
+          "tile-bottom": "{pearl.150}",
+          "tile-edge": "{pearl.200}",
+          "chrome-hi": "{chrome.50}",
+          "chrome-1": "{chrome.200}",
+          "chrome-2": "{chrome.400}",
+          "chrome-3": "{chrome.lav}",
+          "chrome-4": "{chrome.600}",
+          "chrome-lo": "{chrome.700}",
+          "glint": "{white}",
+          "shade": "{slate.shadow}"
         },
         "verdict": {
           "fits": {
-            "bg": "{moss.100}",
-            "fg": "{moss.700}",
-            "border": "{moss.500}",
-            "icon": "{moss.600}"
+            "bg": "{sage.100}",
+            "fg": "{sage.700}",
+            "border": "{sage.500}",
+            "icon": "{sage.600}"
           },
           "caution": {
-            "bg": "{ochre.100}",
-            "fg": "{ochre.700}",
-            "border": "{ochre.500}",
-            "icon": "{ochre.600}"
+            "bg": "{amber.100}",
+            "fg": "{amber.700}",
+            "border": "{amber.500}",
+            "icon": "{amber.600}"
           },
           "unknown": {
-            "bg": "{sand.150}",
-            "fg": "{slate.700}",
+            "bg": "{pearl.100}",
+            "fg": "{slate.800}",
             "border": "{slate.500}",
             "icon": "{slate.600}"
           },
           "medicine": {
-            "bg": "{sand.100}",
-            "fg": "{sand.925}",
-            "border": "{sand.925}",
-            "icon": "{sand.925}"
+            "bg": "{pearl.50}",
+            "fg": "{graphite.900}",
+            "border": "{graphite.900}",
+            "icon": "{graphite.900}"
           }
         },
         "meter": {
-          "filled": "{sand.800}",
-          "empty": "{sand.500}"
+          "filled": "{graphite.800}",
+          "empty": "{silver.500}"
         },
         "qr": {
           "module": "{black}",
@@ -193,70 +238,98 @@
         }
       },
       "dark": {
-        "bg": "{sand.950}",
-        "bg-sunken": "{sand.975}",
-        "surface": "{sand.925}",
-        "surface-raised": "{sand.900}",
-        "text": "{sand.100}",
-        "text-muted": "{sand.400}",
-        "text-subtle": "{sand.450}",
-        "border": "{sand.800}",
-        "border-strong": "{sand.500}",
-        "accent": "{ink.300}",
-        "on-accent": "{ink.950}",
-        "accent-pressed": "{ink.400}",
-        "accent-subtle": "{ink.700}",
-        "on-accent-subtle": "{ink.100}",
-        "link": "{ink.200}",
-        "link-pressed": "{ink.100}",
-        "focus-ring": "{ink.200}",
-        "focus-ring-inverse": "{ink.700}",
+        "bg": "{graphite.950}",
+        "bg-sunken": "{graphite.975}",
+        "surface": "{graphite.900}",
+        "surface-raised": "{graphite.850}",
+        "text": "{pearl.100}",
+        "text-muted": "{pearl.300}",
+        "text-subtle": "{silver.400}",
+        "border": "{graphite.750}",
+        "border-strong": "{silver.500}",
+        "accent": "{pearl.50}",
+        "on-accent": "{slate.800}",
+        "accent-pressed": "{pearl.300}",
+        "accent-subtle": "{slate.800}",
+        "on-accent-subtle": "{slate.100}",
+        "secondary-bg": "{graphite.750}",
+        "secondary-bg-pressed": "{graphite.700}",
+        "on-secondary": "{pearl.100}",
+        "accent-warm": "{greige.800}",
+        "on-accent-warm": "{greige.200}",
+        "icon-disc": "{lavender.800}",
+        "on-icon-disc": "{lavender.200}",
+        "bracket": "{slate.300}",
+        "link": "{slate.200}",
+        "link-pressed": "{slate.100}",
+        "focus-ring": "{lavender.300}",
+        "focus-ring-inverse": "{slate.600}",
         "focus-ring-overlay": "{white}",
-        "overlay": "rgba(0, 0, 0, 0.60)",
-        "overlay-camera": "rgba(16, 15, 13, 0.62)",
+        "overlay": "rgba(8, 9, 12, 0.64)",
+        "overlay-camera": "rgba(14, 15, 20, 0.62)",
         "on-overlay": "{white}",
-        "overlay-halo": "rgba(0, 0, 0, 0.60)",
-        "inverse-surface": "{sand.150}",
-        "inverse-text": "{sand.925}",
-        "inverse-link": "{ink.700}",
-        "disabled-bg": "{sand.850}",
-        "disabled-fg": "{sand.450}",
+        "overlay-halo": "rgba(14, 15, 20, 0.60)",
+        "inverse-surface": "{pearl.150}",
+        "inverse-text": "{graphite.900}",
+        "inverse-link": "{slate.600}",
+        "disabled-bg": "{graphite.750}",
+        "disabled-fg": "{silver.400}",
         "shadow": "transparent",
+        "sheen-edge": "rgba(239, 238, 243, 0.07)",
         "state": {
-          "pressed": "rgba(243, 238, 230, 0.10)",
-          "hover": "rgba(243, 238, 230, 0.06)",
-          "ripple": "rgba(243, 238, 230, 0.14)",
-          "ripple-on-accent": "rgba(12, 23, 26, 0.16)"
+          "pressed": "rgba(239, 238, 243, 0.10)",
+          "hover": "rgba(239, 238, 243, 0.06)",
+          "ripple": "rgba(239, 238, 243, 0.14)",
+          "ripple-on-accent": "rgba(47, 50, 67, 0.16)"
+        },
+        "sheen": {
+          "start": "#262733",
+          "lavender": "#24222F",
+          "silver": "#1C1D25",
+          "end": "{graphite.950}"
+        },
+        "mark": {
+          "tile-top": "{graphite.750}",
+          "tile-bottom": "{graphite.900}",
+          "tile-edge": "{graphite.700}",
+          "chrome-hi": "{chrome.50}",
+          "chrome-1": "{chrome.200}",
+          "chrome-2": "{chrome.400}",
+          "chrome-3": "{chrome.lav}",
+          "chrome-4": "{chrome.500}",
+          "chrome-lo": "{chrome.600}",
+          "glint": "{white}",
+          "shade": "{graphite.975}"
         },
         "verdict": {
           "fits": {
-            "bg": "{moss.900}",
-            "fg": "{moss.300}",
-            "border": "{moss.500}",
-            "icon": "{moss.400}"
+            "bg": "{sage.900}",
+            "fg": "{sage.200}",
+            "border": "{sage.500}",
+            "icon": "{sage.300}"
           },
           "caution": {
-            "bg": "{ochre.900}",
-            "fg": "{ochre.300}",
-            "border": "{ochre.500}",
-            "icon": "{ochre.400}"
+            "bg": "{amber.900}",
+            "fg": "{amber.200}",
+            "border": "{amber.500}",
+            "icon": "{amber.400}"
           },
           "unknown": {
-            "bg": "{sand.850}",
-            "fg": "{slate.300}",
-            "border": "{slate.500}",
-            "icon": "{slate.400}"
+            "bg": "{graphite.850}",
+            "fg": "{slate.200}",
+            "border": "{slate.400}",
+            "icon": "{slate.300}"
           },
           "medicine": {
-            "bg": "{sand.950}",
-            "fg": "{sand.100}",
-            "border": "{sand.400}",
-            "icon": "{sand.100}"
+            "bg": "{graphite.950}",
+            "fg": "{pearl.100}",
+            "border": "{pearl.300}",
+            "icon": "{pearl.100}"
           }
         },
         "meter": {
-          "filled": "{sand.150}",
-          "empty": "{sand.500}"
+          "filled": "{pearl.150}",
+          "empty": "{silver.500}"
         },
         "qr": {
           "module": "{black}",
@@ -265,129 +338,128 @@
       },
       "$notes": {
         "border": "Decorative hairline (dividers, card edges). Never the only edge of a control; not gated under WCAG 1.4.11.",
-        "border-strong": "Edges that carry meaning: outlined buttons, inputs, empty meter segments, sheet handle. Gated at 3:1 on every surface.",
-        "text-subtle": "Third text level (timestamps, helper text). Still gated at 4.5:1 on every surface it can sit on, so it is never 'too faint to read'.",
-        "accent": "Light: near-black ink #1B2F32. Dark: deepened to ink.300 #86A4A7 with ink.950 #0C171A text (6.84:1), replacing the washed-out #B0C5C7 that judges read as disabled.",
-        "accent-pressed": "Moves toward the background, like a Material 3 state layer: lighter ink in light mode, darker ink in dark mode. Still >=4.5:1 with on-accent.",
-        "focus-ring": "2dp outline, 2dp offset, drawn over bg (so gated against surfaces, not the button fill). Dark uses ink.200 so the ring stays visible around the ink.300 button.",
-        "verdict": "bg/fg/border/icon apply to the verdict HEAD only. Reasons always sit on the plain screen surface. Border is a 1dp tinted edge, gated at 3:1. No leading stripe: in greyscale FITS and CAUTION heads are near-equal in tone, so the icon silhouette and the caps label carry the state.",
-        "verdict.medicine": "Not a box: the fill equals the screen bg and the component draws no border. Pharmacist icon at 32dp, one serif line, no verdict label. Not an alarm.",
+        "border-strong": "Edges that carry meaning: inputs, empty meter segments, sheet handle, pending step ring. Gated at 3:1 on every surface.",
+        "text-subtle": "Third text level (timestamps, helper text). Still gated at 4.5:1 on every surface it can sit on.",
+        "accent": "Light: deep slate #3B3F52 pill with pearl label. Dark: inverted, pearl #F6F5F8 pill with slate #2F3243 label. One filled primary per screen state.",
+        "secondary-bg": "Soft tonal pill for secondary actions (moodboard's translucent pill, made solid so contrast is measurable). No outline.",
+        "accent-warm": "Greige fill for the Demo-reading badge and focus tiles. Its label is on-accent-warm; greige is never text on pearl.",
+        "icon-disc": "Lavender circle behind a 1.5-stroke line icon (moodboard droplet disc): reading card, empty states, consent rows.",
+        "bracket": "Corner-bracket stroke for the face frame illustration on pearl or graphite. Over the live camera use on-overlay instead.",
+        "sheen": "Hero gradient stops (top-left start to bottom end, lavender band at 40%). Body text may sit on any stop (gated).",
+        "mark": "Brand tile and chrome-S gradient stops. Decorative; the wordmark next to the mark carries the name.",
+        "sheen-edge": "Dark only: a 1dp top highlight on raised cards and sheets, the 'silver sheen' that keeps dark from reading flat black. Transparent in light.",
+        "focus-ring": "2dp outline, 2dp offset, drawn over the surrounding surface. Dark uses lavender so it reads around the pearl pill.",
+        "verdict": "bg/fg/border/icon apply to the verdict HEAD only. Reasons sit on the plain surface. 1dp edge (dashed for UNKNOWN and name-only), gated at 3:1. No leading stripe.",
+        "verdict.medicine": "Not a box: fill equals the screen bg and the component draws no border. Pharmacist icon at 32dp, one serif line, no verdict label. Not an alarm.",
+        "verdict.unknown": "Neutral pearl / graphite fill with a dashed slate edge and the dashed-circle icon. Never a slate fill: that is the primary pill.",
         "meter": "Neutral ink only, never accent. Empty segments are a full-opacity 1dp border-strong outline (>=3:1).",
-        "overlay-camera": "Dims the live camera around the capture oval and barcode window. Gated for on-overlay text over a worst-case white frame.",
-        "qr": "QR is always black modules on a white field in both modes, for scanner reliability.",
-        "error": "SkinKey has no red. Errors are neutral: icon + text + 2dp text-colour field border. CAUTION is never an error colour.",
-        "focus-ring-inverse": "Focus ring on inverse surfaces (snackbar action). ink.200 on sand.850 light, ink.700 on sand.150 dark.",
-        "focus-ring-overlay": "Focus ring over the live camera or a photo: 2dp white outline with a 1dp overlay-halo inner ring, gated over a worst-case white and black frame.",
-        "overlay-halo": "1dp dark halo either side of white strokes over photos (try-on divider, overlay focus ring).",
-        "verdict.unknown": "Warm paper fill (sand.150 / sand.850) with a dashed slate edge and the dashed-circle icon. Not cool slate, so it never reads as 'info, tap me'.",
-        "accent-subtle": "Selected nav pill, selected segmented button. Dark is ink.700 so the pill is visible on the bar."
+        "overlay-camera": "Dims the live camera around the capture frame. Gated for on-overlay text over a worst-case white frame.",
+        "qr": "QR is always black modules on a white field in both modes, for scanner reliability (the only pure black in the system).",
+        "error": "Silver Mirror has no red. Errors are neutral: icon + text + 2dp text-colour field border. CAUTION is never an error colour."
       }
     }
   },
   "typography": {
     "family": {
       "serif": {
-        "name": "Newsreader",
-        "web": "\"Newsreader\", \"Iowan Old Style\", \"Source Serif 4\", Georgia, serif",
-        "role": "Reading content: display, titles, section heads, verdict line, reasons, product names, countdown",
-        "opticalSizing": "Web: load the opsz axis (6..72) and keep font-optical-sizing: auto. RN: display and title use the bundled 36pt static instance (serif-display); everything else uses the 16pt instances from @expo-google-fonts/newsreader."
+        "name": "Noto Serif Display",
+        "web": "\"Noto Serif Display\", \"Didot\", \"Bodoni 72\", Georgia, serif",
+        "role": "Wordmark (outlined SVG), screen display titles, the product name on /check, the verdict sentence. Never below 20dp.",
+        "opticalSizing": "Display cut: hairlines are fine by design, so the face is held at 20dp and up. Web: load wght 400..500 from Google Fonts."
       },
       "sans": {
-        "name": "Commissioner",
-        "web": "\"Commissioner\", system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
-        "role": "Controls, labels, verdict label, body, fine print"
+        "name": "Geist",
+        "web": "\"Geist\", system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "role": "Everything you operate or scan: controls, labels, section heads, reasons, body, fine print, numbers (tabular figures)."
       }
     },
     "expoFonts": {
       "$package": {
-        "serif": "@expo-google-fonts/newsreader",
-        "sans": "@expo-google-fonts/commissioner"
+        "serif": "@expo-google-fonts/noto-serif-display",
+        "sans": "@expo-google-fonts/geist"
       },
-      "$local": {
-        "Newsreader36pt_500Medium": "assets/fonts/Newsreader36pt_500Medium.ttf (static instance of Newsreader[opsz,wght] at opsz 36, wght 500; OFL)"
-      },
-      "serif-display": "Newsreader36pt_500Medium",
-      "serif-regular": "Newsreader_400Regular",
-      "serif-italic": "Newsreader_400Regular_Italic",
-      "serif-medium": "Newsreader_500Medium",
-      "sans-regular": "Commissioner_400Regular",
-      "sans-semibold": "Commissioner_600SemiBold"
+      "$local": {},
+      "$coverage": "Both faces contain U+20B9 INDIAN RUPEE SIGN (verified with fontTools on the build VM, 2026-11-02).",
+      "serif-display": "NotoSerifDisplay_400Regular",
+      "serif-medium": "NotoSerifDisplay_500Medium",
+      "sans-regular": "Geist_400Regular",
+      "sans-medium": "Geist_500Medium",
+      "sans-semibold": "Geist_600SemiBold"
     },
     "scale": {
       "display": {
         "font": "serif-display",
         "family": "serif",
-        "weight": 500,
+        "weight": 400,
         "size": 34,
         "lineHeight": 40,
-        "letterSpacing": -0.5,
-        "use": "Landing hero, onboarding headline, home 'Check a product'"
+        "letterSpacing": -0.6,
+        "use": "Home greeting, welcome headline, empty-state headline"
       },
       "title": {
         "font": "serif-display",
         "family": "serif",
-        "weight": 500,
+        "weight": 400,
         "size": 26,
         "lineHeight": 32,
         "letterSpacing": -0.3,
-        "use": "Product title on /check, screen titles, the medicine-gate line, consent lead clause"
+        "use": "Product title on /check, screen titles, the medicine-gate line"
       },
       "headline": {
-        "font": "serif-medium",
-        "family": "serif",
-        "weight": 500,
+        "font": "sans-semibold",
+        "family": "sans",
+        "weight": 600,
         "size": 20,
         "lineHeight": 26,
-        "letterSpacing": -0.1,
-        "use": "Card heads, 'Where this comes from', sheet titles, empty-state sentence, forecast sentence"
+        "letterSpacing": -0.2,
+        "use": "Card heads, sheet titles, 'Where this comes from', empty-state sentence"
       },
       "verdictLine": {
-        "font": "serif-regular",
+        "font": "serif-display",
         "family": "serif",
         "weight": 400,
         "size": 20,
-        "lineHeight": 26,
-        "letterSpacing": -0.1,
-        "use": "The verdict sentence under the label ('May not suit your readings. This is not a safety warning.'), one unit in one style"
+        "lineHeight": 27,
+        "letterSpacing": 0,
+        "use": "The verdict sentence under the label, one unit in one style"
       },
       "section": {
-        "font": "serif-medium",
-        "family": "serif",
-        "weight": 500,
-        "size": 18,
+        "font": "sans-semibold",
+        "family": "sans",
+        "weight": 600,
+        "size": 17,
         "lineHeight": 24,
-        "letterSpacing": 0,
-        "use": "Sentence-case section heads that replaced tracked-caps eyebrows: 'Why · 2 reasons', 'Readings by zone', 'What we keep'"
+        "letterSpacing": -0.1,
+        "use": "Sentence-case section heads: 'Why · 2 reasons', 'What stays on this phone', 'Better matches'"
       },
       "reason": {
-        "font": "serif-medium",
-        "family": "serif",
+        "font": "sans-medium",
+        "family": "sans",
         "weight": 500,
-        "size": 19,
-        "lineHeight": 26,
-        "letterSpacing": 0,
-        "use": "Reason reading line. Out-sizes the 15dp verdict label (P1); weight 500 so it leads the 16dp fact."
-      },
-      "reasonIndex": {
-        "font": "serif-italic",
-        "family": "serif",
-        "weight": 400,
         "size": 18,
         "lineHeight": 26,
+        "letterSpacing": -0.1,
+        "use": "Reason reading line. Out-sizes the 15dp verdict label (P1: reasons before verdicts)."
+      },
+      "reasonIndex": {
+        "font": "sans-medium",
+        "family": "sans",
+        "weight": 500,
+        "size": 15,
+        "lineHeight": 22,
         "letterSpacing": 0,
-        "italic": true,
         "numeric": "tabular",
-        "use": "01 / 02 / 03 reason and rank numerals"
+        "use": "Step numbers where order matters (share steps). Not decoration on candidates or matches."
       },
       "figure": {
         "font": "serif-display",
         "family": "serif",
-        "weight": 500,
+        "weight": 400,
         "size": 26,
         "lineHeight": 32,
         "letterSpacing": -0.3,
         "numeric": "tabular",
-        "use": "QR countdown ('29 min left')"
+        "use": "QR countdown ('29 min left'), catalogue count on /how"
       },
       "verdictLabel": {
         "font": "sans-semibold",
@@ -397,7 +469,7 @@
         "lineHeight": 20,
         "letterSpacing": 1.2,
         "transform": "uppercase",
-        "use": "FITS / CAUTION / UNKNOWN, with a 24dp icon. Never truncates; wraps at max font scale."
+        "use": "FITS / CAUTION / UNKNOWN, with a 24dp icon in a disc. Never truncates; wraps at max font scale."
       },
       "body": {
         "font": "sans-regular",
@@ -442,7 +514,7 @@
         "size": 13,
         "lineHeight": 16,
         "letterSpacing": 0.2,
-        "use": "Selected bottom-nav label, tags"
+        "use": "Selected tab label, tags"
       },
       "labelSmRegular": {
         "font": "sans-regular",
@@ -451,7 +523,7 @@
         "size": 13,
         "lineHeight": 16,
         "letterSpacing": 0.2,
-        "use": "Unselected bottom-nav label (selection is weight + stroke + pill, never colour alone)"
+        "use": "Unselected tab label (selection is weight + stroke + pill, never colour alone)"
       },
       "button": {
         "font": "sans-semibold",
@@ -467,10 +539,9 @@
         "family": "sans",
         "weight": 600,
         "size": 13,
-        "lineHeight": 16,
-        "letterSpacing": 0.8,
-        "transform": "uppercase",
-        "use": "Ledger keys SKIN / PRODUCT / WEATHER / LIMITS only. The verdict label is the only other caps line. No section eyebrows."
+        "lineHeight": 18,
+        "letterSpacing": 0.1,
+        "use": "Ledger keys only (Reading / Product / Rules / Limits), sentence case. The name is historical: no tracked caps, no eyebrows."
       },
       "caption": {
         "font": "sans-regular",
@@ -479,7 +550,7 @@
         "size": 13,
         "lineHeight": 18,
         "letterSpacing": 0.1,
-        "use": "Destination lines, disclosures, meter labels (Low / Med / High), timestamps"
+        "use": "Destination lines, disclosures, meter labels (Low / Medium / High), timestamps"
       },
       "fine": {
         "font": "sans-regular",
@@ -488,15 +559,16 @@
         "size": 12,
         "lineHeight": 16,
         "letterSpacing": 0.2,
-        "use": "Data credits only (Open-Meteo CC BY 4.0, Open Beauty Facts ODbL). The floor: nothing in SkinKey is smaller than 12."
+        "use": "Data credits only (Open-Meteo CC BY 4.0, Open Beauty Facts ODbL). The floor: nothing is smaller than 12."
       }
     },
     "rules": {
       "minSize": 12,
-      "numerals": "Dates, prices, SPF, countdowns and reason indices use tabular figures (RN fontVariant ['tabular-nums'], CSS font-variant-numeric: tabular-nums).",
-      "android": "includeFontPadding: false; textAlignVertical: 'center' on single-line labels. Do not set fontWeight on custom families in React Native: the weight is baked into the family key (Newsreader_500Medium). Check Commissioner tracking on a real Android device.",
-      "fontScaling": "allowFontScaling stays on and maxFontSizeMultiplier is 2.0 on every style (theme.ts textProps). Layouts reflow at 2.0x: buttons stack at 1.3x, ledger keys stack and the sticky action bar becomes inline at 1.5x, nav labels wrap to 2 lines. Verdict labels and reasons never truncate (no numberOfLines).",
-      "serifUse": "Serif for reading content; sans for controls and fine print. Never serif below 18dp.",
+      "serifMinSize": 20,
+      "numerals": "Dates, prices (₹), SPF, counts and step numbers use tabular figures (RN fontVariant ['tabular-nums'], CSS font-variant-numeric: tabular-nums).",
+      "android": "includeFontPadding: false; textAlignVertical: 'center' on single-line labels. Do not set fontWeight on custom families in React Native: the weight is baked into the family key (Geist_600SemiBold).",
+      "fontScaling": "allowFontScaling stays on and maxFontSizeMultiplier is 2.0 on every style (theme.ts textProps). Layouts reflow at 2.0x: buttons stack at 1.3x, ledger keys stack and the sticky action bar becomes inline at 1.5x, tab labels wrap to 2 lines. Verdict labels and reasons never truncate (no numberOfLines).",
+      "serifUse": "Serif = wordmark, display, title, the product name and the verdict sentence. Everything else is Geist. Never serif below 20dp.",
       "maxFontSizeMultiplier": 2.0,
       "web": "tokens.css sets font sizes in rem (16px root) and unitless line heights, so the browser text-size setting scales type without clipping. Spacing stays px."
     }
@@ -527,7 +599,7 @@
       "stack-md": 16,
       "stack-lg": 24,
       "section": 32,
-      "inset-card": 16,
+      "inset-card": 20,
       "inset-sheet": 24,
       "inline-icon-gap": 8,
       "target-gap": 8
@@ -536,24 +608,24 @@
   "radius": {
     "none": 0,
     "xs": 2,
-    "sm": 6,
-    "md": 8,
-    "lg": 12,
-    "xl": 16,
-    "sheet": 24,
+    "sm": 8,
+    "md": 14,
+    "lg": 20,
+    "xl": 24,
+    "sheet": 28,
     "full": 9999,
     "$usage": {
       "xs": "meter segments",
-      "sm": "tags, chips",
-      "md": "buttons, inputs, band tiles, snackbars",
-      "lg": "cards, verdict head, ledger, QR card",
-      "xl": "camera frames",
+      "sm": "tags, small badges",
+      "md": "focus tiles, snackbars, thumbnails, the icon tile",
+      "lg": "cards, verdict head, ledger, reading card, checklist card",
+      "xl": "camera and face frames",
       "sheet": "bottom sheet top corners",
-      "full": "icon buttons, nav indicator"
+      "full": "every button (pills), chips, fields, icon buttons, tab indicator"
     }
   },
   "elevation": {
-    "$approach": "Tone first. Light mode: paper stack (bg-sunken < bg < surface < surface-raised) plus one soft clay-tinted shadow, never pure black. Dark mode: tone steps and hairlines only, no shadows.",
+    "$approach": "Light: pearl stack (bg-sunken < bg < surface < surface-raised white) plus one soft slate-tinted offset shadow, never pure black, never a zero-offset halo. Dark: tone steps, a hairline and a 1dp sheen-edge on top; no shadows.",
     "light": {
       "0": {
         "surface": "{color.bg}",
@@ -564,41 +636,41 @@
         }
       },
       "1": {
-        "surface": "{color.surface}",
+        "surface": "{color.surface-raised}",
         "border": "{color.border}",
-        "shadow": "0 1px 2px 0 rgba(66, 59, 50, 0.06), 0 8px 20px -12px rgba(66, 59, 50, 0.22)",
+        "shadow": "0 1px 2px 0 rgba(42, 45, 64, 0.04), 0 8px 24px -10px rgba(42, 45, 64, 0.14)",
         "rn": {
-          "elevation": 1,
+          "elevation": 2,
           "shadowColor": "{color.shadow}",
-          "shadowOpacity": 0.1,
-          "shadowRadius": 8,
-          "shadowOffsetY": 2
+          "shadowOpacity": 0.08,
+          "shadowRadius": 14,
+          "shadowOffsetY": 4
         },
-        "use": "Cards on bg: profile card, product match, forecast, share teaching"
+        "use": "Cards on bg: reading card, product cards, checklist card, share tip"
       },
       "2": {
         "surface": "{color.surface-raised}",
         "border": "{color.border}",
-        "shadow": "0 -1px 0 0 rgba(66, 59, 50, 0.04), 0 -8px 24px -16px rgba(66, 59, 50, 0.28)",
+        "shadow": "0 -1px 0 0 rgba(42, 45, 64, 0.03), 0 -8px 24px -14px rgba(42, 45, 64, 0.20)",
         "rn": {
-          "elevation": 3,
+          "elevation": 4,
           "shadowColor": "{color.shadow}",
-          "shadowOpacity": 0.12,
-          "shadowRadius": 12,
-          "shadowOffsetY": -2
+          "shadowOpacity": 0.10,
+          "shadowRadius": 16,
+          "shadowOffsetY": -3
         },
-        "use": "Sticky action bar once content scrolls under it, bottom nav (shadow casts upward)"
+        "use": "Sticky action dock once content scrolls under it, tab bar (shadow casts upward)"
       },
       "3": {
         "surface": "{color.surface-raised}",
         "border": "{color.border}",
-        "shadow": "0 16px 40px -16px rgba(66, 59, 50, 0.32), 0 2px 6px 0 rgba(66, 59, 50, 0.08)",
+        "shadow": "0 18px 44px -18px rgba(42, 45, 64, 0.28), 0 2px 6px 0 rgba(42, 45, 64, 0.06)",
         "rn": {
-          "elevation": 6,
+          "elevation": 8,
           "shadowColor": "{color.shadow}",
-          "shadowOpacity": 0.16,
-          "shadowRadius": 20,
-          "shadowOffsetY": 8
+          "shadowOpacity": 0.14,
+          "shadowRadius": 24,
+          "shadowOffsetY": 10
         },
         "use": "Bottom sheets, snackbars, dialogs"
       }
@@ -635,24 +707,25 @@
         "rn": {
           "elevation": 0
         },
-        "use": "Sheets and snackbars get a border-strong edge instead of a shadow"
+        "use": "Sheets and snackbars get a border-strong edge and the sheen-edge highlight instead of a shadow"
       }
     }
   },
   "motion": {
-    "$personality": "Ink settling: unhurried, decelerating, no springs, no overshoot, nothing loops.",
+    "$personality": "Mirror settling: light glides across and comes to rest. Decelerating, no springs, no overshoot, nothing loops.",
     "duration": {
       "instant": 0,
       "press": 100,
       "state": 160,
-      "base": 240,
-      "enter": 320,
+      "base": 220,
+      "enter": 300,
       "verdictReveal": 320,
       "reasonStagger": 60,
-      "stepTick": 200,
-      "sheetEnter": 320,
-      "sheetExit": 240,
-      "screen": 320,
+      "stepTick": 220,
+      "bracketResolve": 420,
+      "sheetEnter": 300,
+      "sheetExit": 220,
+      "screen": 280,
       "crossfade": 120
     },
     "ease": {
@@ -663,7 +736,7 @@
           0,
           1
         ],
-        "use": "Default. Ink settling."
+        "use": "Default. Settling."
       },
       "decelerate": {
         "bezier": [
@@ -682,6 +755,15 @@
           1
         ],
         "use": "Exits and dismissals"
+      },
+      "glide": {
+        "bezier": [
+          0.16,
+          1,
+          0.3,
+          1
+        ],
+        "use": "The one authored moment: face-frame brackets closing in as each scan step completes (exponential ease-out)"
       },
       "linear": {
         "bezier": [
@@ -706,16 +788,17 @@
       "$rule": "Android: pass durations through AccessibilityInfo.getRecommendedTimeoutMillis. While TalkBack is on, a snackbar with an action stays until dismissed."
     },
     "patterns": {
-      "press": "bg to state.pressed (or accent-pressed) in {duration.press}; optional scale 0.98 as a transform only, so layout never shifts. Android: ripple in state.ripple.",
+      "press": "bg to state.pressed (or accent-pressed) in {duration.press}; scale 0.98 as a transform only, so layout never shifts. Android: ripple in state.ripple.",
       "verdictReveal": "opacity 0 to 1 and scale 0.98 to 1 over {duration.verdictReveal}, ease decelerate. One light haptic tick when the verdict lands; no extra haptic on CAUTION.",
       "reasons": "opacity 0 to 1 and translateY 6dp to 0, {duration.reasonStagger} stagger, max 3 items",
-      "processingStep": "Each tick draws once in {duration.stepTick}. The current step is a static filled ring; no spinner loop.",
+      "processingStep": "Each tick draws once in {duration.stepTick}. The current step is a static ring with a centre dot; no spinner loop.",
+      "bracketResolve": "On each completed scan step the four face-frame brackets move 4dp toward the centre over {duration.bracketResolve} with ease glide; after 'Deleted from YouCam' they settle closed. The single signature moment.",
       "sheet": "translateY from 100% with {ease.decelerate}, scrim fades in over {duration.state}",
       "screen": "Shared-axis fade-through, {duration.screen}"
     },
     "reducedMotion": {
       "$trigger": "AccessibilityInfo.isReduceMotionEnabled() / prefers-reduced-motion: reduce",
-      "rule": "Every transition becomes an opacity crossfade of {duration.crossfade}. No translate, no scale, no stagger. Step ticks appear without drawing. Countdown digits change without animating. (Grain is a static tile, so reduce motion does not change it.)",
+      "rule": "Every transition becomes an opacity crossfade of {duration.crossfade}. No translate, no scale, no stagger, brackets jump to their end position. Step ticks appear without drawing.",
       "duration": 120,
       "translate": 0,
       "scaleFrom": 1,
@@ -726,22 +809,22 @@
       "bounce",
       "overshoot (any bezier y outside 0..1)",
       "looping or pulsing animation",
-      "auto-rotating content",
-      "animated grain"
+      "shimmer sweeps on the mark or text",
+      "auto-rotating content"
     ]
   },
   "touch": {
     "min": 48,
     "gap": 8,
-    "$rule": "Every tappable element is a Pressable whose own box is at least 48 x 48dp, reached with minHeight/minWidth plus padding. hitSlop only where the parent already has 48dp of room (Android never delivers touches outside the parent). Never a nested <Text onPress> for an action: inline links become standalone rows in RN."
+    "$rule": "Every tappable element is a Pressable whose own box is at least 48 x 48dp, reached with minHeight/minWidth plus padding. hitSlop only where the parent already has 48dp of room. Never a nested <Text onPress> for an action."
   },
   "icon": {
     "sm": 16,
     "md": 20,
     "lg": 24,
     "xl": 32,
-    "stroke": 1.75,
-    "library": "lucide-react-native (web: lucide) at 1.75 stroke; custom SVGs drawn on the same 24dp grid and stroke",
+    "stroke": 1.5,
+    "library": "Custom SVG line icons (react-native-svg) on a 24dp grid, 1.5 stroke, round caps and joins. Lucide shapes may be redrawn as reference; no filled glyph sets, no emoji, no unicode ticks.",
     "verdict": {
       "size": 24,
       "fits": {
@@ -761,7 +844,7 @@
       },
       "medicine": {
         "glyph": "pharmacist-counter",
-        "lucide": "custom: head and shoulders behind a counter, one small bottle standing on the counter, 1.75 stroke; reads at 20dp",
+        "lucide": "custom: head and shoulders behind a counter, one small bottle standing on the counter, 1.5 stroke; reads at 20dp",
         "meaning": "Ask the pharmacist. No cross, no plus, no pill, no mortar and pestle, no alert."
       },
       "medicineSize": 32
@@ -774,32 +857,31 @@
       "medical cross or plus",
       "eye",
       "sparkles ('AI magic')",
+      "magic wand",
+      "store logos",
       "share/upload glyph for provenance ('Shared from' uses arrow-down-left)"
     ]
   },
   "texture": {
     "grain": {
       "light": {
-        "opacity": 0.03
+        "opacity": 0
       },
       "dark": {
         "opacity": 0
       },
-      "tile": "assets/texture/grain-160.png (static 160 x 160 greyscale PNG, not an SVG filter, never animated)",
-      "allowed": [
-        "share-teaching illustration panel (light only)",
-        "landing page hero margins",
-        "empty-state illustration plate",
-        "splash screen"
-      ],
+      "tile": "assets/texture/grain-160.png (static tile, retired in Silver Mirror: opacity 0 in both modes; kept so the theme shape is stable)",
+      "allowed": [],
       "forbidden": [
-        "behind body text, reasons, ledger rows or forms",
-        "verdict head",
-        "card and sheet surfaces themselves (the illustration panel inside the share-teaching card is the one exception)",
-        "camera and photo frames",
-        "dark mode",
-        "animated"
+        "everywhere in Silver Mirror (depth comes from sheen gradients and soft shadows)"
       ]
+    },
+    "sheen": {
+      "$rule": "The liquid-silver sheen is a static SVG linear gradient (color.sheen.start -> lavender at 40% -> silver at 72% -> end), top-left to bottom-right, plus at most one soft radial highlight. Allowed: splash, welcome, Home hero band, empty-state plates, the reading card header strip, the capture/processing face frame. Never behind reasons, the ledger, forms or the verdict head. Never animated.",
+      "angleDeg": 135,
+      "lavenderStop": 0.4,
+      "silverStop": 0.72,
+      "highlightOpacity": 0.55
     }
   },
   "zIndex": {
@@ -826,6 +908,19 @@
       "offset": 2,
       "overlayHaloWidth": 1
     },
+    "brand": {
+      "$rule": "Chrome-S mark (SVG, apps/mobile/src/brand/SilverMark.tsx) on its tile, and the outlined serif wordmark (Wordmark.tsx). The mark never sits on the verdict head or over the camera. Minimum mark size 24dp; clear space = 25% of the tile on every side.",
+      "tileRadiusPct": 22.5,
+      "headerMark": 36,
+      "welcomeMark": 96,
+      "splashMark": 120,
+      "wordmarkColor": "{color.text}",
+      "wordmarkHeader": 22,
+      "wordmarkWelcome": 34,
+      "tagline": "{type.bodySm}",
+      "taglineColor": "{color.text-muted}",
+      "gap": "{space.3}"
+    },
     "appBar": {
       "minHeight": 56,
       "bg": "{color.bg}",
@@ -837,6 +932,7 @@
       "sourceIcon": "arrow-down-left",
       "iconButton": "{touch.min}",
       "iconSize": "{icon.lg}",
+      "backIcon": "chevron-left",
       "borderOnScroll": "{color.border}",
       "paddingX": "{space.1}"
     },
@@ -845,36 +941,40 @@
       "iconSize": "{icon.lg}",
       "radius": "{radius.full}",
       "fg": "{color.text}",
+      "bg": "transparent",
+      "bgTonal": "{color.secondary-bg}",
       "bgPressed": "{color.state.pressed}",
       "ripple": "{color.state.ripple}",
       "fgDisabled": "{color.disabled-fg}"
     },
     "button": {
+      "$rule": "Every button is a pill (radius.full). Hierarchy: primary = filled slate (pearl in dark), at most one per screen state; secondary = tonal pill, no outline; tertiary = text with a chevron. Outlined boxes are retired.",
       "primary": {
         "bg": "{color.accent}",
         "fg": "{color.on-accent}",
         "bgPressed": "{color.accent-pressed}",
         "ripple": "{color.state.ripple-on-accent}",
         "minHeight": 52,
-        "paddingX": "{space.5}",
-        "radius": "{radius.md}",
+        "paddingX": "{space.6}",
+        "radius": "{radius.full}",
         "type": "{type.button}",
         "gap": "{space.2}",
+        "trailingIcon": "arrow-right",
         "bgDisabled": "{color.disabled-bg}",
         "fgDisabled": "{color.disabled-fg}"
       },
       "secondary": {
-        "bg": "transparent",
-        "fg": "{color.text}",
-        "border": "{color.border-strong}",
-        "borderWidth": 1.5,
-        "bgPressed": "{color.state.pressed}",
+        "bg": "{color.secondary-bg}",
+        "fg": "{color.on-secondary}",
+        "border": "{color.secondary-bg}",
+        "borderWidth": 0,
+        "bgPressed": "{color.secondary-bg-pressed}",
         "minHeight": 48,
         "paddingX": "{space.5}",
-        "radius": "{radius.md}",
+        "radius": "{radius.full}",
         "type": "{type.button}",
         "fgDisabled": "{color.disabled-fg}",
-        "borderDisabled": "{color.border}"
+        "borderDisabled": "{color.disabled-bg}"
       },
       "tertiary": {
         "bg": "transparent",
@@ -883,34 +983,36 @@
         "bgPressed": "{color.state.pressed}",
         "minHeight": 48,
         "paddingX": "{space.3}",
-        "radius": "{radius.md}",
+        "radius": "{radius.full}",
         "type": "{type.button}",
+        "trailingIcon": "chevron-right",
         "fgDisabled": "{color.disabled-fg}"
       },
       "destructiveNeutral": {
-        "$rule": "Delete, Revoke. No red: a strong ink outline plus a verb label and an icon, always followed by a confirmation step.",
+        "$rule": "Delete my reading, Withdraw consent, Revoke. No red and no box: a text-style pill with a leading trash icon and a verb label, always followed by a confirmation sheet.",
         "bg": "transparent",
         "fg": "{color.text}",
-        "border": "{color.text}",
-        "borderWidth": 1.5,
+        "border": "{color.border-strong}",
+        "borderWidth": 0,
         "bgPressed": "{color.state.pressed}",
         "minHeight": 52,
-        "paddingX": "{space.5}",
-        "radius": "{radius.md}",
+        "paddingX": "{space.4}",
+        "radius": "{radius.full}",
         "type": "{type.button}",
+        "leadingIcon": "trash",
         "fgDisabled": "{color.disabled-fg}",
         "borderDisabled": "{color.border}"
       },
       "consentPair": {
-        "$rule": "Start scan / Not now on every consent screen: identical fill, edge, size and type, so declining is never the weaker-looking choice.",
-        "bg": "{color.surface-raised}",
-        "fg": "{color.text}",
+        "$rule": "Start scan / Not now on every consent screen: identical tonal pill, size and type (spec §2: equal visual weight), so declining is never the weaker-looking choice. Product law beats the critique's slate-pill suggestion here.",
+        "bg": "{color.secondary-bg}",
+        "fg": "{color.on-secondary}",
         "border": "{color.border-strong}",
-        "borderWidth": 1.5,
-        "bgPressed": "{color.state.pressed}",
+        "borderWidth": 1,
+        "bgPressed": "{color.secondary-bg-pressed}",
         "minHeight": 52,
         "paddingX": "{space.4}",
-        "radius": "{radius.md}",
+        "radius": "{radius.full}",
         "type": "{type.button}",
         "fgDisabled": "{color.disabled-fg}",
         "borderDisabled": "{color.border}"
@@ -918,15 +1020,16 @@
       "stackAtFontScale": 1.3
     },
     "actionBar": {
-      "$rule": "Sticky bar on /check. One primary, then one 48dp tertiary. Only the link-out carries a destination line. Border-top and elevation.2 appear only while content scrolls under the bar. Render it after the ScrollView in JSX so TalkBack reaches it last. At font scale >= 1.5 the actions move inline to the end of the content.",
+      "$rule": "Sticky dock on /check: ONE primary pill naming its destination ('Back to Nykaa listing'), plus a 48dp round tonal 'More' button that opens the store-search sheet. 'Better matches' pill hides once that section is on screen. Border-top and elevation.2 appear only while content scrolls under it. Rendered after the ScrollView so TalkBack reaches it last. At font scale >= 1.5 the actions move inline.",
       "bg": "{elevation.2.surface}",
       "border": "{elevation.2.border}",
       "shadow": "{elevation.2}",
-      "paddingTop": "{space.2}",
-      "paddingBottom": "{space.1}",
+      "paddingTop": "{space.3}",
+      "paddingBottom": "{space.2}",
       "paddingX": "{space.gutter}",
-      "gap": "{space.1}",
-      "maxHeightAt1x": 136,
+      "gap": "{space.2}",
+      "moreTarget": "{touch.min}",
+      "maxHeightAt1x": 112,
       "inlineAtFontScale": 1.5
     },
     "textLink": {
@@ -942,42 +1045,72 @@
       "$rule": "Standalone links are Pressables with a 48dp box. Inline links inside a sentence exist on the web only; in RN the action moves to its own row."
     },
     "productHeader": {
-      "$rule": "Title, kicker and meta are one header node; the Edit link is a sibling rendered after it (positioned top-right).",
+      "$rule": "Title and meta are one header node; the Edit link is a sibling rendered after it. The store is a small source chip ('Flipkart'), text only. No 'Is this the product?' kicker once the SKU sheet confirmed it.",
       "kicker": "{type.bodySm}",
       "kickerColor": "{color.text-muted}",
       "title": "{type.title}",
       "titleColor": "{color.text}",
       "meta": "{type.caption}",
       "metaColor": "{color.text-muted}",
+      "sourceChipBg": "{color.bg-sunken}",
+      "sourceChipFg": "{color.text-muted}",
       "gap": "{space.1}",
       "editTarget": "{touch.min}"
     },
     "field": {
-      "bg": "{color.bg-sunken}",
+      "$rule": "Rounded filled pill field with a visible 1dp edge (>=3:1) and an inline trailing action pill inside it ('Check'). Label above, helper and error below.",
+      "bg": "{color.surface-raised}",
       "fg": "{color.text}",
+      "placeholder": "{color.text-subtle}",
       "border": "{color.border-strong}",
-      "borderWidth": 1.5,
+      "borderWidth": 1,
       "focusBorder": "{color.focus-ring}",
       "focusBorderWidth": 2,
       "label": "{type.label}",
       "labelColor": "{color.text}",
       "value": "{type.body}",
-      "minHeight": "{touch.min}",
-      "radius": "{radius.md}",
-      "paddingX": "{space.3}",
+      "minHeight": 56,
+      "radius": "{radius.full}",
+      "paddingX": "{space.5}",
+      "trailingActionTarget": "{touch.min}",
       "$invalid": "stateView.fieldInvalid"
     },
     "segmented": {
       "minHeight": "{touch.min}",
+      "track": "{color.bg-sunken}",
       "border": "{color.border-strong}",
-      "borderWidth": 1,
+      "borderWidth": 0,
       "radius": "{radius.full}",
-      "fg": "{color.text}",
+      "fg": "{color.text-muted}",
       "type": "{type.label}",
-      "selectedBg": "{color.accent-subtle}",
-      "selectedFg": "{color.on-accent-subtle}",
+      "selectedBg": "{color.surface-raised}",
+      "selectedFg": "{color.text}",
       "selectedIcon": "check",
       "bgPressed": "{color.state.pressed}"
+    },
+    "chip": {
+      "$rule": "Filter and reading chips (moodboard 'Key Concerns' / 'For You'). Pills. Selected = slate fill + check icon + weight, never colour alone. Static reading chips are read inline with their card.",
+      "bg": "{color.bg-sunken}",
+      "fg": "{color.text}",
+      "selectedBg": "{color.accent}",
+      "selectedFg": "{color.on-accent}",
+      "selectedIcon": "check",
+      "radius": "{radius.full}",
+      "paddingX": "{space.4}",
+      "visualMinHeight": 36,
+      "target": "{touch.min}",
+      "type": "{type.label}",
+      "gap": "{space.2}"
+    },
+    "iconDisc": {
+      "$rule": "A line icon centred in a lavender disc (moodboard droplet circle). One per card, decorative (hidden from TalkBack).",
+      "bg": "{color.icon-disc}",
+      "fg": "{color.on-icon-disc}",
+      "size": 40,
+      "sizeLg": 56,
+      "iconSize": "{icon.md}",
+      "iconSizeLg": "{icon.lg}",
+      "radius": "{radius.full}"
     },
     "switch": {
       "minTarget": "{touch.min}",
@@ -995,16 +1128,18 @@
     "verdictCard": {
       "head": {
         "radius": "{radius.lg}",
-        "padding": "{space.4}",
+        "padding": "{space.5}",
         "gap": "{space.2}",
         "label": "{type.verdictLabel}",
-        "iconGap": "{space.2}",
+        "iconGap": "{space.3}",
         "subtitleColor": "{color.text}",
         "fits": {
           "bg": "{verdict.fits.bg}",
           "fg": "{verdict.fits.fg}",
           "border": "{verdict.fits.border}",
           "icon": "{verdict.fits.icon}",
+          "iconDisc": "{color.surface-raised}",
+          "iconDiscSize": 40,
           "borderWidth": 1,
           "borderStyle": "solid",
           "showLabel": true,
@@ -1016,6 +1151,8 @@
           "fg": "{verdict.caution.fg}",
           "border": "{verdict.caution.border}",
           "icon": "{verdict.caution.icon}",
+          "iconDisc": "{color.surface-raised}",
+          "iconDiscSize": 40,
           "borderWidth": 1,
           "borderStyle": "solid",
           "showLabel": true,
@@ -1027,6 +1164,8 @@
           "fg": "{verdict.unknown.fg}",
           "border": "{verdict.unknown.border}",
           "icon": "{verdict.unknown.icon}",
+          "iconDisc": "{color.surface-raised}",
+          "iconDiscSize": 40,
           "borderWidth": 1,
           "borderStyle": "dashed",
           "showLabel": true,
@@ -1038,6 +1177,8 @@
           "fg": "{verdict.medicine.fg}",
           "border": "{verdict.medicine.border}",
           "icon": "{verdict.medicine.icon}",
+          "iconDisc": "transparent",
+          "iconDiscSize": 0,
           "borderWidth": 0,
           "borderStyle": "solid",
           "showLabel": false,
@@ -1058,6 +1199,15 @@
         "qualifierColor": "{color.text-muted}",
         "$rule": "FITS or CAUTION head colours with a dashed border and the qualifier 'based on product name only' inside the label node."
       },
+      "demoBadge": {
+        "bg": "{color.accent-warm}",
+        "fg": "{color.on-accent-warm}",
+        "type": "{type.labelSm}",
+        "radius": "{radius.full}",
+        "paddingX": "{space.3}",
+        "visualMinHeight": 24,
+        "$copy": "Demo reading"
+      },
       "body": {
         "bg": "transparent",
         "$rule": "Reasons sit on the plain screen surface. The verdict tint never extends past the head, and CAUTION never fills the screen."
@@ -1069,7 +1219,7 @@
       "headingColor": "{color.text}",
       "index": "{type.reasonIndex}",
       "indexColor": "{color.text-muted}",
-      "indexWidth": 32,
+      "indexWidth": 28,
       "reading": "{type.reason}",
       "readingColor": "{color.text}",
       "fact": "{type.body}",
@@ -1077,13 +1227,16 @@
       "factGap": 6,
       "chipGap": "{space.3}",
       "paddingY": "{space.4}",
+      "bg": "{elevation.1.surface}",
+      "radius": "{radius.lg}",
+      "paddingX": "{space.4}",
       "divider": "{color.border}"
     },
     "bandChip": {
-      "$rule": "Compact chip inside a reason row: text first, the meter only repeats it. Non-interactive by default; the interactive variant is a Pressable with a 48dp box around the 32dp visual.",
+      "$rule": "Compact pill inside a reason row or reading card: text first, the meter only repeats it. Non-interactive by default; the interactive variant is a Pressable with a 48dp box around the 32dp visual.",
       "bg": "{color.bg-sunken}",
       "fg": "{color.text}",
-      "radius": "{radius.sm}",
+      "radius": "{radius.full}",
       "paddingX": "{space.3}",
       "visualMinHeight": 32,
       "type": "{type.label}",
@@ -1111,17 +1264,17 @@
       }
     },
     "bandList": {
-      "$rule": "/profile bands, set like the dispensing-label ledger: heavier top and bottom ink rules, hairline rows, one Low / Medium / High legend above the list. Name on the left in sans, band word on the right in serif with the neutral meter under it.",
-      "topRule": "{color.text}",
-      "topRuleWidth": 1.5,
-      "bottomRule": "{color.text}",
-      "bottomRuleWidth": 1.5,
+      "$rule": "Reading bands as rows inside a rounded surface card with hairline dividers. Name on the left (sans), band word on the right (sans semibold) with the neutral three-segment meter under it. One Low / Medium / High legend above the list. No numbers.",
+      "topRule": "{color.border}",
+      "topRuleWidth": 1,
+      "bottomRule": "{color.border}",
+      "bottomRuleWidth": 1,
       "rowMinHeight": 56,
       "rowPaddingY": "{space.2}",
       "rowDivider": "{color.border}",
       "name": "{type.body}",
       "nameColor": "{color.text}",
-      "value": "{type.section}",
+      "value": "{type.bodyStrong}",
       "valueColor": "{color.text}",
       "meterGap": "{space.1}",
       "legend": "{type.caption}",
@@ -1131,16 +1284,16 @@
     "tag": {
       "bg": "{color.bg-sunken}",
       "fg": "{color.text}",
-      "radius": "{radius.sm}",
+      "radius": "{radius.full}",
       "visualMinHeight": 24,
-      "paddingX": "{space.2}",
+      "paddingX": "{space.3}",
       "type": "{type.labelSm}",
       "outlineBorder": "{color.border-strong}",
       "iconSize": "{icon.sm}",
-      "$rule": "Static tags are not tappable and are read inline with their parent. Anything tappable is a band chip (interactive) or a text link."
+      "$rule": "Static tags are not tappable and are read inline with their parent. Anything tappable is a chip or a text link."
     },
     "skinMap": {
-      "$rule": "Photo-free zone diagram traced from YouCam masks. No photo, no skin colour. Band = hatch density (none Low, single 45 degree hatch Medium, cross-hatch High), never fill lightness. Every zone also has a text row in the adjacent list. Mirrored like a selfie, so cheeks are labelled 'Your left' / 'Your right'.",
+      "$rule": "Photo-free zone diagram traced from YouCam masks. No photo, no skin colour. Band = hatch density (none Low, single 45 degree hatch Medium, cross-hatch High), never fill lightness. Every zone also has a text row. Mirrored like a selfie: 'Your left' / 'Your right'.",
       "bg": "{color.surface}",
       "radius": "{radius.lg}",
       "padding": "{space.4}",
@@ -1148,9 +1301,9 @@
       "heading": "{type.section}",
       "listToggleTarget": "{touch.min}",
       "faceOutline": "{color.border-strong}",
-      "faceStrokeWidth": 1.25,
+      "faceStrokeWidth": 1.5,
       "zoneStroke": "{color.text}",
-      "zoneStrokeWidth": 1.25,
+      "zoneStrokeWidth": 1.5,
       "hatch": "{meter.filled}",
       "hatchWidth": 1,
       "hatchSpacingMedium": 6,
@@ -1161,42 +1314,47 @@
       "legendColor": "{color.text-muted}"
     },
     "provenanceLedger": {
-      "$rule": "Set like a dispensing label: 1.5dp ink rules top and bottom, small-caps keys, hairline rows, no tinted box. Below 380dp width (or at font scale >= 1.5) the key sits above the value. Group only the text of a row; a link in the row is a sibling node after it.",
+      "$rule": "'Where this comes from' as a receipt card: rounded surface card, hairline row dividers, sentence-case keys in a column sized to the longest key (never breaks mid-word), values in sans. Below 360dp width (or at font scale >= 1.5) the key sits above the value. Group only the text of a row; a link in the row is a sibling node after it.",
       "title": "{type.headline}",
       "titleColor": "{color.text}",
-      "topRule": "{color.text}",
-      "topRuleWidth": 1.5,
-      "bottomRule": "{color.text}",
-      "bottomRuleWidth": 1.5,
+      "bg": "{elevation.1.surface}",
+      "radius": "{radius.lg}",
+      "paddingX": "{space.4}",
+      "topRule": "{color.border}",
+      "topRuleWidth": 1,
+      "bottomRule": "{color.border}",
+      "bottomRuleWidth": 1,
       "rowDivider": "{color.border}",
       "rowPaddingY": "{space.3}",
       "key": "{type.overline}",
       "keyColor": "{color.text-muted}",
-      "keyWidth": 72,
-      "keyGap": "{space.3}",
+      "keyWidth": 96,
+      "keyGap": "{space.4}",
       "value": "{type.bodySm}",
       "valueColor": "{color.text}",
+      "mono": "{type.caption}",
       "caption": "{type.caption}",
       "captionColor": "{color.text-muted}",
       "keys": [
-        "SKIN",
-        "PRODUCT",
-        "WEATHER",
-        "LIMITS"
+        "Reading",
+        "Product",
+        "Rules",
+        "Limits"
       ],
-      "stackBelowWidth": 380,
+      "stackBelowWidth": 360,
       "stackAtFontScale": 1.5
     },
     "bottomSheet": {
-      "$rule": "Render every sheet inside RN Modal (or set importantForAccessibility='no-hide-descendants' on the screen root while open). On open, AccessibilityInfo.setAccessibilityFocus(titleRef); on close, return focus to the trigger's ref. A Close button or Cancel action always exists; the handle is never the only way out.",
+      "$rule": "Render every sheet inside RN Modal (or set importantForAccessibility='no-hide-descendants' on the screen root while open). On open, focus the title; on close, return focus to the trigger. A Close button always exists; the handle is never the only way out. Dark: sheen-edge 1dp on the top edge.",
       "bg": "{elevation.3.surface}",
       "border": "{elevation.3.border}",
+      "sheenEdge": "{color.sheen-edge}",
       "radius": "{radius.sheet}",
       "padding": "{space.6}",
       "scrim": "{color.overlay}",
       "title": "{type.headline}",
       "handle": {
-        "width": 32,
+        "width": 36,
         "height": 4,
         "color": "{color.border-strong}",
         "target": "{touch.min}"
@@ -1205,18 +1363,20 @@
       "closeTarget": "{touch.min}"
     },
     "consentSheet": {
-      "$rule": "The approved privacy sentence stays one sentence and one TalkBack block; its first clause is set larger so the promise lands first.",
-      "privacyLead": "{type.title}",
+      "$rule": "Warm and short: pearl hero with the face-frame bracket illustration, serif title 'Before your scan', three icon-disc rows, a 'What stays on this phone' checklist, then the approved privacy sentence as body (one TalkBack block). The 18+ checkbox lives in the sticky footer directly above the equal-weight pair.",
+      "privacyLead": "{type.bodyStrong}",
       "privacyRest": "{type.body}",
       "privacyColor": "{color.text}",
       "keepBox": {
-        "bg": "{color.surface}",
+        "bg": "{elevation.1.surface}",
         "border": "{color.border}",
         "radius": "{radius.lg}",
-        "padding": "{space.4}",
+        "padding": "{space.5}",
         "title": "{type.section}"
       },
       "keepList": "{type.body}",
+      "keepIcon": "check-circle",
+      "dropIcon": "minus-circle",
       "accuracyNote": "{type.bodySm}",
       "accuracyColor": "{color.text-muted}",
       "$actions": "button.consentPair (Start scan, Not now), side by side; stacked at font scale >= 1.3",
@@ -1231,12 +1391,16 @@
       }
     },
     "captureGuide": {
-      "$rule": "Static guide, no face detection. One instruction line above the oval, one hint at a time below it. Volume keys fire the shutter on a single press (both together is the TalkBack shortcut).",
+      "$rule": "Live camera in a rounded frame with four thin corner brackets and a faint oval. No face detection, no dotted mesh on a real face, no model photo. One hint pill at a time at the top. Volume keys fire the shutter.",
       "overlay": "{color.overlay-camera}",
       "oval": "{color.on-overlay}",
-      "ovalStrokeWidth": 2,
+      "ovalStrokeWidth": 1.5,
       "ovalWidthPct": 72,
       "ovalAspect": 0.78,
+      "bracket": "{color.on-overlay}",
+      "bracketWidth": 3,
+      "bracketLength": 28,
+      "frameRadius": "{radius.xl}",
       "instruction": "{type.label}",
       "instructionColor": "{color.on-overlay}",
       "hint": {
@@ -1252,7 +1416,7 @@
       "shutter": {
         "size": 72,
         "ring": "{color.on-overlay}",
-        "ringWidth": 4,
+        "ringWidth": 3,
         "fill": "{color.on-overlay}"
       },
       "iconButtonTarget": "{touch.min}",
@@ -1261,12 +1425,12 @@
       "$spokenHint": "Hold the phone at eye level, about an arm's length away."
     },
     "processingStepper": {
-      "$rule": "Neutral ink only, never the accent. Numerals sit inside pending and active rings so the active glyph can't be mistaken for the UNKNOWN dashed circle. One hidden polite live region per screen announces step changes; the list itself is not a live region.",
+      "$rule": "Neutral ink only, never the accent. Drawn inside checklistCard. Done = thin circle-check, current = ring with centre dot, pending = empty ring; the ring states never resemble the UNKNOWN dashed circle. One hidden polite live region per screen announces step changes; the list itself is not a live region.",
       "rowMinHeight": 56,
       "indicator": 24,
       "connector": "{color.border-strong}",
       "connectorDone": "{color.text}",
-      "connectorWidth": 2,
+      "connectorWidth": 1.5,
       "done": {
         "fill": "{color.text}",
         "check": "{color.bg}",
@@ -1275,7 +1439,7 @@
       },
       "current": {
         "ring": "{color.text}",
-        "ringWidth": 2,
+        "ringWidth": 1.5,
         "numeral": "{type.labelSm}",
         "numeralColor": "{color.text}",
         "label": "{type.bodyStrong}",
@@ -1300,11 +1464,68 @@
         "label": "{type.bodyStrong}",
         "caption": "{type.caption}",
         "captionColor": "{color.text-muted}",
-        "$rule": "'Photo deleted from YouCam' is its own visible step with a tick and a timestamp."
+        "$rule": "'Deleted from YouCam' is its own visible step with a circle-check and a timestamp stamp ('Photo deleted · 21:04')."
       }
     },
+    "faceFrame": {
+      "$rule": "Illustration (no face): rounded frame on the sheen gradient, four corner brackets in color.bracket, a faint oval, optional sparse dot grid at 30% opacity. Used on consent, processing, empty reading, result header.",
+      "bg": "{color.surface}",
+      "radius": "{radius.xl}",
+      "bracket": "{color.bracket}",
+      "bracketWidth": 2,
+      "bracketLength": 24,
+      "oval": "{color.border-strong}",
+      "ovalWidth": 1,
+      "dots": "{color.border-strong}",
+      "dotsOpacity": 0.3,
+      "aspect": 0.8
+    },
+    "checklistCard": {
+      "$rule": "The moodboard's analyze checklist, with our real steps: Uploading -> Analysing (YouCam HD) -> Reading results -> Deleted from YouCam. Thin circle-check when done, ring + centre dot when current, empty ring when pending. Neutral ink only.",
+      "bg": "{elevation.1.surface}",
+      "radius": "{radius.lg}",
+      "padding": "{space.5}",
+      "rowMinHeight": 48,
+      "doneIcon": "check-circle",
+      "currentIcon": "circle-dot",
+      "pendingIcon": "circle",
+      "iconColor": "{color.text}",
+      "pendingColor": "{color.text-muted}",
+      "label": "{type.body}",
+      "labelCurrent": "{type.bodyStrong}",
+      "stamp": "{type.caption}",
+      "stampColor": "{color.text-muted}"
+    },
+    "readingCard": {
+      "$rule": "Home and result summary: icon disc (droplet) + 'Your reading' + 'Skin-type reading: Combination' + 'Scan 2 Nov · photo deleted' + chevron, then up to three band chips. One 48dp+ target; one accessibility label that reads the card in visual order. Empty: 'No reading yet' + slate pill 'Start scan'.",
+      "bg": "{elevation.1.surface}",
+      "border": "{color.border}",
+      "radius": "{radius.lg}",
+      "padding": "{space.5}",
+      "title": "{type.section}",
+      "titleColor": "{color.text}",
+      "value": "{type.headline}",
+      "valueColor": "{color.text}",
+      "meta": "{type.caption}",
+      "metaColor": "{color.text-muted}",
+      "chevron": "{color.text-muted}",
+      "minHeight": 96,
+      "chipGap": "{space.2}"
+    },
+    "focusTile": {
+      "$rule": "'What this means for products' square tiles (moodboard 'Recommended Focus'). Come from the published facet map, never from Claude. Product-trait words only (Lighter textures, Fragrance-free, Hydration); never 'repair', 'treat', 'fix'.",
+      "bg": "{color.accent-warm}",
+      "fg": "{color.on-accent-warm}",
+      "radius": "{radius.md}",
+      "padding": "{space.3}",
+      "minHeight": 88,
+      "icon": "{icon.lg}",
+      "label": "{type.label}",
+      "gap": "{space.2}",
+      "columns": 3
+    },
     "storeLinkOut": {
-      "$base": "button.primary or button.secondary",
+      "$base": "chip row (three store chips) with one shared destination line",
       "label": "{type.button}",
       "destination": "{type.caption}",
       "destinationColor": "{color.text-muted}",
@@ -1312,7 +1533,7 @@
       "destinationGap": "{space.1}",
       "icon": "arrow-up-right",
       "iconColor": "{color.text-muted}",
-      "$rule": "The button that leaves SkinKey for a store search carries one destination line under it: 'Opens a Flipkart search, filtered to Oily Skin'. 'Back to product' explains itself and carries none. Text-only store names, no logos."
+      "$rule": "Store searches are a row of three chips (Flipkart / Amazon.in / Nykaa, text only) with one shared destination line under them: 'Opens a keyword search for \"sunscreen\" in the store app (Nykaa: browser)'. Each chip is >=48dp and its accessibility label names the destination."
     },
     "rankingDisclosure": {
       "type": "{type.bodySm}",
@@ -1322,11 +1543,12 @@
       "paddingY": "{space.3}",
       "paddingX": "{space.3}",
       "copy": [
-        "Ranked by fit to your skin. No paid placements.",
-        "We may earn a commission; it never changes the ranking."
+        "Ranked by fit to your readings. No paid placements.",
+        "We may earn a commission if you buy; it never changes the ranking"
       ]
     },
     "shareTeachingCard": {
+      "$rule": "Compact share tip that fits above the fold: a mini share-sheet strip of generic tiles where the highlighted tile IS the chrome-S icon labelled 'Silver Mirror', a Flipkart / Amazon / Nykaa segmented control showing one path line at a time, and a small tertiary 'Got it'.",
       "bg": "{elevation.1.surface}",
       "border": "{color.border}",
       "radius": "{radius.lg}",
@@ -1334,12 +1556,12 @@
       "stepIndex": "{type.reasonIndex}",
       "stepIndexColor": "{color.text-muted}",
       "body": "{type.body}",
-      "title": "{type.headline}",
+      "title": "{type.section}",
       "illustrationBg": "{color.bg-sunken}",
       "illustrationStroke": "{color.border-strong}",
-      "highlight": "{color.text}",
+      "highlight": "{color.accent}",
       "highlightWidth": 2,
-      "grain": true,
+      "grain": false,
       "$dismiss": "button.tertiary"
     },
     "forecastCard": {
@@ -1354,7 +1576,7 @@
       "body": "{type.body}",
       "credit": "{type.fine}",
       "creditColor": "{color.text-muted}",
-      "$rule": "Group only the text (kicker, sentence, body, credit). 'Check a sunscreen' is a sibling node after the group."
+      "$rule": "Group only the text. 'Check a sunscreen' is a sibling node after the group."
     },
     "tryOnCompare": {
       "radius": "{radius.lg}",
@@ -1372,7 +1594,7 @@
         "bg": "{color.overlay-camera}",
         "fg": "{color.on-overlay}",
         "type": "{type.labelSm}",
-        "radius": "{radius.sm}"
+        "radius": "{radius.full}"
       },
       "disclaimer": "{type.label}",
       "disclaimerColor": "{color.text}",
@@ -1380,7 +1602,7 @@
       "note": "{type.caption}",
       "noteColor": "{color.text-muted}",
       "focus": "{color.focus-ring-overlay}",
-      "$rule": "'Preview, not a shade guarantee' is attached to the bottom edge of the frame on the plain surface, never over the photo, and always visible. Hatch is never used here; hatch means skin-map band only.",
+      "$rule": "Two equal portrait cards from the same photo, a shade-name chip under each, and the fixed caption on the plain surface below. No drag slider (reads as before/after), no Save. 'Preview, not a shade guarantee' is always visible.",
       "previewTintOpacity": 0.13
     },
     "productMatchCard": {
@@ -1390,12 +1612,16 @@
       "padding": "{space.4}",
       "index": "{type.reasonIndex}",
       "indexColor": "{color.text-muted}",
-      "name": "{type.headline}",
+      "name": "{type.bodyStrong}",
       "nameColor": "{color.text}",
-      "fit": "{type.body}",
+      "fit": "{type.bodySm}",
       "fitColor": "{color.text}",
       "meta": "{type.caption}",
       "metaColor": "{color.text-muted}",
+      "thumbBg": "{color.bg-sunken}",
+      "thumbRadius": "{radius.md}",
+      "thumbSize": 56,
+      "heroBg": "{color.sheen.lavender}",
       "verdictTagIcon": "{icon.sm}",
       "minHeight": 96,
       "listGap": "{space.3}"
@@ -1414,7 +1640,7 @@
       "hintColor": "{color.on-overlay}",
       "torch": "{touch.min}",
       "focus": "{color.focus-ring-overlay}",
-      "$manualEntry": "button.secondary (on overlay-camera, on-overlay edge)"
+      "$manualEntry": "button.secondary (on overlay-camera)"
     },
     "qrShareCard": {
       "bg": "{elevation.1.surface}",
@@ -1444,17 +1670,19 @@
       },
       "$revoke": "button.destructiveNeutral",
       "brightnessBoost": true,
-      "$announce": "Hidden live region only, at 25, 20, 15, 10, 5 and 1 min (motion.timing.qrAnnounceEverySec / qrFinalAnnounceSec). The visible countdown is never a live region."
+      "$announce": "Hidden live region only, at 25, 20, 15, 10, 5 and 1 min. The visible countdown is never a live region."
     },
     "stateView": {
-      "$rule": "Empty, error and offline states. Left-aligned, no icon disc, one serif sentence with a real detail, one tertiary action. Neutral, never red. Offline actions are disabled, not hidden.",
+      "$rule": "Empty, error and offline states: mark-led or face-frame plate on the sheen, one serif display line, one muted line, ONE pill action. Left-aligned text. Neutral, never red. Offline actions are disabled, not hidden.",
       "align": "start",
-      "title": "{type.headline}",
+      "title": "{type.title}",
       "titleColor": "{color.text}",
       "body": "{type.body}",
       "bodyColor": "{color.text-muted}",
+      "plateBg": "{color.sheen.lavender}",
+      "plateRadius": "{radius.lg}",
       "gap": "{space.2}",
-      "$action": "button.tertiary",
+      "$action": "button.primary (one), optional button.secondary",
       "offlineBanner": {
         "bg": "transparent",
         "fg": "{color.text}",
@@ -1488,33 +1716,34 @@
       "z": "{z.snackbar}"
     },
     "bottomNav": {
-      "$rule": "Top-level screens only (home, /profile). Hidden on pushed details: /check, better matches, try-on, QR share. Selection = pill + weight 600 + 2.25 stroke + colour; never colour alone. role tablist on the container; each item role tab, label 'Check', accessibilityState.selected, position in the hint.",
-      "minHeight": 80,
+      "$rule": "Three tabs: Check · Scan · Reading. Top-level screens only; hidden on pushed details (/check result, better matches, try-on). Selection = slate pill (pearl in dark) + label weight 600 + 2.0 stroke; never colour alone. role tablist on the container; each item role tab with accessibilityState.selected. Bar bg follows the theme (never the stock white bar).",
+      "minHeight": 72,
       "bg": "{elevation.2.surface}",
       "border": "{color.border}",
+      "sheenEdge": "{color.sheen-edge}",
       "items": 3,
-      "itemMinWidth": 64,
+      "itemMinWidth": 72,
       "itemTarget": "{touch.min}",
       "indicator": {
-        "bg": "{color.accent-subtle}",
-        "width": 64,
+        "bg": "{color.accent}",
+        "width": 56,
         "height": 32,
         "radius": "{radius.full}"
       },
-      "iconActive": "{color.on-accent-subtle}",
+      "iconActive": "{color.on-accent}",
       "iconInactive": "{color.text-muted}",
-      "iconActiveStrokeWidth": 2.25,
-      "iconInactiveStrokeWidth": 1.75,
+      "iconActiveStrokeWidth": 2,
+      "iconInactiveStrokeWidth": 1.5,
       "labelActive": "{type.labelSm}",
       "labelInactive": "{type.labelSmRegular}",
       "labelActiveColor": "{color.text}",
       "labelInactiveColor": "{color.text-muted}",
       "labels": [
         "Check",
-        "Aisle",
-        "Profile"
+        "Scan",
+        "Reading"
       ],
-      "$icons": "tag, scan-barcode, user-round"
+      "$icons": "tag-check (Check), face-frame (Scan), droplet (Reading); custom 1.5-stroke SVG"
     },
     "listRow": {
       "minHeight": 56,
@@ -1528,6 +1757,8 @@
       "leadingIcon": "{icon.lg}",
       "trailingIcon": "{icon.md}",
       "trailingColor": "{color.text-muted}",
+      "groupBg": "{elevation.1.surface}",
+      "groupRadius": "{radius.lg}",
       "divider": "{color.border}",
       "dividerInset": "{space.gutter}",
       "bgPressed": "{color.state.pressed}",

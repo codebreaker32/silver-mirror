@@ -116,8 +116,9 @@ const lit = (o) => JSON.stringify(o, null, 2);
 const fontKeys = Object.entries(FONT).filter(([k]) => !k.startsWith('$'));
 const localFonts = FONT.$local || {};
 const isLocal = (v) => v in localFonts;
-const serifKeys = fontKeys.filter(([k, v]) => k.startsWith('serif') && !isLocal(v)).map(([, v]) => v);
-const sansKeys = fontKeys.filter(([k, v]) => k.startsWith('sans') && !isLocal(v)).map(([, v]) => v);
+// Several roles may share one family key (serif-display and the verdict line both use the 400 cut): import each once.
+const serifKeys = [...new Set(fontKeys.filter(([k, v]) => k.startsWith('serif') && !isLocal(v)).map(([, v]) => v))];
+const sansKeys = [...new Set(fontKeys.filter(([k, v]) => k.startsWith('sans') && !isLocal(v)).map(([, v]) => v))];
 const localKeys = Object.keys(localFonts);
 
 const motion = strip(tokens.motion);
@@ -130,32 +131,30 @@ const motionTS = {
 };
 
 const ts = `// ${BANNER}
-// SkinKey design tokens for React Native (Expo). Direction: ${tokens.$meta.direction}.
+// Silver Mirror design tokens for React Native (Expo). Direction: ${tokens.$meta.direction}.
 //
 // Usage:
-//   const [loaded] = useFonts({
-//     ...fontAssets,                                   // 16pt instances from @expo-google-fonts
-//     Newsreader36pt_500Medium: require('./assets/fonts/Newsreader36pt_500Medium.ttf'), // display + title
-//   });
+//   const [loaded] = useFonts(fontAssets);             // ${FONT.$package.serif} + ${FONT.$package.sans}
 //   const theme = useSkinKeyTheme();                   // follows the system light/dark setting
 //   <Text {...textProps.reason} style={[typography.reason, { color: theme.colors.text }]}>...</Text>
 //   <Pressable style={{ minHeight: theme.touch.min }} />
 //
 // Notes:
 // - Text styles carry no fontWeight: on Android a custom family must not be combined with
-//   fontWeight, so the weight is baked into the family key (Newsreader_500Medium).
+//   fontWeight, so the weight is baked into the family key (Geist_600SemiBold).
 // - Elevation: use elevation[n].style (classic shadow props + Android elevation) OR, on the
 //   new architecture, elevation[n].boxShadow with backgroundColor. Never both. Dark mode has no shadows.
+// - Brand sheen and mark gradients: theme.colors.sheen.* and theme.colors.mark.* (see apps/mobile/src/brand).
 // - Motion: pass motion.ease.* to Easing.bezier(...). When reduce motion is on, use motion.reduced.
 
 import { useColorScheme } from 'react-native';
 import type { TextStyle } from 'react-native';
 import {
 ${serifKeys.map((k) => `  ${k},`).join('\n')}
-} from '@expo-google-fonts/newsreader';
+} from '${FONT.$package.serif}';
 import {
 ${sansKeys.map((k) => `  ${k},`).join('\n')}
-} from '@expo-google-fonts/commissioner';
+} from '${FONT.$package.sans}';
 
 /** Pass to useFonts(), together with the local files in \`localFontFiles\`. Keys are the fontFamily names used in \`typography\`. */
 export const fontAssets = {
@@ -323,7 +322,7 @@ function cssRef(value, key) {
   }
   if (typeof value === 'number') {
     if (/Pct$/.test(key)) return `${value}%`;
-    if (/(aspect|opacity|items|segments|elevation|FontScale|Segments)$/i.test(key)) return String(value);
+    if (/(aspect|opacity|items|segments|elevation|FontScale|columns)$/i.test(key)) return String(value);
     return `${value}px`;
   }
   if (typeof value === 'string' && /^(#|rgba?\(|transparent$|none$|dashed$|solid$|start$|horizontal$)/.test(value)) return value;
@@ -370,7 +369,7 @@ function emitSemantic(mode) {
 }
 
 lines.push(`/* ${BANNER}`);
-lines.push(` * SkinKey web tokens (results / fallback page and landing). Direction: ${tokens.$meta.direction}.`);
+lines.push(` * Silver Mirror web tokens (results / fallback page and landing). Direction: ${tokens.$meta.direction}.`);
 lines.push(' * Theme: follows prefers-color-scheme; force with <html data-theme="light|dark">.');
 lines.push(' * Semantic and component tokens are re-declared on every [data-theme] element so a themed');
 lines.push(' * subtree (for example a dark preview frame) resolves its own values. 1dp = 1px. */');
@@ -383,8 +382,8 @@ for (const [ramp, steps] of Object.entries(strip(tokens.primitive.color))) {
 }
 lines.push('');
 lines.push('  /* Type families and scale. Sizes are rem (16px root) with unitless line heights, so the');
-lines.push('     browser text-size setting scales type without clipping. Newsreader is loaded as the');
-lines.push('     variable font with its opsz axis; font-optical-sizing: auto picks the cut per size.');
+lines.push('     browser text-size setting scales type without clipping. Noto Serif Display (display,');
+lines.push('     title, verdict line; never below 20px) and Geist (everything else) load from Google Fonts.');
 lines.push('     Font shorthand: font: var(--sk-type-body); letter-spacing: var(--sk-type-body-tracking);');
 lines.push('     or use the .sk-type-* classes below. */');
 decl('font-serif', tokens.typography.family.serif.web);
@@ -414,7 +413,7 @@ for (const [k, v] of Object.entries(strip(tokens.zIndex))) decl(`z-${kebab(k)}`,
 decl('focus-ring-width', `${tokens.component.focus.width}px`);
 decl('focus-ring-offset', `${tokens.component.focus.offset}px`);
 lines.push('');
-lines.push('  /* Motion: ink settling. No springs, no overshoot, nothing loops. */');
+lines.push('  /* Motion: mirror settling. No springs, no overshoot, nothing loops. */');
 for (const [k, v] of Object.entries(motion.duration)) decl(`duration-${kebab(k)}`, `${v}ms`);
 for (const [k, v] of Object.entries(motion.ease)) decl(`ease-${kebab(k)}`, `cubic-bezier(${v.bezier.join(', ')})`);
 decl('motion-translate', `${motion.enter.translate}px`);

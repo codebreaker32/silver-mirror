@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// SkinKey contrast and token-rule validator. Node 18+, no dependencies.
+// Silver Mirror contrast and token-rule validator. Node 18+, no dependencies.
 //
 //   node check-contrast.mjs                      # print report, exit 1 on any failure
 //   node check-contrast.mjs --md contrast-report.md    # relative or absolute path
@@ -103,6 +103,28 @@ add('component.bottomNav.indicator.bg', 'color.surface-raised', 'info', 'Nav pil
 add('component.bottomNav.labelActiveColor', 'component.bottomNav.labelInactiveColor', 'info', 'Selected vs unselected nav label colour (weight 600 vs 400 carries it)');
 add('component.segmented.selectedFg', 'component.segmented.selectedBg', 'text', 'Selected segment label (skin-map selector, try-on switcher)');
 add('component.processingStepper.done.check', 'component.processingStepper.done.fill', 'ui', 'Done-step check on its ink disc');
+// Silver Mirror roles.
+add('color.on-secondary', 'color.secondary-bg', 'text', 'Secondary (tonal) pill label');
+add('color.on-secondary', 'color.secondary-bg-pressed', 'text', 'Secondary pill label, pressed');
+add('color.on-icon-disc', 'color.icon-disc', 'ui', 'Line icon inside the lavender disc');
+add('color.on-icon-disc', 'color.icon-disc', 'text', 'Text or numeral inside the disc');
+add('color.on-accent-warm', 'color.accent-warm', 'text', 'Demo-reading badge and focus-tile labels on greige');
+add('color.on-accent', 'color.accent', 'text', 'Selected chip label (slate fill)');
+add('color.link', 'color.secondary-bg', 'text', 'Link inside a tonal pill row');
+for (const s of SURFACES) add('color.bracket', s, 'ui', 'Face-frame corner brackets on the illustration plate');
+for (const st of ['start', 'lavender', 'silver', 'end']) {
+  add('color.text', `color.sheen.${st}`, 'text', `Display and body text on the sheen hero (${st} stop)`);
+  add('color.text-muted', `color.sheen.${st}`, 'text', `Tagline / secondary text on the sheen hero (${st} stop)`);
+  add('color.accent', `color.sheen.${st}`, 'ui', `Primary pill edge on the sheen hero (${st} stop)`);
+  add('color.bracket', `color.sheen.${st}`, 'ui', `Face-frame brackets on the sheen (${st} stop)`);
+}
+add('component.chip.selectedFg', 'component.chip.selectedBg', 'text', 'Selected filter chip');
+add('component.chip.fg', 'component.chip.bg', 'text', 'Unselected chip / reading chip');
+add('component.productHeader.sourceChipFg', 'component.productHeader.sourceChipBg', 'text', 'Store source chip on /check');
+add('component.field.placeholder', 'component.field.bg', 'text', 'Paste-field placeholder');
+add('component.field.border', 'color.bg', 'ui', 'Paste-field edge against the screen');
+add('component.verdictCard.demoBadge.fg', 'component.verdictCard.demoBadge.bg', 'text', 'Demo reading badge');
+for (const v of ['fits', 'caution', 'unknown']) add(`verdict.${v}.icon`, `component.verdictCard.head.${v}.iconDisc`, 'ui', `${v.toUpperCase()} icon in its disc on the head`);
 add('component.rankingDisclosure.color', 'color.bg', 'text', 'Ranking disclosure text (14dp, full text colour)');
 add('component.rankingDisclosure.rule', 'color.bg', 'ui', 'Ranking disclosure leading rule');
 
@@ -286,24 +308,50 @@ lint('CAUTION tint confined to the verdict head', tokens.component.verdictCard.b
 for (const mode of MODES) {
   const sem = resolve(tokens, tokens.semantic.color[mode], mode);
   const acc = sem.accent.toUpperCase();
-  // Neutral = drawn from the sand ramp (by alias, not by guessing from the hex) and never equal to the accent.
+  // Neutral = drawn from the pearl / silver / graphite ramps (by alias, not by guessing from the hex) and never equal to the accent.
   const raw = tokens.semantic.color[mode].meter;
-  const bad = Object.entries(raw).filter(([k, v]) => !/^\{sand\./.test(v) || sem.meter[k].toUpperCase() === acc);
+  const bad = Object.entries(raw).filter(([k, v]) => !/^\{(pearl|silver|graphite)\./.test(v) || sem.meter[k].toUpperCase() === acc);
   lint(`Band meter is neutral ink, not accent (${mode})`, bad.length === 0, Object.entries(raw).map(([k, v]) => `${k} ${v} ${sem.meter[k]}`).join(', ') + `; accent ${acc}`);
   const vcols = Object.values(sem.verdict).flatMap((o) => Object.values(o).map((x) => x.toUpperCase()));
   lint(`No verdict colour equals the accent (${mode})`, !vcols.includes(acc), `accent ${acc}`);
 }
 
-// Dark primary button deepened.
+// Primary pill: the one action per screen reads at AAA in both modes; dark is inverted (pearl pill, slate label).
 {
+  const L = resolve(tokens, tokens.semantic.color.light, 'light');
   const d = resolve(tokens, tokens.semantic.color.dark, 'dark');
-  const r = ratio(parse(d['on-accent']), parse(d.accent));
-  lint('Dark primary button deepened (#86A4A7 with #0C171A)', d.accent.toUpperCase() === '#86A4A7' && d['on-accent'].toUpperCase() === '#0C171A' && r >= 4.5, `${d.accent} / ${d['on-accent']} = ${r.toFixed(2)}:1`);
+  const rl = ratio(parse(L['on-accent']), parse(L.accent));
+  const rd = ratio(parse(d['on-accent']), parse(d.accent));
+  const inverted = /^\{pearl\./.test(tokens.semantic.color.dark.accent) && /^\{slate\./.test(tokens.semantic.color.dark['on-accent']);
+  lint('Primary pill label >= 7:1 in both modes; dark pill is pearl with a slate label', rl >= 7 && rd >= 7 && inverted, `light ${L.accent} / ${L['on-accent']} = ${rl.toFixed(2)}:1; dark ${d.accent} / ${d['on-accent']} = ${rd.toFixed(2)}:1`);
 }
 
-// Grain.
+// UNKNOWN never looks like the primary pill: no slate fill, dashed edge.
+for (const mode of MODES) {
+  const sem = resolve(tokens, tokens.semantic.color[mode], mode);
+  const u = tokens.component.verdictCard.head.unknown;
+  const fill = sem.verdict.unknown.bg.toUpperCase();
+  const pill = ratio(parse(sem.verdict.unknown.bg), parse(sem.accent));
+  lint(`UNKNOWN head is not the primary fill and has a dashed edge (${mode})`, fill !== sem.accent.toUpperCase() && u.borderStyle === 'dashed' && pill >= 3, `unknown.bg ${fill} vs accent ${sem.accent} = ${pill.toFixed(2)}:1, ${u.borderStyle}`);
+}
+
+// Buttons are pills; outlined boxes are retired.
+{
+  const b = tokens.component.button;
+  const notPill = ['primary', 'secondary', 'tertiary', 'destructiveNeutral', 'consentPair'].filter((k) => b[k].radius !== '{radius.full}');
+  lint('Every button variant is a pill (radius.full)', notPill.length === 0, notPill.join(', ') || 'primary, secondary, tertiary, destructiveNeutral, consentPair');
+  lint('Consent pair keeps equal visual weight (spec §2)', b.consentPair.bg === b.secondary.bg && b.consentPair.minHeight >= 48, `${b.consentPair.bg}, ${b.consentPair.minHeight}dp`);
+}
+
+// Serif floor: the display face never drops under 20dp.
+{
+  const serifSmall = Object.entries(T).filter(([, s]) => s.family === 'serif' && s.size < tokens.typography.rules.serifMinSize);
+  lint(`Serif never below ${tokens.typography.rules.serifMinSize}dp`, serifSmall.length === 0, serifSmall.map(([k, s]) => `${k}=${s.size}`).join(', ') || Object.entries(T).filter(([, s]) => s.family === 'serif').map(([k, s]) => `${k} ${s.size}`).join(', '));
+}
+
+// Grain is retired in Silver Mirror (static tile kept for shape only).
 const g = tokens.texture.grain;
-lint('Paper grain: <= 3% static tile in light, off in dark', g.light.opacity <= 0.03 && g.dark.opacity === 0 && /static/i.test(g.tile), `light ${g.light.opacity}, dark ${g.dark.opacity}`);
+lint('Paper grain off (static tile, opacity <= 3% light, 0 dark)', g.light.opacity <= 0.03 && g.dark.opacity === 0 && /static/i.test(g.tile), `light ${g.light.opacity}, dark ${g.dark.opacity}`);
 
 // Distinct verdict silhouettes.
 const glyphs = VERDICTS.map((v) => tokens.icon.verdict[v].glyph);
@@ -316,7 +364,7 @@ const lintFailed = lints.filter((l) => !l.pass);
 const lowest = (mode, kind) => gated.filter((r) => r.mode === mode && r.kind === kind).sort((a, b) => a.ratio - b.ratio)[0];
 
 const lines = [];
-lines.push('# SkinKey contrast report');
+lines.push('# Silver Mirror contrast report');
 lines.push('');
 lines.push(`Generated by \`check-contrast.mjs\` from \`skinkey.tokens.json\` v${tokens.$meta.version}. WCAG 2.1 relative luminance. Text >= 4.5:1; icons, control edges, focus ring, meter segments and fills >= 3:1 (SC 1.4.11). Translucent colours are composited over their backdrop; camera overlays use the worse of a pure white and a pure black frame. Decorative hairlines are listed as "info" and not gated.`);
 lines.push('');
@@ -356,7 +404,7 @@ const md = lines.join('\n') + '\n';
 const mdIdx = process.argv.indexOf('--md');
 if (mdIdx > -1) writeFileSync(resolveFile(process.cwd(), process.argv[mdIdx + 1]), md);
 
-console.log(`SkinKey contrast: ${gated.length} gated pairs, ${failed.length} failures; ${lints.length} lints, ${lintFailed.length} failures.`);
+console.log(`Silver Mirror contrast: ${gated.length} gated pairs, ${failed.length} failures; ${lints.length} lints, ${lintFailed.length} failures.`);
 for (const f of failed) console.log(`  FAIL ${f.mode} ${f.fg} on ${f.bg}: ${f.ratio.toFixed(2)}:1 < ${f.min}:1 (${f.fgHex} on ${f.bgHex})`);
 for (const l of lintFailed) console.log(`  FAIL lint: ${l.name} -> ${l.detail}`);
 for (const mode of MODES) {

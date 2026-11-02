@@ -1,6 +1,8 @@
-# SkinKey component specifications
+# Silver Mirror component specifications
 
-*Direction: **Clay & Ink**, with four parts taken from **Deep Teal**. Version 1.1, 1 Nov 2026 (tokens v1.1.0). Draft until the interview debrief (brief §6 freeze rule).*
+> **Superseded look, kept anatomy (2026-11-02).** The visual direction is now **Silver Mirror** (tokens v2.0.0). `/DESIGN.md` is the design system of record: palette, type, brand, per-screen specs. This file keeps the component anatomy, states, accessibility and copy rules, and its token tables are regenerated from `tokens/skinkey.tokens.json`, so values below are current. Prose that still says Newsreader, Commissioner, ochre, ink, sand or paper grain describes Clay & Ink and is overridden by DESIGN.md: read Newsreader as Noto Serif Display (display and title only, 20dp floor), Commissioner as Geist, ochre as amber, ink accent as slate, sand as pearl/graphite; grain is off.
+
+*Original direction: Clay & Ink v1.1, 1 Nov 2026.*
 
 **Stack:** Expo / React Native, Android-first, with Material 3 behaviour for share, back, permissions, sheets and snackbars. A small web app (results/fallback page, pharmacist QR page, landing) reads the same tokens as CSS variables.
 
@@ -66,57 +68,81 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 <!-- tokens:@semantic -->
 | Token | Light | Dark |
 |---|---|---|
-| `color.bg` | #F3EEE6 (`sand.100`) | #151411 (`sand.950`) |
-| `color.bg-sunken` | #EAE3D8 (`sand.150`) | #100F0D (`sand.975`) |
-| `color.surface` | #FAF7F2 (`sand.50`) | #1E1C18 (`sand.925`) |
-| `color.surface-raised` | #FFFCF7 (`sand.25`) | #28251F (`sand.900`) |
-| `color.text` | #1E1C18 (`sand.925`) | #F3EEE6 (`sand.100`) |
-| `color.text-muted` | #564D41 (`sand.700`) | #B0A595 (`sand.400`) |
-| `color.text-subtle` | #6B6152 (`sand.600`) | #9E9282 (`sand.450`) |
-| `color.border` | #DDD3C5 (`sand.200`) | #38332B (`sand.800`) |
-| `color.border-strong` | #807464 (`sand.500`) | #807464 (`sand.500`) |
-| `color.accent` | #1B2F32 (`ink.800`) | #86A4A7 (`ink.300`) |
-| `color.on-accent` | #FAF7F2 (`sand.50`) | #0C171A (`ink.950`) |
-| `color.accent-pressed` | #253D41 (`ink.700`) | #6B8C90 (`ink.400`) |
-| `color.accent-subtle` | #D5E0E1 (`ink.100`) | #253D41 (`ink.700`) |
-| `color.on-accent-subtle` | #1B2F32 (`ink.800`) | #D5E0E1 (`ink.100`) |
-| `color.link` | #253D41 (`ink.700`) | #B0C5C7 (`ink.200`) |
-| `color.link-pressed` | #1B2F32 (`ink.800`) | #D5E0E1 (`ink.100`) |
-| `color.focus-ring` | #43666A (`ink.500`) | #B0C5C7 (`ink.200`) |
-| `color.focus-ring-inverse` | #B0C5C7 (`ink.200`) | #253D41 (`ink.700`) |
+| `color.bg` | #F6F5F8 (`pearl.50`) | #121319 (`graphite.950`) |
+| `color.bg-sunken` | #EFEEF3 (`pearl.100`) | #0E0F14 (`graphite.975`) |
+| `color.surface` | #FCFBFD (`pearl.25`) | #1A1B23 (`graphite.900`) |
+| `color.surface-raised` | #FFFFFF (`white`) | #20212A (`graphite.850`) |
+| `color.text` | #1A1B23 (`graphite.900`) | #EFEEF3 (`pearl.100`) |
+| `color.text-muted` | #4B4958 (`silver.700`) | #C6C3CF (`pearl.300`) |
+| `color.text-subtle` | #636070 (`silver.600`) | #A8A5B3 (`silver.400`) |
+| `color.border` | #DCDAE3 (`pearl.200`) | #30313C (`graphite.750`) |
+| `color.border-strong` | #7E7B8B (`silver.500`) | #7E7B8B (`silver.500`) |
+| `color.accent` | #3B3F52 (`slate.700`) | #F6F5F8 (`pearl.50`) |
+| `color.on-accent` | #F6F5F8 (`pearl.50`) | #2F3243 (`slate.800`) |
+| `color.accent-pressed` | #50576F (`slate.600`) | #C6C3CF (`pearl.300`) |
+| `color.accent-subtle` | #E1E4EE (`slate.100`) | #2F3243 (`slate.800`) |
+| `color.on-accent-subtle` | #2F3243 (`slate.800`) | #E1E4EE (`slate.100`) |
+| `color.secondary-bg` | #E7E5EC (`pearl.150`) | #30313C (`graphite.750`) |
+| `color.secondary-bg-pressed` | #DCDAE3 (`pearl.200`) | #3A3B47 (`graphite.700`) |
+| `color.on-secondary` | #1A1B23 (`graphite.900`) | #EFEEF3 (`pearl.100`) |
+| `color.accent-warm` | #CFC4BB (`greige.300`) | #4A4038 (`greige.800`) |
+| `color.on-accent-warm` | #4A4038 (`greige.800`) | #E4DCD5 (`greige.200`) |
+| `color.icon-disc` | #ECE9F5 (`lavender.100`) | #34304F (`lavender.800`) |
+| `color.on-icon-disc` | #3B3F52 (`slate.700`) | #DDD8EE (`lavender.200`) |
+| `color.bracket` | #666E88 (`slate.500`) | #A6ADC2 (`slate.300`) |
+| `color.link` | #50576F (`slate.600`) | #C7CCDB (`slate.200`) |
+| `color.link-pressed` | #3B3F52 (`slate.700`) | #E1E4EE (`slate.100`) |
+| `color.focus-ring` | #666E88 (`slate.500`) | #BEB6DE (`lavender.300`) |
+| `color.focus-ring-inverse` | #BEB6DE (`lavender.300`) | #50576F (`slate.600`) |
 | `color.focus-ring-overlay` | #FFFFFF (`white`) | #FFFFFF (`white`) |
-| `color.overlay` | rgba(30, 28, 24, 0.40) | rgba(0, 0, 0, 0.60) |
-| `color.overlay-camera` | rgba(16, 15, 13, 0.62) | rgba(16, 15, 13, 0.62) |
+| `color.overlay` | rgba(18, 19, 25, 0.40) | rgba(8, 9, 12, 0.64) |
+| `color.overlay-camera` | rgba(14, 15, 20, 0.62) | rgba(14, 15, 20, 0.62) |
 | `color.on-overlay` | #FFFFFF (`white`) | #FFFFFF (`white`) |
-| `color.overlay-halo` | rgba(0, 0, 0, 0.60) | rgba(0, 0, 0, 0.60) |
-| `color.inverse-surface` | #2E2A24 (`sand.850`) | #EAE3D8 (`sand.150`) |
-| `color.inverse-text` | #F3EEE6 (`sand.100`) | #1E1C18 (`sand.925`) |
-| `color.inverse-link` | #B0C5C7 (`ink.200`) | #253D41 (`ink.700`) |
-| `color.disabled-bg` | #EAE3D8 (`sand.150`) | #2E2A24 (`sand.850`) |
-| `color.disabled-fg` | #6B6152 (`sand.600`) | #9E9282 (`sand.450`) |
-| `color.shadow` | #423B32 (`sand.shadow`) | transparent |
-| `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
-| `color.state.hover` | rgba(30, 28, 24, 0.05) | rgba(243, 238, 230, 0.06) |
-| `color.state.ripple` | rgba(30, 28, 24, 0.12) | rgba(243, 238, 230, 0.14) |
-| `color.state.ripple-on-accent` | rgba(250, 247, 242, 0.18) | rgba(12, 23, 26, 0.16) |
-| `verdict.fits.bg` | #E5EBDD (`moss.100`) | #1F281C (`moss.900`) |
-| `verdict.fits.fg` | #34492A (`moss.700`) | #B9CCA8 (`moss.300`) |
-| `verdict.fits.border` | #6E8659 (`moss.500`) | #6E8659 (`moss.500`) |
-| `verdict.fits.icon` | #4A6339 (`moss.600`) | #9DB58A (`moss.400`) |
-| `verdict.caution.bg` | #F3E6CC (`ochre.100`) | #292217 (`ochre.900`) |
-| `verdict.caution.fg` | #62410A (`ochre.700`) | #E6C482 (`ochre.300`) |
-| `verdict.caution.border` | #A0752A (`ochre.500`) | #A0752A (`ochre.500`) |
-| `verdict.caution.icon` | #8A5D12 (`ochre.600`) | #D9AE5C (`ochre.400`) |
-| `verdict.unknown.bg` | #EAE3D8 (`sand.150`) | #2E2A24 (`sand.850`) |
-| `verdict.unknown.fg` | #3B464D (`slate.700`) | #BCC5CA (`slate.300`) |
-| `verdict.unknown.border` | #76828A (`slate.500`) | #76828A (`slate.500`) |
-| `verdict.unknown.icon` | #56626A (`slate.600`) | #9AA5AC (`slate.400`) |
-| `verdict.medicine.bg` | #F3EEE6 (`sand.100`) | #151411 (`sand.950`) |
-| `verdict.medicine.fg` | #1E1C18 (`sand.925`) | #F3EEE6 (`sand.100`) |
-| `verdict.medicine.border` | #1E1C18 (`sand.925`) | #B0A595 (`sand.400`) |
-| `verdict.medicine.icon` | #1E1C18 (`sand.925`) | #F3EEE6 (`sand.100`) |
-| `meter.filled` | #38332B (`sand.800`) | #EAE3D8 (`sand.150`) |
-| `meter.empty` | #807464 (`sand.500`) | #807464 (`sand.500`) |
+| `color.overlay-halo` | rgba(14, 15, 20, 0.60) | rgba(14, 15, 20, 0.60) |
+| `color.inverse-surface` | #20212A (`graphite.850`) | #E7E5EC (`pearl.150`) |
+| `color.inverse-text` | #EFEEF3 (`pearl.100`) | #1A1B23 (`graphite.900`) |
+| `color.inverse-link` | #DDD8EE (`lavender.200`) | #50576F (`slate.600`) |
+| `color.disabled-bg` | #E7E5EC (`pearl.150`) | #30313C (`graphite.750`) |
+| `color.disabled-fg` | #636070 (`silver.600`) | #A8A5B3 (`silver.400`) |
+| `color.shadow` | #2A2D40 (`slate.shadow`) | transparent |
+| `color.sheen-edge` | rgba(255, 255, 255, 0.00) | rgba(239, 238, 243, 0.07) |
+| `color.state.pressed` | rgba(26, 27, 35, 0.08) | rgba(239, 238, 243, 0.10) |
+| `color.state.hover` | rgba(26, 27, 35, 0.05) | rgba(239, 238, 243, 0.06) |
+| `color.state.ripple` | rgba(26, 27, 35, 0.12) | rgba(239, 238, 243, 0.14) |
+| `color.state.ripple-on-accent` | rgba(246, 245, 248, 0.18) | rgba(47, 50, 67, 0.16) |
+| `color.sheen.start` | #FDFCFE | #262733 |
+| `color.sheen.lavender` | #ECE8F4 | #24222F |
+| `color.sheen.silver` | #E4E3EA | #1C1D25 |
+| `color.sheen.end` | #F6F5F8 (`pearl.50`) | #121319 (`graphite.950`) |
+| `color.mark.tile-top` | #FFFFFF (`white`) | #30313C (`graphite.750`) |
+| `color.mark.tile-bottom` | #E7E5EC (`pearl.150`) | #1A1B23 (`graphite.900`) |
+| `color.mark.tile-edge` | #DCDAE3 (`pearl.200`) | #3A3B47 (`graphite.700`) |
+| `color.mark.chrome-hi` | #FBFBFD (`chrome.50`) | #FBFBFD (`chrome.50`) |
+| `color.mark.chrome-1` | #D9D8E1 (`chrome.200`) | #D9D8E1 (`chrome.200`) |
+| `color.mark.chrome-2` | #9F9DAE (`chrome.400`) | #9F9DAE (`chrome.400`) |
+| `color.mark.chrome-3` | #CBC5E0 (`chrome.lav`) | #CBC5E0 (`chrome.lav`) |
+| `color.mark.chrome-4` | #686678 (`chrome.600`) | #838194 (`chrome.500`) |
+| `color.mark.chrome-lo` | #4F4D5E (`chrome.700`) | #686678 (`chrome.600`) |
+| `color.mark.glint` | #FFFFFF (`white`) | #FFFFFF (`white`) |
+| `color.mark.shade` | #2A2D40 (`slate.shadow`) | #0E0F14 (`graphite.975`) |
+| `verdict.fits.bg` | #E2EEE8 (`sage.100`) | #1A2A25 (`sage.900`) |
+| `verdict.fits.fg` | #2B5145 (`sage.700`) | #C4DDD2 (`sage.200`) |
+| `verdict.fits.border` | #568676 (`sage.500`) | #568676 (`sage.500`) |
+| `verdict.fits.icon` | #3D6B5C (`sage.600`) | #97C0B0 (`sage.300`) |
+| `verdict.caution.bg` | #F5EAD6 (`amber.100`) | #2A2317 (`amber.900`) |
+| `verdict.caution.fg` | #66460C (`amber.700`) | #EDD6AE (`amber.200`) |
+| `verdict.caution.border` | #A57A2F (`amber.500`) | #A57A2F (`amber.500`) |
+| `verdict.caution.icon` | #8A6118 (`amber.600`) | #D4A65A (`amber.400`) |
+| `verdict.unknown.bg` | #EFEEF3 (`pearl.100`) | #20212A (`graphite.850`) |
+| `verdict.unknown.fg` | #2F3243 (`slate.800`) | #C7CCDB (`slate.200`) |
+| `verdict.unknown.border` | #666E88 (`slate.500`) | #848CA5 (`slate.400`) |
+| `verdict.unknown.icon` | #50576F (`slate.600`) | #A6ADC2 (`slate.300`) |
+| `verdict.medicine.bg` | #F6F5F8 (`pearl.50`) | #121319 (`graphite.950`) |
+| `verdict.medicine.fg` | #1A1B23 (`graphite.900`) | #EFEEF3 (`pearl.100`) |
+| `verdict.medicine.border` | #1A1B23 (`graphite.900`) | #C6C3CF (`pearl.300`) |
+| `verdict.medicine.icon` | #1A1B23 (`graphite.900`) | #EFEEF3 (`pearl.100`) |
+| `meter.filled` | #272832 (`graphite.800`) | #E7E5EC (`pearl.150`) |
+| `meter.empty` | #7E7B8B (`silver.500`) | #7E7B8B (`silver.500`) |
 | `color.qr.module` | #000000 (`black`) | #000000 (`black`) |
 | `color.qr.field` | #FFFFFF (`white`) | #FFFFFF (`white`) |
 <!-- /tokens -->
@@ -128,25 +154,25 @@ Android: `includeFontPadding: false`; never set `fontWeight` on a custom family 
 <!-- tokens:@type -->
 | Token | RN fontFamily | Family / weight | Size / line (dp) | Tracking | Use |
 |---|---|---|---|---|---|
-| `type.display` | Newsreader36pt_500Medium | Newsreader 500 | 34 / 40 | -0.5 | Landing hero, onboarding headline, home 'Check a product' |
-| `type.title` | Newsreader36pt_500Medium | Newsreader 500 | 26 / 32 | -0.3 | Product title on /check, screen titles, the medicine-gate line, consent lead clause |
-| `type.headline` | Newsreader_500Medium | Newsreader 500 | 20 / 26 | -0.1 | Card heads, 'Where this comes from', sheet titles, empty-state sentence, forecast sentence |
-| `type.verdictLine` | Newsreader_400Regular | Newsreader 400 | 20 / 26 | -0.1 | The verdict sentence under the label ('May not suit your readings. This is not a safety warning.'), one unit in one style |
-| `type.section` | Newsreader_500Medium | Newsreader 500 | 18 / 24 | 0 | Sentence-case section heads that replaced tracked-caps eyebrows: 'Why · 2 reasons', 'Readings by zone', 'What we keep' |
-| `type.reason` | Newsreader_500Medium | Newsreader 500 | 19 / 26 | 0 | Reason reading line. Out-sizes the 15dp verdict label (P1); weight 500 so it leads the 16dp fact. |
-| `type.reasonIndex` | Newsreader_400Regular_Italic | Newsreader 400 italic, tabular | 18 / 26 | 0 | 01 / 02 / 03 reason and rank numerals |
-| `type.figure` | Newsreader36pt_500Medium | Newsreader 500, tabular | 26 / 32 | -0.3 | QR countdown ('29 min left') |
-| `type.verdictLabel` | Commissioner_600SemiBold | Commissioner 600, caps | 15 / 20 | 1.2 | FITS / CAUTION / UNKNOWN, with a 24dp icon. Never truncates; wraps at max font scale. |
-| `type.body` | Commissioner_400Regular | Commissioner 400 | 16 / 24 | 0 | Body copy, the product fact in each reason (full text colour), consent body |
-| `type.bodyStrong` | Commissioner_600SemiBold | Commissioner 600 | 16 / 24 | 0 | Band value (High), emphasised step, list row title |
-| `type.bodySm` | Commissioner_400Regular | Commissioner 400 | 14 / 20 | 0.1 | Ledger values, supporting lines, card secondary text |
-| `type.label` | Commissioner_600SemiBold | Commissioner 600 | 14 / 20 | 0.1 | Chip and band names, field labels, snackbar action |
-| `type.labelSm` | Commissioner_600SemiBold | Commissioner 600 | 13 / 16 | 0.2 | Selected bottom-nav label, tags |
-| `type.labelSmRegular` | Commissioner_400Regular | Commissioner 400 | 13 / 16 | 0.2 | Unselected bottom-nav label (selection is weight + stroke + pill, never colour alone) |
-| `type.button` | Commissioner_600SemiBold | Commissioner 600 | 16 / 20 | 0.1 | All buttons |
-| `type.overline` | Commissioner_600SemiBold | Commissioner 600, caps | 13 / 16 | 0.8 | Ledger keys SKIN / PRODUCT / WEATHER / LIMITS only. The verdict label is the only other caps line. No section eyebrows. |
-| `type.caption` | Commissioner_400Regular | Commissioner 400 | 13 / 18 | 0.1 | Destination lines, disclosures, meter labels (Low / Med / High), timestamps |
-| `type.fine` | Commissioner_400Regular | Commissioner 400 | 12 / 16 | 0.2 | Data credits only (Open-Meteo CC BY 4.0, Open Beauty Facts ODbL). The floor: nothing in SkinKey is smaller than 12. |
+| `type.display` | NotoSerifDisplay_400Regular | Noto Serif Display 400 | 34 / 40 | -0.6 | Home greeting, welcome headline, empty-state headline |
+| `type.title` | NotoSerifDisplay_400Regular | Noto Serif Display 400 | 26 / 32 | -0.3 | Product title on /check, screen titles, the medicine-gate line |
+| `type.headline` | Geist_600SemiBold | Geist 600 | 20 / 26 | -0.2 | Card heads, sheet titles, 'Where this comes from', empty-state sentence |
+| `type.verdictLine` | NotoSerifDisplay_400Regular | Noto Serif Display 400 | 20 / 27 | 0 | The verdict sentence under the label, one unit in one style |
+| `type.section` | Geist_600SemiBold | Geist 600 | 17 / 24 | -0.1 | Sentence-case section heads: 'Why · 2 reasons', 'What stays on this phone', 'Better matches' |
+| `type.reason` | Geist_500Medium | Geist 500 | 18 / 26 | -0.1 | Reason reading line. Out-sizes the 15dp verdict label (P1: reasons before verdicts). |
+| `type.reasonIndex` | Geist_500Medium | Geist 500, tabular | 15 / 22 | 0 | Step numbers where order matters (share steps). Not decoration on candidates or matches. |
+| `type.figure` | NotoSerifDisplay_400Regular | Noto Serif Display 400, tabular | 26 / 32 | -0.3 | QR countdown ('29 min left'), catalogue count on /how |
+| `type.verdictLabel` | Geist_600SemiBold | Geist 600, caps | 15 / 20 | 1.2 | FITS / CAUTION / UNKNOWN, with a 24dp icon in a disc. Never truncates; wraps at max font scale. |
+| `type.body` | Geist_400Regular | Geist 400 | 16 / 24 | 0 | Body copy, the product fact in each reason (full text colour), consent body |
+| `type.bodyStrong` | Geist_600SemiBold | Geist 600 | 16 / 24 | 0 | Band value (High), emphasised step, list row title |
+| `type.bodySm` | Geist_400Regular | Geist 400 | 14 / 20 | 0.1 | Ledger values, supporting lines, card secondary text |
+| `type.label` | Geist_600SemiBold | Geist 600 | 14 / 20 | 0.1 | Chip and band names, field labels, snackbar action |
+| `type.labelSm` | Geist_600SemiBold | Geist 600 | 13 / 16 | 0.2 | Selected tab label, tags |
+| `type.labelSmRegular` | Geist_400Regular | Geist 400 | 13 / 16 | 0.2 | Unselected tab label (selection is weight + stroke + pill, never colour alone) |
+| `type.button` | Geist_600SemiBold | Geist 600 | 16 / 20 | 0.1 | All buttons |
+| `type.overline` | Geist_600SemiBold | Geist 600 | 13 / 18 | 0.1 | Ledger keys only (Reading / Product / Rules / Limits), sentence case. The name is historical: no tracked caps, no eyebrows. |
+| `type.caption` | Geist_400Regular | Geist 400 | 13 / 18 | 0.1 | Destination lines, disclosures, meter labels (Low / Medium / High), timestamps |
+| `type.fine` | Geist_400Regular | Geist 400 | 12 / 16 | 0.2 | Data credits only (Open-Meteo CC BY 4.0, Open Beauty Facts ODbL). The floor: nothing is smaller than 12. |
 <!-- /tokens -->
 
 ### 1.5 Motion and haptics policy
@@ -159,18 +185,20 @@ The motion personality is **ink settling**: unhurried, no springs, no overshoot,
 | `motion.duration.instant` | 0ms |
 | `motion.duration.press` | 100ms |
 | `motion.duration.state` | 160ms |
-| `motion.duration.base` | 240ms |
-| `motion.duration.enter` | 320ms |
+| `motion.duration.base` | 220ms |
+| `motion.duration.enter` | 300ms |
 | `motion.duration.verdictReveal` | 320ms |
 | `motion.duration.reasonStagger` | 60ms |
-| `motion.duration.stepTick` | 200ms |
-| `motion.duration.sheetEnter` | 320ms |
-| `motion.duration.sheetExit` | 240ms |
-| `motion.duration.screen` | 320ms |
+| `motion.duration.stepTick` | 220ms |
+| `motion.duration.bracketResolve` | 420ms |
+| `motion.duration.sheetEnter` | 300ms |
+| `motion.duration.sheetExit` | 220ms |
+| `motion.duration.screen` | 280ms |
 | `motion.duration.crossfade` | 120ms |
 | `motion.ease.standard` | cubic-bezier(0.2, 0, 0, 1) |
 | `motion.ease.decelerate` | cubic-bezier(0.05, 0.7, 0.1, 1) |
 | `motion.ease.exit` | cubic-bezier(0.3, 0, 1, 1) |
+| `motion.ease.glide` | cubic-bezier(0.16, 1, 0.3, 1) |
 | `motion.ease.linear` | cubic-bezier(0, 0, 1, 1) |
 | `motion.enter.translate` / `motion.enter.scaleFrom` | 6dp / 0.98 |
 | `motion.timing.snackbarMs` | 4000 |
@@ -239,24 +267,27 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `appBar.minHeight` | — | 56 | same |
-| `appBar.bg` | `color.bg` | #F3EEE6 | #151411 |
-| `appBar.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `appBar.title` | `type.headline` | Newsreader 500 20/26 | same |
+| `appBar.bg` | `color.bg` | #F6F5F8 | #121319 |
+| `appBar.fg` | `color.text` | #1A1B23 | #EFEEF3 |
+| `appBar.title` | `type.headline` | Geist 600 20/26 | same |
 | `appBar.titleAlign` | — | start | same |
-| `appBar.source` | `type.caption` | Commissioner 400 13/18 | same |
-| `appBar.sourceColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `appBar.source` | `type.caption` | Geist 400 13/18 | same |
+| `appBar.sourceColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `appBar.sourceIcon` | — | arrow-down-left | same |
 | `appBar.iconButton` | `touch.min` | 48 | same |
 | `appBar.iconSize` | `icon.lg` | 24 | same |
-| `appBar.borderOnScroll` | `color.border` | #DDD3C5 | #38332B |
+| `appBar.backIcon` | — | chevron-left | same |
+| `appBar.borderOnScroll` | `color.border` | #DCDAE3 | #30313C |
 | `appBar.paddingX` | `space.1` | 4 | same |
 | `iconButton.target` | `touch.min` | 48 | same |
 | `iconButton.iconSize` | `icon.lg` | 24 | same |
 | `iconButton.radius` | `radius.full` | 9999 | same |
-| `iconButton.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `iconButton.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
-| `iconButton.ripple` | `color.state.ripple` | rgba(30, 28, 24, 0.12) | rgba(243, 238, 230, 0.14) |
-| `iconButton.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `iconButton.fg` | `color.text` | #1A1B23 | #EFEEF3 |
+| `iconButton.bg` | — | transparent | same |
+| `iconButton.bgTonal` | `color.secondary-bg` | #E7E5EC | #30313C |
+| `iconButton.bgPressed` | `color.state.pressed` | rgba(26, 27, 35, 0.08) | rgba(239, 238, 243, 0.10) |
+| `iconButton.ripple` | `color.state.ripple` | rgba(26, 27, 35, 0.12) | rgba(239, 238, 243, 0.14) |
+| `iconButton.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -308,73 +339,77 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:button actionBar focus -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `button.primary.bg` | `color.accent` | #1B2F32 | #86A4A7 |
-| `button.primary.fg` | `color.on-accent` | #FAF7F2 | #0C171A |
-| `button.primary.bgPressed` | `color.accent-pressed` | #253D41 | #6B8C90 |
-| `button.primary.ripple` | `color.state.ripple-on-accent` | rgba(250, 247, 242, 0.18) | rgba(12, 23, 26, 0.16) |
+| `button.primary.bg` | `color.accent` | #3B3F52 | #F6F5F8 |
+| `button.primary.fg` | `color.on-accent` | #F6F5F8 | #2F3243 |
+| `button.primary.bgPressed` | `color.accent-pressed` | #50576F | #C6C3CF |
+| `button.primary.ripple` | `color.state.ripple-on-accent` | rgba(246, 245, 248, 0.18) | rgba(47, 50, 67, 0.16) |
 | `button.primary.minHeight` | — | 52 | same |
-| `button.primary.paddingX` | `space.5` | 20 | same |
-| `button.primary.radius` | `radius.md` | 8 | same |
-| `button.primary.type` | `type.button` | Commissioner 600 16/20 | same |
+| `button.primary.paddingX` | `space.6` | 24 | same |
+| `button.primary.radius` | `radius.full` | 9999 | same |
+| `button.primary.type` | `type.button` | Geist 600 16/20 | same |
 | `button.primary.gap` | `space.2` | 8 | same |
-| `button.primary.bgDisabled` | `color.disabled-bg` | #EAE3D8 | #2E2A24 |
-| `button.primary.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
-| `button.secondary.bg` | — | transparent | same |
-| `button.secondary.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `button.secondary.border` | `color.border-strong` | #807464 | same |
-| `button.secondary.borderWidth` | — | 1.5 | same |
-| `button.secondary.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `button.primary.trailingIcon` | — | arrow-right | same |
+| `button.primary.bgDisabled` | `color.disabled-bg` | #E7E5EC | #30313C |
+| `button.primary.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
+| `button.secondary.bg` | `color.secondary-bg` | #E7E5EC | #30313C |
+| `button.secondary.fg` | `color.on-secondary` | #1A1B23 | #EFEEF3 |
+| `button.secondary.border` | `color.secondary-bg` | #E7E5EC | #30313C |
+| `button.secondary.borderWidth` | — | 0 | same |
+| `button.secondary.bgPressed` | `color.secondary-bg-pressed` | #DCDAE3 | #3A3B47 |
 | `button.secondary.minHeight` | — | 48 | same |
 | `button.secondary.paddingX` | `space.5` | 20 | same |
-| `button.secondary.radius` | `radius.md` | 8 | same |
-| `button.secondary.type` | `type.button` | Commissioner 600 16/20 | same |
-| `button.secondary.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
-| `button.secondary.borderDisabled` | `color.border` | #DDD3C5 | #38332B |
+| `button.secondary.radius` | `radius.full` | 9999 | same |
+| `button.secondary.type` | `type.button` | Geist 600 16/20 | same |
+| `button.secondary.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
+| `button.secondary.borderDisabled` | `color.disabled-bg` | #E7E5EC | #30313C |
 | `button.tertiary.bg` | — | transparent | same |
-| `button.tertiary.fg` | `color.link` | #253D41 | #B0C5C7 |
-| `button.tertiary.fgPressed` | `color.link-pressed` | #1B2F32 | #D5E0E1 |
-| `button.tertiary.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `button.tertiary.fg` | `color.link` | #50576F | #C7CCDB |
+| `button.tertiary.fgPressed` | `color.link-pressed` | #3B3F52 | #E1E4EE |
+| `button.tertiary.bgPressed` | `color.state.pressed` | rgba(26, 27, 35, 0.08) | rgba(239, 238, 243, 0.10) |
 | `button.tertiary.minHeight` | — | 48 | same |
 | `button.tertiary.paddingX` | `space.3` | 12 | same |
-| `button.tertiary.radius` | `radius.md` | 8 | same |
-| `button.tertiary.type` | `type.button` | Commissioner 600 16/20 | same |
-| `button.tertiary.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `button.tertiary.radius` | `radius.full` | 9999 | same |
+| `button.tertiary.type` | `type.button` | Geist 600 16/20 | same |
+| `button.tertiary.trailingIcon` | — | chevron-right | same |
+| `button.tertiary.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
 | `button.destructiveNeutral.bg` | — | transparent | same |
-| `button.destructiveNeutral.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `button.destructiveNeutral.border` | `color.text` | #1E1C18 | #F3EEE6 |
-| `button.destructiveNeutral.borderWidth` | — | 1.5 | same |
-| `button.destructiveNeutral.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `button.destructiveNeutral.fg` | `color.text` | #1A1B23 | #EFEEF3 |
+| `button.destructiveNeutral.border` | `color.border-strong` | #7E7B8B | same |
+| `button.destructiveNeutral.borderWidth` | — | 0 | same |
+| `button.destructiveNeutral.bgPressed` | `color.state.pressed` | rgba(26, 27, 35, 0.08) | rgba(239, 238, 243, 0.10) |
 | `button.destructiveNeutral.minHeight` | — | 52 | same |
-| `button.destructiveNeutral.paddingX` | `space.5` | 20 | same |
-| `button.destructiveNeutral.radius` | `radius.md` | 8 | same |
-| `button.destructiveNeutral.type` | `type.button` | Commissioner 600 16/20 | same |
-| `button.destructiveNeutral.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
-| `button.destructiveNeutral.borderDisabled` | `color.border` | #DDD3C5 | #38332B |
-| `button.consentPair.bg` | `color.surface-raised` | #FFFCF7 | #28251F |
-| `button.consentPair.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `button.consentPair.border` | `color.border-strong` | #807464 | same |
-| `button.consentPair.borderWidth` | — | 1.5 | same |
-| `button.consentPair.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `button.destructiveNeutral.paddingX` | `space.4` | 16 | same |
+| `button.destructiveNeutral.radius` | `radius.full` | 9999 | same |
+| `button.destructiveNeutral.type` | `type.button` | Geist 600 16/20 | same |
+| `button.destructiveNeutral.leadingIcon` | — | trash | same |
+| `button.destructiveNeutral.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
+| `button.destructiveNeutral.borderDisabled` | `color.border` | #DCDAE3 | #30313C |
+| `button.consentPair.bg` | `color.secondary-bg` | #E7E5EC | #30313C |
+| `button.consentPair.fg` | `color.on-secondary` | #1A1B23 | #EFEEF3 |
+| `button.consentPair.border` | `color.border-strong` | #7E7B8B | same |
+| `button.consentPair.borderWidth` | — | 1 | same |
+| `button.consentPair.bgPressed` | `color.secondary-bg-pressed` | #DCDAE3 | #3A3B47 |
 | `button.consentPair.minHeight` | — | 52 | same |
 | `button.consentPair.paddingX` | `space.4` | 16 | same |
-| `button.consentPair.radius` | `radius.md` | 8 | same |
-| `button.consentPair.type` | `type.button` | Commissioner 600 16/20 | same |
-| `button.consentPair.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
-| `button.consentPair.borderDisabled` | `color.border` | #DDD3C5 | #38332B |
+| `button.consentPair.radius` | `radius.full` | 9999 | same |
+| `button.consentPair.type` | `type.button` | Geist 600 16/20 | same |
+| `button.consentPair.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
+| `button.consentPair.borderDisabled` | `color.border` | #DCDAE3 | #30313C |
 | `button.stackAtFontScale` | — | 1.3 | same |
-| `actionBar.bg` | `elevation.2.surface` | #FFFCF7 | #28251F |
-| `actionBar.border` | `elevation.2.border` | #DDD3C5 | #38332B |
+| `actionBar.bg` | `elevation.2.surface` | #FFFFFF | #20212A |
+| `actionBar.border` | `elevation.2.border` | #DCDAE3 | #30313C |
 | `actionBar.shadow` | `elevation.2` | elevation 2 | same |
-| `actionBar.paddingTop` | `space.2` | 8 | same |
-| `actionBar.paddingBottom` | `space.1` | 4 | same |
+| `actionBar.paddingTop` | `space.3` | 12 | same |
+| `actionBar.paddingBottom` | `space.2` | 8 | same |
 | `actionBar.paddingX` | `space.gutter` | 20 | same |
-| `actionBar.gap` | `space.1` | 4 | same |
-| `actionBar.maxHeightAt1x` | — | 136 | same |
+| `actionBar.gap` | `space.2` | 8 | same |
+| `actionBar.moreTarget` | `touch.min` | 48 | same |
+| `actionBar.maxHeightAt1x` | — | 112 | same |
 | `actionBar.inlineAtFontScale` | — | 1.5 | same |
-| `focus.color` | `color.focus-ring` | #43666A | #B0C5C7 |
-| `focus.inverse` | `color.focus-ring-inverse` | #B0C5C7 | #253D41 |
+| `focus.color` | `color.focus-ring` | #666E88 | #BEB6DE |
+| `focus.inverse` | `color.focus-ring-inverse` | #BEB6DE | #50576F |
 | `focus.overlay` | `color.focus-ring-overlay` | #FFFFFF | same |
-| `focus.overlayHalo` | `color.overlay-halo` | rgba(0, 0, 0, 0.60) | same |
+| `focus.overlayHalo` | `color.overlay-halo` | rgba(14, 15, 20, 0.60) | same |
 | `focus.width` | — | 2 | same |
 | `focus.offset` | — | 2 | same |
 | `focus.overlayHaloWidth` | — | 1 | same |
@@ -438,12 +473,12 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:textLink -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `textLink.fg` | `color.link` | #253D41 | #B0C5C7 |
-| `textLink.fgPressed` | `color.link-pressed` | #1B2F32 | #D5E0E1 |
-| `textLink.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
-| `textLink.type` | `type.label` | Commissioner 600 14/20 | same |
-| `textLink.disabledCaption` | `type.caption` | Commissioner 400 13/18 | same |
-| `textLink.disabledCaptionColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `textLink.fg` | `color.link` | #50576F | #C7CCDB |
+| `textLink.fgPressed` | `color.link-pressed` | #3B3F52 | #E1E4EE |
+| `textLink.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
+| `textLink.type` | `type.label` | Geist 600 14/20 | same |
+| `textLink.disabledCaption` | `type.caption` | Geist 400 13/18 | same |
+| `textLink.disabledCaptionColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `textLink.underlineWidth` | — | 1 | same |
 | `textLink.underlineOffset` | — | 3 | same |
 | `textLink.minTarget` | `touch.min` | 48 | same |
@@ -493,26 +528,30 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:productHeader field -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `productHeader.kicker` | `type.bodySm` | Commissioner 400 14/20 | same |
-| `productHeader.kickerColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `productHeader.title` | `type.title` | Newsreader 500 26/32 | same |
-| `productHeader.titleColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `productHeader.meta` | `type.caption` | Commissioner 400 13/18 | same |
-| `productHeader.metaColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `productHeader.kicker` | `type.bodySm` | Geist 400 14/20 | same |
+| `productHeader.kickerColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `productHeader.title` | `type.title` | Noto Serif Display 400 26/32 | same |
+| `productHeader.titleColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `productHeader.meta` | `type.caption` | Geist 400 13/18 | same |
+| `productHeader.metaColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `productHeader.sourceChipBg` | `color.bg-sunken` | #EFEEF3 | #0E0F14 |
+| `productHeader.sourceChipFg` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `productHeader.gap` | `space.1` | 4 | same |
 | `productHeader.editTarget` | `touch.min` | 48 | same |
-| `field.bg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
-| `field.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `field.border` | `color.border-strong` | #807464 | same |
-| `field.borderWidth` | — | 1.5 | same |
-| `field.focusBorder` | `color.focus-ring` | #43666A | #B0C5C7 |
+| `field.bg` | `color.surface-raised` | #FFFFFF | #20212A |
+| `field.fg` | `color.text` | #1A1B23 | #EFEEF3 |
+| `field.placeholder` | `color.text-subtle` | #636070 | #A8A5B3 |
+| `field.border` | `color.border-strong` | #7E7B8B | same |
+| `field.borderWidth` | — | 1 | same |
+| `field.focusBorder` | `color.focus-ring` | #666E88 | #BEB6DE |
 | `field.focusBorderWidth` | — | 2 | same |
-| `field.label` | `type.label` | Commissioner 600 14/20 | same |
-| `field.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `field.value` | `type.body` | Commissioner 400 16/24 | same |
-| `field.minHeight` | `touch.min` | 48 | same |
-| `field.radius` | `radius.md` | 8 | same |
-| `field.paddingX` | `space.3` | 12 | same |
+| `field.label` | `type.label` | Geist 600 14/20 | same |
+| `field.labelColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `field.value` | `type.body` | Geist 400 16/24 | same |
+| `field.minHeight` | — | 56 | same |
+| `field.radius` | `radius.full` | 9999 | same |
+| `field.paddingX` | `space.5` | 20 | same |
+| `field.trailingActionTarget` | `touch.min` | 48 | same |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -586,55 +625,69 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:verdictCard -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `verdictCard.head.radius` | `radius.lg` | 12 | same |
-| `verdictCard.head.padding` | `space.4` | 16 | same |
+| `verdictCard.head.radius` | `radius.lg` | 20 | same |
+| `verdictCard.head.padding` | `space.5` | 20 | same |
 | `verdictCard.head.gap` | `space.2` | 8 | same |
-| `verdictCard.head.label` | `type.verdictLabel` | Commissioner 600 15/20 caps | same |
-| `verdictCard.head.iconGap` | `space.2` | 8 | same |
-| `verdictCard.head.subtitleColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `verdictCard.head.fits.bg` | `verdict.fits.bg` | #E5EBDD | #1F281C |
-| `verdictCard.head.fits.fg` | `verdict.fits.fg` | #34492A | #B9CCA8 |
-| `verdictCard.head.fits.border` | `verdict.fits.border` | #6E8659 | same |
-| `verdictCard.head.fits.icon` | `verdict.fits.icon` | #4A6339 | #9DB58A |
+| `verdictCard.head.label` | `type.verdictLabel` | Geist 600 15/20 caps | same |
+| `verdictCard.head.iconGap` | `space.3` | 12 | same |
+| `verdictCard.head.subtitleColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `verdictCard.head.fits.bg` | `verdict.fits.bg` | #E2EEE8 | #1A2A25 |
+| `verdictCard.head.fits.fg` | `verdict.fits.fg` | #2B5145 | #C4DDD2 |
+| `verdictCard.head.fits.border` | `verdict.fits.border` | #568676 | same |
+| `verdictCard.head.fits.icon` | `verdict.fits.icon` | #3D6B5C | #97C0B0 |
+| `verdictCard.head.fits.iconDisc` | `color.surface-raised` | #FFFFFF | #20212A |
+| `verdictCard.head.fits.iconDiscSize` | — | 40 | same |
 | `verdictCard.head.fits.borderWidth` | — | 1 | same |
 | `verdictCard.head.fits.borderStyle` | — | solid | same |
 | `verdictCard.head.fits.showLabel` | — | true | same |
-| `verdictCard.head.fits.subtitle` | `type.verdictLine` | Newsreader 400 20/26 | same |
+| `verdictCard.head.fits.subtitle` | `type.verdictLine` | Noto Serif Display 400 20/27 | same |
 | `verdictCard.head.fits.iconSize` | `icon.verdict.size` | 24 | same |
-| `verdictCard.head.caution.bg` | `verdict.caution.bg` | #F3E6CC | #292217 |
-| `verdictCard.head.caution.fg` | `verdict.caution.fg` | #62410A | #E6C482 |
-| `verdictCard.head.caution.border` | `verdict.caution.border` | #A0752A | same |
-| `verdictCard.head.caution.icon` | `verdict.caution.icon` | #8A5D12 | #D9AE5C |
+| `verdictCard.head.caution.bg` | `verdict.caution.bg` | #F5EAD6 | #2A2317 |
+| `verdictCard.head.caution.fg` | `verdict.caution.fg` | #66460C | #EDD6AE |
+| `verdictCard.head.caution.border` | `verdict.caution.border` | #A57A2F | same |
+| `verdictCard.head.caution.icon` | `verdict.caution.icon` | #8A6118 | #D4A65A |
+| `verdictCard.head.caution.iconDisc` | `color.surface-raised` | #FFFFFF | #20212A |
+| `verdictCard.head.caution.iconDiscSize` | — | 40 | same |
 | `verdictCard.head.caution.borderWidth` | — | 1 | same |
 | `verdictCard.head.caution.borderStyle` | — | solid | same |
 | `verdictCard.head.caution.showLabel` | — | true | same |
-| `verdictCard.head.caution.subtitle` | `type.verdictLine` | Newsreader 400 20/26 | same |
+| `verdictCard.head.caution.subtitle` | `type.verdictLine` | Noto Serif Display 400 20/27 | same |
 | `verdictCard.head.caution.iconSize` | `icon.verdict.size` | 24 | same |
-| `verdictCard.head.unknown.bg` | `verdict.unknown.bg` | #EAE3D8 | #2E2A24 |
-| `verdictCard.head.unknown.fg` | `verdict.unknown.fg` | #3B464D | #BCC5CA |
-| `verdictCard.head.unknown.border` | `verdict.unknown.border` | #76828A | same |
-| `verdictCard.head.unknown.icon` | `verdict.unknown.icon` | #56626A | #9AA5AC |
+| `verdictCard.head.unknown.bg` | `verdict.unknown.bg` | #EFEEF3 | #20212A |
+| `verdictCard.head.unknown.fg` | `verdict.unknown.fg` | #2F3243 | #C7CCDB |
+| `verdictCard.head.unknown.border` | `verdict.unknown.border` | #666E88 | #848CA5 |
+| `verdictCard.head.unknown.icon` | `verdict.unknown.icon` | #50576F | #A6ADC2 |
+| `verdictCard.head.unknown.iconDisc` | `color.surface-raised` | #FFFFFF | #20212A |
+| `verdictCard.head.unknown.iconDiscSize` | — | 40 | same |
 | `verdictCard.head.unknown.borderWidth` | — | 1 | same |
 | `verdictCard.head.unknown.borderStyle` | — | dashed | same |
 | `verdictCard.head.unknown.showLabel` | — | true | same |
-| `verdictCard.head.unknown.subtitle` | `type.verdictLine` | Newsreader 400 20/26 | same |
+| `verdictCard.head.unknown.subtitle` | `type.verdictLine` | Noto Serif Display 400 20/27 | same |
 | `verdictCard.head.unknown.iconSize` | `icon.verdict.size` | 24 | same |
-| `verdictCard.head.medicine.bg` | `verdict.medicine.bg` | #F3EEE6 | #151411 |
-| `verdictCard.head.medicine.fg` | `verdict.medicine.fg` | #1E1C18 | #F3EEE6 |
-| `verdictCard.head.medicine.border` | `verdict.medicine.border` | #1E1C18 | #B0A595 |
-| `verdictCard.head.medicine.icon` | `verdict.medicine.icon` | #1E1C18 | #F3EEE6 |
+| `verdictCard.head.medicine.bg` | `verdict.medicine.bg` | #F6F5F8 | #121319 |
+| `verdictCard.head.medicine.fg` | `verdict.medicine.fg` | #1A1B23 | #EFEEF3 |
+| `verdictCard.head.medicine.border` | `verdict.medicine.border` | #1A1B23 | #C6C3CF |
+| `verdictCard.head.medicine.icon` | `verdict.medicine.icon` | #1A1B23 | #EFEEF3 |
+| `verdictCard.head.medicine.iconDisc` | — | transparent | same |
+| `verdictCard.head.medicine.iconDiscSize` | — | 0 | same |
 | `verdictCard.head.medicine.borderWidth` | — | 0 | same |
 | `verdictCard.head.medicine.borderStyle` | — | solid | same |
 | `verdictCard.head.medicine.showLabel` | — | false | same |
-| `verdictCard.head.medicine.subtitle` | `type.title` | Newsreader 500 26/32 | same |
+| `verdictCard.head.medicine.subtitle` | `type.title` | Noto Serif Display 400 26/32 | same |
 | `verdictCard.head.medicine.iconSize` | `icon.verdict.medicineSize` | 32 | same |
 | `verdictCard.medicineGate.offsetTopPct` | — | 28 | same |
 | `verdictCard.medicineGate.iconGap` | `space.4` | 16 | same |
-| `verdictCard.medicineGate.line` | `type.title` | Newsreader 500 26/32 | same |
-| `verdictCard.medicineGate.lineColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `verdictCard.medicineGate.line` | `type.title` | Noto Serif Display 400 26/32 | same |
+| `verdictCard.medicineGate.lineColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `verdictCard.nameOnly.borderStyle` | — | dashed | same |
-| `verdictCard.nameOnly.qualifier` | `type.label` | Commissioner 600 14/20 | same |
-| `verdictCard.nameOnly.qualifierColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `verdictCard.nameOnly.qualifier` | `type.label` | Geist 600 14/20 | same |
+| `verdictCard.nameOnly.qualifierColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `verdictCard.demoBadge.bg` | `color.accent-warm` | #CFC4BB | #4A4038 |
+| `verdictCard.demoBadge.fg` | `color.on-accent-warm` | #4A4038 | #E4DCD5 |
+| `verdictCard.demoBadge.type` | `type.labelSm` | Geist 600 13/16 | same |
+| `verdictCard.demoBadge.radius` | `radius.full` | 9999 | same |
+| `verdictCard.demoBadge.paddingX` | `space.3` | 12 | same |
+| `verdictCard.demoBadge.visualMinHeight` | — | 24 | same |
 | `verdictCard.body.bg` | — | transparent | same |
 | `verdictCard.sectionGap` | `space.7` | 28 | same |
 <!-- /tokens -->
@@ -707,19 +760,22 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:reasonRow -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `reasonRow.heading` | `type.section` | Newsreader 500 18/24 | same |
-| `reasonRow.headingColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `reasonRow.index` | `type.reasonIndex` | Newsreader 400 italic 18/26 tabular | same |
-| `reasonRow.indexColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `reasonRow.indexWidth` | — | 32 | same |
-| `reasonRow.reading` | `type.reason` | Newsreader 500 19/26 | same |
-| `reasonRow.readingColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `reasonRow.fact` | `type.body` | Commissioner 400 16/24 | same |
-| `reasonRow.factColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `reasonRow.heading` | `type.section` | Geist 600 17/24 | same |
+| `reasonRow.headingColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `reasonRow.index` | `type.reasonIndex` | Geist 500 15/22 tabular | same |
+| `reasonRow.indexColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `reasonRow.indexWidth` | — | 28 | same |
+| `reasonRow.reading` | `type.reason` | Geist 500 18/26 | same |
+| `reasonRow.readingColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `reasonRow.fact` | `type.body` | Geist 400 16/24 | same |
+| `reasonRow.factColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `reasonRow.factGap` | — | 6 | same |
 | `reasonRow.chipGap` | `space.3` | 12 | same |
 | `reasonRow.paddingY` | `space.4` | 16 | same |
-| `reasonRow.divider` | `color.border` | #DDD3C5 | #38332B |
+| `reasonRow.bg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
+| `reasonRow.radius` | `radius.lg` | 20 | same |
+| `reasonRow.paddingX` | `space.4` | 16 | same |
+| `reasonRow.divider` | `color.border` | #DCDAE3 | #30313C |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -782,14 +838,14 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:bandChip bandList -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `bandChip.bg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
-| `bandChip.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `bandChip.radius` | `radius.sm` | 6 | same |
+| `bandChip.bg` | `color.bg-sunken` | #EFEEF3 | #0E0F14 |
+| `bandChip.fg` | `color.text` | #1A1B23 | #EFEEF3 |
+| `bandChip.radius` | `radius.full` | 9999 | same |
 | `bandChip.paddingX` | `space.3` | 12 | same |
 | `bandChip.visualMinHeight` | — | 32 | same |
-| `bandChip.type` | `type.label` | Commissioner 600 14/20 | same |
-| `bandChip.separatorColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `bandChip.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `bandChip.type` | `type.label` | Geist 600 14/20 | same |
+| `bandChip.separatorColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `bandChip.bgPressed` | `color.state.pressed` | rgba(26, 27, 35, 0.08) | rgba(239, 238, 243, 0.10) |
 | `bandChip.target` | `touch.min` | 48 | same |
 | `bandChip.meter.orientation` | — | horizontal | same |
 | `bandChip.meter.segments` | — | 3 | same |
@@ -797,28 +853,28 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `bandChip.meter.segmentHeight` | — | 6 | same |
 | `bandChip.meter.segmentGap` | — | 3 | same |
 | `bandChip.meter.segmentRadius` | `radius.xs` | 2 | same |
-| `bandChip.meter.filled` | `meter.filled` | #38332B | #EAE3D8 |
-| `bandChip.meter.emptyStroke` | `meter.empty` | #807464 | same |
+| `bandChip.meter.filled` | `meter.filled` | #272832 | #E7E5EC |
+| `bandChip.meter.emptyStroke` | `meter.empty` | #7E7B8B | same |
 | `bandChip.meter.emptyStrokeWidth` | — | 1 | same |
 | `bandChip.meter.emptyFill` | — | transparent | same |
-| `bandChip.meter.label` | `type.caption` | Commissioner 400 13/18 | same |
-| `bandChip.meter.labelColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `bandChip.noData.valueColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `bandChip.meter.label` | `type.caption` | Geist 400 13/18 | same |
+| `bandChip.meter.labelColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `bandChip.noData.valueColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `bandChip.noData.filledSegments` | — | 0 | same |
-| `bandList.topRule` | `color.text` | #1E1C18 | #F3EEE6 |
-| `bandList.topRuleWidth` | — | 1.5 | same |
-| `bandList.bottomRule` | `color.text` | #1E1C18 | #F3EEE6 |
-| `bandList.bottomRuleWidth` | — | 1.5 | same |
+| `bandList.topRule` | `color.border` | #DCDAE3 | #30313C |
+| `bandList.topRuleWidth` | — | 1 | same |
+| `bandList.bottomRule` | `color.border` | #DCDAE3 | #30313C |
+| `bandList.bottomRuleWidth` | — | 1 | same |
 | `bandList.rowMinHeight` | — | 56 | same |
 | `bandList.rowPaddingY` | `space.2` | 8 | same |
-| `bandList.rowDivider` | `color.border` | #DDD3C5 | #38332B |
-| `bandList.name` | `type.body` | Commissioner 400 16/24 | same |
-| `bandList.nameColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `bandList.value` | `type.section` | Newsreader 500 18/24 | same |
-| `bandList.valueColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `bandList.rowDivider` | `color.border` | #DCDAE3 | #30313C |
+| `bandList.name` | `type.body` | Geist 400 16/24 | same |
+| `bandList.nameColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `bandList.value` | `type.bodyStrong` | Geist 600 16/24 | same |
+| `bandList.valueColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `bandList.meterGap` | `space.1` | 4 | same |
-| `bandList.legend` | `type.caption` | Commissioner 400 13/18 | same |
-| `bandList.legendColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `bandList.legend` | `type.caption` | Geist 400 13/18 | same |
+| `bandList.legendColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `bandList.stackAtFontScale` | — | 1.5 | same |
 <!-- /tokens -->
 
@@ -874,34 +930,35 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:skinMap segmented -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `skinMap.bg` | `color.surface` | #FAF7F2 | #1E1C18 |
-| `skinMap.radius` | `radius.lg` | 12 | same |
+| `skinMap.bg` | `color.surface` | #FCFBFD | #1A1B23 |
+| `skinMap.radius` | `radius.lg` | 20 | same |
 | `skinMap.padding` | `space.4` | 16 | same |
-| `skinMap.border` | `color.border` | #DDD3C5 | #38332B |
-| `skinMap.heading` | `type.section` | Newsreader 500 18/24 | same |
+| `skinMap.border` | `color.border` | #DCDAE3 | #30313C |
+| `skinMap.heading` | `type.section` | Geist 600 17/24 | same |
 | `skinMap.listToggleTarget` | `touch.min` | 48 | same |
-| `skinMap.faceOutline` | `color.border-strong` | #807464 | same |
-| `skinMap.faceStrokeWidth` | — | 1.25 | same |
-| `skinMap.zoneStroke` | `color.text` | #1E1C18 | #F3EEE6 |
-| `skinMap.zoneStrokeWidth` | — | 1.25 | same |
-| `skinMap.hatch` | `meter.filled` | #38332B | #EAE3D8 |
+| `skinMap.faceOutline` | `color.border-strong` | #7E7B8B | same |
+| `skinMap.faceStrokeWidth` | — | 1.5 | same |
+| `skinMap.zoneStroke` | `color.text` | #1A1B23 | #EFEEF3 |
+| `skinMap.zoneStrokeWidth` | — | 1.5 | same |
+| `skinMap.hatch` | `meter.filled` | #272832 | #E7E5EC |
 | `skinMap.hatchWidth` | — | 1 | same |
 | `skinMap.hatchSpacingMedium` | — | 6 | same |
 | `skinMap.hatchSpacingHigh` | — | 5 | same |
-| `skinMap.label` | `type.caption` | Commissioner 400 13/18 | same |
-| `skinMap.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `skinMap.legend` | `type.caption` | Commissioner 400 13/18 | same |
-| `skinMap.legendColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `skinMap.label` | `type.caption` | Geist 400 13/18 | same |
+| `skinMap.labelColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `skinMap.legend` | `type.caption` | Geist 400 13/18 | same |
+| `skinMap.legendColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `segmented.minHeight` | `touch.min` | 48 | same |
-| `segmented.border` | `color.border-strong` | #807464 | same |
-| `segmented.borderWidth` | — | 1 | same |
+| `segmented.track` | `color.bg-sunken` | #EFEEF3 | #0E0F14 |
+| `segmented.border` | `color.border-strong` | #7E7B8B | same |
+| `segmented.borderWidth` | — | 0 | same |
 | `segmented.radius` | `radius.full` | 9999 | same |
-| `segmented.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `segmented.type` | `type.label` | Commissioner 600 14/20 | same |
-| `segmented.selectedBg` | `color.accent-subtle` | #D5E0E1 | #253D41 |
-| `segmented.selectedFg` | `color.on-accent-subtle` | #1B2F32 | #D5E0E1 |
+| `segmented.fg` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `segmented.type` | `type.label` | Geist 600 14/20 | same |
+| `segmented.selectedBg` | `color.surface-raised` | #FFFFFF | #20212A |
+| `segmented.selectedFg` | `color.text` | #1A1B23 | #EFEEF3 |
 | `segmented.selectedIcon` | — | check | same |
-| `segmented.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
+| `segmented.bgPressed` | `color.state.pressed` | rgba(26, 27, 35, 0.08) | rgba(239, 238, 243, 0.10) |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -952,24 +1009,28 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:provenanceLedger -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `provenanceLedger.title` | `type.headline` | Newsreader 500 20/26 | same |
-| `provenanceLedger.titleColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `provenanceLedger.topRule` | `color.text` | #1E1C18 | #F3EEE6 |
-| `provenanceLedger.topRuleWidth` | — | 1.5 | same |
-| `provenanceLedger.bottomRule` | `color.text` | #1E1C18 | #F3EEE6 |
-| `provenanceLedger.bottomRuleWidth` | — | 1.5 | same |
-| `provenanceLedger.rowDivider` | `color.border` | #DDD3C5 | #38332B |
+| `provenanceLedger.title` | `type.headline` | Geist 600 20/26 | same |
+| `provenanceLedger.titleColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `provenanceLedger.bg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
+| `provenanceLedger.radius` | `radius.lg` | 20 | same |
+| `provenanceLedger.paddingX` | `space.4` | 16 | same |
+| `provenanceLedger.topRule` | `color.border` | #DCDAE3 | #30313C |
+| `provenanceLedger.topRuleWidth` | — | 1 | same |
+| `provenanceLedger.bottomRule` | `color.border` | #DCDAE3 | #30313C |
+| `provenanceLedger.bottomRuleWidth` | — | 1 | same |
+| `provenanceLedger.rowDivider` | `color.border` | #DCDAE3 | #30313C |
 | `provenanceLedger.rowPaddingY` | `space.3` | 12 | same |
-| `provenanceLedger.key` | `type.overline` | Commissioner 600 13/16 caps | same |
-| `provenanceLedger.keyColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `provenanceLedger.keyWidth` | — | 72 | same |
-| `provenanceLedger.keyGap` | `space.3` | 12 | same |
-| `provenanceLedger.value` | `type.bodySm` | Commissioner 400 14/20 | same |
-| `provenanceLedger.valueColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `provenanceLedger.caption` | `type.caption` | Commissioner 400 13/18 | same |
-| `provenanceLedger.captionColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `provenanceLedger.keys` | — | SKIN / PRODUCT / WEATHER / LIMITS | same |
-| `provenanceLedger.stackBelowWidth` | — | 380 | same |
+| `provenanceLedger.key` | `type.overline` | Geist 600 13/18 | same |
+| `provenanceLedger.keyColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `provenanceLedger.keyWidth` | — | 96 | same |
+| `provenanceLedger.keyGap` | `space.4` | 16 | same |
+| `provenanceLedger.value` | `type.bodySm` | Geist 400 14/20 | same |
+| `provenanceLedger.valueColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `provenanceLedger.mono` | `type.caption` | Geist 400 13/18 | same |
+| `provenanceLedger.caption` | `type.caption` | Geist 400 13/18 | same |
+| `provenanceLedger.captionColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `provenanceLedger.keys` | — | Reading / Product / Rules / Limits | same |
+| `provenanceLedger.stackBelowWidth` | — | 360 | same |
 | `provenanceLedger.stackAtFontScale` | — | 1.5 | same |
 <!-- /tokens -->
 
@@ -1028,22 +1089,24 @@ No screen-level overline ("Before the camera opens" is gone).
 <!-- tokens:consentSheet -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `consentSheet.privacyLead` | `type.title` | Newsreader 500 26/32 | same |
-| `consentSheet.privacyRest` | `type.body` | Commissioner 400 16/24 | same |
-| `consentSheet.privacyColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `consentSheet.keepBox.bg` | `color.surface` | #FAF7F2 | #1E1C18 |
-| `consentSheet.keepBox.border` | `color.border` | #DDD3C5 | #38332B |
-| `consentSheet.keepBox.radius` | `radius.lg` | 12 | same |
-| `consentSheet.keepBox.padding` | `space.4` | 16 | same |
-| `consentSheet.keepBox.title` | `type.section` | Newsreader 500 18/24 | same |
-| `consentSheet.keepList` | `type.body` | Commissioner 400 16/24 | same |
-| `consentSheet.accuracyNote` | `type.bodySm` | Commissioner 400 14/20 | same |
-| `consentSheet.accuracyColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `consentSheet.privacyLead` | `type.bodyStrong` | Geist 600 16/24 | same |
+| `consentSheet.privacyRest` | `type.body` | Geist 400 16/24 | same |
+| `consentSheet.privacyColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `consentSheet.keepBox.bg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
+| `consentSheet.keepBox.border` | `color.border` | #DCDAE3 | #30313C |
+| `consentSheet.keepBox.radius` | `radius.lg` | 20 | same |
+| `consentSheet.keepBox.padding` | `space.5` | 20 | same |
+| `consentSheet.keepBox.title` | `type.section` | Geist 600 17/24 | same |
+| `consentSheet.keepList` | `type.body` | Geist 400 16/24 | same |
+| `consentSheet.keepIcon` | — | check-circle | same |
+| `consentSheet.dropIcon` | — | minus-circle | same |
+| `consentSheet.accuracyNote` | `type.bodySm` | Geist 400 14/20 | same |
+| `consentSheet.accuracyColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `consentSheet.checkbox.size` | — | 24 | same |
 | `consentSheet.checkbox.target` | `touch.min` | 48 | same |
-| `consentSheet.checkbox.border` | `color.border-strong` | #807464 | same |
-| `consentSheet.checkbox.checked` | `color.accent` | #1B2F32 | #86A4A7 |
-| `consentSheet.checkbox.check` | `color.on-accent` | #FAF7F2 | #0C171A |
+| `consentSheet.checkbox.border` | `color.border-strong` | #7E7B8B | same |
+| `consentSheet.checkbox.checked` | `color.accent` | #3B3F52 | #F6F5F8 |
+| `consentSheet.checkbox.check` | `color.on-accent` | #F6F5F8 | #2F3243 |
 | `consentSheet.checkbox.preTicked` | — | false | same |
 | `consentSheet.checkbox.rowBg` | — | transparent | same |
 <!-- /tokens -->
@@ -1103,16 +1166,20 @@ No screen-level overline ("Before the camera opens" is gone).
 <!-- tokens:captureGuide -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `captureGuide.overlay` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `captureGuide.overlay` | `color.overlay-camera` | rgba(14, 15, 20, 0.62) | same |
 | `captureGuide.oval` | `color.on-overlay` | #FFFFFF | same |
-| `captureGuide.ovalStrokeWidth` | — | 2 | same |
+| `captureGuide.ovalStrokeWidth` | — | 1.5 | same |
 | `captureGuide.ovalWidthPct` | — | 72 | same |
 | `captureGuide.ovalAspect` | — | 0.78 | same |
-| `captureGuide.instruction` | `type.label` | Commissioner 600 14/20 | same |
+| `captureGuide.bracket` | `color.on-overlay` | #FFFFFF | same |
+| `captureGuide.bracketWidth` | — | 3 | same |
+| `captureGuide.bracketLength` | — | 28 | same |
+| `captureGuide.frameRadius` | `radius.xl` | 24 | same |
+| `captureGuide.instruction` | `type.label` | Geist 600 14/20 | same |
 | `captureGuide.instructionColor` | `color.on-overlay` | #FFFFFF | same |
-| `captureGuide.hint.bg` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `captureGuide.hint.bg` | `color.overlay-camera` | rgba(14, 15, 20, 0.62) | same |
 | `captureGuide.hint.fg` | `color.on-overlay` | #FFFFFF | same |
-| `captureGuide.hint.type` | `type.bodyStrong` | Commissioner 600 16/24 | same |
+| `captureGuide.hint.type` | `type.bodyStrong` | Geist 600 16/24 | same |
 | `captureGuide.hint.radius` | `radius.full` | 9999 | same |
 | `captureGuide.hint.paddingX` | `space.4` | 16 | same |
 | `captureGuide.hint.visualMinHeight` | — | 40 | same |
@@ -1120,10 +1187,10 @@ No screen-level overline ("Before the camera opens" is gone).
 | `captureGuide.hint.interactive` | — | false | same |
 | `captureGuide.shutter.size` | — | 72 | same |
 | `captureGuide.shutter.ring` | `color.on-overlay` | #FFFFFF | same |
-| `captureGuide.shutter.ringWidth` | — | 4 | same |
+| `captureGuide.shutter.ringWidth` | — | 3 | same |
 | `captureGuide.shutter.fill` | `color.on-overlay` | #FFFFFF | same |
 | `captureGuide.iconButtonTarget` | `touch.min` | 48 | same |
-| `captureGuide.iconButtonBg` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `captureGuide.iconButtonBg` | `color.overlay-camera` | rgba(14, 15, 20, 0.62) | same |
 | `captureGuide.focus` | `color.focus-ring-overlay` | #FFFFFF | same |
 <!-- /tokens -->
 
@@ -1191,33 +1258,33 @@ Status glyphs avoid every verdict silhouette. Pending and active rings hold the 
 |---|---|---|---|
 | `processingStepper.rowMinHeight` | — | 56 | same |
 | `processingStepper.indicator` | — | 24 | same |
-| `processingStepper.connector` | `color.border-strong` | #807464 | same |
-| `processingStepper.connectorDone` | `color.text` | #1E1C18 | #F3EEE6 |
-| `processingStepper.connectorWidth` | — | 2 | same |
-| `processingStepper.done.fill` | `color.text` | #1E1C18 | #F3EEE6 |
-| `processingStepper.done.check` | `color.bg` | #F3EEE6 | #151411 |
-| `processingStepper.done.label` | `type.body` | Commissioner 400 16/24 | same |
-| `processingStepper.done.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `processingStepper.current.ring` | `color.text` | #1E1C18 | #F3EEE6 |
-| `processingStepper.current.ringWidth` | — | 2 | same |
-| `processingStepper.current.numeral` | `type.labelSm` | Commissioner 600 13/16 | same |
-| `processingStepper.current.numeralColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `processingStepper.current.label` | `type.bodyStrong` | Commissioner 600 16/24 | same |
-| `processingStepper.current.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `processingStepper.pending.ring` | `color.border-strong` | #807464 | same |
+| `processingStepper.connector` | `color.border-strong` | #7E7B8B | same |
+| `processingStepper.connectorDone` | `color.text` | #1A1B23 | #EFEEF3 |
+| `processingStepper.connectorWidth` | — | 1.5 | same |
+| `processingStepper.done.fill` | `color.text` | #1A1B23 | #EFEEF3 |
+| `processingStepper.done.check` | `color.bg` | #F6F5F8 | #121319 |
+| `processingStepper.done.label` | `type.body` | Geist 400 16/24 | same |
+| `processingStepper.done.labelColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `processingStepper.current.ring` | `color.text` | #1A1B23 | #EFEEF3 |
+| `processingStepper.current.ringWidth` | — | 1.5 | same |
+| `processingStepper.current.numeral` | `type.labelSm` | Geist 600 13/16 | same |
+| `processingStepper.current.numeralColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `processingStepper.current.label` | `type.bodyStrong` | Geist 600 16/24 | same |
+| `processingStepper.current.labelColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `processingStepper.pending.ring` | `color.border-strong` | #7E7B8B | same |
 | `processingStepper.pending.ringWidth` | — | 1.5 | same |
-| `processingStepper.pending.numeral` | `type.labelSm` | Commissioner 600 13/16 | same |
-| `processingStepper.pending.numeralColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `processingStepper.pending.label` | `type.body` | Commissioner 400 16/24 | same |
-| `processingStepper.pending.labelColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `processingStepper.failed.ring` | `color.text` | #1E1C18 | #F3EEE6 |
+| `processingStepper.pending.numeral` | `type.labelSm` | Geist 600 13/16 | same |
+| `processingStepper.pending.numeralColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `processingStepper.pending.label` | `type.body` | Geist 400 16/24 | same |
+| `processingStepper.pending.labelColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `processingStepper.failed.ring` | `color.text` | #1A1B23 | #EFEEF3 |
 | `processingStepper.failed.ringWidth` | — | 1.5 | same |
-| `processingStepper.failed.bar` | `color.text` | #1E1C18 | #F3EEE6 |
-| `processingStepper.failed.label` | `type.bodyStrong` | Commissioner 600 16/24 | same |
-| `processingStepper.failed.labelColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `processingStepper.deletedStep.label` | `type.bodyStrong` | Commissioner 600 16/24 | same |
-| `processingStepper.deletedStep.caption` | `type.caption` | Commissioner 400 13/18 | same |
-| `processingStepper.deletedStep.captionColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `processingStepper.failed.bar` | `color.text` | #1A1B23 | #EFEEF3 |
+| `processingStepper.failed.label` | `type.bodyStrong` | Geist 600 16/24 | same |
+| `processingStepper.failed.labelColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `processingStepper.deletedStep.label` | `type.bodyStrong` | Geist 600 16/24 | same |
+| `processingStepper.deletedStep.caption` | `type.caption` | Geist 400 13/18 | same |
+| `processingStepper.deletedStep.captionColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -1274,13 +1341,13 @@ Status glyphs avoid every verdict silhouette. Pending and active rings hold the 
 <!-- tokens:storeLinkOut -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `storeLinkOut.label` | `type.button` | Commissioner 600 16/20 | same |
-| `storeLinkOut.destination` | `type.caption` | Commissioner 400 13/18 | same |
-| `storeLinkOut.destinationColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `storeLinkOut.destinationDisabledColor` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `storeLinkOut.label` | `type.button` | Geist 600 16/20 | same |
+| `storeLinkOut.destination` | `type.caption` | Geist 400 13/18 | same |
+| `storeLinkOut.destinationColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `storeLinkOut.destinationDisabledColor` | `color.disabled-fg` | #636070 | #A8A5B3 |
 | `storeLinkOut.destinationGap` | `space.1` | 4 | same |
 | `storeLinkOut.icon` | — | arrow-up-right | same |
-| `storeLinkOut.iconColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `storeLinkOut.iconColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 <!-- /tokens -->
 
 **Accessibility:** the label merges the button and the destination: "Find better matches. Opens a Flipkart search, filtered to Oily Skin. Leaves SkinKey."
@@ -1330,13 +1397,13 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:rankingDisclosure -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `rankingDisclosure.type` | `type.bodySm` | Commissioner 400 14/20 | same |
-| `rankingDisclosure.color` | `color.text` | #1E1C18 | #F3EEE6 |
-| `rankingDisclosure.rule` | `color.border-strong` | #807464 | same |
+| `rankingDisclosure.type` | `type.bodySm` | Geist 400 14/20 | same |
+| `rankingDisclosure.color` | `color.text` | #1A1B23 | #EFEEF3 |
+| `rankingDisclosure.rule` | `color.border-strong` | #7E7B8B | same |
 | `rankingDisclosure.ruleWidth` | — | 1 | same |
 | `rankingDisclosure.paddingY` | `space.3` | 12 | same |
 | `rankingDisclosure.paddingX` | `space.3` | 12 | same |
-| `rankingDisclosure.copy` | — | Ranked by fit to your skin. No paid placements. / We may earn a commission; it never changes the ranking. | same |
+| `rankingDisclosure.copy` | — | Ranked by fit to your readings. No paid placements. / We may earn a commission if you buy; it never changes the ranking | same |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -1379,19 +1446,19 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:shareTeachingCard -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `shareTeachingCard.bg` | `elevation.1.surface` | #FAF7F2 | #1E1C18 |
-| `shareTeachingCard.border` | `color.border` | #DDD3C5 | #38332B |
-| `shareTeachingCard.radius` | `radius.lg` | 12 | same |
+| `shareTeachingCard.bg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
+| `shareTeachingCard.border` | `color.border` | #DCDAE3 | #30313C |
+| `shareTeachingCard.radius` | `radius.lg` | 20 | same |
 | `shareTeachingCard.padding` | `space.4` | 16 | same |
-| `shareTeachingCard.stepIndex` | `type.reasonIndex` | Newsreader 400 italic 18/26 tabular | same |
-| `shareTeachingCard.stepIndexColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `shareTeachingCard.body` | `type.body` | Commissioner 400 16/24 | same |
-| `shareTeachingCard.title` | `type.headline` | Newsreader 500 20/26 | same |
-| `shareTeachingCard.illustrationBg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
-| `shareTeachingCard.illustrationStroke` | `color.border-strong` | #807464 | same |
-| `shareTeachingCard.highlight` | `color.text` | #1E1C18 | #F3EEE6 |
+| `shareTeachingCard.stepIndex` | `type.reasonIndex` | Geist 500 15/22 tabular | same |
+| `shareTeachingCard.stepIndexColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `shareTeachingCard.body` | `type.body` | Geist 400 16/24 | same |
+| `shareTeachingCard.title` | `type.section` | Geist 600 17/24 | same |
+| `shareTeachingCard.illustrationBg` | `color.bg-sunken` | #EFEEF3 | #0E0F14 |
+| `shareTeachingCard.illustrationStroke` | `color.border-strong` | #7E7B8B | same |
+| `shareTeachingCard.highlight` | `color.accent` | #3B3F52 | #F6F5F8 |
 | `shareTeachingCard.highlightWidth` | — | 2 | same |
-| `shareTeachingCard.grain` | — | true | same |
+| `shareTeachingCard.grain` | — | false | same |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -1442,17 +1509,17 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:forecastCard -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `forecastCard.bg` | `elevation.1.surface` | #FAF7F2 | #1E1C18 |
-| `forecastCard.border` | `color.border` | #DDD3C5 | #38332B |
-| `forecastCard.radius` | `radius.lg` | 12 | same |
+| `forecastCard.bg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
+| `forecastCard.border` | `color.border` | #DCDAE3 | #30313C |
+| `forecastCard.radius` | `radius.lg` | 20 | same |
 | `forecastCard.padding` | `space.4` | 16 | same |
-| `forecastCard.kicker` | `type.label` | Commissioner 600 14/20 | same |
-| `forecastCard.kickerColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `forecastCard.figure` | `type.headline` | Newsreader 500 20/26 | same |
-| `forecastCard.figureColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `forecastCard.body` | `type.body` | Commissioner 400 16/24 | same |
-| `forecastCard.credit` | `type.fine` | Commissioner 400 12/16 | same |
-| `forecastCard.creditColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `forecastCard.kicker` | `type.label` | Geist 600 14/20 | same |
+| `forecastCard.kickerColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `forecastCard.figure` | `type.headline` | Geist 600 20/26 | same |
+| `forecastCard.figureColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `forecastCard.body` | `type.body` | Geist 400 16/24 | same |
+| `forecastCard.credit` | `type.fine` | Geist 400 12/16 | same |
+| `forecastCard.creditColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -1501,26 +1568,26 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:tryOnCompare -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `tryOnCompare.radius` | `radius.lg` | 12 | same |
-| `tryOnCompare.frameBorder` | `color.border` | #DDD3C5 | #38332B |
+| `tryOnCompare.radius` | `radius.lg` | 20 | same |
+| `tryOnCompare.frameBorder` | `color.border` | #DCDAE3 | #30313C |
 | `tryOnCompare.divider` | `color.on-overlay` | #FFFFFF | same |
 | `tryOnCompare.dividerWidth` | — | 2 | same |
-| `tryOnCompare.dividerHalo` | `color.overlay-halo` | rgba(0, 0, 0, 0.60) | same |
+| `tryOnCompare.dividerHalo` | `color.overlay-halo` | rgba(14, 15, 20, 0.60) | same |
 | `tryOnCompare.dividerHaloWidth` | — | 1 | same |
 | `tryOnCompare.handle` | `touch.min` | 48 | same |
-| `tryOnCompare.handleBg` | `color.inverse-surface` | #2E2A24 | #EAE3D8 |
-| `tryOnCompare.handleFg` | `color.inverse-text` | #F3EEE6 | #1E1C18 |
+| `tryOnCompare.handleBg` | `color.inverse-surface` | #20212A | #E7E5EC |
+| `tryOnCompare.handleFg` | `color.inverse-text` | #EFEEF3 | #1A1B23 |
 | `tryOnCompare.handleRing` | `color.on-overlay` | #FFFFFF | same |
 | `tryOnCompare.handleRingWidth` | — | 2 | same |
-| `tryOnCompare.badge.bg` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `tryOnCompare.badge.bg` | `color.overlay-camera` | rgba(14, 15, 20, 0.62) | same |
 | `tryOnCompare.badge.fg` | `color.on-overlay` | #FFFFFF | same |
-| `tryOnCompare.badge.type` | `type.labelSm` | Commissioner 600 13/16 | same |
-| `tryOnCompare.badge.radius` | `radius.sm` | 6 | same |
-| `tryOnCompare.disclaimer` | `type.label` | Commissioner 600 14/20 | same |
-| `tryOnCompare.disclaimerColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `tryOnCompare.disclaimerBg` | `color.surface` | #FAF7F2 | #1E1C18 |
-| `tryOnCompare.note` | `type.caption` | Commissioner 400 13/18 | same |
-| `tryOnCompare.noteColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `tryOnCompare.badge.type` | `type.labelSm` | Geist 600 13/16 | same |
+| `tryOnCompare.badge.radius` | `radius.full` | 9999 | same |
+| `tryOnCompare.disclaimer` | `type.label` | Geist 600 14/20 | same |
+| `tryOnCompare.disclaimerColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `tryOnCompare.disclaimerBg` | `color.surface` | #FCFBFD | #1A1B23 |
+| `tryOnCompare.note` | `type.caption` | Geist 400 13/18 | same |
+| `tryOnCompare.noteColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `tryOnCompare.focus` | `color.focus-ring-overlay` | #FFFFFF | same |
 | `tryOnCompare.previewTintOpacity` | — | 0.13 | same |
 <!-- /tokens -->
@@ -1579,18 +1646,22 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:productMatchCard -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `productMatchCard.bg` | `elevation.1.surface` | #FAF7F2 | #1E1C18 |
-| `productMatchCard.border` | `color.border` | #DDD3C5 | #38332B |
-| `productMatchCard.radius` | `radius.lg` | 12 | same |
+| `productMatchCard.bg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
+| `productMatchCard.border` | `color.border` | #DCDAE3 | #30313C |
+| `productMatchCard.radius` | `radius.lg` | 20 | same |
 | `productMatchCard.padding` | `space.4` | 16 | same |
-| `productMatchCard.index` | `type.reasonIndex` | Newsreader 400 italic 18/26 tabular | same |
-| `productMatchCard.indexColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `productMatchCard.name` | `type.headline` | Newsreader 500 20/26 | same |
-| `productMatchCard.nameColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `productMatchCard.fit` | `type.body` | Commissioner 400 16/24 | same |
-| `productMatchCard.fitColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `productMatchCard.meta` | `type.caption` | Commissioner 400 13/18 | same |
-| `productMatchCard.metaColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `productMatchCard.index` | `type.reasonIndex` | Geist 500 15/22 tabular | same |
+| `productMatchCard.indexColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `productMatchCard.name` | `type.bodyStrong` | Geist 600 16/24 | same |
+| `productMatchCard.nameColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `productMatchCard.fit` | `type.bodySm` | Geist 400 14/20 | same |
+| `productMatchCard.fitColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `productMatchCard.meta` | `type.caption` | Geist 400 13/18 | same |
+| `productMatchCard.metaColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `productMatchCard.thumbBg` | `color.bg-sunken` | #EFEEF3 | #0E0F14 |
+| `productMatchCard.thumbRadius` | `radius.md` | 14 | same |
+| `productMatchCard.thumbSize` | — | 56 | same |
+| `productMatchCard.heroBg` | `color.sheen.lavender` | #ECE8F4 | #24222F |
 | `productMatchCard.verdictTagIcon` | `icon.sm` | 16 | same |
 | `productMatchCard.minHeight` | — | 96 | same |
 | `productMatchCard.listGap` | `space.3` | 12 | same |
@@ -1641,14 +1712,14 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:barcodeFrame -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `barcodeFrame.overlay` | `color.overlay-camera` | rgba(16, 15, 13, 0.62) | same |
+| `barcodeFrame.overlay` | `color.overlay-camera` | rgba(14, 15, 20, 0.62) | same |
 | `barcodeFrame.corner` | `color.on-overlay` | #FFFFFF | same |
 | `barcodeFrame.cornerWidth` | — | 3 | same |
 | `barcodeFrame.cornerLength` | — | 24 | same |
-| `barcodeFrame.radius` | `radius.xl` | 16 | same |
+| `barcodeFrame.radius` | `radius.xl` | 24 | same |
 | `barcodeFrame.window.width` | — | 280 | same |
 | `barcodeFrame.window.height` | — | 160 | same |
-| `barcodeFrame.hint` | `type.bodyStrong` | Commissioner 600 16/24 | same |
+| `barcodeFrame.hint` | `type.bodyStrong` | Geist 600 16/24 | same |
 | `barcodeFrame.hintColor` | `color.on-overlay` | #FFFFFF | same |
 | `barcodeFrame.torch` | `touch.min` | 48 | same |
 | `barcodeFrame.focus` | `color.focus-ring-overlay` | #FFFFFF | same |
@@ -1704,27 +1775,27 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:qrShareCard -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `qrShareCard.bg` | `elevation.1.surface` | #FAF7F2 | #1E1C18 |
-| `qrShareCard.border` | `color.border` | #DDD3C5 | #38332B |
-| `qrShareCard.radius` | `radius.lg` | 12 | same |
+| `qrShareCard.bg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
+| `qrShareCard.border` | `color.border` | #DCDAE3 | #30313C |
+| `qrShareCard.radius` | `radius.lg` | 20 | same |
 | `qrShareCard.padding` | `space.5` | 20 | same |
-| `qrShareCard.title` | `type.headline` | Newsreader 500 20/26 | same |
+| `qrShareCard.title` | `type.headline` | Geist 600 20/26 | same |
 | `qrShareCard.qrModule` | `color.qr.module` | #000000 | same |
 | `qrShareCard.qrField` | `color.qr.field` | #FFFFFF | same |
 | `qrShareCard.qrSize` | — | 240 | same |
 | `qrShareCard.quietZone` | — | 16 | same |
-| `qrShareCard.countdown` | `type.figure` | Newsreader 500 26/32 tabular | same |
-| `qrShareCard.countdownColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `qrShareCard.countdownLabel` | `type.caption` | Commissioner 400 13/18 | same |
-| `qrShareCard.countdownLabelColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `qrShareCard.timeRule.filled` | `meter.filled` | #38332B | #EAE3D8 |
-| `qrShareCard.timeRule.track` | `color.border` | #DDD3C5 | #38332B |
+| `qrShareCard.countdown` | `type.figure` | Noto Serif Display 400 26/32 tabular | same |
+| `qrShareCard.countdownColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `qrShareCard.countdownLabel` | `type.caption` | Geist 400 13/18 | same |
+| `qrShareCard.countdownLabelColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `qrShareCard.timeRule.filled` | `meter.filled` | #272832 | #E7E5EC |
+| `qrShareCard.timeRule.track` | `color.border` | #DCDAE3 | #30313C |
 | `qrShareCard.timeRule.height` | — | 4 | same |
-| `qrShareCard.summary` | `type.bodySm` | Commissioner 400 14/20 | same |
-| `qrShareCard.summaryColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `qrShareCard.expired.placeholderBg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
-| `qrShareCard.expired.message` | `type.body` | Commissioner 400 16/24 | same |
-| `qrShareCard.expired.messageColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `qrShareCard.summary` | `type.bodySm` | Geist 400 14/20 | same |
+| `qrShareCard.summaryColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `qrShareCard.expired.placeholderBg` | `color.bg-sunken` | #EFEEF3 | #0E0F14 |
+| `qrShareCard.expired.message` | `type.body` | Geist 400 16/24 | same |
+| `qrShareCard.expired.messageColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `qrShareCard.brightnessBoost` | — | true | same |
 <!-- /tokens -->
 
@@ -1782,22 +1853,24 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `stateView.align` | — | start | same |
-| `stateView.title` | `type.headline` | Newsreader 500 20/26 | same |
-| `stateView.titleColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `stateView.body` | `type.body` | Commissioner 400 16/24 | same |
-| `stateView.bodyColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `stateView.title` | `type.title` | Noto Serif Display 400 26/32 | same |
+| `stateView.titleColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `stateView.body` | `type.body` | Geist 400 16/24 | same |
+| `stateView.bodyColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `stateView.plateBg` | `color.sheen.lavender` | #ECE8F4 | #24222F |
+| `stateView.plateRadius` | `radius.lg` | 20 | same |
 | `stateView.gap` | `space.2` | 8 | same |
 | `stateView.offlineBanner.bg` | — | transparent | same |
-| `stateView.offlineBanner.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `stateView.offlineBanner.border` | `color.border` | #DDD3C5 | #38332B |
-| `stateView.offlineBanner.type` | `type.bodySm` | Commissioner 400 14/20 | same |
+| `stateView.offlineBanner.fg` | `color.text` | #1A1B23 | #EFEEF3 |
+| `stateView.offlineBanner.border` | `color.border` | #DCDAE3 | #30313C |
+| `stateView.offlineBanner.type` | `type.bodySm` | Geist 400 14/20 | same |
 | `stateView.offlineBanner.icon` | — | cloud-off | same |
-| `stateView.offlineBanner.iconColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `stateView.offlineBanner.iconColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `stateView.offlineBanner.minHeight` | — | 48 | same |
-| `stateView.fieldInvalid.border` | `color.text` | #1E1C18 | #F3EEE6 |
+| `stateView.fieldInvalid.border` | `color.text` | #1A1B23 | #EFEEF3 |
 | `stateView.fieldInvalid.borderWidth` | — | 2 | same |
-| `stateView.fieldInvalid.message` | `type.caption` | Commissioner 400 13/18 | same |
-| `stateView.fieldInvalid.messageColor` | `color.text` | #1E1C18 | #F3EEE6 |
+| `stateView.fieldInvalid.message` | `type.caption` | Geist 400 13/18 | same |
+| `stateView.fieldInvalid.messageColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `stateView.fieldInvalid.icon` | — | info | same |
 <!-- /tokens -->
 
@@ -1845,14 +1918,14 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:snackbar -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `snackbar.bg` | `color.inverse-surface` | #2E2A24 | #EAE3D8 |
-| `snackbar.fg` | `color.inverse-text` | #F3EEE6 | #1E1C18 |
-| `snackbar.action` | `color.inverse-link` | #B0C5C7 | #253D41 |
-| `snackbar.actionType` | `type.label` | Commissioner 600 14/20 | same |
+| `snackbar.bg` | `color.inverse-surface` | #20212A | #E7E5EC |
+| `snackbar.fg` | `color.inverse-text` | #EFEEF3 | #1A1B23 |
+| `snackbar.action` | `color.inverse-link` | #DDD8EE | #50576F |
+| `snackbar.actionType` | `type.label` | Geist 600 14/20 | same |
 | `snackbar.actionTarget` | `touch.min` | 48 | same |
-| `snackbar.focus` | `color.focus-ring-inverse` | #B0C5C7 | #253D41 |
-| `snackbar.type` | `type.bodySm` | Commissioner 400 14/20 | same |
-| `snackbar.radius` | `radius.md` | 8 | same |
+| `snackbar.focus` | `color.focus-ring-inverse` | #BEB6DE | #50576F |
+| `snackbar.type` | `type.bodySm` | Geist 400 14/20 | same |
+| `snackbar.radius` | `radius.md` | 14 | same |
 | `snackbar.minHeight` | — | 48 | same |
 | `snackbar.paddingX` | `space.4` | 16 | same |
 | `snackbar.elevation` | — | 3 | same |
@@ -1910,25 +1983,26 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 <!-- tokens:bottomNav -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `bottomNav.minHeight` | — | 80 | same |
-| `bottomNav.bg` | `elevation.2.surface` | #FFFCF7 | #28251F |
-| `bottomNav.border` | `color.border` | #DDD3C5 | #38332B |
+| `bottomNav.minHeight` | — | 72 | same |
+| `bottomNav.bg` | `elevation.2.surface` | #FFFFFF | #20212A |
+| `bottomNav.border` | `color.border` | #DCDAE3 | #30313C |
+| `bottomNav.sheenEdge` | `color.sheen-edge` | rgba(255, 255, 255, 0.00) | rgba(239, 238, 243, 0.07) |
 | `bottomNav.items` | — | 3 | same |
-| `bottomNav.itemMinWidth` | — | 64 | same |
+| `bottomNav.itemMinWidth` | — | 72 | same |
 | `bottomNav.itemTarget` | `touch.min` | 48 | same |
-| `bottomNav.indicator.bg` | `color.accent-subtle` | #D5E0E1 | #253D41 |
-| `bottomNav.indicator.width` | — | 64 | same |
+| `bottomNav.indicator.bg` | `color.accent` | #3B3F52 | #F6F5F8 |
+| `bottomNav.indicator.width` | — | 56 | same |
 | `bottomNav.indicator.height` | — | 32 | same |
 | `bottomNav.indicator.radius` | `radius.full` | 9999 | same |
-| `bottomNav.iconActive` | `color.on-accent-subtle` | #1B2F32 | #D5E0E1 |
-| `bottomNav.iconInactive` | `color.text-muted` | #564D41 | #B0A595 |
-| `bottomNav.iconActiveStrokeWidth` | — | 2.25 | same |
-| `bottomNav.iconInactiveStrokeWidth` | — | 1.75 | same |
-| `bottomNav.labelActive` | `type.labelSm` | Commissioner 600 13/16 | same |
-| `bottomNav.labelInactive` | `type.labelSmRegular` | Commissioner 400 13/16 | same |
-| `bottomNav.labelActiveColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `bottomNav.labelInactiveColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `bottomNav.labels` | — | Check / Aisle / Profile | same |
+| `bottomNav.iconActive` | `color.on-accent` | #F6F5F8 | #2F3243 |
+| `bottomNav.iconInactive` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `bottomNav.iconActiveStrokeWidth` | — | 2 | same |
+| `bottomNav.iconInactiveStrokeWidth` | — | 1.5 | same |
+| `bottomNav.labelActive` | `type.labelSm` | Geist 600 13/16 | same |
+| `bottomNav.labelInactive` | `type.labelSmRegular` | Geist 400 13/16 | same |
+| `bottomNav.labelActiveColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `bottomNav.labelInactiveColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `bottomNav.labels` | — | Check / Scan / Reading | same |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -1980,15 +2054,16 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 <!-- tokens:bottomSheet -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `bottomSheet.bg` | `elevation.3.surface` | #FFFCF7 | #28251F |
-| `bottomSheet.border` | `elevation.3.border` | #DDD3C5 | #807464 |
-| `bottomSheet.radius` | `radius.sheet` | 24 | same |
+| `bottomSheet.bg` | `elevation.3.surface` | #FFFFFF | #20212A |
+| `bottomSheet.border` | `elevation.3.border` | #DCDAE3 | #7E7B8B |
+| `bottomSheet.sheenEdge` | `color.sheen-edge` | rgba(255, 255, 255, 0.00) | rgba(239, 238, 243, 0.07) |
+| `bottomSheet.radius` | `radius.sheet` | 28 | same |
 | `bottomSheet.padding` | `space.6` | 24 | same |
-| `bottomSheet.scrim` | `color.overlay` | rgba(30, 28, 24, 0.40) | rgba(0, 0, 0, 0.60) |
-| `bottomSheet.title` | `type.headline` | Newsreader 500 20/26 | same |
-| `bottomSheet.handle.width` | — | 32 | same |
+| `bottomSheet.scrim` | `color.overlay` | rgba(18, 19, 25, 0.40) | rgba(8, 9, 12, 0.64) |
+| `bottomSheet.title` | `type.headline` | Geist 600 20/26 | same |
+| `bottomSheet.handle.width` | — | 36 | same |
 | `bottomSheet.handle.height` | — | 4 | same |
-| `bottomSheet.handle.color` | `color.border-strong` | #807464 | same |
+| `bottomSheet.handle.color` | `color.border-strong` | #7E7B8B | same |
 | `bottomSheet.handle.target` | `touch.min` | 48 | same |
 | `bottomSheet.maxHeightPct` | — | 90 | same |
 | `bottomSheet.closeTarget` | `touch.min` | 48 | same |
@@ -2041,17 +2116,19 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 | `listRow.paddingX` | `space.gutter` | 20 | same |
 | `listRow.paddingY` | `space.3` | 12 | same |
 | `listRow.gap` | `space.4` | 16 | same |
-| `listRow.title` | `type.bodyStrong` | Commissioner 600 16/24 | same |
-| `listRow.titleColor` | `color.text` | #1E1C18 | #F3EEE6 |
-| `listRow.supporting` | `type.bodySm` | Commissioner 400 14/20 | same |
-| `listRow.supportingColor` | `color.text-muted` | #564D41 | #B0A595 |
+| `listRow.title` | `type.bodyStrong` | Geist 600 16/24 | same |
+| `listRow.titleColor` | `color.text` | #1A1B23 | #EFEEF3 |
+| `listRow.supporting` | `type.bodySm` | Geist 400 14/20 | same |
+| `listRow.supportingColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `listRow.leadingIcon` | `icon.lg` | 24 | same |
 | `listRow.trailingIcon` | `icon.md` | 20 | same |
-| `listRow.trailingColor` | `color.text-muted` | #564D41 | #B0A595 |
-| `listRow.divider` | `color.border` | #DDD3C5 | #38332B |
+| `listRow.trailingColor` | `color.text-muted` | #4B4958 | #C6C3CF |
+| `listRow.groupBg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
+| `listRow.groupRadius` | `radius.lg` | 20 | same |
+| `listRow.divider` | `color.border` | #DCDAE3 | #30313C |
 | `listRow.dividerInset` | `space.gutter` | 20 | same |
-| `listRow.bgPressed` | `color.state.pressed` | rgba(30, 28, 24, 0.08) | rgba(243, 238, 230, 0.10) |
-| `listRow.fgDisabled` | `color.disabled-fg` | #6B6152 | #9E9282 |
+| `listRow.bgPressed` | `color.state.pressed` | rgba(26, 27, 35, 0.08) | rgba(239, 238, 243, 0.10) |
+| `listRow.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
 | `listRow.focusInset` | — | 2 | same |
 | `listRow.checkedBg` | — | transparent | same |
 | `switch.minTarget` | `touch.min` | 48 | same |
@@ -2059,11 +2136,11 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 | `switch.trackHeight` | — | 32 | same |
 | `switch.trackBorderWidth` | — | 2 | same |
 | `switch.radius` | `radius.full` | 9999 | same |
-| `switch.offTrackBorder` | `color.border-strong` | #807464 | same |
-| `switch.offThumb` | `color.border-strong` | #807464 | same |
+| `switch.offTrackBorder` | `color.border-strong` | #7E7B8B | same |
+| `switch.offThumb` | `color.border-strong` | #7E7B8B | same |
 | `switch.offThumbSize` | — | 16 | same |
-| `switch.onTrack` | `color.accent` | #1B2F32 | #86A4A7 |
-| `switch.onThumb` | `color.on-accent` | #FAF7F2 | #0C171A |
+| `switch.onTrack` | `color.accent` | #3B3F52 | #F6F5F8 |
+| `switch.onThumb` | `color.on-accent` | #F6F5F8 | #2F3243 |
 | `switch.onThumbSize` | — | 24 | same |
 <!-- /tokens -->
 
@@ -2104,13 +2181,13 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 <!-- tokens:tag -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `tag.bg` | `color.bg-sunken` | #EAE3D8 | #100F0D |
-| `tag.fg` | `color.text` | #1E1C18 | #F3EEE6 |
-| `tag.radius` | `radius.sm` | 6 | same |
+| `tag.bg` | `color.bg-sunken` | #EFEEF3 | #0E0F14 |
+| `tag.fg` | `color.text` | #1A1B23 | #EFEEF3 |
+| `tag.radius` | `radius.full` | 9999 | same |
 | `tag.visualMinHeight` | — | 24 | same |
-| `tag.paddingX` | `space.2` | 8 | same |
-| `tag.type` | `type.labelSm` | Commissioner 600 13/16 | same |
-| `tag.outlineBorder` | `color.border-strong` | #807464 | same |
+| `tag.paddingX` | `space.3` | 12 | same |
+| `tag.type` | `type.labelSm` | Geist 600 13/16 | same |
+| `tag.outlineBorder` | `color.border-strong` | #7E7B8B | same |
 | `tag.iconSize` | `icon.sm` | 16 | same |
 <!-- /tokens -->
 

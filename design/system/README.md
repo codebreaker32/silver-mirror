@@ -1,6 +1,8 @@
-# SkinKey design system: Clay & Ink, with four parts from Deep Teal
+# Silver Mirror design system: token pipeline
 
-Version 1.1 (tokens `1.1.0`), 1 Nov 2026. Sand-paper neutrals, one deep blue-green ink accent, **Newsreader** for reading content (display, titles, section heads, the verdict line, reasons) and **Commissioner** for the interface.
+Version 2.0 (tokens `2.0.0`), 2 Nov 2026. **The design system of record is `/DESIGN.md`.** This folder holds the token pipeline that DESIGN.md describes: pearl and graphite neutrals, a deep slate primary pill (pearl in dark), sage / amber / slate / ink verdict roles, **Noto Serif Display** for the wordmark, display and title, and **Geist** for the interface. Both faces contain the rupee sign.
+
+> Below this line the README still documents Clay & Ink v1.1 usage (font file names, grain). The commands and the three-layer structure are unchanged; font loading is now just `useFonts(fontAssets)` (`@expo-google-fonts/noto-serif-display` + `@expo-google-fonts/geist`, no local font files), and grain is off. Run the build and checker on the build VM: `scripts/remote.sh -- "cd design/system/tokens && node build-tokens.mjs && node check-contrast.mjs --md contrast-report.md"`.
 
 | File | What it is |
 |---|---|
