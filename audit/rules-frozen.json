@@ -1,0 +1,23 @@
+{
+  "method": "brand-claims-1",
+  "ruleset_hash": "440f555a8845",
+  "ruleset_version": "2.0.0",
+  "note": "File hashes are SHA-256 of the blobs committed at the rules-frozen tag. npm run audit compares the ruleset hash (gate) and these files (notes).",
+  "files": {
+    "packages/rules/src/audit.ts": "08811f42a74af81cf27aab2daa5b311e2a720a469cfdcdbaa1411c9a3c666d03",
+    "packages/rules/src/bands.ts": "14e4057dd265cc92a22040a1f4ce769a7bbe4703d241fffacbc0493fa22f0787",
+    "packages/rules/src/catalog.ts": "144a39ba314c5cbc24f5417225c15f5a744e776f2ddd7b8fa1cb4c8fd3b8a7b6",
+    "packages/rules/src/catalogMerge.ts": "c6c11c9fe98605f1ea21e129bb4d09247b328c814d8033a9401b98b71a2e5490",
+    "packages/rules/src/claims.ts": "73a1137ad26c916ca129bb274b4464efe742504cc31170b907c194379174b97e",
+    "packages/rules/src/engine.ts": "b0b3df82f905f6b80daa6d6f4a874f579bce27b5f46333b2908a02fde4f30ece",
+    "packages/rules/src/inci.ts": "91b01c91a03e17d0074fc31a91158a98d66037b556e1d3a572cdc0cd9620f557",
+    "packages/rules/src/index.ts": "06261a65742b85c21ac7211b62c49f3f004392b156341cdaa0d4d05d4da1e20d",
+    "packages/rules/src/lint.ts": "c17d56e7cc622e26cbd4ef3f788ac97607fd05c5ebfe91435e643a94f1068a2b",
+    "packages/rules/src/phrasing.ts": "4b3035018a46e5a56251540fa42ab59fe567ad0524b119bb0de96da1da5d74a8",
+    "packages/rules/src/profiles.ts": "4925f23a5f972efbabec3e4d098b6c795043c6ba7d7967c0e296067af2b98138",
+    "packages/rules/src/rules.ts": "ba6d9c45639a377e9e430969ee00d8156b92c357bc1226daa20d0acb366dff57",
+    "packages/rules/src/sha256.ts": "ac3e07c7a378be74e067aafa8c5efc379d0ab3b6c2d2fc60c63cca0b2994377d",
+    "packages/rules/src/sources.ts": "fd4bd2276635bd249ef62d18e1e578bd6378b84b0739f283bb48aaa2d20e9ce1",
+    "scripts/audit.mjs": "eeb7730ecdef5b8f7c1b076ca4908615dd691267826309fb6fe0b9857ecf1bb4"
+  }
+}
