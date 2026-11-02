@@ -325,9 +325,9 @@
   --sk-color-mark-tile-top: var(--sk-white);
   --sk-color-mark-tile-bottom: var(--sk-pearl-150);
   --sk-color-mark-tile-edge: var(--sk-pearl-200);
-  --sk-color-mark-chrome-hi: var(--sk-chrome-50);
-  --sk-color-mark-chrome-1: var(--sk-chrome-200);
-  --sk-color-mark-chrome-2: var(--sk-chrome-400);
+  --sk-color-mark-chrome-hi: var(--sk-chrome-100);
+  --sk-color-mark-chrome-1: var(--sk-chrome-300);
+  --sk-color-mark-chrome-2: var(--sk-chrome-500);
   --sk-color-mark-chrome-3: var(--sk-chrome-lav);
   --sk-color-mark-chrome-4: var(--sk-chrome-600);
   --sk-color-mark-chrome-lo: var(--sk-chrome-700);
@@ -574,8 +574,8 @@
   --sk-brand-welcome-mark: 96px;
   --sk-brand-splash-mark: 120px;
   --sk-brand-wordmark-color: var(--sk-color-text);
-  --sk-brand-wordmark-header: 22px;
-  --sk-brand-wordmark-welcome: 34px;
+  --sk-brand-wordmark-header: 15px;
+  --sk-brand-wordmark-welcome: 24px;
   --sk-brand-tagline: var(--sk-type-body-sm);
   --sk-brand-tagline-tracking: var(--sk-type-body-sm-tracking);
   --sk-brand-tagline-color: var(--sk-color-text-muted);

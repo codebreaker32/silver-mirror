@@ -117,9 +117,9 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 | `color.mark.tile-top` | #FFFFFF (`white`) | #30313C (`graphite.750`) |
 | `color.mark.tile-bottom` | #E7E5EC (`pearl.150`) | #1A1B23 (`graphite.900`) |
 | `color.mark.tile-edge` | #DCDAE3 (`pearl.200`) | #3A3B47 (`graphite.700`) |
-| `color.mark.chrome-hi` | #FBFBFD (`chrome.50`) | #FBFBFD (`chrome.50`) |
-| `color.mark.chrome-1` | #D9D8E1 (`chrome.200`) | #D9D8E1 (`chrome.200`) |
-| `color.mark.chrome-2` | #9F9DAE (`chrome.400`) | #9F9DAE (`chrome.400`) |
+| `color.mark.chrome-hi` | #EEEDF3 (`chrome.100`) | #FBFBFD (`chrome.50`) |
+| `color.mark.chrome-1` | #BDBBC9 (`chrome.300`) | #D9D8E1 (`chrome.200`) |
+| `color.mark.chrome-2` | #838194 (`chrome.500`) | #9F9DAE (`chrome.400`) |
 | `color.mark.chrome-3` | #CBC5E0 (`chrome.lav`) | #CBC5E0 (`chrome.lav`) |
 | `color.mark.chrome-4` | #686678 (`chrome.600`) | #838194 (`chrome.500`) |
 | `color.mark.chrome-lo` | #4F4D5E (`chrome.700`) | #686678 (`chrome.600`) |
