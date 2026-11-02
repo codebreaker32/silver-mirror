@@ -148,7 +148,7 @@ flowchart TB
 | Possible today | Not possible (and why) |
 |---|---|
 | Share from the native Flipkart, Amazon.in and Nykaa Android apps into Silver Mirror | Running within a store app. Our links open a Flipkart search in the Flipkart app |
-| Resolve a Flipkart short link from one redirect header | Reading Flipkart product pages. We never load or scrape them |
+| Resolve a Flipkart short link on the phone (stop at the listing address) | Reading Flipkart product pages. We never load or scrape them |
 | Check a listing's label claim ("for oily skin", fragrance-free, oil-free) against its INCI list and your readings | Checking a product we have no ingredient list for. That is UNKNOWN until you snap the label |
 | Dated, banded YouCam readings (Low / Medium / High, zone labels) | Numeric skin scores or an age estimate. YouCam returns them; we discard them |
 | Two-shade try-on on a tinted product with a known shade colour (API verified live; catalogue shade colours still to be added) | Try-on for tinted products without a shade colour on file. The app hides it rather than guess, which today means every catalogue row |

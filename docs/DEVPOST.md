@@ -24,7 +24,7 @@ Desk research shaped the brief. It is desk research only; nobody was interviewed
 ## What it does
 
 1. **One reading.** After consent, one selfie goes to YouCam HD Skin Analysis. Silver Mirror keeps only Low / Medium / High bands for oiliness, moisture, redness and pores, the per-zone skin-type labels and the scan date, on the phone. The photo is deleted from YouCam straight after, and the app waits for YouCam to confirm the delete before it shows the tick.
-2. **Share from the store app.** In Flipkart or Nykaa, tap Share, then Silver Mirror. In Amazon, Share, then More, then Silver Mirror. Flipkart sends only a short link; we read one redirect header for the product slug and never load the page.
+2. **Share from the store app.** In Flipkart or Nykaa, tap Share, then Silver Mirror. In Amazon, Share, then More, then Silver Mirror. Flipkart sends only a short link; the phone follows it, stops as soon as the listing address arrives (the page itself is never read), and the product slug becomes the title.
 3. **Confirm the product.** Claude proposes catalogue matches; the shopper picks one. Nothing is judged before that.
 4. **Verdict with reasons.** A published, deterministic rules engine returns FITS, CAUTION, UNKNOWN or MEDICINE. Each reason names the ingredient, the reading and the rule id: "Contains niacinamide, which our rule SUP-2 counts as a fit for oily-looking skin." CAUTION says "May not suit your readings. A cosmetic fit note, not a health warning."
 5. **Better matches.** Up to three FITS products from the verified catalogue, ranked by fit with no paid placements, and a link that opens a Flipkart search filtered to the shopper's skin-type reading.
@@ -64,7 +64,7 @@ Measured live: HD Skin Analysis succeeded on the first poll at 5.4 s; each Makeu
 - **Score direction.** On the sample face, oiliness raw was 99.5 and pores 100: higher means less visible concern. Bands invert it, and the cutoffs stay provisional until calibrated on consenting people.
 - **Eventual delete.** A GET straight after delete still returned results. We built a state machine that confirms before the tick, and says so plainly if a delete fails ("auto-removed within 30 days").
 - **Share sheets differ by store.** Flipkart shares only a short link, Amazon hides third-party apps behind More, Nykaa shares title and URL. Each needed its own parser and onboarding hint, found by testing on a real Samsung phone.
-- **Flipkart from Cloudflare.** The one-redirect lookup works from a home connection but stalls from Cloudflare IPs; the phone-side lookup is the planned path.
+- **Flipkart from Cloudflare.** The one-redirect lookup worked from a home connection but stalled from Cloudflare IPs. The phone now follows the short link itself and sends the listing address; the Worker parses it with no network call.
 - **Audit frame.** The spec's original audit used a Flipkart filter page. Collecting it would need automated store access, which Flipkart's terms don't allow, so we re-registered the method on brand pages only, before running it, with git tags.
 - **Honest catalogue tiers.** Gating on human ticks made every real product UNKNOWN on device. We added a recorded second-read tier and label which tier each verdict used.
 
