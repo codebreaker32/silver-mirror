@@ -6,7 +6,7 @@ import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Ellipse, Path } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
-import { CAPTURE_TIPS, LIGHT_HINT } from './captureHints';
+import { BACK_CAMERA_NOTICE, CAMERA_FAILED_NOTICE, CAPTURE_TIPS, LIGHT_HINT } from './captureHints';
 import { deleteLocal } from './native';
 import { pickPictureSize } from './pictureSize';
 import { COPY } from '@skinkey/contracts';
@@ -78,6 +78,7 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
   const [capturing, setCapturing] = useState(false);
   const [review, setReview] = useState<CapturedPhoto | null>(null);
   const [tip, setTip] = useState<number | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const reviewRef = useRef<CapturedPhoto | null>(null);
   reviewRef.current = review;
 
@@ -91,6 +92,7 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
 
   const onReady = async () => {
     setReady(true);
+    setNotice((n) => (n === CAMERA_FAILED_NOTICE ? null : n));
     try {
       const sizes = (await camera.current?.getAvailablePictureSizesAsync()) ?? [];
       setPictureSize(pickPictureSize(sizes));
@@ -100,13 +102,18 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
   };
 
   // A device (or emulator) with no front lens fails to bind and the viewfinder stays black. Fall back to the back
-  // camera once instead; the flip button still lets the user try the front again.
+  // camera once instead. expo-camera Android sends the same onMountError (its message always says "unavailable or in
+  // use") for a busy front lens too, so the fallback is never silent: the hint pill says the back camera is on and
+  // flip switches back. A failure with no lens left to try says so instead of leaving a black frame.
   const triedBack = useRef(false);
   const onMountError = () => {
     setReady(false);
     if (facing === 'front' && !triedBack.current) {
       triedBack.current = true;
       setFacing('back');
+      setNotice(BACK_CAMERA_NOTICE);
+    } else {
+      setNotice(CAMERA_FAILED_NOTICE);
     }
   };
 
@@ -183,7 +190,7 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
   }
 
   const onLayout = (e: LayoutChangeEvent) => setSize({ width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height });
-  const message = tip !== null ? TIPS[tip]! : (hint ?? CAPTURE_TIPS[0]);
+  const message = notice ?? (tip !== null ? TIPS[tip]! : (hint ?? CAPTURE_TIPS[0]));
 
   return (
     <View style={{ flex: 1, backgroundColor: g.surround }}>
@@ -238,7 +245,10 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
             icon="info"
             variant="overlay"
             accessibilityLabel="Next photo tip"
-            onPress={() => setTip((i) => ((i ?? -1) + 1) % TIPS.length)}
+            onPress={() => {
+              setNotice(null);
+              setTip((i) => ((i ?? -1) + 1) % TIPS.length);
+            }}
           />
           <Pressable
             onPress={() => void shoot()}
@@ -271,7 +281,10 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
             icon="flip"
             variant="overlay"
             accessibilityLabel={facing === 'front' ? 'Switch to back camera' : 'Switch to front camera'}
-            onPress={() => setFacing((f) => (f === 'front' ? 'back' : 'front'))}
+            onPress={() => {
+              setNotice(null);
+              setFacing((f) => (f === 'front' ? 'back' : 'front'));
+            }}
           />
         </View>
       </SafeAreaView>
