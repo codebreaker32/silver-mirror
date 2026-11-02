@@ -22,7 +22,7 @@ export { EmptyState, type EmptyPlate } from './EmptyState';
 export { Divider } from './Divider';
 export { SectionHeader } from './SectionHeader';
 export { ProductCard, type ProductCardProps } from './ProductCard';
-export { AppBar, FooterFade, Screen, TabScene, useInTabScene } from './Screen';
+export { AppBar, FooterFade, PageBackdrop, Screen, TabScene, useInTabScene } from './Screen';
 export { TabBar, TAB_ITEMS, type TabItem } from './TabBar';
 export { useReduceMotion } from './useReduceMotion';
 export { haptic } from './haptics';
