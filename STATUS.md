@@ -18,7 +18,7 @@ Formerly SkinKey; user-facing name is Silver Mirror (code ids, `app.skinkey` and
 - **Catalogue:** 180 rows, 125 usable for verdicts (second-read brand-page check), 0 human-ticked.
 - **Open, known:**
   1. **Try-on is not reachable on real shares:** no catalogue row has a shade colour, so the app hides the button (by design: it won't guess). The demo script shows the live-spike renders instead, labelled. Adding shade colours needs a sourced swatch per shade plus an APK rebuild.
-  2. **Flipkart short links on the live Worker** stall from Cloudflare IPs (BUGS.md item 7). Nykaa and Amazon shares don't need that lookup.
+  2. **Flipkart short links** (BUGS.md item 7): fixed in code (`cb43f27`): the phone follows the link and sends the listing URL; the Worker parses it offline. Needs the Worker redeploy (checklist step 2) and a real-phone share to confirm live.
   3. **`INSTALL_HMAC_SECRET`** on the live Worker (BUGS.md item 8): confirm it's set.
   4. 86 flagged audit rows await a person's review (`audit/review.md`).
   5. `npm run secrets:grep` with real key values (the VM has no `.env`).
@@ -26,7 +26,10 @@ Formerly SkinKey; user-facing name is Silver Mirror (code ids, `app.skinkey` and
 
 ## AMAN'S CHECKLIST (when you return)
 1. **Install the app on your phone:** `adb connect <ip:port>` (Wireless debugging), then `adb install -r dist-apk/silver-mirror-release.apk`.
-2. **Check the live Worker** (2 minutes): `curl -X POST https://skinkey-worker.skinkey-worker.workers.dev/v1/install` returns a token. If it says "Install tokens are not configured", run the one-liner in BUGS.md item 8. Then share one Flipkart and one Nykaa product into the app; note whether the Flipkart one gets a title.
+2. **Redeploy the Worker and fix the install secret** (3 minutes, both are your steps):
+   - `cd /home/aman/youcam && set -a && . ./.env && set +a && cd apps/worker && printf '%s' "$INSTALL_HMAC_SECRET" | npx wrangler secret put INSTALL_HMAC_SECRET --env production`
+   - `npx wrangler deploy --env production` (ships the Flipkart fix, `cb43f27`)
+   **Then check the live Worker** (2 minutes): `curl -X POST https://skinkey-worker.skinkey-worker.workers.dev/v1/install` returns a token. If it says "Install tokens are not configured", run the one-liner in BUGS.md item 8. Then share one Flipkart and one Nykaa product into the app; note whether the Flipkart one gets a title.
 3. **Hallway tests, 3 consenting people,** using `design/research/questionnaire_quick.md`. For each: spoken or written consent first, one consented scan each (16 units each), one share from their usual store app, then the questions. Note what they say about the verdict wording, UNKNOWN and CAUTION. Write results in `design/research/hallway_2026-11-02.md` (counts and short paraphrases, no names or faces). After each person: Settings → Delete my reading.
 4. **Record the demo** per `docs/DEMO_SCRIPT.md` (daylight, ideally before 17:00 IST). Pre-check the products against the recorded reading first. Export an `.srt` into `docs/` for the linter.
 5. **If you approve publishing:** create the GitHub repo (private or public, your call), push, and create a Release with `dist-apk/silver-mirror-release.apk` attached. Check `git status` that no `.env` / `.dev.vars` is included, and run `npm run secrets:grep` locally first.
