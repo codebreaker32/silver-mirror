@@ -1,28 +1,28 @@
-{"time": 174, "type": "word", "start": 26, "end": 30, "value": "Your"}
-{"time": 341, "type": "word", "start": 30, "end": 37, "value": "reading"}
-{"time": 905, "type": "word", "start": 39, "end": 41, "value": "in"}
-{"time": 1017, "type": "word", "start": 42, "end": 46, "value": "plain"}
-{"time": 1295, "type": "word", "start": 47, "end": 52, "value": "words"}
-{"time": 1808, "type": "word", "start": 54, "end": 73, "value": "<break time=\"250ms\"/>"}
-{"time": 2569, "type": "word", "start": 74, "end": 75, "value": "A"}
-{"time": 2613, "type": "word", "start": 76, "end": 82, "value": "routine"}
-{"time": 2958, "type": "word", "start": 83, "end": 88, "value": "built"}
-{"time": 3349, "type": "word", "start": 89, "end": 92, "value": "only"}
-{"time": 3572, "type": "word", "start": 93, "end": 97, "value": "from"}
-{"time": 3794, "type": "word", "start": 98, "end": 105, "value": "products"}
-{"time": 4218, "type": "word", "start": 106, "end": 110, "value": "that"}
-{"time": 4419, "type": "word", "start": 111, "end": 114, "value": "fit"}
-{"time": 4642, "type": "word", "start": 115, "end": 117, "value": "you"}
-{"time": 4922, "type": "word", "start": 119, "end": 139, "value": "<break time=\"250ms\"/>"}
-{"time": 5682, "type": "word", "start": 139, "end": 142, "value": "And"}
-{"time": 5793, "type": "word", "start": 143, "end": 144, "value": "a"}
-{"time": 5883, "type": "word", "start": 145, "end": 149, "value": "shop"}
-{"time": 6151, "type": "word", "start": 150, "end": 151, "value": "of"}
-{"time": 6261, "type": "word", "start": 152, "end": 160, "value": "verified"}
-{"time": 6797, "type": "word", "start": 161, "end": 168, "value": "products"}
-{"time": 7424, "type": "word", "start": 170, "end": 174, "value": "each"}
-{"time": 7647, "type": "word", "start": 175, "end": 177, "value": "one"}
-{"time": 7870, "type": "word", "start": 178, "end": 185, "value": "checked"}
-{"time": 8137, "type": "word", "start": 186, "end": 192, "value": "against"}
-{"time": 8473, "type": "word", "start": 193, "end": 197, "value": "your"}
-{"time": 8629, "type": "word", "start": 198, "end": 201, "value": "skin"}
+{"time": 199, "type": "word", "start": 26, "end": 30, "value": "Your"}
+{"time": 390, "type": "word", "start": 30, "end": 37, "value": "reading"}
+{"time": 1035, "type": "word", "start": 39, "end": 41, "value": "in"}
+{"time": 1163, "type": "word", "start": 42, "end": 46, "value": "plain"}
+{"time": 1481, "type": "word", "start": 47, "end": 52, "value": "words"}
+{"time": 2068, "type": "word", "start": 54, "end": 73, "value": "<break time=\"250ms\"/>"}
+{"time": 2939, "type": "word", "start": 74, "end": 75, "value": "A"}
+{"time": 2989, "type": "word", "start": 76, "end": 82, "value": "routine"}
+{"time": 3384, "type": "word", "start": 83, "end": 88, "value": "built"}
+{"time": 3831, "type": "word", "start": 89, "end": 92, "value": "only"}
+{"time": 4086, "type": "word", "start": 93, "end": 97, "value": "from"}
+{"time": 4340, "type": "word", "start": 98, "end": 105, "value": "products"}
+{"time": 4825, "type": "word", "start": 106, "end": 110, "value": "that"}
+{"time": 5055, "type": "word", "start": 111, "end": 114, "value": "fit"}
+{"time": 5310, "type": "word", "start": 115, "end": 117, "value": "you"}
+{"time": 5630, "type": "word", "start": 119, "end": 139, "value": "<break time=\"250ms\"/>"}
+{"time": 6500, "type": "word", "start": 139, "end": 142, "value": "And"}
+{"time": 6627, "type": "word", "start": 143, "end": 144, "value": "a"}
+{"time": 6729, "type": "word", "start": 145, "end": 149, "value": "shop"}
+{"time": 7036, "type": "word", "start": 150, "end": 151, "value": "of"}
+{"time": 7162, "type": "word", "start": 152, "end": 160, "value": "verified"}
+{"time": 7775, "type": "word", "start": 161, "end": 168, "value": "products"}
+{"time": 8492, "type": "word", "start": 170, "end": 174, "value": "each"}
+{"time": 8747, "type": "word", "start": 175, "end": 177, "value": "one"}
+{"time": 9002, "type": "word", "start": 178, "end": 185, "value": "checked"}
+{"time": 9308, "type": "word", "start": 186, "end": 192, "value": "against"}
+{"time": 9692, "type": "word", "start": 193, "end": 197, "value": "your"}
+{"time": 9871, "type": "word", "start": 198, "end": 201, "value": "skin"}

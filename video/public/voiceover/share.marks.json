@@ -1,19 +1,19 @@
-{"time": 106, "type": "word", "start": 21, "end": 23, "value": "Now"}
-{"time": 283, "type": "word", "start": 24, "end": 27, "value": "shop"}
-{"time": 469, "type": "word", "start": 27, "end": 30, "value": "the"}
-{"time": 609, "type": "word", "start": 30, "end": 32, "value": "way"}
-{"time": 748, "type": "word", "start": 33, "end": 35, "value": "you"}
-{"time": 934, "type": "word", "start": 36, "end": 41, "value": "already"}
-{"time": 1251, "type": "word", "start": 42, "end": 44, "value": "do"}
-{"time": 1504, "type": "word", "start": 45, "end": 61, "value": "<break time=\"250ms\"/>"}
-{"time": 2138, "type": "word", "start": 77, "end": 80, "value": "Nykaa"}
-{"time": 2561, "type": "word", "start": 86, "end": 92, "value": "Flipkart"}
-{"time": 3072, "type": "word", "start": 93, "end": 94, "value": "or"}
-{"time": 3212, "type": "word", "start": 95, "end": 100, "value": "Amazon"}
-{"time": 3715, "type": "word", "start": 101, "end": 117, "value": "<break time=\"250ms\"/>"}
-{"time": 4350, "type": "word", "start": 117, "end": 120, "value": "Tap"}
-{"time": 4582, "type": "word", "start": 120, "end": 124, "value": "share"}
-{"time": 4927, "type": "word", "start": 125, "end": 141, "value": "<break time=\"250ms\"/>"}
-{"time": 5522, "type": "word", "start": 142, "end": 145, "value": "Pick"}
-{"time": 5653, "type": "word", "start": 145, "end": 150, "value": "Silver"}
-{"time": 5978, "type": "word", "start": 151, "end": 155, "value": "Mirror"}
+{"time": 102, "type": "word", "start": 21, "end": 23, "value": "Now"}
+{"time": 273, "type": "word", "start": 24, "end": 27, "value": "shop"}
+{"time": 452, "type": "word", "start": 27, "end": 30, "value": "the"}
+{"time": 587, "type": "word", "start": 30, "end": 32, "value": "way"}
+{"time": 721, "type": "word", "start": 33, "end": 35, "value": "you"}
+{"time": 901, "type": "word", "start": 36, "end": 41, "value": "already"}
+{"time": 1206, "type": "word", "start": 42, "end": 44, "value": "do"}
+{"time": 1450, "type": "word", "start": 45, "end": 61, "value": "<break time=\"250ms\"/>"}
+{"time": 2061, "type": "word", "start": 77, "end": 80, "value": "Nykaa"}
+{"time": 2469, "type": "word", "start": 86, "end": 92, "value": "Flipkart"}
+{"time": 2962, "type": "word", "start": 93, "end": 94, "value": "or"}
+{"time": 3097, "type": "word", "start": 95, "end": 100, "value": "Amazon"}
+{"time": 3582, "type": "word", "start": 101, "end": 117, "value": "<break time=\"250ms\"/>"}
+{"time": 4194, "type": "word", "start": 117, "end": 120, "value": "Tap"}
+{"time": 4418, "type": "word", "start": 120, "end": 124, "value": "share"}
+{"time": 4751, "type": "word", "start": 125, "end": 141, "value": "<break time=\"250ms\"/>"}
+{"time": 5324, "type": "word", "start": 142, "end": 145, "value": "Pick"}
+{"time": 5451, "type": "word", "start": 145, "end": 150, "value": "Silver"}
+{"time": 5764, "type": "word", "start": 151, "end": 155, "value": "Mirror"}

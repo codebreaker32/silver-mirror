@@ -1,28 +1,28 @@
-{"time": 193, "type": "word", "start": 25, "end": 32, "value": "Seconds"}
-{"time": 585, "type": "word", "start": 32, "end": 37, "value": "later"}
-{"time": 1167, "type": "word", "start": 39, "end": 42, "value": "Fits"}
-{"time": 1642, "type": "word", "start": 44, "end": 50, "value": "Caution"}
-{"time": 2224, "type": "word", "start": 52, "end": 54, "value": "or"}
-{"time": 2455, "type": "word", "start": 55, "end": 61, "value": "Unknown"}
-{"time": 2917, "type": "word", "start": 63, "end": 82, "value": "<break time=\"250ms\"/>"}
-{"time": 3704, "type": "word", "start": 83, "end": 87, "value": "Every"}
-{"time": 3946, "type": "word", "start": 88, "end": 94, "value": "reason"}
-{"time": 4304, "type": "word", "start": 95, "end": 99, "value": "names"}
-{"time": 4593, "type": "word", "start": 100, "end": 103, "value": "the"}
-{"time": 4801, "type": "word", "start": 104, "end": 113, "value": "ingredient"}
-{"time": 5554, "type": "word", "start": 114, "end": 118, "value": "your"}
-{"time": 5728, "type": "word", "start": 119, "end": 125, "value": "reading"}
-{"time": 6205, "type": "word", "start": 127, "end": 130, "value": "and"}
-{"time": 6332, "type": "word", "start": 131, "end": 133, "value": "the"}
-{"time": 6424, "type": "word", "start": 134, "end": 138, "value": "rule"}
-{"time": 6807, "type": "word", "start": 140, "end": 158, "value": "<break time=\"250ms\"/>"}
-{"time": 7533, "type": "word", "start": 159, "end": 165, "value": "Claude"}
-{"time": 7937, "type": "word", "start": 166, "end": 169, "value": "only"}
-{"time": 8191, "type": "word", "start": 170, "end": 175, "value": "reads"}
-{"time": 8480, "type": "word", "start": 176, "end": 178, "value": "the"}
-{"time": 8629, "type": "word", "start": 179, "end": 185, "value": "listing"}
-{"time": 9173, "type": "word", "start": 187, "end": 206, "value": "<break time=\"250ms\"/>"}
-{"time": 9972, "type": "word", "start": 207, "end": 210, "value": "Our"}
-{"time": 10075, "type": "word", "start": 211, "end": 219, "value": "published"}
-{"time": 10561, "type": "word", "start": 220, "end": 224, "value": "rules"}
-{"time": 10896, "type": "word", "start": 225, "end": 230, "value": "decide"}
+{"time": 216, "type": "word", "start": 25, "end": 32, "value": "Seconds"}
+{"time": 654, "type": "word", "start": 32, "end": 37, "value": "later"}
+{"time": 1306, "type": "word", "start": 39, "end": 42, "value": "Fits"}
+{"time": 1837, "type": "word", "start": 44, "end": 50, "value": "Caution"}
+{"time": 2488, "type": "word", "start": 52, "end": 54, "value": "or"}
+{"time": 2747, "type": "word", "start": 55, "end": 61, "value": "Unknown"}
+{"time": 3264, "type": "word", "start": 63, "end": 82, "value": "<break time=\"250ms\"/>"}
+{"time": 4144, "type": "word", "start": 83, "end": 87, "value": "Every"}
+{"time": 4415, "type": "word", "start": 88, "end": 94, "value": "reason"}
+{"time": 4815, "type": "word", "start": 95, "end": 99, "value": "names"}
+{"time": 5139, "type": "word", "start": 100, "end": 103, "value": "the"}
+{"time": 5371, "type": "word", "start": 104, "end": 113, "value": "ingredient"}
+{"time": 6214, "type": "word", "start": 114, "end": 118, "value": "your"}
+{"time": 6408, "type": "word", "start": 119, "end": 125, "value": "reading"}
+{"time": 6942, "type": "word", "start": 127, "end": 130, "value": "and"}
+{"time": 7084, "type": "word", "start": 131, "end": 133, "value": "the"}
+{"time": 7187, "type": "word", "start": 134, "end": 138, "value": "rule"}
+{"time": 7616, "type": "word", "start": 140, "end": 158, "value": "<break time=\"250ms\"/>"}
+{"time": 8428, "type": "word", "start": 159, "end": 165, "value": "Claude"}
+{"time": 8880, "type": "word", "start": 166, "end": 169, "value": "only"}
+{"time": 9164, "type": "word", "start": 170, "end": 175, "value": "reads"}
+{"time": 9487, "type": "word", "start": 176, "end": 178, "value": "the"}
+{"time": 9654, "type": "word", "start": 179, "end": 185, "value": "listing"}
+{"time": 10263, "type": "word", "start": 187, "end": 206, "value": "<break time=\"250ms\"/>"}
+{"time": 11157, "type": "word", "start": 207, "end": 210, "value": "Our"}
+{"time": 11272, "type": "word", "start": 211, "end": 219, "value": "published"}
+{"time": 11816, "type": "word", "start": 220, "end": 224, "value": "rules"}
+{"time": 12190, "type": "word", "start": 225, "end": 230, "value": "decide"}

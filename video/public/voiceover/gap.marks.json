@@ -1,15 +1,15 @@
-{"time": 163, "type": "word", "start": 23, "end": 27, "value": "Store"}
-{"time": 425, "type": "word", "start": 28, "end": 31, "value": "skin"}
-{"time": 686, "type": "word", "start": 32, "end": 38, "value": "quizzes"}
-{"time": 1157, "type": "word", "start": 39, "end": 42, "value": "only"}
-{"time": 1367, "type": "word", "start": 43, "end": 46, "value": "know"}
-{"time": 1545, "type": "word", "start": 47, "end": 51, "value": "their"}
-{"time": 1785, "type": "word", "start": 52, "end": 55, "value": "own"}
-{"time": 1911, "type": "word", "start": 55, "end": 63, "value": "catalogue"}
-{"time": 2476, "type": "word", "start": 64, "end": 82, "value": "<break time=\"250ms\"/>"}
-{"time": 3189, "type": "word", "start": 83, "end": 85, "value": "And"}
-{"time": 3293, "type": "word", "start": 86, "end": 88, "value": "no"}
-{"time": 3502, "type": "word", "start": 88, "end": 94, "value": "listing"}
-{"time": 3869, "type": "word", "start": 95, "end": 99, "value": "knows"}
-{"time": 4078, "type": "word", "start": 100, "end": 103, "value": "your"}
-{"time": 4235, "type": "word", "start": 104, "end": 107, "value": "skin"}
+{"time": 216, "type": "word", "start": 23, "end": 27, "value": "Store"}
+{"time": 562, "type": "word", "start": 28, "end": 31, "value": "skin"}
+{"time": 907, "type": "word", "start": 32, "end": 38, "value": "quizzes"}
+{"time": 1530, "type": "word", "start": 39, "end": 42, "value": "only"}
+{"time": 1808, "type": "word", "start": 43, "end": 46, "value": "know"}
+{"time": 2043, "type": "word", "start": 47, "end": 51, "value": "their"}
+{"time": 2361, "type": "word", "start": 52, "end": 55, "value": "own"}
+{"time": 2528, "type": "word", "start": 55, "end": 63, "value": "catalogue"}
+{"time": 3275, "type": "word", "start": 64, "end": 82, "value": "<break time=\"250ms\"/>"}
+{"time": 4218, "type": "word", "start": 83, "end": 85, "value": "And"}
+{"time": 4355, "type": "word", "start": 86, "end": 88, "value": "no"}
+{"time": 4632, "type": "word", "start": 88, "end": 94, "value": "listing"}
+{"time": 5117, "type": "word", "start": 95, "end": 99, "value": "knows"}
+{"time": 5394, "type": "word", "start": 100, "end": 103, "value": "your"}
+{"time": 5601, "type": "word", "start": 104, "end": 107, "value": "skin"}

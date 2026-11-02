@@ -11,832 +11,832 @@ export type SceneMeta = {
 export const SCENE_META: SceneMeta[] = [
   {
     "id": "greetIn",
-    "seconds": 3.39,
-    "voiceSeconds": 2.788,
+    "seconds": 3.63,
+    "voiceSeconds": 3.033,
     "voice": "voiceover/greet-in.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Namaste",
-        "t": 187
+        "t": 204
       },
       {
         "w": "Welcome",
-        "t": 1654
+        "t": 1800
       },
       {
         "w": "to",
-        "t": 2026
+        "t": 2204
       },
       {
         "w": "Silver",
-        "t": 2194
+        "t": 2387
       },
       {
         "w": "Mirror",
-        "t": 2566
+        "t": 2791
       }
     ]
   },
   {
     "id": "hook",
-    "seconds": 5.84,
-    "voiceSeconds": 4.944,
+    "seconds": 5.13,
+    "voiceSeconds": 4.234,
     "voice": "voiceover/hook.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Mirror",
-        "t": 204
+        "t": 174
       },
       {
         "w": "mirror",
-        "t": 732
+        "t": 627
       },
       {
         "w": "on",
-        "t": 1394
+        "t": 1193
       },
       {
         "w": "the",
-        "t": 1524
+        "t": 1305
       },
       {
         "w": "wall",
-        "t": 1655
+        "t": 1418
       },
       {
         "w": "Will",
-        "t": 2952
+        "t": 2528
       },
       {
         "w": "this",
-        "t": 3135
+        "t": 2685
       },
       {
         "w": "serum",
-        "t": 3397
+        "t": 2909
       },
       {
         "w": "suit",
-        "t": 3854
+        "t": 3300
       },
       {
         "w": "me",
-        "t": 4116
+        "t": 3525
       },
       {
         "w": "at",
-        "t": 4312
+        "t": 3692
       },
       {
         "w": "all",
-        "t": 4508
+        "t": 3860
       }
     ]
   },
   {
     "id": "shelf",
-    "seconds": 7.98,
-    "voiceSeconds": 7.08,
+    "seconds": 10.1,
+    "voiceSeconds": 9.198,
     "voice": "voiceover/shelf.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Every",
-        "t": 183
+        "t": 238
       },
       {
         "w": "skincare",
-        "t": 478
+        "t": 621
       },
       {
         "w": "shelf",
-        "t": 1008
+        "t": 1309
       },
       {
         "w": "has",
-        "t": 1361
+        "t": 1768
       },
       {
         "w": "one",
-        "t": 1584
+        "t": 2058
       },
       {
         "w": "The",
-        "t": 2777
+        "t": 3607
       },
       {
         "w": "bottle",
-        "t": 2883
+        "t": 3745
       },
       {
         "w": "that",
-        "t": 3248
+        "t": 4219
       },
       {
         "w": "didn&apos;t",
-        "t": 3484
+        "t": 4526
       },
       {
         "w": "suit",
-        "t": 3778
+        "t": 4909
       },
       {
         "w": "you",
-        "t": 4096
+        "t": 5321
       },
       {
         "w": "And",
-        "t": 5157
+        "t": 6700
       },
       {
         "w": "opened",
-        "t": 5334
+        "t": 6930
       },
       {
         "w": "skincare",
-        "t": 5652
+        "t": 7342
       },
       {
         "w": "can&apos;t",
-        "t": 6217
+        "t": 8077
       },
       {
         "w": "go",
-        "t": 6511
+        "t": 8459
       },
       {
         "w": "back",
-        "t": 6688
+        "t": 8689
       }
     ]
   },
   {
     "id": "gap",
-    "seconds": 6.44,
-    "voiceSeconds": 5.544,
+    "seconds": 6.96,
+    "voiceSeconds": 6.063,
     "voice": "voiceover/gap.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Store",
-        "t": 197
+        "t": 216
       },
       {
         "w": "skin",
-        "t": 514
+        "t": 562
       },
       {
         "w": "quizzes",
-        "t": 830
+        "t": 907
       },
       {
         "w": "only",
-        "t": 1399
+        "t": 1530
       },
       {
         "w": "know",
-        "t": 1653
+        "t": 1808
       },
       {
         "w": "their",
-        "t": 1868
+        "t": 2043
       },
       {
         "w": "own",
-        "t": 2159
+        "t": 2361
       },
       {
         "w": "catalogue",
-        "t": 2311
+        "t": 2528
       },
       {
         "w": "And",
-        "t": 3857
+        "t": 4218
       },
       {
         "w": "no",
-        "t": 3983
+        "t": 4355
       },
       {
         "w": "listing",
-        "t": 4236
+        "t": 4632
       },
       {
         "w": "knows",
-        "t": 4679
+        "t": 5117
       },
       {
         "w": "your",
-        "t": 4932
+        "t": 5394
       },
       {
         "w": "skin",
-        "t": 5122
+        "t": 5601
       }
     ]
   },
   {
     "id": "scan",
-    "seconds": 21.14,
-    "voiceSeconds": 15.744,
+    "seconds": 21.55,
+    "voiceSeconds": 16.146,
     "voice": "voiceover/scan.mp3",
     "clip": null,
     "marks": [
       {
         "w": "So",
-        "t": 211
+        "t": 217
       },
       {
         "w": "Silver",
-        "t": 389
+        "t": 399
       },
       {
         "w": "Mirror",
-        "t": 769
+        "t": 788
       },
       {
         "w": "starts",
-        "t": 1162
+        "t": 1192
       },
       {
         "w": "with",
-        "t": 1593
+        "t": 1633
       },
       {
         "w": "one",
-        "t": 1784
+        "t": 1829
       },
       {
         "w": "consented",
-        "t": 1974
+        "t": 2024
       },
       {
         "w": "scan",
-        "t": 2557
+        "t": 2622
       },
       {
         "w": "YouCam",
-        "t": 3968
+        "t": 4069
       },
       {
         "w": "&apos;s",
-        "t": 4386
+        "t": 4498
       },
       {
         "w": "HD",
-        "t": 4538
+        "t": 4654
       },
       {
         "w": "Skin",
-        "t": 4931
+        "t": 5057
       },
       {
         "w": "Analysis",
-        "t": 5236
+        "t": 5369
       },
       {
         "w": "reads",
-        "t": 5844
+        "t": 5993
       },
       {
         "w": "oiliness",
-        "t": 6237
+        "t": 6396
       },
       {
         "w": "pores",
-        "t": 6953
+        "t": 7131
       },
       {
         "w": "moisture",
-        "t": 7479
+        "t": 7670
       },
       {
         "w": "and",
-        "t": 8100
+        "t": 8307
       },
       {
         "w": "redness",
-        "t": 8227
+        "t": 8437
       },
       {
         "w": "Then",
-        "t": 9674
+        "t": 9921
       },
       {
         "w": "the",
-        "t": 9851
+        "t": 10103
       },
       {
         "w": "photo",
-        "t": 10041
+        "t": 10298
       },
       {
         "w": "is",
-        "t": 10422
+        "t": 10688
       },
       {
         "w": "deleted",
-        "t": 10548
+        "t": 10818
       },
       {
         "w": "from",
-        "t": 11068
+        "t": 11350
       },
       {
         "w": "YouCam",
-        "t": 11322
+        "t": 11612
       },
       {
         "w": "Only",
-        "t": 13161
+        "t": 13497
       },
       {
         "w": "Low",
-        "t": 13477
+        "t": 13821
       },
       {
         "w": "Medium",
-        "t": 13825
+        "t": 14178
       },
       {
         "w": "and",
-        "t": 14370
+        "t": 14736
       },
       {
         "w": "High",
-        "t": 14484
+        "t": 14854
       },
       {
         "w": "stay",
-        "t": 14763
+        "t": 15140
       },
       {
         "w": "on",
-        "t": 15093
+        "t": 15478
       },
       {
         "w": "your",
-        "t": 15195
+        "t": 15583
       },
       {
         "w": "phone",
-        "t": 15321
+        "t": 15712
       }
     ]
   },
   {
     "id": "share",
-    "seconds": 12.42,
-    "voiceSeconds": 8.52,
+    "seconds": 9.96,
+    "voiceSeconds": 6.063,
     "voice": "voiceover/share.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Now",
-        "t": 144
+        "t": 102
       },
       {
         "w": "shop",
-        "t": 383
+        "t": 273
       },
       {
         "w": "the",
-        "t": 636
+        "t": 452
       },
       {
         "w": "way",
-        "t": 825
+        "t": 587
       },
       {
         "w": "you",
-        "t": 1014
+        "t": 721
       },
       {
         "w": "already",
-        "t": 1266
+        "t": 901
       },
       {
         "w": "do",
-        "t": 1695
+        "t": 1206
       },
       {
         "w": "Nykaa",
-        "t": 2897
+        "t": 2061
       },
       {
         "w": "Flipkart",
-        "t": 3470
+        "t": 2469
       },
       {
         "w": "or",
-        "t": 4163
+        "t": 2962
       },
       {
         "w": "Amazon",
-        "t": 4352
+        "t": 3097
       },
       {
         "w": "Tap",
-        "t": 5894
+        "t": 4194
       },
       {
         "w": "share",
-        "t": 6209
+        "t": 4418
       },
       {
         "w": "Pick",
-        "t": 7482
+        "t": 5324
       },
       {
         "w": "Silver",
-        "t": 7659
+        "t": 5451
       },
       {
         "w": "Mirror",
-        "t": 8100
+        "t": 5764
       }
     ]
   },
   {
     "id": "verdict",
-    "seconds": 17.43,
-    "voiceSeconds": 12.528,
+    "seconds": 17.52,
+    "voiceSeconds": 12.62,
     "voice": "voiceover/verdict.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Seconds",
-        "t": 214
+        "t": 216
       },
       {
         "w": "later",
-        "t": 650
+        "t": 654
       },
       {
         "w": "Fits",
-        "t": 1296
+        "t": 1306
       },
       {
         "w": "Caution",
-        "t": 1824
+        "t": 1837
       },
       {
         "w": "or",
-        "t": 2470
+        "t": 2488
       },
       {
         "w": "Unknown",
-        "t": 2727
+        "t": 2747
       },
       {
         "w": "Every",
-        "t": 4114
+        "t": 4144
       },
       {
         "w": "reason",
-        "t": 4383
+        "t": 4415
       },
       {
         "w": "names",
-        "t": 4780
+        "t": 4815
       },
       {
         "w": "the",
-        "t": 5101
+        "t": 5139
       },
       {
         "w": "ingredient",
-        "t": 5332
+        "t": 5371
       },
       {
         "w": "your",
-        "t": 6169
+        "t": 6214
       },
       {
         "w": "reading",
-        "t": 6362
+        "t": 6408
       },
       {
         "w": "and",
-        "t": 6892
+        "t": 6942
       },
       {
         "w": "the",
-        "t": 7033
+        "t": 7084
       },
       {
         "w": "rule",
-        "t": 7135
+        "t": 7187
       },
       {
         "w": "Claude",
-        "t": 8366
+        "t": 8428
       },
       {
         "w": "only",
-        "t": 8815
+        "t": 8880
       },
       {
         "w": "reads",
-        "t": 9097
+        "t": 9164
       },
       {
         "w": "the",
-        "t": 9418
+        "t": 9487
       },
       {
         "w": "listing",
-        "t": 9584
+        "t": 9654
       },
       {
         "w": "Our",
-        "t": 11075
+        "t": 11157
       },
       {
         "w": "published",
-        "t": 11190
+        "t": 11272
       },
       {
         "w": "rules",
-        "t": 11729
+        "t": 11816
       },
       {
         "w": "decide",
-        "t": 12101
+        "t": 12190
       }
     ]
   },
   {
     "id": "tryon",
-    "seconds": 12.72,
-    "voiceSeconds": 7.824,
+    "seconds": 13.84,
+    "voiceSeconds": 8.937,
     "voice": "voiceover/tryon.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Tinted",
-        "t": 201
+        "t": 229
       },
       {
         "w": "sunscreen",
-        "t": 587
+        "t": 670
       },
       {
         "w": "Try",
-        "t": 2174
+        "t": 2484
       },
       {
         "w": "the",
-        "t": 2418
+        "t": 2762
       },
       {
         "w": "real",
-        "t": 2612
+        "t": 2983
       },
       {
         "w": "shades",
-        "t": 2998
+        "t": 3424
       },
       {
         "w": "on",
-        "t": 3320
+        "t": 3793
       },
       {
         "w": "your",
-        "t": 3449
+        "t": 3940
       },
       {
         "w": "own",
-        "t": 3706
+        "t": 4233
       },
       {
         "w": "face",
-        "t": 3925
+        "t": 4484
       },
       {
         "w": "with",
-        "t": 4377
+        "t": 4999
       },
       {
         "w": "YouCam",
-        "t": 4545
+        "t": 5191
       },
       {
         "w": "Makeup",
-        "t": 4944
+        "t": 5648
       },
       {
         "w": "try-on",
-        "t": 5343
+        "t": 6103
       },
       {
         "w": "Nothing",
-        "t": 6815
+        "t": 7784
       },
       {
         "w": "is",
-        "t": 7240
+        "t": 8269
       },
       {
         "w": "saved",
-        "t": 7395
+        "t": 8447
       }
     ]
   },
   {
     "id": "tour",
-    "seconds": 14.64,
-    "voiceSeconds": 9.744,
+    "seconds": 15.2,
+    "voiceSeconds": 10.295,
     "voice": "voiceover/tour.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Your",
-        "t": 188
+        "t": 199
       },
       {
         "w": "reading",
-        "t": 369
+        "t": 390
       },
       {
         "w": "in",
-        "t": 980
+        "t": 1035
       },
       {
         "w": "plain",
-        "t": 1101
+        "t": 1163
       },
       {
         "w": "words",
-        "t": 1402
+        "t": 1481
       },
       {
         "w": "A",
-        "t": 2781
+        "t": 2939
       },
       {
         "w": "routine",
-        "t": 2829
+        "t": 2989
       },
       {
         "w": "built",
-        "t": 3203
+        "t": 3384
       },
       {
         "w": "only",
-        "t": 3626
+        "t": 3831
       },
       {
         "w": "from",
-        "t": 3867
+        "t": 4086
       },
       {
         "w": "products",
-        "t": 4108
+        "t": 4340
       },
       {
         "w": "that",
-        "t": 4567
+        "t": 4825
       },
       {
         "w": "fit",
-        "t": 4784
+        "t": 5055
       },
       {
         "w": "you",
-        "t": 5026
+        "t": 5310
       },
       {
         "w": "And",
-        "t": 6152
+        "t": 6500
       },
       {
         "w": "a",
-        "t": 6272
+        "t": 6627
       },
       {
         "w": "shop",
-        "t": 6369
+        "t": 6729
       },
       {
         "w": "of",
-        "t": 6659
+        "t": 7036
       },
       {
         "w": "verified",
-        "t": 6779
+        "t": 7162
       },
       {
         "w": "products",
-        "t": 7359
+        "t": 7775
       },
       {
         "w": "each",
-        "t": 8038
+        "t": 8492
       },
       {
         "w": "one",
-        "t": 8279
+        "t": 8747
       },
       {
         "w": "checked",
-        "t": 8521
+        "t": 9002
       },
       {
         "w": "against",
-        "t": 8810
+        "t": 9308
       },
       {
         "w": "your",
-        "t": 9173
+        "t": 9692
       },
       {
         "w": "skin",
-        "t": 9342
+        "t": 9871
       }
     ]
   },
   {
     "id": "close",
-    "seconds": 8.4,
-    "voiceSeconds": 6.504,
+    "seconds": 7.26,
+    "voiceSeconds": 5.358,
     "voice": "voiceover/close.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Silver",
-        "t": 201
+        "t": 166
       },
       {
         "w": "Mirror",
-        "t": 550
+        "t": 454
       },
       {
         "w": "Check",
-        "t": 1937
+        "t": 1596
       },
       {
         "w": "before",
-        "t": 2141
+        "t": 1763
       },
       {
         "w": "you",
-        "t": 2466
+        "t": 2032
       },
       {
         "w": "buy",
-        "t": 2707
+        "t": 2230
       },
       {
         "w": "Mirror",
-        "t": 3879
+        "t": 3196
       },
       {
         "w": "mirror",
-        "t": 4391
+        "t": 3617
       },
       {
         "w": "Now",
-        "t": 5741
+        "t": 4730
       },
       {
         "w": "you",
-        "t": 5922
+        "t": 4878
       },
       {
         "w": "know",
-        "t": 6103
+        "t": 5027
       }
     ]
   },
   {
     "id": "greetOut",
-    "seconds": 4.38,
-    "voiceSeconds": 3.076,
+    "seconds": 3.76,
+    "voiceSeconds": 2.458,
     "voice": "voiceover/greet-out.mp3",
     "clip": null,
     "marks": [
       {
         "w": "Thank",
-        "t": 137
+        "t": 110
       },
       {
         "w": "you",
-        "t": 437
+        "t": 349
       },
       {
         "w": "for",
-        "t": 557
+        "t": 446
       },
       {
         "w": "watching",
-        "t": 725
+        "t": 580
       },
       {
         "w": "Namaste",
-        "t": 2145
+        "t": 1714
       }
     ]
   }

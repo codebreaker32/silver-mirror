@@ -1,13 +1,13 @@
-{"time": 168, "type": "word", "start": 23, "end": 28, "value": "Mirror"}
-{"time": 604, "type": "word", "start": 30, "end": 35, "value": "mirror"}
-{"time": 1150, "type": "word", "start": 36, "end": 38, "value": "on"}
-{"time": 1258, "type": "word", "start": 39, "end": 41, "value": "the"}
-{"time": 1366, "type": "word", "start": 42, "end": 45, "value": "wall"}
-{"time": 1745, "type": "word", "start": 47, "end": 64, "value": "<break time=\"250ms\"/>"}
-{"time": 2436, "type": "word", "start": 65, "end": 68, "value": "Will"}
-{"time": 2587, "type": "word", "start": 69, "end": 73, "value": "this"}
-{"time": 2803, "type": "word", "start": 73, "end": 78, "value": "serum"}
-{"time": 3180, "type": "word", "start": 78, "end": 82, "value": "suit"}
-{"time": 3397, "type": "word", "start": 83, "end": 84, "value": "me"}
-{"time": 3558, "type": "word", "start": 85, "end": 87, "value": "at"}
-{"time": 3720, "type": "word", "start": 87, "end": 90, "value": "all"}
+{"time": 174, "type": "word", "start": 23, "end": 28, "value": "Mirror"}
+{"time": 627, "type": "word", "start": 30, "end": 35, "value": "mirror"}
+{"time": 1193, "type": "word", "start": 36, "end": 38, "value": "on"}
+{"time": 1305, "type": "word", "start": 39, "end": 41, "value": "the"}
+{"time": 1418, "type": "word", "start": 42, "end": 45, "value": "wall"}
+{"time": 1811, "type": "word", "start": 47, "end": 64, "value": "<break time=\"250ms\"/>"}
+{"time": 2528, "type": "word", "start": 65, "end": 68, "value": "Will"}
+{"time": 2685, "type": "word", "start": 69, "end": 73, "value": "this"}
+{"time": 2909, "type": "word", "start": 73, "end": 78, "value": "serum"}
+{"time": 3300, "type": "word", "start": 78, "end": 82, "value": "suit"}
+{"time": 3525, "type": "word", "start": 83, "end": 84, "value": "me"}
+{"time": 3692, "type": "word", "start": 85, "end": 87, "value": "at"}
+{"time": 3860, "type": "word", "start": 87, "end": 90, "value": "all"}

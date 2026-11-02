@@ -1,19 +1,19 @@
-{"time": 149, "type": "word", "start": 23, "end": 27, "value": "Every"}
-{"time": 389, "type": "word", "start": 28, "end": 34, "value": "skincare"}
-{"time": 820, "type": "word", "start": 35, "end": 39, "value": "shelf"}
-{"time": 1107, "type": "word", "start": 40, "end": 42, "value": "has"}
-{"time": 1289, "type": "word", "start": 43, "end": 46, "value": "one"}
-{"time": 1607, "type": "word", "start": 47, "end": 64, "value": "<break time=\"250ms\"/>"}
-{"time": 2259, "type": "word", "start": 65, "end": 68, "value": "The"}
-{"time": 2345, "type": "word", "start": 68, "end": 73, "value": "bottle"}
-{"time": 2642, "type": "word", "start": 74, "end": 77, "value": "that"}
-{"time": 2834, "type": "word", "start": 78, "end": 87, "value": "didn&apos;t"}
-{"time": 3074, "type": "word", "start": 88, "end": 91, "value": "suit"}
-{"time": 3332, "type": "word", "start": 92, "end": 94, "value": "you"}
-{"time": 3544, "type": "word", "start": 96, "end": 113, "value": "<break time=\"250ms\"/>"}
-{"time": 4196, "type": "word", "start": 114, "end": 116, "value": "And"}
-{"time": 4340, "type": "word", "start": 117, "end": 122, "value": "opened"}
-{"time": 4598, "type": "word", "start": 123, "end": 129, "value": "skincare"}
-{"time": 5058, "type": "word", "start": 130, "end": 138, "value": "can&apos;t"}
-{"time": 5297, "type": "word", "start": 139, "end": 141, "value": "go"}
-{"time": 5441, "type": "word", "start": 142, "end": 145, "value": "back"}
+{"time": 238, "type": "word", "start": 23, "end": 27, "value": "Every"}
+{"time": 621, "type": "word", "start": 28, "end": 34, "value": "skincare"}
+{"time": 1309, "type": "word", "start": 35, "end": 39, "value": "shelf"}
+{"time": 1768, "type": "word", "start": 40, "end": 42, "value": "has"}
+{"time": 2058, "type": "word", "start": 43, "end": 46, "value": "one"}
+{"time": 2566, "type": "word", "start": 47, "end": 64, "value": "<break time=\"250ms\"/>"}
+{"time": 3607, "type": "word", "start": 65, "end": 68, "value": "The"}
+{"time": 3745, "type": "word", "start": 68, "end": 73, "value": "bottle"}
+{"time": 4219, "type": "word", "start": 74, "end": 77, "value": "that"}
+{"time": 4526, "type": "word", "start": 78, "end": 87, "value": "didn&apos;t"}
+{"time": 4909, "type": "word", "start": 88, "end": 91, "value": "suit"}
+{"time": 5321, "type": "word", "start": 92, "end": 94, "value": "you"}
+{"time": 5659, "type": "word", "start": 96, "end": 113, "value": "<break time=\"250ms\"/>"}
+{"time": 6700, "type": "word", "start": 114, "end": 116, "value": "And"}
+{"time": 6930, "type": "word", "start": 117, "end": 122, "value": "opened"}
+{"time": 7342, "type": "word", "start": 123, "end": 129, "value": "skincare"}
+{"time": 8077, "type": "word", "start": 130, "end": 138, "value": "can&apos;t"}
+{"time": 8459, "type": "word", "start": 139, "end": 141, "value": "go"}
+{"time": 8689, "type": "word", "start": 142, "end": 145, "value": "back"}

@@ -1,14 +1,14 @@
-{"time": 139, "type": "word", "start": 19, "end": 23, "value": "Silver"}
-{"time": 380, "type": "word", "start": 24, "end": 28, "value": "Mirror"}
-{"time": 762, "type": "word", "start": 30, "end": 44, "value": "<break time=\"250ms\"/>"}
-{"time": 1337, "type": "word", "start": 45, "end": 48, "value": "Check"}
-{"time": 1477, "type": "word", "start": 49, "end": 53, "value": "before"}
-{"time": 1702, "type": "word", "start": 54, "end": 56, "value": "you"}
-{"time": 1868, "type": "word", "start": 57, "end": 59, "value": "buy"}
-{"time": 2110, "type": "word", "start": 60, "end": 75, "value": "<break time=\"250ms\"/>"}
-{"time": 2677, "type": "word", "start": 75, "end": 79, "value": "Mirror"}
-{"time": 3030, "type": "word", "start": 81, "end": 85, "value": "mirror"}
-{"time": 3396, "type": "word", "start": 86, "end": 101, "value": "<break time=\"250ms\"/>"}
-{"time": 3962, "type": "word", "start": 101, "end": 104, "value": "Now"}
-{"time": 4086, "type": "word", "start": 104, "end": 106, "value": "you"}
-{"time": 4211, "type": "word", "start": 107, "end": 110, "value": "know"}
+{"time": 166, "type": "word", "start": 19, "end": 23, "value": "Silver"}
+{"time": 454, "type": "word", "start": 24, "end": 28, "value": "Mirror"}
+{"time": 910, "type": "word", "start": 30, "end": 44, "value": "<break time=\"250ms\"/>"}
+{"time": 1596, "type": "word", "start": 45, "end": 48, "value": "Check"}
+{"time": 1763, "type": "word", "start": 49, "end": 53, "value": "before"}
+{"time": 2032, "type": "word", "start": 54, "end": 56, "value": "you"}
+{"time": 2230, "type": "word", "start": 57, "end": 59, "value": "buy"}
+{"time": 2519, "type": "word", "start": 60, "end": 75, "value": "<break time=\"250ms\"/>"}
+{"time": 3196, "type": "word", "start": 75, "end": 79, "value": "Mirror"}
+{"time": 3617, "type": "word", "start": 81, "end": 85, "value": "mirror"}
+{"time": 4054, "type": "word", "start": 86, "end": 101, "value": "<break time=\"250ms\"/>"}
+{"time": 4730, "type": "word", "start": 101, "end": 104, "value": "Now"}
+{"time": 4878, "type": "word", "start": 104, "end": 106, "value": "you"}
+{"time": 5027, "type": "word", "start": 107, "end": 110, "value": "know"}

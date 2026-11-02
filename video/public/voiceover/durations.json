@@ -1,13 +1,13 @@
 {
-  "greetIn": 2.784,
-  "hook": 4.08,
-  "shelf": 5.76,
-  "gap": 4.584,
-  "scan": 13.848,
-  "share": 6.288,
-  "verdict": 11.28,
-  "tryon": 6.48,
-  "tour": 9.0,
-  "close": 4.488,
-  "greetOut": 2.4
+  "greetIn": 3.033,
+  "hook": 4.234,
+  "shelf": 9.198,
+  "gap": 6.063,
+  "scan": 16.146,
+  "share": 6.063,
+  "verdict": 12.62,
+  "tryon": 8.937,
+  "tour": 10.295,
+  "close": 5.358,
+  "greetOut": 2.458
 }

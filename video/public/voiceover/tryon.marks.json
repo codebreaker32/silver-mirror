@@ -1,19 +1,19 @@
-{"time": 166, "type": "word", "start": 23, "end": 28, "value": "Tinted"}
-{"time": 486, "type": "word", "start": 29, "end": 36, "value": "sunscreen"}
-{"time": 1117, "type": "word", "start": 38, "end": 55, "value": "<break time=\"250ms\"/>"}
-{"time": 1801, "type": "word", "start": 56, "end": 59, "value": "Try"}
-{"time": 2003, "type": "word", "start": 60, "end": 62, "value": "the"}
-{"time": 2163, "type": "word", "start": 63, "end": 66, "value": "real"}
-{"time": 2483, "type": "word", "start": 67, "end": 72, "value": "shades"}
-{"time": 2750, "type": "word", "start": 73, "end": 75, "value": "on"}
-{"time": 2857, "type": "word", "start": 75, "end": 79, "value": "your"}
-{"time": 3069, "type": "word", "start": 80, "end": 82, "value": "own"}
-{"time": 3251, "type": "word", "start": 83, "end": 86, "value": "face"}
-{"time": 3625, "type": "word", "start": 88, "end": 91, "value": "with"}
-{"time": 3764, "type": "word", "start": 109, "end": 114, "value": "YouCam"}
-{"time": 4095, "type": "word", "start": 120, "end": 125, "value": "Makeup"}
-{"time": 4425, "type": "word", "start": 126, "end": 131, "value": "try-on"}
-{"time": 4917, "type": "word", "start": 133, "end": 150, "value": "<break time=\"250ms\"/>"}
-{"time": 5644, "type": "word", "start": 151, "end": 157, "value": "Nothing"}
-{"time": 5996, "type": "word", "start": 157, "end": 159, "value": "is"}
-{"time": 6125, "type": "word", "start": 160, "end": 164, "value": "saved"}
+{"time": 229, "type": "word", "start": 23, "end": 28, "value": "Tinted"}
+{"time": 670, "type": "word", "start": 29, "end": 36, "value": "sunscreen"}
+{"time": 1541, "type": "word", "start": 38, "end": 55, "value": "<break time=\"250ms\"/>"}
+{"time": 2484, "type": "word", "start": 56, "end": 59, "value": "Try"}
+{"time": 2762, "type": "word", "start": 60, "end": 62, "value": "the"}
+{"time": 2983, "type": "word", "start": 63, "end": 66, "value": "real"}
+{"time": 3424, "type": "word", "start": 67, "end": 72, "value": "shades"}
+{"time": 3793, "type": "word", "start": 73, "end": 75, "value": "on"}
+{"time": 3940, "type": "word", "start": 75, "end": 79, "value": "your"}
+{"time": 4233, "type": "word", "start": 80, "end": 82, "value": "own"}
+{"time": 4484, "type": "word", "start": 83, "end": 86, "value": "face"}
+{"time": 4999, "type": "word", "start": 88, "end": 91, "value": "with"}
+{"time": 5191, "type": "word", "start": 109, "end": 114, "value": "YouCam"}
+{"time": 5648, "type": "word", "start": 120, "end": 125, "value": "Makeup"}
+{"time": 6103, "type": "word", "start": 126, "end": 131, "value": "try-on"}
+{"time": 6781, "type": "word", "start": 133, "end": 150, "value": "<break time=\"250ms\"/>"}
+{"time": 7784, "type": "word", "start": 151, "end": 157, "value": "Nothing"}
+{"time": 8269, "type": "word", "start": 157, "end": 159, "value": "is"}
+{"time": 8447, "type": "word", "start": 160, "end": 164, "value": "saved"}
