@@ -131,8 +131,8 @@ if [[ "$WHAT" == all || "$WHAT" == tryon ]]; then
   for r in ${TRYON_ROWS:-foxtale reequil}; do
     case $r in
       foxtale) tryon_row foxtale "$FOXTALE" "^Foxtale · SPF 50 Tinted Fluid" "^Try two shades on me" 2 ;;
-      reequil) tryon_row reequil "$REEQUIL" "^Re'equil · Sheer Zinc Tinted" "Try it on me" 1 ;;
-      pilgrim) tryon_row pilgrim "$PILGRIM" "^Pilgrim · Korean White Lotus" "Try it on me" 1 ;;
+      reequil) tryon_row reequil "$REEQUIL" "^Re'equil · Sheer Zinc Tinted" "^Try this shade on me" 1 ;;
+      pilgrim) tryon_row pilgrim "$PILGRIM" "^Pilgrim · Korean White Lotus" "^Try this shade on me" 1 ;;
     esac
   done
 fi

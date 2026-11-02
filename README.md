@@ -44,11 +44,11 @@ flowchart LR
 
 1. **Your reading (once).** Consent, then one selfie. YouCam HD Skin Analysis returns oiliness, moisture, redness, pore and per-zone skin-type readings. The Worker turns each `raw_score` into a band (Low / Medium / High). Higher `raw_score` means *less* visible concern, so the bands invert it (found in the live spike). The photo is deleted from YouCam straight after; only bands, zone labels and the scan date stay on the phone. A labelled **Demo reading** lets anyone try the app without a scan.
 2. **Share.** Flipkart or Nykaa: Share, then Silver Mirror. Amazon: Share, then More, then Silver Mirror (Amazon puts third-party apps behind More).
-3. **Confirm.** Claude proposes catalogue rows; you tap the one you are looking at. No verdict appears before that. "None of these" gives a weaker, name-only check.
+3. **Confirm.** A deterministic name match against the catalogue proposes rows first, with SKU disqualifiers for a conflicting SPF, body vs face and product type. Claude (effort low, catalogue ids only) is asked only when the name doesn't match or you share a screenshot, and the same disqualifiers re-check its picks. You tap the one you are looking at; no verdict appears before that. "None of these" gives a weaker, name-only check. "How this was made" records which resolver answered, so most shares show no Claude call at all.
 4. **Verdict with reasons.** A pure rules engine compares the product's INCI list and label claims with your bands. Every reason is a set template filled with a rule id, a band and an ingredient, for example *"Contains niacinamide, which our rule SUP-2 counts as a fit for oily-looking skin."* The four states differ by label, icon and outline, not colour alone; CAUTION is amber, never red.
-5. **Better matches.** Up to 3 FITS products from the verified catalogue in the same category, ranked by fit ("No paid placements"), plus a link that opens a Flipkart search filtered to your skin-type reading (verified on a real phone: the Flipkart app opens with the filter applied).
+5. **Better matches.** Up to 3 FITS products from the verified catalogue in the same category, ranked by fit ("No paid placements"). Each card opens a search for that brand and product in the store you shared from (Nykaa, Amazon or Flipkart). Below them, a link opens a Flipkart search filtered to your skin-type reading (verified on a real phone: the Flipkart app opens with the filter applied).
 6. **UNKNOWN is designed, not an error.** "We can't read this listing's ingredients. This doesn't mean it's bad." Snap the label; Claude reads it into editable ingredient chips; you confirm; the rules decide.
-7. **Try-on (tinted products).** Two shades on the same photo. "Preview, not a shade guarantee." The skin-tone colour stays inside the Worker to pick two candidate shades and is never shown; the photo is deleted from YouCam afterwards. **Current limit:** the try-on button only appears for a tinted product with a shade colour on file, and no catalogue row has one yet (we won't invent shade colours). The YouCam side is verified in the live spike (`spikes/g5_*.jpg`, sample face) and in mock tests; the in-app screen shown below is the labelled sample preview.
+7. **Try-on (tinted sunscreens).** YouCam Makeup VTO puts the brand's own shades on your photo, straight under the verdict's reasons. "Preview, not a shade guarantee." Try-on appears for 7 of our 11 tinted sunscreens: Foxtale (9 shades) and Earth Rhythm (5) pick 2 of their shades with YouCam Skin Tone; Pilgrim, Re'equil, The Derma Co, Dot & Key and Aqualogica render their one shade. Shade colours come only from each brand's own page (the median of a brand swatch or texture image, with the image URL and crop recorded per shade in `hex_source`, `data/catalog/brands/`). The other 4 (Bioderma, Garnier, Himalaya, Lotus Herbals) have no reliable brand swatch, so the app hides the button for them rather than guess (`no_hex_reason`). The skin-tone colour stays inside the Worker and is never shown; the photo is deleted from YouCam afterwards. Tested end to end against the mock Worker on the emulator (Foxtale two shades, Re'equil one shade) and in `apps/worker/test/tier1.e2e.test.ts`; the renders themselves are verified live only in the spike (`spikes/g5_*.jpg`, sample face) so far.
 8. **Medicine gate.** Adapalene, tretinoin and other medicine actives stop the flow with a MEDICINE notice instead of a fit verdict.
 9. **How this was made.** Every scan, try-on and label read keeps a ledger: YouCam task ids, units, delete state, and whether the run was mock or live.
 
@@ -58,7 +58,7 @@ Base `https://yce-api-01.makeupar.com`. Keys live only in the Worker. Numbers be
 
 | Step | Endpoint | Units | Measured |
 |---|---|---:|---|
-| Upload slot, then presigned `PUT` | `POST /s2s/v2.0/file` | 0 | |
+| Upload slot, then presigned `PUT`, then `src_file_id` | `POST /s2s/v2.0/file` | 0 | not yet run live (the spike used `src_file_url`) |
 | HD Skin Analysis: `hd_skin_type`, `hd_oiliness`, `hd_moisture`, `hd_redness`, `hd_pore` | `POST /s2s/v2.1/task/skin-analysis`, poll `GET …/{task_id}` | 16 (HD, 5–8 concerns) | success on the first poll at **5.4 s** |
 | Skin tone, for try-on shade choice | `POST /s2s/v2.0/task/skin-tone-analysis`, poll `GET …/{task_id}` | 20 | price list only; mock-tested, not in the spike |
 | Makeup VTO, two shades | `POST /s2s/v2.0/task/makeup-vto`, poll `GET …/{task_id}` | 1 each | about **5.3 s** each; foundation at `colorIntensity` 60 reads clearly side by side |
@@ -68,18 +68,19 @@ Base `https://yce-api-01.makeupar.com`. Keys live only in the Worker. Numbers be
 - One reading costs 16 units; a two-shade try-on costs 22 (tone 20 + 2 renders). The spike spent 18 units in total.
 - YouCam also returns an overall score and `skin_age`. We drop both: bands only, never a number.
 - `hd_skin_type` comes back per zone (`whole`, `t_zone`, `u_zone`), which is what lets reasons say "whole face" or "nose pore reading".
+- **Not yet run live through the app:** the spike called each feature on its own. The app's own chain (upload slot → presigned `PUT` → `src_file_id` → analysis → delete, and a try-on that runs skin tone and VTO on one uploaded file, then deletes each task) has run only against the mock. It is the first step after the Worker redeploy (`STATUS.md` checklist); results go into `spikes/FINDINGS.md` (G2, G3, G7) and this table. Until then, read the "Measured" column as the spike's numbers only.
 
 ## Privacy
 
 - Consent first, with an 18+ tick. The consent screen lists exactly what stays on the phone: skin-type reading, Low / Medium / High bands, zone labels, scan date.
 - "Silver Mirror stores no photo; YouCam processes it and we delete it from YouCam right after."
-- **Delete flow, verified live (G0):** the delete call returned `200`; a GET straight after still returned results (eventual consistency); about 2 s later and at every later check (t+0/20/40 s) the GET returned `400 "This task ID doesn't exist"` and the mask URL returned `404`. So the Worker runs a delete state machine (`uploaded → … → delete_requested → deleted | delete_failed`) and only shows "Deleted from YouCam" after a confirming GET: first check 2 s after the delete, up to 3 checks, up to 2 delete attempts. Unit-tested in `apps/worker/test/deleteState.test.ts`.
+- **Delete behaviour, measured live (G0):** the delete call returned `200`; a GET straight after still returned results (eventual consistency); about 2 s later and at every later check (t+0/20/40 s) the GET returned `400 "This task ID doesn't exist"` and the mask URL returned `404`. So the Worker runs a delete state machine (`uploaded → … → delete_requested → deleted | delete_failed`) and only shows "Deleted from YouCam" after a confirming GET: first check 2 s after the delete, up to 3 checks, up to 2 delete attempts. The spike measured one live delete; the state machine itself is unit-tested (`apps/worker/test/deleteState.test.ts`), not yet run live.
 - Settings has **Delete my reading** and **Withdraw consent**. Readings expire after 30 days.
 - Keys (`YOUCAM_API_KEY`, `ANTHROPIC_API_KEY`) exist only as Worker secrets; `npm run secrets:grep` checks the web bundle and both APKs for them.
 
 ## Honesty: Claude reads, our rules decide
 
-- Claude (`claude-opus-5-5`, structured JSON output) has exactly two runtime jobs: mapping a messy share title to catalogue ids (effort low), and reading a label photo into ingredient tokens (effort medium). It never writes verdict text and never decides a verdict.
+- Claude (`claude-opus-5-5`, structured JSON output) has exactly two runtime jobs, both fallbacks: mapping a share title to catalogue ids when the deterministic name match finds nothing, or when you share a screenshot (effort low; its picks are re-checked by the same SKU disqualifiers), and reading a label photo into ingredient tokens (effort medium). It never writes verdict text and never decides a verdict. If a Claude call fails, the catalogue match stands.
 - `packages/rules` is a pure function with no network or SDK imports: 11 published rules (OCC-1, OCC-2, FRG-1, ALC-1, SUP-1, SUP-2, LC-1a, LC-1b, LC-2, LC-3, MED-1), each with an evidence grade and sources. The web `/rules` page renders them, and every verdict shows the ruleset version (`440f555a8845`).
 - Catalogue: 180 rows from 30 brand files; 125 are usable for verdicts because a second, independent read matched the brand page's ingredient list word for word. Retailer rows never count. 0 rows ticked by a person so far, and the app labels the tier it used.
 - A copy linter (`npm run lint:claims`) fails the build on the banned words in brief §4.4 across app, web, shared copy, this README and the submission docs.
@@ -141,7 +142,33 @@ flowchart TB
 ```
 
 - `packages/contracts`: zod schemas for every route and the set copy strings. `packages/design`: tokens (`design/system/tokens`) for React Native and CSS, light and dark.
-- Mock mode (`YOUCAM_MODE=mock`, `CLAUDE_MODE=mock`) serves the real spike responses with signed URLs redacted. Tests, the smoke script and the emulator QA use it, so no YouCam units are spent.
+- Mock mode (`YOUCAM_MODE=mock`, `CLAUDE_MODE=mock`) serves the real spike responses with signed URLs redacted, except skin tone, which follows YouCam's documented response shape (`results.color.skin_color`) because the spike didn't call it. Try-on renders in mock mode are labelled placeholders. Tests, the smoke script and the emulator QA use it, so no YouCam units are spent.
+- Tests: 54 Vitest files (546 passing, 1 skipped) across the Worker, rules, contracts, web and mobile logic, plus 3 Jest suites (21 tests) for React Native screens. Start with `apps/worker/test/deleteState.test.ts`, `apps/worker/test/tier1.e2e.test.ts` (real catalogue rows through resolve, verdict and try-on) and `packages/rules/test/boundary.test.ts`.
+
+## Who else this helps (built, no partner yet)
+
+**Retailers and brands: catalogue checks on seller feeds.** `POST /v1/label-check` ships today: deterministic, no Claude on the path, up to 500 items per call, with optional per-profile verdicts. The `/audit` run is this same check over 136 brand pages. Against the mock Worker:
+
+```
+curl -s -X POST http://localhost:8787/v1/label-check -H 'content-type: application/json' -d '{
+  "items": [{ "id": "seller-sku-1", "title": "Gel cream for sensitive skin, fragrance-free",
+              "claims": [{ "type": "fragrance_free" }, { "type": "for_sensitive_skin" }],
+              "inci": ["Aqua", "Glycerin", "Parfum"] }],
+  "includeProfiles": true }'
+```
+
+```
+{ "rulesetHash": "440f555a8845",
+  "results": [{ "id": "seller-sku-1",
+    "hits": [{ "ruleId": "LC-1a", "claim": "fragrance-free", "matchedToken": "Parfum", "counted": true,
+               "plain": "Listing says 'fragrance-free'. Its ingredient list has Parfum (rule LC-1a)." }],
+    "profileFlags": [{ "profileId": "oily", "label": "FITS", "ruleIds": [] },
+                     { "profileId": "oily-redness", "label": "CAUTION", "ruleIds": ["FRG-1"] }, … ] }] }
+```
+
+**Perfect Corp: units spent where they count.** 16 units buy one reading that powers every check for 30 days. Checks themselves spend 0 YouCam units (rules on the phone, `/v1/resolve` for the product match). Try-on spends 22 units (skin tone 20 + 2 renders) only when a shopper is choosing a tinted product. Built to run on the retailer's own YouCam account.
+
+**What we don't claim:** no retailer or brand partner, no pricing or willingness to pay (spec §7), and no affiliate revenue in this build (affiliate tags are off in the app).
 
 ## What's possible / not possible
 
@@ -151,7 +178,7 @@ flowchart TB
 | Resolve a Flipkart short link on the phone (stop at the listing address) | Reading Flipkart product pages. We never load or scrape them |
 | Check a listing's label claim ("for oily skin", fragrance-free, oil-free) against its INCI list and your readings | Checking a product we have no ingredient list for. That is UNKNOWN until you snap the label |
 | Dated, banded YouCam readings (Low / Medium / High, zone labels) | Numeric skin scores or an age estimate. YouCam returns them; we discard them |
-| Two-shade try-on on a tinted product with a known shade colour (API verified live; catalogue shade colours still to be added) | Try-on for tinted products without a shade colour on file. The app hides it rather than guess, which today means every catalogue row |
+| Try-on on 7 tinted sunscreens with a brand-sourced shade colour (two shades where the brand sells several) | Try-on for the 4 tinted rows without a brand shade colour. The app hides it rather than guess |
 | Deleting the photo from YouCam right after the result, confirmed by retry | Instant deletion. YouCam deletes with about a 2 s lag, so we confirm before showing the tick |
 | A pre-registered audit of brand-page claims against the same page's ingredient list | Statements about the whole market. It is our sample of 30 brands |
 | Medicine actives detected and gated | Medical advice of any kind |
@@ -186,7 +213,7 @@ Android: `dist-apk/silver-mirror-release.apk` talks to the deployed Worker; `dis
 
 ## Screenshots
 
-Emulator (Android 15, release APK, mock Worker, Demo reading) and web, light and dark. Try-on frames are labelled sample previews: no face appears in shipped UI.
+Emulator (Android 15, release APK, mock Worker, Demo reading) and web, light and dark. The only face shown is Perfect Corp's official sample face, in the labelled spike image.
 
 | | | | |
 |---|---|---|---|
@@ -194,8 +221,12 @@ Emulator (Android 15, release APK, mock Worker, Demo reading) and web, light and
 | Home (light) | Home (dark) | Consent: what stays on the phone | Scan steps end with "Deleting from YouCam" |
 | ![Your reading](docs/screens/05-reading-light.png) | ![Which product is this?](docs/screens/06-confirm-sku-light.png) | ![FITS verdict](docs/screens/07-verdict-fits-dark.png) | ![UNKNOWN verdict](docs/screens/08-verdict-unknown-light.png) |
 | Your reading: bands, never a score | Confirm the product first | FITS with rule SUP-2 | UNKNOWN with a next step |
-| ![Better matches](docs/screens/09-better-matches-light.png) | ![Medicine gate](docs/screens/10-medicine-gate-dark.png) | ![Verdict states](docs/screens/11-verdict-states-light.png) | ![Try-on](docs/screens/12-tryon-light.png) |
-| Better matches, no paid placements | Medicine gate | FITS / CAUTION / UNKNOWN / name-only | Try-on: two shades, same photo |
+| ![Better matches](docs/screens/09-better-matches-light.png) | ![Medicine gate](docs/screens/10-medicine-gate-dark.png) | ![Verdict states](docs/screens/11-verdict-states-light.png) | ![Try-on entry under the reasons on a real Foxtale share](docs/screens/16-tryon-entry-dark.png) |
+| Better matches, no paid placements | Medicine gate | FITS / CAUTION / UNKNOWN / name-only | Try-on in the app (Foxtale, mock Worker): skin tone, 2 shades, delete |
+
+![YouCam Makeup VTO, live API spike on Perfect Corp's sample face](docs/screens/12-tryon-youcam-spike.png)
+
+YouCam Makeup VTO, live API spike on Perfect Corp's sample face (foundation, then a sheer lip colour). Not an app screen.
 
 ![Web landing](docs/screens/13-web-landing-light.png)
 ![Web audit result](docs/screens/14-web-audit-result-light.png)
@@ -218,7 +249,7 @@ Emulator (Android 15, release APK, mock Worker, Demo reading) and web, light and
 - A person reviews the 86 flagged audit rows; re-run as `audit-run-2` if anything changes.
 - Re-scan refresh after 30 days; Hindi; iOS.
 - Pharmacist QR for the medicine gate.
-- For retailers: the same rules as a catalogue check on seller feeds (`POST /v1/label-check`), run on the retailer's own YouCam account.
+- More brand-sourced shade colours, so the 4 tinted rows without one can offer try-on.
 
 ## Credits
 

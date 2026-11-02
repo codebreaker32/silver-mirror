@@ -64,3 +64,24 @@ Still open (not in this batch):
 - Item 7 (Flipkart short links on the live Worker) and item 8 (INSTALL_HMAC_SECRET) above.
 - secrets:grep on the VM checks patterns only (no .env there): run it locally or with the key values before submission.
 - FIXED 2 Nov pm: greige focus tiles in dark (greige.850, less saturated), light-mode chrome S contrast (stops one step deeper). Still open, minor: dark-mode UNKNOWN icon disc, landing scrollytelling spacing on desktop, nested cards on the landing fold, reason-card hierarchy, kit-2 MEDICINE state.
+
+## Final hardening (2 Nov pm)
+
+From the emulator QA report (`c89d60a`, local-worker APK, mock Worker) and the judge panel. Gates: typecheck, Vitest, Jest (`test:rn`), lint:claims and check-contrast all pass; both APKs rebuilt.
+
+Fixed:
+- **Dark-mode camera screen unreadable (QA 1, high).** `CaptureGuide` painted its surround with `inverse-surface`, near-white (#E7E5EC) in dark mode, under the white Back chevron, shutter ring and frame corners. New token `component.captureGuide.surround` = `graphite.950`, dark in both themes like a viewfinder, gated in check-contrast (on-overlay on surround); light status-bar icons while the camera is open. Applies to scan and try-on.
+- **Try-on label put words in the seller's mouth (QA 2, EU-2).** "The listing says one shade suits everyone. Try it on me" now shows only when the listing makes a `one_shade` / `universal_tint` claim (no catalogue row does today); a single colour on file reads "Try this shade on me". Button labels lost their full stop (DESIGN.md §9.4), and the entry has the face-frame icon.
+- **Try-on buried under the pore map (EU-3).** The entry now sits straight under the reasons.
+- **"Better matches" pill missing after a second share (QA 4).** A new share resets the scroll position and the remembered geometry (Android can clamp the offset without an onScroll).
+- **Better-match cards opened a brandless Flipkart search on every store (EU-1).** Cards now search `<brand> <name>` in the store the product was shared from (Nykaa in a Custom Tab, Amazon, else Flipkart); caption and TalkBack say which store. The web uses brand + name too. `packages/rules` `engine.ts` still builds its Flipkart `searchUrl` from the bare name: left unchanged to keep `packages/rules` behaviour identical to the frozen audit (ruleset hash `440f555a8845` still matches; note `engine.ts` / `index.ts` file hashes already differ from `audit/rules-frozen.json` after the rename and SKU commits, as the README says); the app and web no longer read it.
+- **Minor:** "Why · 0 reasons" → "Why"; try-on heading keeps the pack size on its own line (no dangling " ·"); mock try-on renders are labelled as placeholders for TalkBack.
+- **Docs (TI-1, TI-3, M1, M2, IDEA-1/3/4, D1, D3):** README, DEVPOST, DEMO_SCRIPT and STATUS now say try-on is reachable on 7 of 11 tinted rows (brand-sourced colours, `hex_source`), describe the resolver as catalogue-first with Claude as the fallback, add "Who else this helps" (`/v1/label-check` with a mock-Worker curl and its real response), a new tagline, a demo opening that names CeraVe and OCC-2, and a live in-app Foxtale try-on beat (22 units, dry run first, spike still as fallback). Gallery: `12-tryon-light.png` (grey sample ovals) replaced by `12-tryon-youcam-spike.png` and `16-tryon-in-app-dark.png`; `11-verdict-states-light.png` cropped above the orphaned icon. README states the test counts, that skin tone in mock mode follows the documented shape, and that the delete state machine is unit-tested, not yet run live.
+- `ops/vm/qa-tryon.sh` matches the new single-shade label.
+
+Still open:
+- **QA 3 (cold share into a leftover task lands on Home).** Only reproduced by force-stopping the app while the camera permission dialog is up; likely emulator-specific. Not changed; qa-tryon.sh clears the leftover task. Check once on the Samsung.
+- **App's own live YouCam chain never run end to end (TI-2):** upload slot → `src_file_id`, skin tone live, per-task deletes on a shared file (G2, G3, G7). Needs the Worker redeploy, then STATUS checklist step 2b. Not done here (no live calls from this session).
+- No front camera on the AVD: the guide opens on the front lens and shows black until flipped; the app doesn't switch lenses on its own (real phones have a front camera).
+- Better matches still repeat the destination line per card (DESIGN §9.5 asks for one shared line), and the first card's lavender tint can read as featured.
+- Judge-panel suggestions not taken in this batch: getTask 400 → "gone" before any delete, scan job with no error message when a task expires, delete-after-shared-file confirmation GET, `image/jpg` upload content type, two filled primaries on UNKNOWN, Reading-tab status-bar scrim, medicine-gate title length, try-on consent duplicate line.
