@@ -28,7 +28,7 @@ Formerly SkinKey; user-facing name is Silver Mirror (code ids, `app.skinkey` and
   6. Web is not deployed; Devpost links to the repo and APK.
 
 ## AMAN'S CHECKLIST (when you return)
-1. **Install the app on your phone:** `adb connect <ip:port>` (Wireless debugging), then `adb install -r dist-apk/silver-mirror-release.apk`.
+1. **Install the app on your phone:** `adb connect <ip:port>` (Wireless debugging), then `adb install -r dist-apk/silver-mirror-release.apk`. While it's on the phone, check BUGS.md "Final hardening" QA 3 once: start a try-on, swipe the app away while the camera permission prompt is open, then share a Nykaa product. It should open the check, not Home (only reproduced on the emulator so far).
 2. **Redeploy the Worker and fix the install secret** (3 minutes, both are your steps):
    - `cd /home/aman/youcam && set -a && . ./.env && set +a && cd apps/worker && printf '%s' "$INSTALL_HMAC_SECRET" | npx wrangler secret put INSTALL_HMAC_SECRET --env production`
    - `npx wrangler deploy --env production` (ships the Flipkart short-link change `cb43f27` **and the shade colours `0361cb3`**: the live Worker serves the catalogue, so without this the live APK still hides try-on)
