@@ -38,6 +38,10 @@ describe('VerdictSheet', () => {
     expect(within(first).getByText('Its ingredient list has Parfum (rule LC-\u20601a).')).toBeTruthy();
     expect(within(screen.getByTestId('reason-02')).getByText('Oiliness reading: High (whole face, scan 1 Nov).')).toBeTruthy();
 
+    // "How this was checked" is a collapsed row; opening it shows the ledger and the How link.
+    expect(screen.getByTestId('how-checked-toggle').props.accessibilityState).toEqual({ expanded: false });
+    await fireEvent.press(screen.getByTestId('how-checked-toggle'));
+    expect(screen.getByTestId('how-checked-toggle').props.accessibilityState).toEqual({ expanded: true });
     // The ledger rows carry the provenance; no repeated summary caption above them.
     expect(screen.queryByTestId('provenance-line')).toBeNull();
     expect(screen.getByText('Where this comes from')).toBeTruthy();

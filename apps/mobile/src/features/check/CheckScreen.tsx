@@ -14,7 +14,8 @@ import { demo } from '@/demo';
 import { workerCheckApi } from './api';
 import { HowThisWasMadeSheet } from './components/HowThisWasMadeSheet';
 import { LabelCamera } from './components/LabelCamera';
-import { HeadSkeleton, ProductHeader } from './components/ProductHeader';
+import { HeadSkeleton, HeroSkeleton, ProductHeader, ProductHero } from './components/ProductHeader';
+import { SaveHeart } from '@/components/SaveHeart';
 import { SkuConfirmSheet } from './components/SkuConfirmSheet';
 import { UnknownPanel } from './components/UnknownPanel';
 import { VerdictSheet } from './components/VerdictSheet';
@@ -121,6 +122,7 @@ export default function CheckScreen() {
   // Scroll geometry: the "Better matches" pill shows only while that section is off screen (component.actionBar).
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const sheetY = useRef(0);
+  const reasonsY = useRef<number | null>(null);
   const matchesY = useRef<number | null>(null);
   const geo = useRef({ y: 0, viewport: 0, content: 0 });
   const [matchesOnScreen, setMatchesOnScreen] = useState(false);
@@ -210,6 +212,10 @@ export default function CheckScreen() {
     geo.current.y = e.nativeEvent.contentOffset.y;
     measure();
   };
+  const toReasons = () => {
+    if (reasonsY.current == null) return;
+    scroll.current?.scrollTo({ y: Math.max(0, sheetY.current + reasonsY.current - t.space[2]), animated: true });
+  };
   const toMatches = () => {
     if (matchesY.current == null) return;
     scroll.current?.scrollTo({ y: Math.max(0, sheetY.current + matchesY.current - t.space[2]), animated: true });
@@ -262,6 +268,16 @@ export default function CheckScreen() {
   const source = origin ? sourceLine(origin, store) : null;
   const size = headerProduct ? sizeMeta(headerProduct.size) : null;
   const headerMeta = [size, source].filter(Boolean).join(' · ') || null;
+  // Key ingredients: the catalogue INCI in label order, names only (no claims about them).
+  const ingredients = useMemo(
+    () =>
+      result?.product
+        ? [...result.product.inci]
+            .sort((a, b) => a.position - b.position)
+            .map((i) => i.token.replace(/(^|[\s-])([a-z])/g, (_m, p: string, c: string) => p + c.toUpperCase()))
+        : undefined,
+    [result?.product],
+  );
 
   const inlineDock = fontScale >= t.components.actionBar.inlineAtFontScale;
   const showMore = !!view && view.showMatches;
@@ -346,7 +362,17 @@ export default function CheckScreen() {
               gap: t.spacing.stackLg,
             }}
           >
-            {state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
+            {headerProduct && state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
+              <ProductHero
+                brand={headerProduct.brand}
+                name={headerProduct.name}
+                meta={headerMeta}
+                category={headerProduct.category}
+                trailing={result?.product ? <SaveHeart productId={result.product.id} /> : null}
+              />
+            ) : state.phase === 'resolving' && !header ? (
+              <HeroSkeleton />
+            ) : state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
               <ProductHeader title={header} meta={headerMeta} glyph={categoryGlyph(headerProduct?.category ?? category)} />
             ) : origin && state.phase !== 'idle' ? (
               <Txt variant="caption" tone="muted" testID="source-line">
@@ -372,6 +398,11 @@ export default function CheckScreen() {
                   view={view}
                   demo={usingDemo}
                   onHowMade={() => setHowOpen(true)}
+                  ingredients={ingredients}
+                  onHeadPress={toReasons}
+                  onReasonsLayout={(y) => {
+                    reasonsY.current = y;
+                  }}
                   afterHead={
                     !key && !medicine ? (
                       <NoReadingCard onScan={() => router.push('/scan')} onDemo={chooseDemo} />
