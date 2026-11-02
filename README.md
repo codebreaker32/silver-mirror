@@ -91,9 +91,9 @@ Method `brand-claims-1`, pre-registered in [`audit/METHOD.md`](audit/METHOD.md).
 
 | Tag | Commit | What it froze |
 |---|---|---|
-| `audit-method-frozen` | `561344d` | the method file |
-| `rules-frozen` | `2122b55` | ruleset `440f555a8845` + SHA-256 of every rules file (`audit/rules-frozen.json`) |
-| `audit-run` | `19ef9a2` | `audit/results.csv`, `audit/summary.json`, `audit/review.md` |
+| `audit-method-frozen` | `3a188ef` | the method file |
+| `rules-frozen` | `04e7ae6` | ruleset `440f555a8845` + SHA-256 of every rules file (`audit/rules-frozen.json`) |
+| `audit-run` | `1faa88a` | `audit/results.csv`, `audit/summary.json`, `audit/review.md` |
 
 Headline, copied from `audit/summary.json` (schema 2, generated 2 Nov 2026 04:45 UTC, headline run, not a pilot):
 

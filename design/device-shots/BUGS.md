@@ -67,7 +67,7 @@ Still open (not in this batch):
 
 ## Final hardening (2 Nov pm)
 
-From the emulator QA report (`c89d60a`, local-worker APK, mock Worker) and the judge panel. Gates: typecheck, Vitest, Jest (`test:rn`), lint:claims and check-contrast all pass; both APKs rebuilt.
+From the emulator QA report (`472615d`, local-worker APK, mock Worker) and the judge panel. Gates: typecheck, Vitest, Jest (`test:rn`), lint:claims and check-contrast all pass; both APKs rebuilt.
 
 Fixed:
 - **Dark-mode camera screen unreadable (QA 1, high).** `CaptureGuide` painted its surround with `inverse-surface`, near-white (#E7E5EC) in dark mode, under the white Back chevron, shutter ring and frame corners. New token `component.captureGuide.surround` = `graphite.950`, dark in both themes like a viewfinder, gated in check-contrast (on-overlay on surround); light status-bar icons while the camera is open. Applies to scan and try-on.
@@ -88,7 +88,7 @@ Still open:
 
 ## Showcase match (2 Nov pm)
 
-Screens restyled to Aman's showcase (`design/reference/silver-mirror-showcase.png`, crops in `design/reference/showcase/`) in packages P1–P4 plus round 1 (`cb855c6`, `f1834e9`, `8baeea6`, `c91f744`, `5eca0a7`). The changes: pale lavender-grey page, white radius-24 cards with hairline and soft shadow, sans headings (serif only on the wordmark), lavender icon discs, slate pill CTAs with arrow (pearl in dark), centred screen titles with a back arrow, a flat white tab bar with a filled active glyph, a segmented store picker, square thumb tiles, a gradient skin-type hero, "What this means for products" focus tiles, corner-bracket frames with checklist cards, and the liquid-silver welcome. Dark is a designed graphite version.
+Screens restyled to Aman's showcase (`design/reference/silver-mirror-showcase.png`, crops in `design/reference/showcase/`) in packages P1–P4 plus round 1 (`ad26fb7`, `8da403c`, `9141ef7`, `e3aa3e1`, `9b72272`). The changes: pale lavender-grey page, white radius-24 cards with hairline and soft shadow, sans headings (serif only on the wordmark), lavender icon discs, slate pill CTAs with arrow (pearl in dark), centred screen titles with a back arrow, a flat white tab bar with a filled active glyph, a segmented store picker, square thumb tiles, a gradient skin-type hero, "What this means for products" focus tiles, corner-bracket frames with checklist cards, and the liquid-silver welcome. Dark is a designed graphite version.
 
 - Gates on the VM (17:30 IST): typecheck, Vitest 551 passed / 1 skipped, Jest `test:rn` 26 passed, lint:claims 0 violations, check-contrast 0 failures.
 - Both APKs rebuilt: `silver-mirror-release.apk` at 17:34 IST (workerUrl = live Worker) and `silver-mirror-release-localworker.apk` at 17:39 IST (workerUrl = `http://localhost:8787`). Both bundles contain the new strings ("Your skin type", "Share from a store app", "What this means for products").
