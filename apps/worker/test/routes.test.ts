@@ -100,7 +100,7 @@ describe('catalogue matching', () => {
 
   it('extracts a title from share text and store URLs without fetching them', () => {
     expect(extractTitle('Check out Plum Candy Melts Lip Tint on Flipkart! https://dl.flipkart.com/s/x')).toBe('Plum Candy Melts Lip Tint');
-    expect(titleFromUrl('https://www.flipkart.com/cerave-moisturising-cream-50-ml/p/itm123')).toBe('cerave moisturising cream 50 ml');
+    expect(titleFromUrl('https://www.flipkart.com/cerave-moisturising-cream-50-ml/p/itm123')).toBe('Cerave Moisturising Cream 50 ml');
     expect(titleFromUrl('https://www.amazon.in/CeraVe-Moisturising-Cream/dp/B0ABC')).toBe('CeraVe Moisturising Cream');
     expect(extractTitle(undefined, 'https://amzn.in/d/abc')).toBeNull();
     expect(detectStore('', 'https://amzn.in/d/abc')).toBe('amazon_in');

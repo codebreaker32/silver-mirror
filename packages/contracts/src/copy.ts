@@ -31,6 +31,10 @@ export const COPY = {
   mockReading: 'Mock YouCam reading (test fixture, not your skin)',
   fitsNoFlags: 'No ingredient in our rules flags your readings.',
   catalogCount: (n: number) => `Our catalogue: ${n} verified products.`,
+  /** Catalogue provenance tiers (data/catalog: verified_by). Never call a brand-page check human. */
+  catalogSource: 'Ingredient list from our catalogue',
+  catalogHumanChecked: 'Human-checked against the brand page',
+  catalogBrandPageChecked: 'Checked against the brand page: a second read matched it word for word',
   snapLabel: 'Snap the ingredient list.',
   labelPhotoProvenance: 'Photo of label, confirmed by you.',
   tryonCaption: 'Two shades, same photo. Preview, not a shade guarantee.',

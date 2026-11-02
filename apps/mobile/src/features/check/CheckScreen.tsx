@@ -8,7 +8,8 @@ import { useTheme } from '@/theme/ThemeProvider';
 import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
 import { BetterMatches, guessCategory, useBetterMatches } from '@/features/matches';
 import { openStoreUrl } from '@/features/matches/openStoreUrl';
-import { CropStep, inputFromPaste, sampleInput, useIncomingShare, type CheckInput } from '@/features/share';
+import { CropStep, inputFromPaste, sampleInput, takeShare, type CheckInput } from '@/features/share';
+import { demo } from '@/demo';
 import { workerCheckApi } from './api';
 import { HowThisWasMadeSheet } from './components/HowThisWasMadeSheet';
 import { LabelCamera } from './components/LabelCamera';
@@ -24,6 +25,8 @@ import { Body, Button, Icon, Tag } from './ui';
 import { useCheckFlow } from './useCheckFlow';
 
 const ENGINE: Engine = { verdict, medicineGate };
+/** Web `?demo=` only: offline catalogue answers for screenshots. Always the Worker on native. */
+const API = demo?.checkApi ?? workerCheckApi;
 
 type Origin = 'share' | 'paste' | 'sample' | 'screenshot';
 
@@ -41,7 +44,7 @@ export default function CheckScreen() {
   const t = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const params = useLocalSearchParams<{ q?: string; sample?: string }>();
+  const params = useLocalSearchParams<{ q?: string; sample?: string; share?: string }>();
   const { key: storedKey, isDemo, loading: keyLoading, useDemo: chooseDemo } = useKey();
   const [origin, setOrigin] = useState<Origin | null>(null);
   const [listingUrl, setListingUrl] = useState<string | null>(null);
@@ -49,7 +52,7 @@ export default function CheckScreen() {
   const [cameraOpen, setCameraOpen] = useState(false);
   const key = storedKey ?? (origin === 'sample' ? DEMO_KEY : null);
   const usingDemo = isDemo || (!storedKey && origin === 'sample');
-  const flow = useCheckFlow(workerCheckApi, ENGINE, key);
+  const flow = useCheckFlow(API, ENGINE, key);
   const [scanLedger, setScanLedger] = useState<HowThisWasMade | null>(null);
   useEffect(() => {
     if (storedKey?.source !== 'youcam_hd') return;
@@ -57,31 +60,37 @@ export default function CheckScreen() {
       .then(setScanLedger)
       .catch(() => undefined);
   }, [storedKey?.source, storedKey?.scanId]);
-  const { state, start } = flow;
+  const { state, start, reset } = flow;
 
   const begin = useCallback(
     (input: CheckInput, from: Origin) => {
+      // Each new input is a fresh check: drop the previous result, sheets and listing link.
+      reset();
+      setHowOpen(false);
+      setCameraOpen(false);
       setOrigin(input.kind === 'image' ? 'screenshot' : from);
       setListingUrl(input.kind === 'text' ? input.parsed.url : null);
       start(input);
     },
-    [start],
+    [start, reset],
   );
 
-  useIncomingShare((input) => begin(input, 'share'));
-
+  // Shares (cold or warm start) arrive as /check?share=<id> from the root ShareRouter.
   const started = useRef<string | null>(null);
   useEffect(() => {
     if (keyLoading) return;
-    const tag = params.sample ? 'sample' : params.q ? `q:${params.q}` : null;
+    const tag = params.share ? `share:${params.share}` : params.sample ? 'sample' : params.q ? `q:${params.q}` : null;
     if (!tag || started.current === tag) return;
     started.current = tag;
-    if (params.sample) begin(sampleInput(), 'sample');
+    if (params.share) {
+      const input = takeShare(params.share);
+      if (input) begin(input, 'share');
+    } else if (params.sample) begin(sampleInput(), 'sample');
     else if (params.q) {
       const input = inputFromPaste(params.q);
       if (input) begin(input, 'paste');
     }
-  }, [params.sample, params.q, keyLoading, begin]);
+  }, [params.share, params.sample, params.q, keyLoading, begin]);
 
   const result = state.phase === 'result' ? state.result : null;
   const view = useMemo(
@@ -101,7 +110,7 @@ export default function CheckScreen() {
 
   const category = result?.product?.category ?? guessCategory(result?.title ?? null);
   const matches = useBetterMatches({
-    api: workerCheckApi,
+    api: API,
     rank,
     key,
     category,

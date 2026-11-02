@@ -35,6 +35,16 @@ describe('presentVerdict', () => {
     expect(v.fixedLines).toEqual([COPY.footer, COPY.notAffiliated]);
   });
 
+  it('labels the catalogue tier honestly: human tick vs brand-page check vs untiered', () => {
+    const sub = (product: typeof PRODUCT) => presentVerdict(CAUTION_VERDICT, { ...ctx, product }).ledger[1]!;
+    expect(sub({ ...PRODUCT, verified_by: 'human' }).sub).toBe(COPY.catalogHumanChecked);
+    const checked = sub({ ...PRODUCT, verified_by: 'brand_page_check' });
+    expect(checked.value).toBe(COPY.catalogSource);
+    expect(checked.sub).toBe(COPY.catalogBrandPageChecked);
+    expect(checked.sub).not.toMatch(/human|by hand|person/i);
+    expect(sub(PRODUCT).sub).not.toMatch(/human|by hand|person|checked/i);
+  });
+
   it('uses the rules engine provenance line when one is given', () => {
     const v = presentVerdict({ ...CAUTION_VERDICT, provenance: { ...CAUTION_VERDICT.provenance, line: 'From rules' } }, ctx);
     expect(v.provenanceLine).toBe('From rules');

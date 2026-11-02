@@ -1,4 +1,4 @@
-import { parseSharePayload, type ResolveRequest, type Store } from '@skinkey/contracts';
+import { parseSharePayload, titleCaseSlug, type ResolveRequest, type Store } from '@skinkey/contracts';
 
 export interface ParsedShare {
   store: Store;
@@ -48,7 +48,7 @@ export function titleFromUrl(url: string | null): string | null {
   const slug = m?.[1];
   if (!slug || slug.length < 4) return null;
   const words = decodeURIComponent(slug).replace(/[-_+]+/g, ' ').trim();
-  return words.length >= 4 ? words : null;
+  return words.length >= 4 ? titleCaseSlug(words) : null;
 }
 
 export function cleanTitle(raw: string): string | null {

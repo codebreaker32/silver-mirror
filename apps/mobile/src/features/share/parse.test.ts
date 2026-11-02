@@ -32,7 +32,7 @@ describe('parseShareText', () => {
 
   it('falls back to the URL slug when the share is a bare link', () => {
     const p = parseShareText('https://www.flipkart.com/plum-green-tea-moisturiser/p/itm123');
-    expect(p.title).toBe('plum green tea moisturiser');
+    expect(p.title).toBe('Plum Green Tea Moisturiser');
   });
 
   it('returns no title for a short-link-only share', () => {

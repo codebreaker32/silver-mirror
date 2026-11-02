@@ -145,7 +145,7 @@ describe('/v1/resolve', () => {
     const s = setup({ claude: caller, shareFetch });
     const r = await s.req('POST', '/v1/resolve', { source: 'share_text', text: 'https://dl.flipkart.com/s/qPYPSuNNNN' });
     const body = ResolveResponse.parse(r.json);
-    expect(body).toMatchObject({ outcome: 'match', store: 'flipkart', extractedTitle: 'cerave moisturising cream for dry to very dry skin 50 ml' });
+    expect(body).toMatchObject({ outcome: 'match', store: 'flipkart', extractedTitle: 'Cerave Moisturising Cream for Dry to Very Dry Skin 50 ml' });
     expect(seen).toHaveLength(1);
     expect(seen[0]!.url).toBe('https://dl.flipkart.com/s/qPYPSuNNNN');
     expect(seen[0]!.init?.redirect).toBe('manual');

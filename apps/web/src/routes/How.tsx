@@ -300,7 +300,7 @@ export function How() {
               <tr>
                 <th scope="row">X1, X2, X5 (offline)</th>
                 <td>Catalogue extraction, verification packets, claim spans</td>
-                <td>Two passes diffed; a person ticks every row before it counts as verified.</td>
+                <td>Two passes diffed. A brand-page row counts once a second, independent read matched it word for word (labelled “checked against the brand page”); rows a person has ticked are labelled human-checked. Retailer rows never count.</td>
               </tr>
             </tbody>
           </table>

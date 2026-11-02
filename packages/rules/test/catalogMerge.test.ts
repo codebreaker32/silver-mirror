@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { CatalogProduct } from '@skinkey/contracts';
-import { mergeCatalog, sourceKindOf } from '../src';
+import { mergeCatalog, recordedBrandPageCheck, sourceKindOf } from '../src';
 
 const row = (over: Record<string, unknown> = {}) => ({
   brand: 'Acme',
@@ -96,6 +96,51 @@ describe('mergeCatalog', () => {
   });
 });
 
+describe('brand-page check tier (recorded two-agent verbatim check)', () => {
+  const CHECKED = 'Official brand site. Independently verified 2026-11-01: 31/31 INCI entries match the page in order and spelling.';
+
+  it('reads only recorded, passed second reads', () => {
+    expect(recordedBrandPageCheck(CHECKED)).toBe('Independently verified 2026-11-01: 31/31 INCI entries match the page in order and spelling.');
+    expect(recordedBrandPageCheck("Verified: re-read the official page's ingredient table on 2026-11-01. All 25 entries match in order and spelling.")).toMatch(/^Verified: re-read .* All 25 entries match/);
+    expect(recordedBrandPageCheck('INCI, name, size and EAN re-verified against source on 2026-11-01.')).not.toBeNull();
+    expect(recordedBrandPageCheck('Verified by an independent re-check against the official label image on beardo.in, 2026-11-01.')).not.toBeNull();
+  });
+
+  it('a single copy, a consistency note, a negation or a doubt about the list is not a check', () => {
+    expect(recordedBrandPageCheck('INCI copied verbatim from foxtale.in, fetched 2026-11-01.')).toBeNull();
+    expect(recordedBrandPageCheck("The INCI in the visible page body and in the page's JSON-LD are identical (verified 2026-11-01).")).toBeNull();
+    expect(recordedBrandPageCheck('The page has no back-of-pack image, so the list was not cross-checked against the pack.')).toBeNull();
+    expect(recordedBrandPageCheck('The independent re-check did not match the page.')).toBeNull();
+    expect(recordedBrandPageCheck(`${CHECKED} Page INCI may lag the current formulation; verify against pack before relying on it.`)).toBeNull();
+    expect(recordedBrandPageCheck(`Data conflict: do not use this list. ${CHECKED}`)).toBeNull();
+    expect(recordedBrandPageCheck(undefined)).toBeNull();
+    expect(recordedBrandPageCheck('')).toBeNull();
+  });
+
+  it('brand_official + recorded check → usable, labelled brand_page_check with the evidence sentence', () => {
+    const { rows, unchecked } = mergeCatalog([{ file: 'a.json', rows: [row({ notes: CHECKED }), row({ name: 'Plain', gtin_barcode: '', notes: 'INCI copied verbatim.' })] }], opts);
+    expect(rows.map((r) => [r.id, r.verified, r.status, r.verified_by ?? null])).toEqual([
+      ['acme-gel-cream', true, 'verified', 'brand_page_check'],
+      ['acme-plain', false, 'unverified', null],
+    ]);
+    expect(rows[0]!.check_note).toMatch(/^Independently verified 2026-11-01/);
+    expect(rows[1]!.check_note).toBeUndefined();
+    expect(unchecked).toEqual(['acme-plain']);
+    for (const r of rows) expect(CatalogProduct.safeParse(r).success).toBe(true);
+  });
+
+  it('a human tick wins and is labelled human; retailer rows stay unverified whatever their notes say', () => {
+    const { rows } = mergeCatalog(
+      [{ file: 'a.json', rows: [row({ notes: CHECKED }), row({ name: 'Shop', gtin_barcode: '', source_url: 'https://www.apollopharmacy.in/otc/x', notes: 'Re-verified 2026-11-01: the INCI matches the page verbatim (32 items, same order).' })] }],
+      { ...opts, verifiedIds: new Set(['acme-gel-cream']) },
+    );
+    expect(rows.map((r) => [r.id, r.verified, r.verified_by ?? null, r.check_note ?? null])).toEqual([
+      ['acme-gel-cream', true, 'human', null],
+      ['acme-shop', false, null, null],
+    ]);
+  });
+});
+
 describe('data/catalog/catalog.json', () => {
   const dir = join(__dirname, '../../../data/catalog');
   const present = existsSync(join(dir, 'catalog.json'));
@@ -120,6 +165,17 @@ describe('data/catalog/catalog.json', () => {
       expect(p.source_url).toMatch(/^https:\/\//);
       expect(p.source_kind).not.toBe('third_party');
       if (p.verified) expect(p.source_kind).toBe('brand_official');
+      if (p.verified) expect(['human', 'brand_page_check']).toContain(p.verified_by);
+      if (!p.verified) expect(p.verified_by).toBeUndefined();
+      if (p.verified_by === 'brand_page_check') expect(p.check_note).toBeTruthy();
     }
+  });
+
+  it.runIf(present)('the demo product (Minimalist SPF 50, brand page, recorded second read) is usable as a brand-page check', () => {
+    const rows = (JSON.parse(readFileSync(join(dir, 'catalog.json'), 'utf8')) as unknown[]).map((r) => CatalogProduct.parse(r));
+    const spf50 = rows.find((p) => p.id === 'minimalist-spf-50-sunscreen');
+    expect(spf50).toMatchObject({ source_kind: 'brand_official', verified: true, status: 'verified', verified_by: 'brand_page_check' });
+    expect(spf50!.check_note).toMatch(/31\/31 INCI entries match/);
+    expect(rows.filter((p) => p.source_kind === 'retailer').every((p) => !p.verified)).toBe(true);
   });
 });

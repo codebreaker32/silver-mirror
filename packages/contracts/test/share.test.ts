@@ -8,6 +8,7 @@ import {
   parseFlipkartLocation,
   parseSharePayload,
   SHARE_FIXTURES,
+  titleCaseSlug,
 } from '../src';
 
 // Exact payloads from spikes/FINDINGS.md S1 (Samsung SM-A276B, 2026-11-01).
@@ -25,7 +26,7 @@ describe('Flipkart short link', () => {
 
   it('reads slug and pid from the Location header only', () => {
     const r = parseFlipkartLocation('https://dl.flipkart.com/dl/vaseline-gluta-hya-dewy-radiance/p/itmabc123?pid=MSCGZ9HYQ&lid=LSTX');
-    expect(r).toEqual({ slug: 'vaseline-gluta-hya-dewy-radiance', title: 'vaseline gluta hya dewy radiance', pid: 'MSCGZ9HYQ', itemId: 'itmabc123' });
+    expect(r).toEqual({ slug: 'vaseline-gluta-hya-dewy-radiance', title: 'Vaseline Gluta Hya Dewy Radiance', pid: 'MSCGZ9HYQ', itemId: 'itmabc123' });
     expect(parseFlipkartLocation(SHARE_FIXTURES.flipkartLocation)?.slug).toBe('vaseline-gluta-hya-dewy-radiance');
   });
 
@@ -59,6 +60,16 @@ describe('Nykaa share', () => {
     const p = parseSharePayload(text);
     expect(p).toMatchObject({ store: 'nykaa', title: NYKAA_TITLE, storeProductId: '1234567', needsRedirect: false });
     expect(nykaaTitle(nykaaFixture())).toBe(NYKAA_TITLE);
+  });
+});
+
+describe('titleCaseSlug (BUGS.md #3: raw lowercase Flipkart slug)', () => {
+  it('title-cases the real S1 slug and keeps SPF/PA shorthands and sizes', () => {
+    expect(parseFlipkartLocation(SHARE_FIXTURES.flipkartLocation)?.title).toBe('Vaseline Gluta Hya Dewy Radiance');
+    expect(titleCaseSlug('minimalist spf 50 pa sunscreen with niacinamide 50 g')).toBe('Minimalist SPF 50 PA Sunscreen with Niacinamide 50 g');
+    expect(titleCaseSlug('foxtale spf50 ultra matte 50ml')).toBe('Foxtale SPF50 Ultra Matte 50ml');
+    expect(titleCaseSlug('the derma co 1 percent vitamin c serum')).toBe('The Derma Co 1 Percent Vitamin C Serum');
+    expect(titleCaseSlug('CeraVe Moisturising Cream')).toBe('CeraVe Moisturising Cream');
   });
 });
 

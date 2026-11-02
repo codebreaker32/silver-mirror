@@ -48,13 +48,17 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
   stateRef.current = state;
   const keyRef = useRef(key);
   keyRef.current = key;
+  // Bumped by start/reset so a reply for an earlier share can't land on top of a newer one.
+  const gen = useRef(0);
 
   const resolve = useCallback(
     async (req: ResolveRequest, title: string | null, store: Store) => {
       last.current = { req, title, store };
+      const mine = gen.current;
       dispatch({ type: 'resolving', title, store });
       try {
         const res = await api.resolve(req);
+        if (gen.current !== mine) return;
         const step = stepFromResolve(res, engine, title);
         const k = keyRef.current;
         if (step.next === 'medicine') {
@@ -65,6 +69,7 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
           dispatch({ type: 'resolved', resolve: res, step });
         }
       } catch (e) {
+        if (gen.current !== mine) return;
         dispatch({ type: 'error', message: errorMessage(e), retry: 'start' });
       }
     },
@@ -73,6 +78,7 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
 
   const start = useCallback(
     (input: CheckInput) => {
+      gen.current += 1;
       if (input.kind === 'image') {
         dispatch({ type: 'crop', image: { uri: input.uri, width: input.width, height: input.height, mimeType: input.mimeType } });
         return;
@@ -89,11 +95,14 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
 
   const confirm = useCallback(
     async (candidate: ResolveCandidate) => {
+      const mine = gen.current;
       dispatch({ type: 'choose', candidate });
       try {
         const { product } = await api.product(candidate.catalogId);
+        if (gen.current !== mine) return;
         dispatch({ type: 'product', product, verdict: evaluateProduct(engine, keyRef.current, product) });
       } catch (e) {
+        if (gen.current !== mine) return;
         dispatch({ type: 'error', message: errorMessage(e), retry: 'start' });
       }
     },
@@ -121,11 +130,14 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
 
   const readLabel = useCallback(
     async (imageBase64: string) => {
+      const mine = gen.current;
       dispatch({ type: 'label', label: { step: 'reading' } });
       try {
         const res = await api.labelOcr({ imageBase64, mediaType: 'image/jpeg' });
+        if (gen.current !== mine) return;
         dispatch({ type: 'label', label: { step: 'review', chips: chipsFromOcr(res.tokens), unreadable: res.unreadableRegions }, ledger: res.ledger });
       } catch (e) {
+        if (gen.current !== mine) return;
         dispatch({ type: 'label', label: { step: 'error', message: errorMessage(e) } });
       }
     },
@@ -169,7 +181,11 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
     }
   }, [keySig, engine]);
 
-  const reset = useCallback(() => dispatch({ type: 'reset' }), []);
+  const reset = useCallback(() => {
+    gen.current += 1;
+    last.current = null;
+    dispatch({ type: 'reset' });
+  }, []);
 
   return { state, start, sendCrop, confirm, notThis, retry, readLabel, setChips, cancelLabel, runLabel, reset };
 }

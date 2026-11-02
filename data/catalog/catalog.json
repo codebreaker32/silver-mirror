@@ -1407,13 +1407,15 @@
     "shades": [],
     "source_url": "https://beardo.in/products/beardo-ultra-glow-serum-sunscreen-50g",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Beardo Ultra Glow Serum Sunscreen SPF 60 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified by an independent re-check against the official label image on beardo.in, 2026-11-01."
   },
   {
     "id": "beardo-max-sunscreen-cooling-gel-spf-60-pa-50g",
@@ -1513,13 +1515,15 @@
     "shades": [],
     "source_url": "https://beardo.in/products/beardo-max-sunscreen-cooling-gel-spf-60-50g",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Beardo Max Sunscreen Cooling Gel SPF 60 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified by an independent re-check against the official label image on beardo.in, 2026-11-01."
   },
   {
     "id": "beardo-ultraglow-face-cream-spf-30",
@@ -1643,13 +1647,15 @@
     "shades": [],
     "source_url": "https://beardo.in/products/beardo-ultraglow-face-cream-spf-30",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Beardo Ultraglow Face Cream SPF 30 60g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified by an independent re-check against the official label image on beardo.in, 2026-11-01."
   },
   {
     "id": "beardo-clarifying-gel-facewash-100ml",
@@ -1736,13 +1742,15 @@
     "shades": [],
     "source_url": "https://beardo.in/products/beardo-clarifying-gel-facewash-100ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Beardo Clarifying Gel Face Wash 2% Salicylic Acid 100ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified by an independent re-check against the official label image on beardo.in, 2026-11-01."
   },
   {
     "id": "beardo-ultraglow-facewash-for-men",
@@ -1850,13 +1858,15 @@
     "shades": [],
     "source_url": "https://beardo.in/products/beardo-ultraglow-facewash-for-men",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Beardo Ultra Glow Face Wash for Men 100g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified by an independent re-check against the official label image on beardo.in, 2026-11-01."
   },
   {
     "id": "beardo-ultra-glow-brightening-serum",
@@ -1967,13 +1977,15 @@
     "shades": [],
     "source_url": "https://beardo.in/products/beardo-ultra-glow-brightening-serum-30ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Beardo Ultra Glow Brightening Face Serum 15% Niacinamide Vitamin C 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified by an independent re-check against the official label image on beardo.in, 2026-11-01."
   },
   {
     "id": "bioderma-photoderm-aquafluide-spf50-claire",
@@ -2158,13 +2170,15 @@
     "shades": [],
     "source_url": "https://www.bioderma.ae/our-products/photoderm/aquafluide-spf50-claire",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Bioderma Photoderm Aquafluide SPF 50+ Claire tinted 40ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier: INCI re-checked verbatim against the official Bioderma UAE page (non-India official brand site); EAN matches the India page."
   },
   {
     "id": "bioderma-photoderm-cre-me-spf50",
@@ -2329,13 +2343,15 @@
     "shades": [],
     "source_url": "https://www.bioderma.ae/our-products/photoderm/creme-spf50",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Bioderma Photoderm Creme SPF 50+ invisible 40ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier: INCI re-checked verbatim against the official Bioderma UAE page (non-India official brand site); EAN matches the India page."
   },
   {
     "id": "bioderma-pigmentbio-daily-care-spf-50",
@@ -2527,13 +2543,15 @@
     "shades": [],
     "source_url": "https://www.bioderma-india.in/our-products/pigmentbio/daily-care-spf-50",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Bioderma Pigmentbio Daily Care SPF 50+ 40ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier: INCI re-checked verbatim against the official India page."
   },
   {
     "id": "bioderma-se-bium-hydra",
@@ -2653,13 +2671,15 @@
     "shades": [],
     "source_url": "https://www.bioderma-india.in/our-products/sebium/hydra",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Bioderma Sebium Hydra moisturizer 40ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier: INCI re-checked verbatim against the official India page."
   },
   {
     "id": "bioderma-se-bium-gel-moussant",
@@ -2754,13 +2774,15 @@
     "shades": [],
     "source_url": "https://www.bioderma.ae/our-products/sebium/gel-moussant",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Bioderma Sebium Gel Moussant face wash 100ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier: INCI re-checked verbatim against the official Bioderma UAE page (non-India official brand site); EAN matches the India page."
   },
   {
     "id": "bioderma-sensibio-gel-moussant",
@@ -2852,13 +2874,15 @@
     "shades": [],
     "source_url": "https://www.bioderma-india.in/our-products/sensibio/gel-moussant",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Bioderma Sensibio Gel Moussant cleanser"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier: INCI re-checked verbatim against the official India page."
   },
   {
     "id": "bioderma-pigmentbio-c-concentrate",
@@ -2993,13 +3017,15 @@
     "shades": [],
     "source_url": "https://www.bioderma-india.in/our-products/pigmentbio/c-concentrate",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Bioderma Pigmentbio C-Concentrate serum 15ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier: INCI re-checked verbatim against the official India page."
   },
   {
     "id": "bombay-shaving-company-charcoal-face-wash-100g",
@@ -3338,13 +3364,15 @@
     "shades": [],
     "source_url": "https://www.ceraveindia.com/ceramides-skin-care/cleansers/foaming-oil-free-cleanser",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "CeraVe Foaming Cleanser normal to oily skin"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier re-check 2026-11-01: the INCI matches the page verbatim (25 ingredients) and the GTIN matches the page."
   },
   {
     "id": "cerave-cerave-hydrating-cleanser-for-dry-skin-hydrating-facial-cleanser",
@@ -3459,13 +3487,15 @@
     "shades": [],
     "source_url": "https://www.ceraveindia.com/ceramides-skin-care/cleansers/hydrating-cleanser",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "CeraVe Hydrating Facial Cleanser normal to dry skin"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier re-check 2026-11-01: the INCI matches the page verbatim (24 ingredients), and the GTIN and rating match the page."
   },
   {
     "id": "cerave-cerave-blemish-control-cleanser-with-2-salicylic-acid",
@@ -3609,13 +3639,15 @@
     "shades": [],
     "source_url": "https://www.ceraveindia.com/ceramides-skin-care/cleansers/blemish-control-cleanser",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "CeraVe Blemish Control Cleanser 2% salicylic acid"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier re-check 2026-11-01: the INCI matches the page verbatim (31 ingredients) and the GTIN matches the page."
   },
   {
     "id": "cerave-cerave-am-facial-moisturising-lotion-with-spf-50",
@@ -3799,13 +3831,15 @@
     "shades": [],
     "source_url": "https://www.ceraveindia.com/ceramides-skin-care/moisturisers/facial-moisturising-lotion-with-spf-50",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "CeraVe AM Facial Moisturising Lotion SPF 50"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier re-check 2026-11-01: the INCI matches the page verbatim (40 ingredients) and the GTIN matches the page."
   },
   {
     "id": "cerave-cerave-moisturising-cream-for-dry-skin",
@@ -3920,13 +3954,15 @@
     "shades": [],
     "source_url": "https://www.ceraveindia.com/ceramides-skin-care/moisturisers/moisturising-cream",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "CeraVe Moisturising Cream dry skin"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier re-check 2026-11-01: the INCI matches the page verbatim (24 ingredients), and the GTIN and rating match the page."
   },
   {
     "id": "cerave-cerave-oil-control-moisturising-gel-cream-for-oily-skin",
@@ -4061,13 +4097,15 @@
     "shades": [],
     "source_url": "https://www.ceraveindia.com/ceramides-skin-care/moisturisers/oil-control-moisturizing-gel-cream",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "CeraVe Oil Control Moisturizing Gel Cream oily skin"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier re-check 2026-11-01: the INCI matches the page verbatim (28 ingredients, F.I.L. code removed) and the page's gtin13 is confirmed empty."
   },
   {
     "id": "cerave-cerave-resurfacing-retinol-serum",
@@ -4226,13 +4264,15 @@
     "shades": [],
     "source_url": "https://www.ceraveindia.com/ceramides-skin-care/facial-serums/resurfacing-retinol-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "CeraVe Resurfacing Retinol Serum 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verifier re-check 2026-11-01: the INCI matches the page verbatim (33 ingredients) and the GTIN matches the page."
   },
   {
     "id": "cetaphil-gentle-skin-cleanser",
@@ -4295,13 +4335,15 @@
     "shades": [],
     "source_url": "https://www.cetaphil.in/products/cleansers/gentle-skin-cleanser/8906005274105.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Cetaphil Gentle Skin Cleanser 118ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: INCI re-checked against the brand page and it matches."
   },
   {
     "id": "cetaphil-oily-skin-cleanser",
@@ -4401,13 +4443,15 @@
     "shades": [],
     "source_url": "https://www.cetaphil.in/products/cleansers/oily-skin-cleanser/8906005274090.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Cetaphil Oily Skin Cleanser 236ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: INCI re-checked against the brand page and it matches."
   },
   {
     "id": "cetaphil-cetaphil-pro-oil-control-foam-wash",
@@ -4502,13 +4546,15 @@
     "shades": [],
     "source_url": "https://www.cetaphil.in/products/cleansers/cetaphil-pro-oil-control-foam-wash/3499320011877.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Cetaphil Pro Oil Control Foam Wash 236ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: INCI re-checked against the brand page and it matches."
   },
   {
     "id": "cetaphil-cetaphil-moisturising-cream",
@@ -4632,13 +4678,15 @@
     "shades": [],
     "source_url": "https://www.cetaphil.in/moisturizers/cetaphil-moisturising-cream/8906005273436.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Cetaphil Moisturising Cream 85g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: INCI re-checked against the brand page and it matches."
   },
   {
     "id": "cetaphil-cetaphil-moisturising-lotion",
@@ -4725,13 +4773,15 @@
     "shades": [],
     "source_url": "https://www.cetaphil.in/products-1/cetaphil-moisturising-lotion/8906005271623.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Cetaphil Moisturising Lotion 236ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: INCI re-checked against the brand page and it matches."
   },
   {
     "id": "cetaphil-cetaphil-spf-50-sunscreen",
@@ -4852,13 +4902,15 @@
     "shades": [],
     "source_url": "https://www.cetaphil.in/sunscreens/cetaphil-spf-50%2B-sunscreen/3499320013192.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Cetaphil Sun SPF 50+ Light Gel 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: INCI re-checked against the brand page and it matches."
   },
   {
     "id": "cetaphil-cetaphil-bright-healthy-radiance-brightening-day-protection-cream-spf15",
@@ -4994,13 +5046,15 @@
     "shades": [],
     "source_url": "https://www.cetaphil.in/product-range/healthy-radiance/cetaphil-bright-healthy-radiance-brightening-day-protection-cream-spf15/3499320011549.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Cetaphil Bright Healthy Radiance Day Protection Cream SPF 15 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: INCI re-checked against the brand page and it matches."
   },
   {
     "id": "cetaphil-cetaphil-bright-healthy-radiance-perfecting-serum-with-antioxidant-c-an",
@@ -5108,13 +5162,15 @@
     "shades": [],
     "source_url": "https://www.cetaphil.in/product-categories/serums/cetaphil-bright-healthy-radiance-perfecting-serum-with-antioxidant-c-and-advanced-peptides/IN_3499320016056.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Cetaphil Bright Healthy Radiance Perfecting Serum 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: INCI re-checked against the brand page and it matches."
   },
   {
     "id": "cetaphil-cetaphil-soothing-and-comforting-cica-restoring-serum-30ml",
@@ -5254,13 +5310,15 @@
     "shades": [],
     "source_url": "https://www.cetaphil.in/products/product-categories/cetaphil-soothing-and-comforting-cica-restoring-serum---30ml/3499320017312.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Cetaphil CICA Restoring Serum 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: INCI re-checked against the brand page and it matches."
   },
   {
     "id": "dot-key-watermelon-sunscreen-spf-50-pa-with-new-age-uv-filters-for-oily-skin",
@@ -5397,13 +5455,15 @@
     "shades": [],
     "source_url": "https://www.dotandkey.com/products/watermelon-cooling-spf-50-face-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Dot & Key Watermelon Cooling Sunscreen SPF 50"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: a second fetch-tool pass of the rendered page numbered all 28 items, which match this list in order and spelling."
   },
   {
     "id": "dot-key-vitamin-c-e-sunscreen-spf-50-pa-with-new-age-uv-filters",
@@ -5512,13 +5572,15 @@
     "shades": [],
     "source_url": "https://www.dotandkey.com/products/dot-key-vitamin-c-e-spf-50-pa-face-sunscreen-for-glowing-skin-uv-protection-for-dull-skin",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Dot & Key Vitamin C + E Sunscreen SPF 50"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: the fetch tool reported an exact match against the page (22 items), and the title and MRP were reconfirmed."
   },
   {
     "id": "dot-key-strawberry-dew-tinted-sunscreen-spf-50-warm-ivory-pack-of-2",
@@ -5650,13 +5712,15 @@
     "shades": [],
     "source_url": "https://www.dotandkey.com/products/strawberry-dew-tinted-sunscreen-spf-50-warm-ivory-pack-of-2",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Dot & Key Strawberry Dew Tinted Sunscreen SPF 50"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: the fetch tool found all 28 items matching in order and spelling."
   },
   {
     "id": "dot-key-barrier-repair-moisturizer-hyaluronic-ceramides",
@@ -5796,13 +5860,15 @@
     "shades": [],
     "source_url": "https://www.dotandkey.com/products/dot-key-ceramides-hyaluronic-hydrating-face-cream-i-repairs-skin-barrier-intense-moisturization-sensitive-dry-skin-fragrance-free",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Dot & Key Barrier Repair Moisturizer Ceramides Hyaluronic"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: the fetch tool found all 28 items matching."
   },
   {
     "id": "dot-key-vitamin-c-e-super-bright-gel-moisturizer-for-face",
@@ -5946,13 +6012,15 @@
     "shades": [],
     "source_url": "https://www.dotandkey.com/products/vitamin-c-e-super-bright-moisturizer",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Dot & Key Vitamin C + E Super Bright Moisturizer"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: the fetch tool reported an exact match (31 items), and the H1 title, MRP and net quantity were reconfirmed."
   },
   {
     "id": "dot-key-cica-salicylic-acid-face-wash-for-oily-skin",
@@ -6068,13 +6136,15 @@
     "shades": [],
     "source_url": "https://www.dotandkey.com/products/cica-calming-blemish-clearing-face-wash",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Dot & Key Cica Salicylic Acid Face Wash"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: the fetch tool reported an exact match (24 items), and the H1 title was reconfirmed."
   },
   {
     "id": "dot-key-10-vitamin-c-e-face-serum-with-5-niacinamide",
@@ -6186,13 +6256,15 @@
     "shades": [],
     "source_url": "https://www.dotandkey.com/products/dot-key-10-vitamin-c-e-5-niacinamide-serum-for-glowing-skin-beginner-friendly",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Dot & Key 10% Vitamin C E Niacinamide Serum"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: all 23 items match."
   },
   {
     "id": "dot-key-strawberry-bright-10-niacinamide-face-serum",
@@ -6304,13 +6376,15 @@
     "shades": [],
     "source_url": "https://www.dotandkey.com/products/10-niacinamide-strawberry-brightening-face-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Dot & Key Strawberry Bright 10% Niacinamide Serum"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: the fetch tool reported an exact match, and a numbered pass confirmed 23 items."
   },
   {
     "id": "earth-rhythm-aqua-surge-face-moisturizer-spf-60-pa",
@@ -6447,13 +6521,15 @@
     "shades": [],
     "source_url": "https://earthrhythm.com/products/aqua-surge-r-face-moisturizer-spf-60-pa",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Earth Rhythm Aqua Surge Face Moisturizer SPF 60 PA++++ 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: INCI matched order and spelling against the official product JSON description; page live (title, Rs 469/549 confirmed); barcode 8904391104229 matches."
   },
   {
     "id": "earth-rhythm-ultra-defence-hybrid-sunscreen-fluid-spf-50-50ml",
@@ -6530,13 +6606,15 @@
     "shades": [],
     "source_url": "https://earthrhythm.com/products/ultra-defence-hybrid-sunscreen-fluid-spf-50",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Earth Rhythm Ultra Defence Hybrid Sunscreen Fluid SPF 50 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: page re-fetched; INCI panel matched order and spelling; barcode and Rs 399/499 confirmed."
   },
   {
     "id": "earth-rhythm-rosy-ritual-glow-tinted-sunscreen-in-vivo-tested-spf-50-pa-with-vit",
@@ -6629,13 +6707,15 @@
     "shades": [],
     "source_url": "https://earthrhythm.com/products/rosy-ritual-glow-tinted-sunscreen-spf-50-pa-with-vitamin-c-no-oxybenzone",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Earth Rhythm Rosy Ritual Glow Tinted Sunscreen SPF 50 Vitamin C"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: INCI panel matched order and spelling against the official page HTML; page live (title, Rs 419/599 confirmed); all 5 variant GTINs confirmed."
   },
   {
     "id": "earth-rhythm-aloe-dew-oil-acne-control-face-wash-with-salicylic-acid-100ml",
@@ -6727,13 +6807,15 @@
     "shades": [],
     "source_url": "https://earthrhythm.com/products/aloe-dew-oil-acne-control-face-wash-with-salicylic-acid-100ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Earth Rhythm Aloe Dew Oil Acne Control Face Wash Salicylic Acid 100ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: page re-fetched; INCI panel matched order and spelling; barcode and Rs 259/325 confirmed."
   },
   {
     "id": "earth-rhythm-cica-gel-100-ml",
@@ -6809,13 +6891,15 @@
     "shades": [],
     "source_url": "https://earthrhythm.com/products/cica-face-gel-1",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Earth Rhythm Cica Gel 100ml Centella"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: page re-fetched; INCI panel matched order and spelling; barcode and Rs 339/399 confirmed."
   },
   {
     "id": "earth-rhythm-moisture-punch-multi-molecular-hyaluronic-acid-serum",
@@ -6895,13 +6979,15 @@
     "shades": [],
     "source_url": "https://earthrhythm.com/products/moisture-punch-multi-molecular-hyaluronic-acid-serum-15ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Earth Rhythm Moisture Punch Hyaluronic Acid Serum 15ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "VERIFIED 2026-11-01: INCI matched order and spelling against the official page HTML (page states 'Net Weight: 15ml+30ml'); both variant GTINs and prices (Rs 299 / Rs 589) confirmed."
   },
   {
     "id": "fixderma-shadow-spf-30-gel-sunscreen",
@@ -7394,13 +7480,15 @@
     "shades": [],
     "source_url": "https://foxtale.in/products/matte-finish-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Foxtale Matte Finish Sunscreen SPF 50 oily skin"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified against the source page on 2026-11-01: name, SKU, price, and all 29 INCI entries match exactly in order."
   },
   {
     "id": "foxtale-glow-sunscreen-spf-50-in-vivo-tested-with-pa",
@@ -7512,13 +7600,15 @@
     "shades": [],
     "source_url": "https://foxtale.in/products/glow-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Foxtale Glow Sunscreen SPF 50 Vitamin C"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified against the source page on 2026-11-01: name, SKU, price, and all 23 INCI entries match exactly in order."
   },
   {
     "id": "foxtale-spf-50-tinted-fluid-sunscreen-with-niacinamide",
@@ -7671,13 +7761,15 @@
     "shades": [],
     "source_url": "https://foxtale.in/products/spf-50-tinted-fluid-sunscreen-with-niacinamide",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Foxtale Tinted Sunscreen SPF 50 Niacinamide"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified against the source page on 2026-11-01: name, price, and all 33 INCI entries match exactly in order."
   },
   {
     "id": "foxtale-oil-balancing-moisturizer-with-niacinamide-cica",
@@ -7821,13 +7913,15 @@
     "shades": [],
     "source_url": "https://foxtale.in/products/oil-balancing-moisturizer",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Foxtale Oil Balancing Moisturizer Niacinamide Cica"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified against the source page on 2026-11-01: name, SKU, price, and all 30 INCI entries match exactly in order."
   },
   {
     "id": "foxtale-hydrating-moisturizer-with-ceramide",
@@ -8003,13 +8097,15 @@
     "shades": [],
     "source_url": "https://foxtale.in/products/ceramide-supercream",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Foxtale Ceramide Supercream Hydrating Moisturizer 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified against the source page on 2026-11-01: name, SKU, price, and all 38 INCI entries match exactly in order."
   },
   {
     "id": "foxtale-hydrating-face-wash",
@@ -8129,13 +8225,15 @@
     "shades": [],
     "source_url": "https://foxtale.in/products/the-daily-duet-cleanser",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Foxtale Hydrating Face Wash dry skin 100ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified against the source page on 2026-11-01: name, SKU, price, and all 25 INCI entries match exactly in order."
   },
   {
     "id": "foxtale-oil-acne-control-face-wash",
@@ -8275,13 +8373,15 @@
     "shades": [],
     "source_url": "https://foxtale.in/products/true-clarity-oil-acne-control-face-wash",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Foxtale Salicylic Acid Face Wash Oil Acne Control"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified against the source page on 2026-11-01: name, SKU, price, and all 29 INCI entries match exactly in order."
   },
   {
     "id": "foxtale-vitamin-c-serum",
@@ -8364,13 +8464,15 @@
     "shades": [],
     "source_url": "https://foxtale.in/products/c-for-yourself-vitamin-c-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Foxtale Vitamin C Serum 15% 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified against the source page on 2026-11-01: name, SKU, price, and all 17 INCI entries match exactly in order."
   },
   {
     "id": "foxtale-12-niacinamide-clarifying-serum",
@@ -8453,13 +8555,15 @@
     "shades": [],
     "source_url": "https://foxtale.in/products/niacinamide-clarifying-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Foxtale 12% Niacinamide Serum Azelaic Acid"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified against the source page on 2026-11-01: name, SKU, price, and all 17 INCI entries match exactly in order."
   },
   {
     "id": "garnier-garnier-super-uv-invisible-serum-sunscreen",
@@ -10052,13 +10156,15 @@
     "shades": [],
     "source_url": "https://himalayawellness.in/products/himalaya-sun-protect-ultra-light-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Himalaya Sun Protect+ Ultra Light Sunscreen SPF 50 30g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an enlarged crop of the official image matched this list term for term, in the same order."
   },
   {
     "id": "himalaya-himalaya-sun-protect-ultra-light-sunscreen-light-tint",
@@ -10250,13 +10356,15 @@
     "shades": [],
     "source_url": "https://himalayawellness.in/products/himalaya-sun-protect-ultra-light-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Himalaya Sun Protect+ Ultra Light Tint Sunscreen SPF 50 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an independent enlarged crop of the official image matched this list in the same order."
   },
   {
     "id": "himalaya-hydra-plump-aloe-face-serum",
@@ -10439,13 +10547,15 @@
     "shades": [],
     "source_url": "https://himalayawellness.in/products/hydra-plump-aloe-face-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Himalaya Hydra Plump Aloe Vera Face Serum 15ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an enlarged crop of the official carton image matched this list term for term, in the same order."
   },
   {
     "id": "himalaya-nourishing-skin-cream",
@@ -10996,13 +11106,15 @@
     "shades": [],
     "source_url": "https://www.laroche-posay.co.in/anthelios/anthelios-uvmune-400-oil-control-gel-cream-spf50-plus",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "La Roche-Posay Anthelios UVMune 400 Oil Control Gel Cream SPF50+ 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product name and full INCI (34 entries) re-checked against the source page; exact match."
   },
   {
     "id": "la-roche-posay-anthelios-uvmune-400-oil-control-fluid-spf50",
@@ -11171,13 +11283,15 @@
     "shades": [],
     "source_url": "https://www.laroche-posay.co.in/anthelios/anthelios-uvmune-400-oil-control-fluid-spf50-plus",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "La Roche-Posay Anthelios UVMune 400 Oil Control Fluid SPF50+ 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product name and full INCI (36 entries) re-checked against the source page; exact match."
   },
   {
     "id": "la-roche-posay-anthelios-uvmune-400-anti-dark-spots-fluid-spf-50",
@@ -11321,13 +11435,15 @@
     "shades": [],
     "source_url": "https://www.laroche-posay.co.in/anthelios/anthelios-uvmune-400-anti-dark-spots-fluid-spf50plus",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "La Roche-Posay Anthelios UVMune 400 Anti Dark Spot Fluid SPF50+ Melasyl 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: full INCI (32 entries) re-checked against the source page; exact match."
   },
   {
     "id": "la-roche-posay-effaclar-purifying-foaming-gel",
@@ -11431,13 +11547,15 @@
     "shades": [],
     "source_url": "https://www.laroche-posay.co.in/effaclar/effaclar-purifying-foaming-gel",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "La Roche-Posay Effaclar Purifying Foaming Gel face wash 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product name and full INCI (20 entries) re-checked against the source page's visible block and JSON-LD; exact match."
   },
   {
     "id": "la-roche-posay-effaclar-duo-m",
@@ -11601,13 +11719,15 @@
     "shades": [],
     "source_url": "https://www.laroche-posay.co.in/effaclar/effaclar-duo-plus-m-anti-imperfections-triple-corrective-care-all-versions",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "La Roche-Posay Effaclar Duo+M gel cream 40ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product name and full INCI (35 entries) re-checked against the source page; exact match."
   },
   {
     "id": "la-roche-posay-mela-b3-serum",
@@ -11750,13 +11870,15 @@
     "shades": [],
     "source_url": "https://www.laroche-posay.co.in/mela-b3/mela-b3-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "La Roche-Posay Mela B3 Serum Melasyl Niacinamide 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product name and full INCI (32 entries) re-checked against the source page; exact match."
   },
   {
     "id": "la-roche-posay-mela-b3-spf30",
@@ -11937,13 +12059,15 @@
     "shades": [],
     "source_url": "https://www.laroche-posay.co.in/mela-b3/mela-b3-spf30",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "La Roche-Posay Mela B3 SPF30 anti dark spots moisturiser 40ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product name and full INCI (40 entries) re-checked against the source page; exact match."
   },
   {
     "id": "la-roche-posay-cicaplast-baume-b5",
@@ -12099,13 +12223,15 @@
     "shades": [],
     "source_url": "https://www.laroche-posay.co.in/cicaplast/cicaplast-baume-b5-plus",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "La Roche-Posay Cicaplast Baume B5+ 40ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product name and full INCI (33 entries) re-checked against the source page; exact match."
   },
   {
     "id": "lakme-lakme-fluid-spf-50-pa-in-vivo-tested-sunscreen-with-1-ceramide-niacinamide",
@@ -12318,13 +12444,15 @@
     "shades": [],
     "source_url": "https://www.lakmeindia.com/products/lakme-fluid-spf-50-pa-in-vivo-tested-sunscreen-with-1-ceramide-niacinamide-with-new-age-uv-filters-boosts-glow-reduces-dullness-dark-spots-for-all-skin-type-50ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lakme Fluid SPF 50 PA++++ 1% Ceramide Niacinamide sunscreen 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "The verifier checked this list again on 2026-11-01: 46 items, all matching in order and spelling."
   },
   {
     "id": "lakme-lakme-5-niacinamide-vit-c-water-light-sunscreen-gel-spf-50-pa-in-vivo-test",
@@ -12481,13 +12609,15 @@
     "shades": [],
     "source_url": "https://www.lakmeindia.com/products/lakme-5-niacinamide-vit-c-water-light-sunscreen-gel-spf-50-pa-in-vivo-tested-with-new-age-uv-filters-reduces-dullness-dark-spots-2x-glow-56g",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lakme 5% Niacinamide Vit C water light sunscreen gel SPF 50 56g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "The verifier checked this list again on 2026-11-01 and it matches."
   },
   {
     "id": "lakme-lakme-peach-milk-spf-30-2-pro-ceramide-lotion-uv-defence-barrier-repair-uv",
@@ -12652,13 +12782,15 @@
     "shades": [],
     "source_url": "https://www.lakmeindia.com/products/lakme-peach-milk-spf-30-2-pro-ceramide-lotion-uv-defence-barrier-repair-uva-uvb-protection-24h-hydration-200ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lakme Peach Milk SPF 30 2% Pro-Ceramide Lotion 200ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "The verifier checked this list again on 2026-11-01: 36 items, all matching."
   },
   {
     "id": "lakme-lakme-perfect-radiance-facewash-with-98-pure-niacinamide-for-glowing-skin",
@@ -12790,13 +12922,15 @@
     "shades": [],
     "source_url": "https://www.lakmeindia.com/products/lakme-perfect-radiance-facewash-with-98-pure-niacinamide-for-glowing-skin-100gm",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lakme Perfect Radiance Facewash Niacinamide 100g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "The verifier checked this list again on 2026-11-01 and it matches, including the source typo 'DÍSODIUM EDTA'."
   },
   {
     "id": "lotus-herbals-safe-sun-uv-screen-mattegel-sunscreen-spf-50-pa",
@@ -12889,13 +13023,15 @@
     "shades": [],
     "source_url": "https://www.lotus.in/products/safesun-uv-screen-matte-gel-sunscreen-spf-50",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lotus Herbals Safe Sun UV Screen Matte Gel SPF 50"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product exists, name matches, INCI re-read against the image and matches in order and spelling."
   },
   {
     "id": "lotus-herbals-safe-sun-ultrarx-tinted-sunscreen-spf-50",
@@ -13044,13 +13180,15 @@
     "shades": [],
     "source_url": "https://www.lotus.in/products/safe-sun-ultrarx-tinted-sunscreen-spf-50",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lotus Herbals Safe Sun UltraRx Tinted Sunscreen SPF 50"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product exists, name matches, INCI matches both the S1 and S2 images in order and spelling."
   },
   {
     "id": "lotus-herbals-dermabotanics-daily-uv-acne-sunscreen-spf-50-pa",
@@ -13199,13 +13337,15 @@
     "shades": [],
     "source_url": "https://www.lotus.in/products/daily-uv-acne-sunscreen-sspf-50-pa",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lotus DermaBotanics Daily UV Acne Sunscreen SPF 50"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product exists, name matches, INCI matches the image in order and spelling."
   },
   {
     "id": "lotus-herbals-dermabotanics-hydra-active-gel-moisturiser",
@@ -13289,13 +13429,15 @@
     "shades": [],
     "source_url": "https://www.lotus.in/products/lotus-derma-botanics-hydra-active-gel-moisturiser",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lotus DermaBotanics Hydra Active Gel Moisturiser"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product exists, name matches, INCI matches the image in order and spelling."
   },
   {
     "id": "lotus-herbals-whiteglow-3-in-1-deep-cleansing-skin-brightening-facial-foam",
@@ -13386,13 +13528,15 @@
     "shades": [],
     "source_url": "https://www.lotus.in/products/lotus-herbals-whiteglow-3-in-1-deep-cleansing-skin-brightening-facial-foam-100g",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lotus Herbals WhiteGlow 3 in 1 Deep Cleansing Facial Foam 100g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product exists, name matches, INCI matches the image in order and spelling."
   },
   {
     "id": "lotus-herbals-lotus-derma-botanics-sensi-care-cleanser",
@@ -13472,13 +13616,15 @@
     "shades": [],
     "source_url": "https://www.lotus.in/products/lotus-derma-botanics-sensi-care-cleanser",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lotus DermaBotanics Sensi Care Cleanser 125ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product exists, name matches, INCI matches the image in order and spelling."
   },
   {
     "id": "lotus-herbals-lotus-herbals-safe-sun-hydroactivated-sunscreen-spf-50-pa",
@@ -13643,13 +13789,15 @@
     "shades": [],
     "source_url": "https://www.lotus.in/products/lotus-herbals-safe-sun-hydroactivated-sunscreen-spf-50-pa",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Lotus Herbals Safe Sun HydroActivated Sunscreen SPF 50"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product exists, name matches, INCI sequence is consistent with the image, but the small print limits certainty."
   },
   {
     "id": "mamaearth-mamaearth-ultra-light-indian-sunscreen-spf-50-pa-with-turmeric-carrot",
@@ -14593,20 +14741,34 @@
     ],
     "claims": [
       {
+        "type": "for_dry_skin",
+        "quote": "Dry/Normal"
+      },
+      {
         "type": "for_sensitive_skin",
         "quote": "Sensitive"
+      },
+      {
+        "type": "for_oily_skin",
+        "quote": "Oily/Combination"
+      },
+      {
+        "type": "for_combination_skin",
+        "quote": "Oily/Combination"
       }
     ],
     "shades": [],
     "source_url": "https://beminimalist.co/products/multi-vitamin-spf-50",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Minimalist SPF 50 Sunscreen Multi-Vitamin 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently verified 2026-11-01: 31/31 INCI entries match the page in order and spelling."
   },
   {
     "id": "minimalist-light-fluid-spf-50-sunscreen",
@@ -14751,13 +14913,15 @@
     "shades": [],
     "source_url": "https://beminimalist.co/products/light-fluid-spf-50-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Minimalist Light Fluid SPF 50 Sunscreen 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently verified 2026-11-01: 31/31 INCI entries match the page in order and spelling."
   },
   {
     "id": "minimalist-spf-60-sunscreen",
@@ -14894,13 +15058,15 @@
     "shades": [],
     "source_url": "https://beminimalist.co/products/spf-60-silymarin",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Minimalist SPF 60 Sunscreen Silymarin"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently verified 2026-11-01: 29/29 INCI entries match the page in order and spelling."
   },
   {
     "id": "minimalist-salicylic-acid-lha-2-cleanser",
@@ -15043,17 +15209,28 @@
         "position": 33
       }
     ],
-    "claims": [],
+    "claims": [
+      {
+        "type": "for_oily_skin",
+        "quote": "Oily/Combination"
+      },
+      {
+        "type": "for_combination_skin",
+        "quote": "Oily/Combination"
+      }
+    ],
     "shades": [],
     "source_url": "https://beminimalist.co/products/salicylic-lha-2-cleanser",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Minimalist Salicylic Acid LHA 2% Face Wash Cleanser 100ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently verified 2026-11-01: 33/33 INCI entries match the page in order and spelling."
   },
   {
     "id": "minimalist-niacinamide-10-face-serum",
@@ -15165,13 +15342,15 @@
     "shades": [],
     "source_url": "https://beminimalist.co/products/niacinamide-10-with-matmarine",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Minimalist Niacinamide 10% Face Serum 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently verified 2026-11-01: 23/23 INCI entries match the page in order and spelling."
   },
   {
     "id": "minimalist-salicylic-acid-2-face-serum",
@@ -15295,13 +15474,15 @@
     "shades": [],
     "source_url": "https://beminimalist.co/products/salicylic-acid-2",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Minimalist Salicylic Acid 2% Face Serum 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently verified 2026-11-01: 25/25 INCI entries match the page in order and spelling."
   },
   {
     "id": "minimalist-vitamin-b5-10-moisturizer",
@@ -15403,19 +15584,25 @@
     "claims": [
       {
         "type": "for_oily_skin",
-        "quote": "Damaged Barrier, Oily & Dehydrated Skin"
+        "quote": "Oily/Combination"
+      },
+      {
+        "type": "for_combination_skin",
+        "quote": "Oily/Combination"
       }
     ],
     "shades": [],
     "source_url": "https://beminimalist.co/products/vitamin-b5-10-moisturizer",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Minimalist Vitamin B5 10% Moisturizer 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently verified 2026-11-01: 22/22 INCI entries match the page in order and spelling."
   },
   {
     "id": "neutrogena-neutrogena-ultra-sheer-dry-touch-sunscreen-spf-50",
@@ -16568,13 +16755,15 @@
     "shades": [],
     "source_url": "https://www.nivea.in/products/nivea-sun-uv-face-shine-control-cream-spf-50-60010510046520213.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Nivea Sun UV Face Shine Control SPF 50 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified 2026-11-01: the INCI matches nivea.in exactly (38 items, same order and spelling), and the name and GTIN match."
   },
   {
     "id": "nivea-nivea-sun-uv-face-sensitive-cream-spf-50",
@@ -16714,13 +16903,15 @@
     "shades": [],
     "source_url": "https://www.nivea.in/products/nivea-sun-uv-face-sensitive-cream-spf-50-60010510055120213.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Nivea Sun UV Face Sensitive SPF 50 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified 2026-11-01: the INCI matches nivea.in exactly (30 items), and the name and GTIN match."
   },
   {
     "id": "nivea-nivea-soft",
@@ -16864,13 +17055,15 @@
     "shades": [],
     "source_url": "https://www.nivea.in/products/nivea-soft-422040840213.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Nivea Soft light moisturising cream 200ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified 2026-11-01: the INCI matches nivea.in exactly (30 items), and the name and GTIN match."
   },
   {
     "id": "nivea-nivea-soft-daily-uv-spf-15-light-moisturising-cream",
@@ -16986,13 +17179,15 @@
     "shades": [],
     "source_url": "https://www.nivea.in/products/nivea-soft-daily-uv-spf-15-light-moisturising-cream-424672500213.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Nivea Soft Daily UV SPF 15 light moisturising cream 200ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified 2026-11-01: the INCI matches nivea.in exactly (24 items), and the name and GTIN match."
   },
   {
     "id": "nivea-nivea-derma-skin-clear-wash-gel",
@@ -17043,13 +17238,15 @@
     "shades": [],
     "source_url": "https://www.nivea.in/products/nivea-derma-skin-clear-wash-gel-40059009745630213.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Nivea Derma Skin Clear Wash Gel salicylic niacinamide 150ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Fetching that page directly returned 404, so the MRP should be re-checked. Independently re-verified 2026-11-01: the INCI matches nivea.in exactly (9 items), the name and GTIN match, and the page does mention 'Lactic Acid' in its descriptive text."
   },
   {
     "id": "nivea-nivea-men-deep-impact-face-wash",
@@ -17145,13 +17342,15 @@
     "shades": [],
     "source_url": "https://www.nivea.in/products/nivea-men-deep-impact-face-wash-40059005182170213.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Nivea Men Deep Impact Intense Clean face wash 100g charcoal"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified 2026-11-01: the INCI matches nivea.in exactly (19 items), and the name and GTIN match."
   },
   {
     "id": "nivea-nivea-men-dark-spot-reduction-creme",
@@ -17259,13 +17458,15 @@
     "shades": [],
     "source_url": "https://www.nivea.in/products/nivea-men-dark-spot-reduction-creme-422891970213.html",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Nivea Men Dark Spot Reduction Creme UV protect"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Independently re-verified 2026-11-01: the INCI matches nivea.in exactly (22 items), and the name and GTIN match."
   },
   {
     "id": "pilgrim-korean-rice-water-hydra-glow-gel-face-wash",
@@ -17385,13 +17586,15 @@
     "shades": [],
     "source_url": "https://discoverpilgrim.com/products/korean-rice-water-hydra-glow-facewash",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Pilgrim Korean Rice Water Hydra Glow Gel Face Wash"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified: re-read the official page's ingredient table on 2026-11-01. All 25 entries match in order and spelling."
   },
   {
     "id": "pilgrim-5-vitamin-c-complex-brightening-serum-sunscreen-spf-50-pa",
@@ -17687,13 +17890,15 @@
     "shades": [],
     "source_url": "https://discoverpilgrim.com/products/5-niacinamide-hydra-glow-gel-sunscreen-spf-50-pa",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Pilgrim 5% Niacinamide Hydra Glow Gel Sunscreen SPF 50"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified: re-read the official page's ingredient table on 2026-11-01. All 28 entries match in order and spelling; several are pre-mixed blends joined with '(and)'."
   },
   {
     "id": "pilgrim-korean-white-lotus-tinted-sunscreen-spf-50-pa",
@@ -19414,13 +19619,15 @@
     "shades": [],
     "source_url": "https://www.reequil.com/products/ultra-matte-dry-touch-sunscreen-gel-spf-50-pa",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Re'equil Ultra Matte Dry Touch Sunscreen SPF 50 PA++++ 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: all 22 INCI entries match the page in order and spelling."
   },
   {
     "id": "re-equil-oxybenzone-omc-free-sunscreen",
@@ -19565,13 +19772,15 @@
     "shades": [],
     "source_url": "https://www.reequil.com/products/oxybenzone-free-sunscreen-spf-50-for-oily-acne-prone-skin",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Re'equil Oxybenzone OMC Free Sunscreen SPF 50 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: all 31 INCI entries match the page in order and spelling."
   },
   {
     "id": "re-equil-sheer-zinc-tinted-sunscreen",
@@ -19692,13 +19901,15 @@
     "shades": [],
     "source_url": "https://www.reequil.com/products/zinc-mineral-tinted-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Re'equil Sheer Zinc Tinted Mineral Sunscreen SPF 50 PA+++"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: all 24 INCI entries match the page in order, spelling and capitalization."
   },
   {
     "id": "re-equil-oil-free-aquagel-sunscreen",
@@ -19879,13 +20090,15 @@
     "shades": [],
     "source_url": "https://www.reequil.com/products/oil-free-aqua-gel-sunscreen",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Re'equil Oil Free Aquagel Sunscreen SPF 50+ 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the raw page HTML: all 39 INCI entries match exactly in order and spelling."
   },
   {
     "id": "re-equil-oil-free-moisturiser",
@@ -20025,13 +20238,15 @@
     "shades": [],
     "source_url": "https://www.reequil.com/products/oil-free-moisturiser-for-normal-oily-combination-skin",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Re'equil Oil Free Moisturiser 100g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: all entries match the page in order and spelling (26 page entries, 27 after the split)."
   },
   {
     "id": "re-equil-ceramide-hyaluronic-acid-moisturiser",
@@ -20203,13 +20418,15 @@
     "shades": [],
     "source_url": "https://www.reequil.com/products/ceramide-hyaluronic-acid-moisturiser-for-normal-to-dry-skin",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Re'equil Ceramide Hyaluronic Acid Moisturiser 100g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: all 38 INCI entries match the page in order and spelling, typos included."
   },
   {
     "id": "re-equil-oil-control-face-wash",
@@ -20345,13 +20562,15 @@
     "shades": [],
     "source_url": "https://www.reequil.com/products/oil-control-anti-acne-face-wash",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Re'equil Oil Control Anti Acne Face Wash Zinc PCA 150ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: all 27 INCI entries match the page in order, spelling and capitalization."
   },
   {
     "id": "sebamed-multi-protect-sun-lotion-spf-50",
@@ -20512,13 +20731,15 @@
     "shades": [],
     "source_url": "https://sebamed.com/en/p/multi-protect-sun-lotion-spf-50/",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Sebamed Multi Protect Sun Lotion SPF 50+ 150ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "INCI, name, size and EAN re-verified against source on 2026-11-01."
   },
   {
     "id": "sebamed-multi-protect-sun-spray-spf-30",
@@ -20658,13 +20879,15 @@
     "shades": [],
     "source_url": "https://sebamed.com/en/p/multi-protect-sun-spray-spf-30/",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Sebamed Multi Protect Sun Spray SPF 30 150ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "INCI, name, size and EAN re-verified against source on 2026-11-01."
   },
   {
     "id": "sebamed-antibacterial-cleansing-foam",
@@ -20707,17 +20930,24 @@
         "position": 8
       }
     ],
-    "claims": [],
+    "claims": [
+      {
+        "type": "for_oily_skin",
+        "quote": "greasy/oily"
+      }
+    ],
     "shades": [],
     "source_url": "https://sebamed.com/en/p/antibacterial-cleansing-foam/",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Sebamed Clear Face Cleansing Foam 150ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "INCI, name, size and EAN re-verified against source on 2026-11-01."
   },
   {
     "id": "sebamed-liquid-face-body-wash",
@@ -20873,13 +21103,15 @@
     "shades": [],
     "source_url": "https://sebamed.com/en/p/liquid-face-body-wash/",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Sebamed Liquid Face and Body Wash 200ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "INCI, name, size and EAN re-verified against source on 2026-11-01."
   },
   {
     "id": "sebamed-care-gel",
@@ -20941,19 +21173,21 @@
     "claims": [
       {
         "type": "for_oily_skin",
-        "quote": "oily and acne-prone skin"
+        "quote": "greasy/oily"
       }
     ],
     "shades": [],
     "source_url": "https://sebamed.com/en/p/care-gel-1/",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Sebamed Clear Face Care Gel 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "INCI, name, size and EAN re-verified against source on 2026-11-01."
   },
   {
     "id": "sebamed-moisturizing-cream",
@@ -21033,13 +21267,15 @@
     "shades": [],
     "source_url": "https://sebamed.com/en/p/moisturizing-cream/",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Sebamed Moisturizing Cream 50ml normal to dry skin"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "INCI, name, size and EAN re-verified against source on 2026-11-01."
   },
   {
     "id": "sebamed-vital-serum",
@@ -21139,13 +21375,15 @@
     "shades": [],
     "source_url": "https://sebamed.com/en/p/vital-serum/",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Sebamed PRO Vital Serum 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "INCI, name, size and EAN re-verified against source on 2026-11-01."
   },
   {
     "id": "simple-simple-mattifying-uv-fluid-40ml",
@@ -21250,13 +21488,15 @@
     "shades": [],
     "source_url": "https://www.simpleskincare.in/products/simple-mattifying-uv-fluid-spf-50-pa-with-niacinamide-sunscreen-for-oily-sensitive-skin",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Simple Mattifying UV Fluid SPF 50 niacinamide 40ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an independent check re-downloaded the pack ingredient image linked from this product's Shopify listing (SKU 46127), and the INCI matches it verbatim (order and spelling)."
   },
   {
     "id": "simple-simple-hydrating-uv-fluid-40ml",
@@ -21405,13 +21645,15 @@
     "shades": [],
     "source_url": "https://www.simpleskincare.in/products/simple-hydrating-uv-fluid",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Simple Hydrating UV Fluid SPF 50 40ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an independent check re-downloaded the pack ingredient image linked from this product's Shopify listing (SKU 46126), and the INCI matches it verbatim (order and spelling)."
   },
   {
     "id": "simple-simple-kind-to-skin-refreshing-facial-wash-250ml",
@@ -21482,13 +21724,15 @@
     "shades": [],
     "source_url": "https://www.simpleskincare.in/products/simple-kind-to-skin-refreshing-facial-wash-250ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Simple Kind to Skin Refreshing Facial Wash"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an independent check re-downloaded the pack ingredient image linked from this product's Shopify listing (SKU 46129), and the INCI matches it verbatim (order and spelling)."
   },
   {
     "id": "simple-simple-hydrating-light-moisturiser-50ml",
@@ -21624,13 +21868,15 @@
     "shades": [],
     "source_url": "https://www.simpleskincare.in/products/simple-hydrating-light-moisturiser-50ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Simple Hydrating Light Moisturiser 50ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an independent check re-downloaded the pack ingredient image linked from this product's Shopify listing (SKU 46125), and the INCI matches it verbatim (order and spelling)."
   },
   {
     "id": "simple-simple-water-boost-hydrating-gel-cre-me-50g",
@@ -21758,13 +22004,15 @@
     "shades": [],
     "source_url": "https://www.simpleskincare.in/products/simple-water-boost-hydrating-gel-creme-50-g",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Simple Water Boost Hydrating Gel Creme 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an independent check re-downloaded the pack ingredient image linked from this product's Shopify listing (SKU 27638), and the INCI matches it verbatim (order and spelling)."
   },
   {
     "id": "simple-3-hyaluronic-acid-vit-b5-serum",
@@ -21868,13 +22116,15 @@
     "shades": [],
     "source_url": "https://www.simpleskincare.in/products/simple-booster-serum-3-hyaluronic-acid-b5-30ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Simple 3% Hyaluronic Acid B5 booster serum 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an independent check re-fetched the brand page. The INCI matches the comma-separated Ingredients text verbatim (21 entries; order and spelling match, including the lowercase 'Citric acid')."
   },
   {
     "id": "simple-simple-2-hyaluronic-acid-polyglutamic-acid-booster-serum",
@@ -21942,13 +22192,15 @@
     "shades": [],
     "source_url": "https://www.simpleskincare.in/products/simple-2-hyaluronic-acid-polyglutamic-acid-booster-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Simple 2% Hyaluronic Acid Polyglutamic Acid booster serum"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: an independent check re-fetched the brand page. The INCI matches the Ingredients section verbatim (12 entries; order and spelling match)."
   },
   {
     "id": "the-derma-co-1-hyaluronic-sunscreen-oil-free-matte-gel-for-oily-acne-prone-skin",
@@ -22129,13 +22381,15 @@
     "shades": [],
     "source_url": "https://thedermaco.com/products/1-hyaluronic-sunscreen-oil-free-gel-50-g",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Derma Co 1% Hyaluronic Sunscreen Oil-Free Gel SPF 50 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the official site's 'Ingredients List' tab: identical in order and spelling."
   },
   {
     "id": "the-derma-co-1-hyaluronic-tinted-sunscreen-gel-for-broad-spectrum-protection-50g",
@@ -22196,13 +22450,15 @@
     "shades": [],
     "source_url": "https://thedermaco.com/products/1-hyaluronic-tinted-sunscreen-gel-for-broad-spectrum-protection-50g",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Derma Co 1% Hyaluronic Tinted Sunscreen Gel SPF 60 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the official site's 'Ingredients List' tab: identical in order and spelling (trailing period removed)."
   },
   {
     "id": "the-derma-co-2-sali-cinamide-anti-acne-face-wash-with-2-salicylic-acid-2-niacina",
@@ -22334,13 +22590,15 @@
     "shades": [],
     "source_url": "https://thedermaco.com/products/sali-cinamide-anti-acne-face-wash-with-2-salicylic-acid-2-niacinamide-100ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Derma Co 2% Sali-Cinamide Anti-Acne Face Wash 80ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the official site's 'Ingredients List' tab: identical in order and spelling."
   },
   {
     "id": "the-derma-co-1-salicylic-acid-oil-free-moisturizer-for-face-with-oat-extract-50g",
@@ -22460,13 +22718,15 @@
     "shades": [],
     "source_url": "https://thedermaco.com/products/1-salicylic-acid-oil-free-moisturizer-for-face-with-oat-extract-50g",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Derma Co 1% Salicylic Acid Oil-Free Moisturizer Oat Extract 50g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the official site's 'Ingredients List' tab: identical in order and spelling (trailing period removed)."
   },
   {
     "id": "the-derma-co-10-niacinamide-face-serum-with-2-zinc-pca-30ml",
@@ -22554,13 +22814,15 @@
     "shades": [],
     "source_url": "https://thedermaco.com/products/10-percent-niacinamide-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Derma Co 10% Niacinamide Serum 2% Zinc PCA 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the official site's 'Ingredients List' tab: identical in order and spelling."
   },
   {
     "id": "the-derma-co-2-salicylic-acid-face-serum-for-active-acne-30ml",
@@ -22668,13 +22930,15 @@
     "shades": [],
     "source_url": "https://thedermaco.com/products/2-salicylic-acid-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Derma Co 2% Salicylic Acid Serum 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the official site's 'Ingredients List' tab: identical in order and spelling."
   },
   {
     "id": "the-man-company-charcoal-face-wash-for-men-charcoal-niacinamide-deep-cleansing-o",
@@ -22908,13 +23172,15 @@
     "shades": [],
     "source_url": "https://www.themancompany.com/products/vitamin-c-face-wash-vitamin-c-niacinamide-100ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Man Company Vitamin C Face Wash 100ml niacinamide"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product page re-checked item by item; all 22 items match in order and spelling."
   },
   {
     "id": "the-man-company-anti-acne-face-wash-100ml",
@@ -23002,13 +23268,15 @@
     "shades": [],
     "source_url": "https://www.themancompany.com/products/anti-acne-face-wash-100ml",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Man Company Anti Acne Face Wash salicylic acid 100ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: the raw page HTML was re-checked against the list and it matches exactly."
   },
   {
     "id": "the-man-company-moisturising-sunscreen-gel-for-men-spf50-pa",
@@ -23128,13 +23396,15 @@
     "shades": [],
     "source_url": "https://www.themancompany.com/products/moisturising-sunscreen-gel-for-men-spf50-pa-broad-spectrum-uva-uvb-protection-for-oily-dry-normal-skin",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Man Company Sunscreen Gel SPF 50 for men"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: the raw page HTML was re-checked against the list and it matches exactly."
   },
   {
     "id": "the-man-company-moisturising-gel-cream-lightweight-intense-hydration",
@@ -23217,13 +23487,15 @@
     "shades": [],
     "source_url": "https://www.themancompany.com/products/moisturising-gel-cream-lightweight-intense-hydration",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Man Company Moisturising Gel Cream men"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product page re-checked item by item; all 17 items match in order and spelling, and MRP Rs 349 / sale Rs 299 were confirmed."
   },
   {
     "id": "the-man-company-10-niacinamide-face-serum-dark-spots-reduction",
@@ -23318,13 +23590,15 @@
     "shades": [],
     "source_url": "https://www.themancompany.com/products/10-niacinamide-serum",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "The Man Company 10% Niacinamide Face Serum 30ml"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01: product page re-checked item by item; all 20 items match in order and spelling, and 30 ml / MRP Rs 499 were confirmed."
   },
   {
     "id": "ustraa-aqua-light-sunscreen-spf-50-pa-with-vitamin-c-30-g",
@@ -23417,13 +23691,15 @@
     "shades": [],
     "source_url": "https://www.ustraa.com/aqua-light-sunscreen-spf50/p",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Ustraa Aqua Light Sunscreen SPF 50 PA++++ 30g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the back-of-pack image in the official ustraa.com product gallery. The INCI was transcribed from the back-of-tube image (https://d1ebdenobygu5e.cloudfront.net/media/catalog/product/3/0/30_june_2026_aqua_light_sunscreen_7_.jpg) and matches it word for word."
   },
   {
     "id": "ustraa-sunscreen-for-men-spf-50-100g",
@@ -23739,13 +24015,15 @@
     "shades": [],
     "source_url": "https://www.ustraa.com/face-wash-neem-charcoal-200-g/p",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Ustraa Face Wash Neem Charcoal Acne Control 200g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the back-of-pack image in the official ustraa.com product gallery. The INCI comes from the back-of-tube render (https://d1ebdenobygu5e.cloudfront.net/media/catalog/product/p/r/product2.2_1.jpg) and matches it word for word."
   },
   {
     "id": "ustraa-face-wash-oily-skin-checks-acne-oil-control-200g",
@@ -23837,12 +24115,14 @@
     "shades": [],
     "source_url": "https://www.ustraa.com/face-wash-oily-skin-checks-acne-oil-control-200g/p",
     "fetched_at": "2026-11-01T00:00:00.000Z",
-    "verified": false,
-    "status": "unverified",
+    "verified": true,
+    "status": "verified",
     "aliases": [
       "Ustraa Face Wash Oily Skin Checks Acne Oil Control 200g"
     ],
     "claims_source": "marketed_for_phrase_match",
-    "source_kind": "brand_official"
+    "source_kind": "brand_official",
+    "verified_by": "brand_page_check",
+    "check_note": "Verified 2026-11-01 against the back-of-pack image in the official ustraa.com product gallery. The INCI comes from the back-of-tube photo on this page (https://d1ebdenobygu5e.cloudfront.net/media/catalog/product/b/a/back_60.jpg) and matches it word for word. 'Phenoxyethanol Triethylene Glycol' has no comma on the pack."
   }
 ]

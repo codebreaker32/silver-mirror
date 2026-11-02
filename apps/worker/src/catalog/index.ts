@@ -1,4 +1,4 @@
-import { CatalogProduct, type ProductSummary, type Store } from '@skinkey/contracts';
+import { CatalogProduct, titleCaseSlug, type ProductSummary, type Store } from '@skinkey/contracts';
 import generated from '../generated/catalog.json';
 
 export interface Catalog {
@@ -35,6 +35,7 @@ export const toSummary = (p: CatalogProduct): ProductSummary => ({
   category: p.category,
   tinted: p.tinted,
   verified: p.verified,
+  ...(p.verified && p.verified_by ? { verified_by: p.verified_by } : {}),
   status: p.status,
   shadeCount: p.shades.length,
 });
@@ -117,6 +118,82 @@ export const searchCatalog = (
 
 export const MATCH = { match: 0.85, gap: 0.1, candidate: 0.45 } as const;
 
+// ---- SKU disqualifiers (BUGS.md #4) --------------------------------------------------------------------------
+// A name overlap is not enough: "Minimalist SPF 30 Body Sunscreen" must never be offered "Minimalist SPF 50 Sunscreen".
+// These checks are deterministic and only ever remove candidates; with none left, the check runs on the name only.
+
+type SkuType = 'sun' | 'cleanser' | 'serum' | 'toner' | 'moisturiser' | 'lip';
+const TYPE_WORDS: ReadonlyArray<[SkuType, RegExp]> = [
+  ['sun', /\b(sunscreen|sunblock|sun ?screen|sun (cream|lotion|gel|fluid|serum|spray|stick|milk)|uv (fluid|gel|serum|essence))\b/],
+  ['cleanser', /\b(face ?wash|cleanser|cleansing|wash)\b/],
+  ['serum', /\bserum\b/],
+  ['toner', /\btoner\b/],
+  ['moisturiser', /\b(moisturi[sz]er|moisturi[sz]ing (cream|lotion|gel)|day cream|night cream|gel cream|face cream)\b/],
+  ['lip', /\blips?\b/],
+];
+const CATEGORY_TYPE: Partial<Record<CatalogProduct['category'], SkuType>> = {
+  sunscreen: 'sun',
+  tinted_spf: 'sun',
+  moisturiser: 'moisturiser',
+  tinted_moisturiser: 'moisturiser',
+  cleanser: 'cleanser',
+  serum: 'serum',
+  toner: 'toner',
+  lip_tint: 'lip',
+  tinted_lip_balm: 'lip',
+};
+const typesIn = (norm: string) => new Set(TYPE_WORDS.filter(([, re]) => re.test(norm)).map(([t]) => t));
+const spfsIn = (norm: string) => new Set([...norm.matchAll(/\bspf ?(\d+)\b/g)].map((m) => Number(m[1])));
+const has = (norm: string, word: RegExp) => word.test(norm);
+
+/**
+ * Why `product` cannot be the listing titled `title`, or null if nothing rules it out:
+ * - SPF: both name an SPF and they differ (SPF 30 vs SPF 50/60);
+ * - body vs face: the listing is a body product and the row is not (or the other way round);
+ * - product type: the listing names a type (sunscreen, face wash, serum, toner, moisturiser, lip) the row is not.
+ */
+export const skuConflict = (title: string, product: CatalogProduct): string | null => {
+  const q = normaliseText(title);
+  const name = normaliseText(`${product.brand} ${product.name} ${product.size ?? ''}`);
+  const qSpf = spfsIn(q);
+  const pSpf = spfsIn(name);
+  if (typeof product.spf === 'number') pSpf.add(Math.round(product.spf));
+  if (qSpf.size && pSpf.size && ![...qSpf].some((n) => pSpf.has(n))) return `SPF ${[...qSpf].join('/')} vs SPF ${[...pSpf].join('/')}`;
+  const qBody = has(q, /\bbody\b/);
+  const pBody = has(name, /\bbody\b/);
+  if (qBody && !pBody && !has(q, /\bface\b/)) return 'body product vs face product';
+  if (pBody && !qBody) return 'face product vs body product';
+  const qTypes = typesIn(q);
+  if (qTypes.size) {
+    const pTypes = typesIn(name);
+    const cat = CATEGORY_TYPE[product.category];
+    if (cat) pTypes.add(cat);
+    if (typeof product.spf === 'number') pTypes.add('sun');
+    if (![...qTypes].some((t) => pTypes.has(t))) return `${[...qTypes].join('/')} vs ${[...pTypes].join('/') || product.category}`;
+  }
+  return null;
+};
+
+export interface SkuMatch {
+  /** Hits that survived the disqualifiers, best first. */
+  hits: ScoredProduct[];
+  /** Hits at or above the candidate threshold that a disqualifier removed. */
+  ruledOut: Array<ScoredProduct & { why: string }>;
+}
+
+/** Catalogue search for a shared title with the SKU disqualifiers applied. */
+export const matchSku = (catalog: Catalog, title: string, limit = 5): SkuMatch => {
+  const hits: ScoredProduct[] = [];
+  const ruledOut: SkuMatch['ruledOut'] = [];
+  for (const h of searchCatalog(catalog, title, { limit: 20 })) {
+    const why = skuConflict(title, h.product);
+    if (why) {
+      if (h.score >= MATCH.candidate) ruledOut.push({ ...h, why });
+    } else if (hits.length < limit) hits.push(h);
+  }
+  return { hits, ruledOut };
+};
+
 export const detectStore = (text = '', url = ''): Store => {
   const s = `${url} ${text}`.toLowerCase();
   if (/flipkart\.com|fkrt\.it|\bflipkart\b/.test(s)) return 'flipkart';
@@ -135,7 +212,7 @@ export const titleFromUrl = (url: string): string | null => {
     const at = parts.findIndex((p) => p === 'p' || p === 'dp');
     const slug = at > 0 ? parts[at - 1] : u.hostname.includes('nykaa') ? parts[0] : undefined;
     if (!slug || slug.length < 6) return null;
-    return decodeURIComponent(slug).replace(/[-_]+/g, ' ').trim();
+    return titleCaseSlug(decodeURIComponent(slug).replace(/[-_]+/g, ' ').trim());
   } catch {
     return null;
   }

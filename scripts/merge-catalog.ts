@@ -1,6 +1,8 @@
 // Merges data/catalog/brands/*.json into data/catalog/catalog.json and writes data/catalog/AUDIT.md.
 // Run: npm run catalog:merge   (bundled with esbuild so the workspace TS sources resolve; no network)
 // Human verification ticks live in data/catalog/verified.json (array of catalogue ids, brand_official rows only).
+// brand_official rows whose notes record a passed second-read check of the brand page are usable too, labelled
+// verified_by "brand_page_check" (never "human"). See recordedBrandPageCheck in packages/rules/src/catalogMerge.ts.
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { CatalogProduct } from '@skinkey/contracts';
@@ -28,7 +30,10 @@ for (const r of result.rows) CatalogProduct.parse(r); // fail loudly rather than
 
 writeFileSync(join(dir, 'catalog.json'), JSON.stringify(result.rows, null, 2) + '\n');
 writeFileSync(join(dir, 'AUDIT.md'), auditMd(result, files));
-console.log(`catalog: ${result.rows.length} rows kept, ${result.dropped.length} dropped, ${result.rows.filter((r) => r.verified).length} verified -> data/catalog/catalog.json`);
+const tier = (by: string) => result.rows.filter((r) => r.verified_by === by).length;
+console.log(
+  `catalog: ${result.rows.length} rows kept, ${result.dropped.length} dropped, ${result.rows.filter((r) => r.verified).length} usable (${tier('human')} human-checked, ${tier('brand_page_check')} checked against brand page) -> data/catalog/catalog.json`,
+);
 
 function auditMd(res: MergeResult, input: typeof files): string {
   const total = input.reduce((n, f) => n + f.rows.length, 0);
@@ -52,7 +57,10 @@ function auditMd(res: MergeResult, input: typeof files): string {
     '',
     `- Kept: **${res.rows.length}** rows in \`catalog.json\`.`,
     `- Dropped: **${res.dropped.length}** rows (${Object.entries(byReason).map(([k, v]) => `${k}: ${v}`).join(', ') || 'none'}).`,
-    `- Verified (human tick in \`verified.json\`, brand page only): **${res.rows.filter((r) => r.verified).length}**. Only verified rows are used for verdicts and better matches; the rest stay \`unverified\`.`,
+    `- Usable for verdicts and better matches: **${res.rows.filter((r) => r.verified).length}** (brand page rows only; the rest stay \`unverified\`).`,
+    `  - Human-checked (tick in \`verified.json\`): **${res.rows.filter((r) => r.verified_by === 'human').length}**.`,
+    `  - Checked against the brand page (the row's notes record a second, independent read that matched the INCI verbatim): **${res.rows.filter((r) => r.verified_by === 'brand_page_check').length}**.`,
+    `  - Brand page, no recorded second check (stay unverified): **${res.unchecked.length}**.`,
     `- Source of kept rows: ${Object.entries(byKind).map(([k, v]) => `${k} ${v}`).join(', ')}.`,
     `- Categories: ${Object.entries(byCat).sort().map(([k, v]) => `${k} ${v}`).join(', ')}.`,
     '',
@@ -60,17 +68,19 @@ function auditMd(res: MergeResult, input: typeof files): string {
     '',
     '1. Every row needs an https `source_url`. The INCI list is copied verbatim from that page (or a back-of-pack image on it), never written from a title.',
     '2. Rows marked `inci_complete: false` are dropped as unverifiable (Ayurvedic "Key Ingredients" panels, "Base Q.S.", lists that summarise several ingredients in one phrase).',
-    '3. Third-party ingredient decoders (for example CureSkin) are dropped. Retailer listings are kept as `unverified` but can never be ticked: a tick only counts on a `brand_official` row.',
+    '3. Third-party ingredient decoders (for example CureSkin) are dropped. Retailer listings are kept as `unverified` and are never usable, whatever their notes say: a tick or a recorded check only counts on a `brand_official` row.',
     '4. Categories outside the ruleset (beard oils and similar) are dropped.',
     '5. Duplicates: first row wins on the same id (brand + name) or the same GTIN. Rows from the same brand with identical INCI lists are listed below for a human to check, not merged (they can be pack variants).',
+    '6. Tiers: a human tick makes a `brand_official` row `verified_by: human`. Without one, the row is `verified_by: brand_page_check` only if its notes record a second, independent read of the brand page or its pack image that matched (the sentence is copied to `check_note`). Notes that doubt the list itself (data conflict, may lag the formula, check the pack before relying on it) keep the row unverified. Nothing is re-fetched or inferred.',
     '',
     '## Per brand',
     '',
-    '| Brand | Kept | Brand page | Retailer | Dropped |',
-    '|---|---:|---:|---:|---:|',
+    '| Brand | Kept | Brand page | Usable (human / brand-page check) | Retailer | Dropped |',
+    '|---|---:|---:|---:|---:|---:|',
     ...brands.map((b) => {
       const kept = res.rows.filter((r) => r.brand === b);
-      return `| ${b} | ${kept.length} | ${kept.filter((r) => r.source_kind === 'brand_official').length} | ${kept.filter((r) => r.source_kind === 'retailer').length} | ${res.dropped.filter((d) => d.brand === b).length} |`;
+      const by = (t: string) => kept.filter((r) => r.verified_by === t).length;
+      return `| ${b} | ${kept.length} | ${kept.filter((r) => r.source_kind === 'brand_official').length} | ${by('human')} / ${by('brand_page_check')} | ${kept.filter((r) => r.source_kind === 'retailer').length} | ${res.dropped.filter((d) => d.brand === b).length} |`;
     }),
     '',
     '## Dropped rows',
@@ -80,6 +90,10 @@ function auditMd(res: MergeResult, input: typeof files): string {
     '## Retailer-sourced rows (need a pack or brand-page check before any tick)',
     '',
     ...(res.rows.some((r) => r.source_kind === 'retailer') ? res.rows.filter((r) => r.source_kind === 'retailer').map((r) => `- \`${r.id}\` (${r.source_url})`) : ['None.']),
+    '',
+    '## Brand-page rows with no recorded second check (unverified until a person ticks them)',
+    '',
+    ...(res.unchecked.length ? res.unchecked.map((i) => `- \`${i}\``) : ['None.']),
     '',
     '## Same brand, identical INCI (check whether these are one product)',
     '',

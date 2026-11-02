@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { LabelOcrRequest, parseFlipkartLocation, parseSharePayload, ResolveRequest, type LedgerEntry, type ResolveCandidate, type ResolveResponse } from '@skinkey/contracts';
 import { Hono } from 'hono';
-import { detectStore, extractTitle, inciVocabulary, MATCH, searchCatalog, toSummary, type Catalog } from '../catalog';
+import { detectStore, extractTitle, inciVocabulary, MATCH, matchSku, skuConflict, toSummary, type Catalog } from '../catalog';
 import { ClaudeOutputError, ClaudeRefusalError, type StructuredResult } from '../claude/client';
 import { runX4, toOcrTokens } from '../claude/labelOcr';
 import { runX3, sanitiseCandidates } from '../claude/resolve';
@@ -52,12 +52,15 @@ export const resolve = async (ctx: AppCtx, req: ResolveRequest, ip: string, limi
   const entries: LedgerEntry[] = [];
   const ledger = () => summarise(ctx.mode === 'mock', entries, []);
 
-  const hits = title ? searchCatalog(catalog, title, { limit: 5 }) : [];
+  // SKU disqualifiers (conflicting SPF, body vs face, product type) remove look-alikes before anything is offered.
+  const { hits, ruledOut } = title ? matchSku(catalog, title) : { hits: [], ruledOut: [] };
   const top = hits[0];
   if (top && top.score >= MATCH.match && (hits[1]?.score ?? 0) <= top.score - MATCH.gap)
     return { ...base, outcome: 'match', resolver: 'catalog', extractedTitle: title, isSkincare: true, candidates: [candidate(catalog, top.product.id, top.score, 'Name match in our catalogue')], ledger: ledger() };
   const catalogCandidates = hits.filter((h) => h.score >= MATCH.candidate).slice(0, 3).map((h) => candidate(catalog, h.product.id, h.score, 'Close name match in our catalogue'));
-  if (req.source === 'sample' || (!req.imageBase64 && catalogCandidates.length > 0))
+  // The catalogue knows this line and every close SKU conflicts with the listing: check on the name only (no Claude).
+  const allRuledOut = !req.imageBase64 && catalogCandidates.length === 0 && ruledOut.length > 0;
+  if (req.source === 'sample' || allRuledOut || (!req.imageBase64 && catalogCandidates.length > 0))
     return { ...base, outcome: catalogCandidates.length ? 'candidates' : 'unknown', resolver: 'catalog', extractedTitle: title, isSkincare: true, candidates: catalogCandidates, ledger: ledger() };
   if (!title && !req.imageBase64)
     return { ...base, outcome: 'unknown', resolver: 'catalog', extractedTitle: null, isSkincare: true, candidates: [], ledger: ledger() };
@@ -74,8 +77,11 @@ export const resolve = async (ctx: AppCtx, req: ResolveRequest, ip: string, limi
     });
     entries.push(claudeEntry('claude_resolve', r, started, 0));
     if (!claude.mocked) await recordGlobal(ctx.store, ctx.mode === 'mock', { entry: entries[0] });
-    const picks = sanitiseCandidates(r.data, catalog).map((p) => candidate(catalog, p.catalogId, p.confidence, p.why));
     const extractedTitle = title ?? r.data.extracted_title;
+    // Claude proposes ids only; the same deterministic disqualifiers apply to its picks.
+    const picks = sanitiseCandidates(r.data, catalog)
+      .filter((p) => !extractedTitle || !skuConflict(extractedTitle, catalog.byId.get(p.catalogId)!))
+      .map((p) => candidate(catalog, p.catalogId, p.confidence, p.why));
     if (!r.data.is_skincare) return { ...base, outcome: 'not_skincare', resolver: 'claude', extractedTitle, isSkincare: false, candidates: [], ledger: ledger() };
     return { ...base, outcome: picks.length ? 'candidates' : 'unknown', resolver: 'claude', extractedTitle, isSkincare: true, candidates: picks, ledger: ledger() };
   } catch (e) {

@@ -36,15 +36,25 @@ const strings = (v: unknown) => (Array.isArray(v) ? v.filter((x): x is string =>
 
 /**
  * One adapter for every consumer (Worker bundle, audit, web): CatalogProduct rows pass through; raw brand rows
- * (data/catalog/brands/*.json) become CatalogProduct with a stable id. Only a human tick makes a row verified:
- * `verified: true` on the row, or its id in data/catalog/verified.json. A row without a complete INCI list never is.
+ * (data/catalog/brands/*.json) become CatalogProduct with a stable id. A raw row is verified only by a human tick:
+ * `verified: true` on the row, or its id in data/catalog/verified.json. Merged rows (catalog.json) keep their tier
+ * (`verified_by`: human or brand_page_check, see mergeCatalog). A row without a complete INCI list never is.
  */
 export function toCatalogProduct(raw: unknown, verifiedIds: ReadonlySet<string> = new Set()): BuiltCatalogRow | null {
   const parsed = CatalogProduct.safeParse(raw);
   if (parsed.success) {
     const p = parsed.data;
     const verified = (p.verified || verifiedIds.has(p.id)) && p.status !== 'unverifiable' && p.inci.length > 0;
-    return { ...p, verified, status: verified ? 'verified' : p.status === 'verified' ? 'unverified' : p.status, claims_source: 'catalog' };
+    const { verified_by, check_note, ...rest } = p;
+    const by = verified ? (verifiedIds.has(p.id) ? 'human' : verified_by) : undefined;
+    return {
+      ...rest,
+      verified,
+      ...(by ? { verified_by: by } : {}),
+      ...(by === 'brand_page_check' && check_note ? { check_note } : {}),
+      status: verified ? 'verified' : p.status === 'verified' ? 'unverified' : p.status,
+      claims_source: 'catalog',
+    };
   }
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as Record<string, unknown>;

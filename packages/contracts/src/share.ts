@@ -80,6 +80,31 @@ const slugWords = (slug: string) => {
   }
 };
 
+const UPPER = new Set(['spf', 'pa', 'uv', 'uva', 'uvb', 'aha', 'bha', 'pha', 'lha', 'bb', 'cc', 'hd', 'ph', 'c', 'e', 'b3', 'b5', 'k', 'q10', 'ii', 'iii']);
+const LOWER = new Set(['and', 'or', 'with', 'for', 'of', 'the', 'in', 'on', 'to', 'a', 'an', 'by', 'from', 'at']);
+const UNITS = new Set(['g', 'gm', 'gms', 'mg', 'kg', 'ml', 'l', 'oz']);
+
+/**
+ * Title-cases a store URL slug's words for display (spikes/FINDINGS.md S1: Flipkart's redirect gives only a slug,
+ * e.g. "vaseline gluta hya dewy radiance" → "Vaseline Gluta Hya Dewy Radiance"). Never adds or removes words.
+ * Ingredient and SPF shorthands get capitals ("spf 50" → "SPF 50"); sizes keep their units ("50ml" stays "50ml");
+ * words the store already cased are left alone.
+ */
+export const titleCaseSlug = (words: string): string =>
+  words
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w, i) => {
+      const lower = w.toLowerCase();
+      if (w !== lower) return w; // already cased by the store (Amazon slugs: "CeraVe-Moisturising-Cream")
+      if (/^spf\d+\+?$/.test(lower)) return lower.toUpperCase();
+      if (/^\d/.test(w) || UNITS.has(lower)) return lower;
+      if (UPPER.has(lower)) return lower.toUpperCase();
+      if (i > 0 && LOWER.has(lower)) return lower;
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join(' ');
+
 /** Nykaa /<slug>/p/<id> → product id. */
 export const nykaaProductId = (url: string | null): string | null => {
   if (!url || storeOfUrl(url) !== 'nykaa') return null;
@@ -110,8 +135,9 @@ export const parseFlipkartLocation = (location: string | null | undefined): Flip
   if (at < 1) return null;
   const slug = parts[at - 1]!;
   if (slug === 'dl' || slug.length < 4) return null;
-  const title = slugWords(slug);
-  if (title.length < 4) return null;
+  const words = slugWords(slug);
+  if (words.length < 4) return null;
+  const title = titleCaseSlug(words);
   return { slug, title, pid: u.searchParams.get('pid'), itemId: parts[at + 1] ?? null };
 };
 

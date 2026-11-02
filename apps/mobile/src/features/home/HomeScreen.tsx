@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useShareIntentContext } from 'expo-share-intent';
 import { COPY } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { useKey } from '@/features/key';
@@ -17,17 +16,12 @@ export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { key, isDemo } = useKey();
-  const { hasShareIntent } = useShareIntentContext();
   const [tip, setTip] = useState(false);
   const paste = useRef<PasteInputRef>(null);
 
   useEffect(() => {
     shareTipDismissed().then((d) => setTip(!d));
   }, []);
-
-  useEffect(() => {
-    if (hasShareIntent) router.push('/check');
-  }, [hasShareIntent, router]);
 
   return (
     <ScrollView

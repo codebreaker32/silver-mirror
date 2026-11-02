@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { ShareIntentProvider } from 'expo-share-intent';
 import { useEffect } from 'react';
 import { fontAssets } from '@skinkey/design';
+import { ShareRouter } from '@/features/share';
 import { ThemeProvider } from '@/theme/ThemeProvider';
 
 SplashScreen.preventAutoHideAsync();
@@ -29,6 +30,7 @@ export default function RootLayout() {
           <Stack.Screen name="settings" />
           <Stack.Screen name="how" />
         </Stack>
+        <ShareRouter />
       </ThemeProvider>
     </ShareIntentProvider>
   );

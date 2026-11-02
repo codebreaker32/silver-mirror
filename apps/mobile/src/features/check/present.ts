@@ -122,8 +122,10 @@ function productRow(v: Verdict, ctx: PresentContext): LedgerRow {
   const src = v.provenance.inciSource;
   const url = v.provenance.inciSourceUrl ?? ctx.product?.source_url;
   if (src === 'catalog_verified') {
-    const value = 'Ingredient list from the SkinKey catalogue';
-    const sub = 'Checked by hand against the brand or retailer page';
+    const value = COPY.catalogSource;
+    // Honest tier from the catalogue row: only a person's tick is ever called human-checked.
+    const by = ctx.product?.verified_by;
+    const sub = by === 'human' ? COPY.catalogHumanChecked : by === 'brand_page_check' ? COPY.catalogBrandPageChecked : 'Copied from the brand page';
     const links = url ? [{ label: 'Ingredient list source', url }] : [];
     return { key: 'PRODUCT', value, sub, links, a11y: `Product: ${value}. ${sub}` };
   }

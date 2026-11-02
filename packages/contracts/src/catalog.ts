@@ -30,6 +30,16 @@ export type SourceKind = z.infer<typeof SourceKind>;
 export const RowStatus = z.enum(['verified', 'unverified', 'unverifiable']);
 export type RowStatus = z.infer<typeof RowStatus>;
 
+/**
+ * How a usable (verified) brand_official row was checked. Honest tiering, never inferred from a title:
+ * - `human`: a person ticked it in data/catalog/verified.json (or the row carries `verified: true`).
+ * - `brand_page_check`: the row's own notes record a second, independent read of the brand page (or its pack image)
+ *   that matched the copied INCI verbatim. Shown as "Checked against the brand page", never as human-checked.
+ * Retailer and third-party rows never get either.
+ */
+export const VerifiedBy = z.enum(['human', 'brand_page_check']);
+export type VerifiedBy = z.infer<typeof VerifiedBy>;
+
 /** On-disk catalogue row (data/catalog/catalog.json and brands/*.json). Snake case follows X1. */
 export const CatalogProduct = z.object({
   id: z.string(),
@@ -48,6 +58,9 @@ export const CatalogProduct = z.object({
   fetched_at: z.string(),
   screenshot_path: z.string().optional(),
   verified: z.boolean(),
+  verified_by: VerifiedBy.optional(),
+  /** The sentence in the row's notes that records the brand-page check (brand_page_check rows only). */
+  check_note: z.string().optional(),
   status: RowStatus,
   in_frame: z.boolean().optional(),
   aliases: z.array(z.string()).optional(),
@@ -62,6 +75,7 @@ export const ProductSummary = CatalogProduct.pick({
   category: true,
   tinted: true,
   verified: true,
+  verified_by: true,
   status: true,
 }).extend({ shadeCount: z.number().int() });
 export type ProductSummary = z.infer<typeof ProductSummary>;
