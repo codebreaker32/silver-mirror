@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { Image } from 'expo-image';
 import { Text, View } from 'react-native';
 import { COPY, type Band, type KeyProfile } from '@skinkey/contracts';
 import { deriveSkinType } from '@skinkey/rules';
@@ -10,6 +9,7 @@ import { BandMeter } from '@/features/home/BandMeter';
 import { BandList } from './BandChip';
 import { focusTilesFor } from './focus';
 import { CONCERNS, CONCERN_LABEL, SELF_REPORTED_TAG, formatScanDate, glyphFromKey, zoneCaption, type GlyphZone } from './model';
+import { ReadingPortrait } from './ReadingPortrait';
 import { ZoneGlyph } from './ZoneGlyph';
 
 interface Props {
@@ -26,7 +26,6 @@ interface Props {
   onWithdraw?: () => void;
 }
 
-const BACKDROP = require('../../../assets/images/welcome-backdrop.jpg');
 const BAND_RANK: Record<Band, number> = { High: 0, Medium: 1, Low: 2 };
 
 /** Small "Demo reading" chip inside the hero (13/18 medium, ink on the well tone). */
@@ -42,7 +41,8 @@ function DemoChip({ label }: { label: string }) {
 }
 
 /**
- * The reading, expanded (experience reference "Your Reading"): a liquid-silver plate (no face), the drop glyph with the
+ * The reading, expanded (experience reference "Your Reading"): a licensed portrait plate with a dot grid over the cheek
+ * (ReadingPortrait; a stock photo, never the user's face), the drop glyph with the
  * serif "<type> skin" and its source line, the band rows (highest first) whose bars fill on first display, the focus tiles from the published rules, the band
  * list with meters and "Feels wrong? Edit", the photo-deleted stamp, the zone glyph, the accuracy note once, then the
  * neutral delete actions. Bands only, never numbers.
@@ -74,15 +74,13 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
         accessibilityLabel={[`Skin-type reading: ${skinType}`, demo ? COPY.reading.demo : null, line].filter(Boolean).join('. ')}
         style={{ gap: theme.space[4] }}
       >
-        <View style={{ height: 168, borderRadius: 16, overflow: 'hidden', backgroundColor: theme.colors.bgSunken }}>
-          <Image source={BACKDROP} contentFit="cover" cachePolicy="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
-          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(247,246,250,0.35)' }} />
+        <ReadingPortrait height={196}>
           {demo ? (
             <View style={{ position: 'absolute', left: theme.space[3], top: theme.space[3] }}>
               <DemoChip label={COPY.reading.demo} />
             </View>
           ) : null}
-        </View>
+        </ReadingPortrait>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[3] }}>
           <Icon name="droplet" size={28} color={theme.colors.text} />
           <View style={{ flex: 1, gap: 2 }}>

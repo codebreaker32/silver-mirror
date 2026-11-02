@@ -1,12 +1,11 @@
-import type { ImageSourcePropType } from 'react-native';
-
 /**
  * Licensed stock photos (Unsplash License, see docs/CREDITS.md). They are illustrative: a product photo stands for the
  * category, never for the exact product, so every use says so (accessibility label, and a caption on the product hero).
  */
 export type PhotoKey = 'serum' | 'moisturiser' | 'cleanser' | 'sunscreen' | 'tinted_spf' | 'portrait' | 'texture';
 
-export const PHOTOS: Record<PhotoKey, ImageSourcePropType> = {
+/** Metro asset ids: valid for both react-native Image and expo-image. */
+export const PHOTOS: Record<PhotoKey, number> = {
   serum: require('../../assets/images/photos/serum.jpg'),
   moisturiser: require('../../assets/images/photos/moisturiser.jpg'),
   cleanser: require('../../assets/images/photos/cleanser.jpg'),
