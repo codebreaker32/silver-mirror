@@ -37,10 +37,6 @@ export const SCENE_META: SceneMeta[] = [
         "t": 1655
       },
       {
-        "w": "<break time=\"250ms\"/>",
-        "t": 2115
-      },
-      {
         "w": "Will",
         "t": 2952
       },
@@ -98,10 +94,6 @@ export const SCENE_META: SceneMeta[] = [
         "t": 1584
       },
       {
-        "w": "<break time=\"250ms\"/>",
-        "t": 1975
-      },
-      {
         "w": "The",
         "t": 2777
       },
@@ -124,10 +116,6 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "you",
         "t": 4096
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 4356
       },
       {
         "w": "And",
@@ -195,10 +183,6 @@ export const SCENE_META: SceneMeta[] = [
         "t": 2311
       },
       {
-        "w": "<break time=\"250ms\"/>",
-        "t": 2995
-      },
-      {
         "w": "And",
         "t": 3857
       },
@@ -226,7 +210,7 @@ export const SCENE_META: SceneMeta[] = [
   },
   {
     "id": "scan",
-    "seconds": 16.64,
+    "seconds": 21.14,
     "voiceSeconds": 15.744,
     "voice": "voiceover/scan.mp3",
     "clip": null,
@@ -262,10 +246,6 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "scan",
         "t": 2557
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 3104
       },
       {
         "w": "YouCam",
@@ -312,10 +292,6 @@ export const SCENE_META: SceneMeta[] = [
         "t": 8227
       },
       {
-        "w": "<break time=\"250ms\"/>",
-        "t": 8863
-      },
-      {
         "w": "Then",
         "t": 9674
       },
@@ -342,10 +318,6 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "YouCam",
         "t": 11322
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 12296
       },
       {
         "w": "Only",
@@ -387,7 +359,7 @@ export const SCENE_META: SceneMeta[] = [
   },
   {
     "id": "share",
-    "seconds": 9.42,
+    "seconds": 12.42,
     "voiceSeconds": 8.52,
     "voice": "voiceover/share.mp3",
     "clip": null,
@@ -421,10 +393,6 @@ export const SCENE_META: SceneMeta[] = [
         "t": 1695
       },
       {
-        "w": "<break time=\"250ms\"/>",
-        "t": 2038
-      },
-      {
         "w": "Nykaa",
         "t": 2897
       },
@@ -441,20 +409,12 @@ export const SCENE_META: SceneMeta[] = [
         "t": 4352
       },
       {
-        "w": "<break time=\"250ms\"/>",
-        "t": 5034
-      },
-      {
         "w": "Tap",
         "t": 5894
       },
       {
         "w": "share",
         "t": 6209
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 6676
       },
       {
         "w": "Pick",
@@ -472,7 +432,7 @@ export const SCENE_META: SceneMeta[] = [
   },
   {
     "id": "verdict",
-    "seconds": 13.43,
+    "seconds": 17.43,
     "voiceSeconds": 12.528,
     "voice": "voiceover/verdict.mp3",
     "clip": null,
@@ -500,10 +460,6 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "Unknown",
         "t": 2727
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 3240
       },
       {
         "w": "Every",
@@ -546,10 +502,6 @@ export const SCENE_META: SceneMeta[] = [
         "t": 7135
       },
       {
-        "w": "<break time=\"250ms\"/>",
-        "t": 7560
-      },
-      {
         "w": "Claude",
         "t": 8366
       },
@@ -568,10 +520,6 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "listing",
         "t": 9584
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 10188
       },
       {
         "w": "Our",
@@ -593,7 +541,7 @@ export const SCENE_META: SceneMeta[] = [
   },
   {
     "id": "tryon",
-    "seconds": 8.72,
+    "seconds": 12.72,
     "voiceSeconds": 7.824,
     "voice": "voiceover/tryon.mp3",
     "clip": null,
@@ -605,10 +553,6 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "sunscreen",
         "t": 587
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 1349
       },
       {
         "w": "Try",
@@ -659,10 +603,6 @@ export const SCENE_META: SceneMeta[] = [
         "t": 5343
       },
       {
-        "w": "<break time=\"250ms\"/>",
-        "t": 5937
-      },
-      {
         "w": "Nothing",
         "t": 6815
       },
@@ -678,7 +618,7 @@ export const SCENE_META: SceneMeta[] = [
   },
   {
     "id": "tour",
-    "seconds": 10.64,
+    "seconds": 14.64,
     "voiceSeconds": 9.744,
     "voice": "voiceover/tour.mp3",
     "clip": null,
@@ -702,10 +642,6 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "words",
         "t": 1402
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 1958
       },
       {
         "w": "A",
@@ -742,10 +678,6 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "you",
         "t": 5026
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 5329
       },
       {
         "w": "And",
@@ -798,101 +730,8 @@ export const SCENE_META: SceneMeta[] = [
     ]
   },
   {
-    "id": "proof",
-    "seconds": 9.64,
-    "voiceSeconds": 8.736,
-    "voice": "voiceover/proof.mp3",
-    "clip": null,
-    "marks": [
-      {
-        "w": "And",
-        "t": 187
-      },
-      {
-        "w": "it",
-        "t": 306
-      },
-      {
-        "w": "shows",
-        "t": 486
-      },
-      {
-        "w": "its",
-        "t": 809
-      },
-      {
-        "w": "working",
-        "t": 1025
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 1613
-      },
-      {
-        "w": "Real",
-        "t": 2429
-      },
-      {
-        "w": "task",
-        "t": 2681
-      },
-      {
-        "w": "IDs",
-        "t": 3207
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 3783
-      },
-      {
-        "w": "Real",
-        "t": 4611
-      },
-      {
-        "w": "deletes",
-        "t": 4898
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 5534
-      },
-      {
-        "w": "Rules",
-        "t": 6362
-      },
-      {
-        "w": "frozen",
-        "t": 6649
-      },
-      {
-        "w": "in",
-        "t": 7128
-      },
-      {
-        "w": "git",
-        "t": 7260
-      },
-      {
-        "w": "before",
-        "t": 7427
-      },
-      {
-        "w": "our",
-        "t": 7810
-      },
-      {
-        "w": "audit",
-        "t": 8026
-      },
-      {
-        "w": "ran",
-        "t": 8337
-      }
-    ]
-  },
-  {
     "id": "close",
-    "seconds": 7.4,
+    "seconds": 8.4,
     "voiceSeconds": 6.504,
     "voice": "voiceover/close.mp3",
     "clip": null,
@@ -904,10 +743,6 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "Mirror",
         "t": 550
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 1104
       },
       {
         "w": "Check",
@@ -926,20 +761,12 @@ export const SCENE_META: SceneMeta[] = [
         "t": 2707
       },
       {
-        "w": "<break time=\"250ms\"/>",
-        "t": 3058
-      },
-      {
         "w": "Mirror",
         "t": 3879
       },
       {
         "w": "mirror",
         "t": 4391
-      },
-      {
-        "w": "<break time=\"250ms\"/>",
-        "t": 4921
       },
       {
         "w": "Now",

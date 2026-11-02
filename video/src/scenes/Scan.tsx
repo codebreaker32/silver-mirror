@@ -1,9 +1,9 @@
 import React from "react";
-import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { useVideoConfig } from "remotion";
 import { COLORS } from "../constants";
 import { SANS } from "../fonts";
-import { Ground, Kinetic, Label, Phone, PhotoCard, Pill, Stamp, clamp, usePop } from "../components";
-import { cue, meta } from "../timing";
+import { Ground, Kinetic, Label, LiveTag, Phone, Pill, Stamp, usePop } from "../components";
+import { cue } from "../timing";
 
 const ID = "scan";
 const METRICS = ["Oiliness", "Pores", "Moisture", "Redness"];
@@ -22,38 +22,23 @@ const Bars: React.FC<{ n: number }> = ({ n }) => (
 );
 
 export const Scan: React.FC = () => {
-  const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const m = meta(ID);
   const scanAt = cue(ID, "scan", fps, 1, 60);
   const readsAt = cue(ID, "youcams", fps, 1, 110);
   const delAt = cue(ID, "deleted", fps, 1, 300);
   const onlyAt = cue(ID, "only", fps, 1, 360);
   const phone = usePop(4);
-  const portrait = usePop(scanAt - 6);
-  const sweep = interpolate((frame - scanAt) % 50, [0, 50], [0, 100]);
-  const scanning = frame >= scanAt && frame < delAt;
-  const gone = interpolate(frame, [delAt, delAt + 18], [1, 0.12], clamp);
   const readsLabel = usePop(readsAt);
   const onlyLabel = usePop(onlyAt);
   return (
     <Ground>
       <div style={{ position: "absolute", left: 150, top: 80, opacity: phone.opacity, transform: `translateY(${phone.y}px)` }}>
-        <Phone clip={m.clip} still="stills/scan.png" height={920} />
+        <Phone footage={ID} height={920} />
       </div>
       <div style={{ position: "absolute", left: 720, top: 90, width: 1080 }}>
         <Kinetic scene={ID} text="One consented scan." size={92} after={scanAt - 30} />
       </div>
-      {/* portrait under analysis */}
-      <div style={{ position: "absolute", left: 720, top: 260, opacity: portrait.opacity, transform: `scale(${portrait.scale})` }}>
-        <div style={{ position: "relative", opacity: gone, filter: frame >= delAt ? "grayscale(1) blur(2px)" : "none" }}>
-          <PhotoCard src="photos/portrait.jpg" w={232} h={290} radius={20} />
-          {scanning ? (
-            <div style={{ position: "absolute", left: 0, top: `${sweep}%`, width: 232, height: 4, background: COLORS.accent, boxShadow: `0 0 18px 4px rgba(58,53,70,0.35)` }} />
-          ) : null}
-        </div>
-      </div>
-      <div style={{ position: "absolute", left: 1000, top: 262 }}>
+      <div style={{ position: "absolute", left: 720, top: 262 }}>
         <Label style={{ opacity: readsLabel.opacity, marginBottom: 22 }}>YouCam HD Skin Analysis reads</Label>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, auto)", gap: 18, justifyContent: "start" }}>
           {METRICS.map((x) => (
@@ -63,7 +48,7 @@ export const Scan: React.FC = () => {
           ))}
         </div>
       </div>
-      <Stamp at={delAt + 2} tilt={-3} style={{ position: "absolute", left: 1000, top: 545 }}>
+      <Stamp at={delAt + 2} tilt={-3} style={{ position: "absolute", left: 720, top: 545 }}>
         <Pill size={34} bg={COLORS.accent} color={COLORS.panel}>Photo deleted from YouCam</Pill>
       </Stamp>
       <div style={{ position: "absolute", left: 720, top: 720, width: 1100 }}>
@@ -81,6 +66,7 @@ export const Scan: React.FC = () => {
           ))}
         </div>
       </div>
+      <LiveTag at={12} style={{ position: "absolute", left: 720, top: 960 }}>Live YouCam HD Skin Analysis. Photo deleted after.</LiveTag>
     </Ground>
   );
 };

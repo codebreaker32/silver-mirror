@@ -3,7 +3,8 @@ import { useVideoConfig } from "remotion";
 import { COLORS } from "../constants";
 import { SANS, SERIF } from "../fonts";
 import { Dot, Ground, Phone, PhotoCard, usePop } from "../components";
-import { cue, meta } from "../timing";
+import { cue } from "../timing";
+import { FOOTAGE } from "../footage";
 
 const ID = "tour";
 
@@ -45,18 +46,17 @@ const Slot: React.FC<{ at: number; caption: string; children: React.ReactNode }>
 
 export const Tour: React.FC = () => {
   const { fps } = useVideoConfig();
-  const m = meta(ID);
   const a = cue(ID, "reading", fps, 1, 6);
   const b = cue(ID, "routine", fps, 1, 80);
   const c = cue(ID, "shop", fps, 1, 200);
   const H1 = 800;
   const captions = ["Your reading, in plain words", "A routine of products that fit you", "A shop of verified products"];
-  if (m.clip) {
+  if (FOOTAGE[ID]) {
     // Recording mode: one phone plays the tour, captions land beside it.
     return (
       <Ground>
         <div style={{ position: "absolute", left: 220, top: 70 }}>
-          <Phone clip={m.clip} still="stills/tour_reading.png" height={940} />
+          <Phone footage={ID} height={940} />
         </div>
         <div style={{ position: "absolute", left: 860, top: 220, display: "flex", flexDirection: "column", gap: 70 }}>
           {[a, b, c].map((at, i) => (

@@ -36,6 +36,5 @@ export const NARRATION: Record<string, string> = {
   verdict: "Seconds later: Fits, Caution, or Unknown. Every reason names the ingredient, your reading, and the rule. Claude only reads the listing. Our published rules decide.",
   tryon: "Tinted sunscreen? Try the real shades on your own face, with YouCam Makeup try-on. Nothing is saved.",
   tour: "Your reading, in plain words. A routine built only from products that fit you. And a shop of verified products, each one checked against your skin.",
-  proof: "And it shows its working. Real task IDs. Real deletes. Rules frozen in git before our audit ran.",
   close: "Silver Mirror. Check before you buy. Mirror, mirror. Now you know.",
 };

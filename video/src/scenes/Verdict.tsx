@@ -3,7 +3,7 @@ import { useVideoConfig } from "remotion";
 import { COLORS } from "../constants";
 import { SANS, SERIF } from "../fonts";
 import { Dot, Ground, Kinetic, Label, Phone, Stamp, VERDICTS, usePop } from "../components";
-import { cue, meta } from "../timing";
+import { cue } from "../timing";
 
 const ID = "verdict";
 
@@ -19,7 +19,6 @@ const Part: React.FC<{ at: number; k: string; v: string }> = ({ at, k, v }) => {
 
 export const Verdict: React.FC = () => {
   const { fps } = useVideoConfig();
-  const m = meta(ID);
   const phone = usePop(4);
   const label = usePop(2);
   const reasonAt = cue(ID, "every", fps, 1, 130);
@@ -29,7 +28,7 @@ export const Verdict: React.FC = () => {
   return (
     <Ground>
       <div style={{ position: "absolute", left: 150, top: 80, opacity: phone.opacity, transform: `translateY(${phone.y}px)` }}>
-        <Phone clip={m.clip} still="stills/verdict.png" height={920} />
+        <Phone footage={ID} height={920} />
       </div>
       <div style={{ position: "absolute", left: 720, top: 96 }}>
         <Label style={{ opacity: label.opacity, fontSize: 32 }}>Seconds later</Label>
@@ -78,9 +77,9 @@ export const Verdict: React.FC = () => {
       >
         <div style={{ fontFamily: SERIF, fontSize: 44, color: COLORS.text, marginBottom: 26 }}>Every reason names</div>
         <div style={{ display: "flex", gap: 30 }}>
-          <Part at={cue(ID, "ingredient", fps, 1, 170)} k="The ingredient" v="Niacinamide" />
-          <Part at={cue(ID, "reading", fps, 1, 190)} k="Your reading" v="Oiliness · High" />
-          <Part at={cue(ID, "rule", fps, 1, 210)} k="The rule" v="SUP-2" />
+          <Part at={cue(ID, "ingredient", fps, 1, 170)} k="The ingredient" v="Glycerin" />
+          <Part at={cue(ID, "reading", fps, 1, 190)} k="Your reading" v="U-zone · Dry" />
+          <Part at={cue(ID, "rule", fps, 1, 210)} k="The rule" v="Humectant suits dry" />
         </div>
       </div>
       <div style={{ position: "absolute", left: 720, top: 700, width: 1080 }}>

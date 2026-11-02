@@ -7,10 +7,12 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const pub = path.join(root, "public");
-const SCENES = ["hook", "shelf", "gap", "scan", "share", "verdict", "tryon", "tour", "proof", "close"];
-const FALLBACK = [6, 7, 6, 16, 7, 13, 8, 11, 8, 7];
+const SCENES = ["hook", "shelf", "gap", "scan", "share", "verdict", "tryon", "tour", "close"];
+const FALLBACK = [6, 7, 6, 16, 7, 13, 8, 11, 7];
 const TAIL = 0.6;
 const LEAD = 0.3; // voice starts 0.3s into each scene
+// Extra seconds after the voice so the phone footage can play out.
+const EXTRA = { scan: 4.5, share: 3, verdict: 4, tryon: 4, tour: 4, close: 1 };
 
 const readJson = (p) => {
   try { return JSON.parse(fs.readFileSync(p, "utf8")); } catch { return null; }
@@ -72,7 +74,7 @@ const findFile = (dir, id, exts) => {
 const scenes = SCENES.map((id, i) => {
   const voice = lookup(id);
   const voiceFile = findFile("voiceover", id, ["mp3", "wav", "m4a"]);
-  const seconds = voice && voice > 0 ? LEAD + voice + TAIL : FALLBACK[i];
+  const seconds = (voice && voice > 0 ? LEAD + voice + TAIL : FALLBACK[i]) + (EXTRA[id] ?? 0);
   return {
     id,
     seconds: Math.round(seconds * 100) / 100,

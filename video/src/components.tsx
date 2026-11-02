@@ -1,5 +1,6 @@
 import React from "react";
-import { AbsoluteFill, Img, OffthreadVideo, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, OffthreadVideo, Series, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { FOOTAGE, SRC_W } from "./footage";
 import { COLORS } from "./constants";
 import { MONO, SANS, SERIF } from "./fonts";
 import { phraseFrames } from "./timing";
@@ -95,11 +96,13 @@ export const Kinetic: React.FC<{
 // Portrait phone mockup: rounded charcoal bezel, 1080x2340 screen.
 export const Phone: React.FC<{
   clip?: string | null;
-  still: string;
+  still?: string;
+  footage?: string;
   height: number;
   style?: React.CSSProperties;
   startFrom?: number;
-}> = ({ clip, still, height, style, startFrom = 0 }) => {
+}> = ({ clip, still, footage, height, style, startFrom = 0 }) => {
+  const { fps } = useVideoConfig();
   const pad = Math.round(height * 0.018);
   const screenH = height - pad * 2;
   const screenW = Math.round((screenH * 1080) / 2340);
@@ -126,7 +129,31 @@ export const Phone: React.FC<{
           position: "relative",
         }}
       >
-        {clip ? (
+        {footage && FOOTAGE[footage] ? (
+          <Series>
+            {FOOTAGE[footage].flatMap((seg, i) => {
+              const k = screenW / SRC_W;
+              const items = [
+                <Series.Sequence key={`v${i}`} durationInFrames={Math.round(seg.seconds * fps)}>
+                  <AbsoluteFill>
+                    <OffthreadVideo src={staticFile(seg.src)} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    {(seg.masks ?? []).map((m, j) => (
+                      <div key={j} style={{ position: "absolute", left: m.x * k, top: m.y * k, width: m.w * k, height: m.h * k, background: m.color }} />
+                    ))}
+                  </AbsoluteFill>
+                </Series.Sequence>,
+              ];
+              if (seg.hold) {
+                items.push(
+                  <Series.Sequence key={`h${i}`} durationInFrames={fps * 30}>
+                    <Img src={staticFile(seg.hold)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  </Series.Sequence>,
+                );
+              }
+              return items;
+            })}
+          </Series>
+        ) : clip ? (
           <OffthreadVideo
             src={staticFile(clip)}
             startFrom={startFrom}
@@ -134,7 +161,7 @@ export const Phone: React.FC<{
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
-          <Img src={staticFile(still)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }} />
+          still ? <Img src={staticFile(still)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }} /> : null
         )}
       </div>
     </div>
@@ -213,3 +240,34 @@ export const PhotoCard: React.FC<{ src: string; w: number; h: number; style?: Re
     <Img src={staticFile(src)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
   </div>
 );
+
+// Small "live" caption: a pulsing dot and one line of plain text.
+export const LiveTag: React.FC<{ at: number; children: React.ReactNode; style?: React.CSSProperties }> = ({ at, children, style }) => {
+  const frame = useCurrentFrame();
+  const p = usePop(at);
+  const pulse = 0.55 + 0.45 * Math.abs(Math.sin(frame / 9));
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "12px 22px",
+        borderRadius: 999,
+        background: COLORS.white,
+        border: `1.5px solid ${COLORS.hairline}`,
+        fontFamily: SANS,
+        fontSize: 26,
+        fontWeight: 500,
+        color: COLORS.accent,
+        whiteSpace: "nowrap",
+        opacity: p.opacity,
+        transform: `translateY(${p.y}px)`,
+        ...style,
+      }}
+    >
+      <div style={{ width: 12, height: 12, borderRadius: 999, background: "#C2412D", opacity: pulse, flex: "none" }} />
+      {children}
+    </div>
+  );
+};

@@ -10,7 +10,6 @@ import { Share } from "./scenes/Share";
 import { Verdict } from "./scenes/Verdict";
 import { TryOn } from "./scenes/TryOn";
 import { Tour } from "./scenes/Tour";
-import { Proof } from "./scenes/Proof";
 import { Close } from "./scenes/Close";
 import "./fonts";
 
@@ -25,7 +24,6 @@ export const SCENES: Record<string, React.FC> = {
   verdict: Verdict,
   tryon: TryOn,
   tour: Tour,
-  proof: Proof,
   close: Close,
 };
 

@@ -1,3 +1,5 @@
 node_modules/
 out/
 *.log
+public/clips/*.mp4
+public/clips/*.png

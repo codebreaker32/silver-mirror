@@ -3,14 +3,13 @@ import { Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "r
 import { COLORS } from "../constants";
 import { SANS } from "../fonts";
 import { Ground, Kinetic, Phone, Pill, Stamp, clamp, usePop } from "../components";
-import { cue, meta } from "../timing";
+import { cue } from "../timing";
 
 const ID = "share";
 
 export const Share: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const m = meta(ID);
   const tapAt = cue(ID, "tap", fps, 1, 120);
   const pickAt = cue(ID, "pick", fps, 1, 160);
   const phone = usePop(6);
@@ -77,7 +76,7 @@ export const Share: React.FC = () => {
         <Pill size={34} bg={COLORS.accent} color={COLORS.panel}>Pick Silver Mirror</Pill>
       </Stamp>
       <div style={{ position: "absolute", left: 1290, top: 70, opacity: phone.opacity, transform: `translateY(${phone.y}px)` }}>
-        <Phone clip={m.clip} still="stills/share.png" height={940} />
+        <Phone footage={ID} height={940} />
       </div>
     </Ground>
   );

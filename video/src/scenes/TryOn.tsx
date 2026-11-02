@@ -1,14 +1,13 @@
 import React from "react";
 import { useVideoConfig } from "remotion";
 import { COLORS } from "../constants";
-import { Ground, Kinetic, Phone, PhotoCard, Pill, Stamp, usePop } from "../components";
-import { cue, meta } from "../timing";
+import { Ground, Kinetic, LiveTag, Phone, PhotoCard, Pill, Stamp, usePop } from "../components";
+import { cue } from "../timing";
 
 const ID = "tryon";
 
 export const TryOn: React.FC = () => {
   const { fps } = useVideoConfig();
-  const m = meta(ID);
   const phone = usePop(6);
   const tryAt = cue(ID, "try", fps, 1, 45);
   const swatch = usePop(cue(ID, "sunscreen", fps, 1, 12) + 2, { damping: 13, stiffness: 170 });
@@ -30,8 +29,9 @@ export const TryOn: React.FC = () => {
         <Pill size={44} bg={COLORS.accent} color={COLORS.panel}>Nothing is saved.</Pill>
       </Stamp>
       <div style={{ position: "absolute", left: 1290, top: 70, opacity: phone.opacity, transform: `translateY(${phone.y}px)` }}>
-        <Phone clip={m.clip} still="stills/tryon.png" height={940} />
+        <Phone footage={ID} height={940} />
       </div>
+      <LiveTag at={18} style={{ position: "absolute", left: 140, top: 930 }}>Live YouCam Makeup VTO, Re&apos;equil Sheer Zinc Tinted Sunscreen</LiveTag>
     </Ground>
   );
 };
