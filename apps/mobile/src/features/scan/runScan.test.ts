@@ -56,7 +56,7 @@ describe('runScan', () => {
     const result = await runScan(deps, capture, consent, (p) => updates.push(p));
     expect(log.slice(0, 4)).toEqual(['start 1080x1440', `put ${capture.uri}`, `rm ${capture.uri}`, 'submit']);
     expect(result.phase).toBe('done');
-    expect(result.steps[3]?.label).toBe('Deleting from YouCam ✓');
+    expect(result.steps[3]?.label).toBe('Deleted from YouCam');
     expect(updates.some((u) => u.status?.overlayJpegBase64 === 'AAAA')).toBe(true);
     expect(updates[0]?.steps[0]?.state).toBe('active');
   });

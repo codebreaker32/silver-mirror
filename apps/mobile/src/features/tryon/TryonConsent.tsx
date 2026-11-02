@@ -1,45 +1,57 @@
 import { useState } from 'react';
-import { Text } from 'react-native';
+import { View } from 'react-native';
 import { COPY } from '@skinkey/contracts';
+import { Body, Button, ButtonPair, Heading, Note, Screen } from '@/components';
+import { CheckboxRow, DetailsRow, FaceFramePlate, PromiseList } from '@/components/scan';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ADULT_HELPER, ADULT_LABEL } from '../scan/consent';
-import { Body, Button, ButtonPair, CheckboxRow, Heading, Note, Screen } from '../scan/ui';
 
+const PROMISES = [
+  { icon: 'camera', label: 'One photo, rendered by YouCam' },
+  { icon: 'trash', label: 'Deleted from YouCam right after' },
+  { icon: 'phone-lock', label: 'Previews stay on screen, never saved' },
+] as const;
+
+/** Try-on consent: the scan consent pattern (face-frame hero, promise rows, 18+ box above an equal-weight pair). */
 export function TryonConsent({ productName, mode, onAccept, onDecline }: { productName?: string; mode: 'multi' | 'single'; onAccept: () => void; onDecline: () => void }) {
   const theme = useTheme();
   const cs = theme.components.consentSheet;
   const [adult, setAdult] = useState(false);
   return (
     <Screen
-      title="Try-on"
       onBack={onDecline}
       footer={
         <>
-          {!adult ? <Body muted small>{ADULT_HELPER}</Body> : null}
+          <CheckboxRow label={ADULT_LABEL} checked={adult} onChange={setAdult} supporting={adult ? undefined : ADULT_HELPER} />
           <ButtonPair>
-            <Button label="Take photo" variant="consentPair" disabled={!adult} onPress={onAccept} style={{ flex: 1 }} />
-            <Button label="Not now" variant="consentPair" onPress={onDecline} style={{ flex: 1 }} />
+            <Button label="Take photo" variant="consentPair" disabled={!adult} onPress={onAccept} />
+            <Button label="Not now" variant="consentPair" onPress={onDecline} />
           </ButtonPair>
         </>
       }
     >
-      <Heading>This needs a second photo</Heading>
-      {productName ? <Body muted>{productName}</Body> : null}
-      <Text accessible style={[cs.privacyLead, { color: cs.privacyColor }]}>
-        {COPY.privacyLine}
-      </Text>
-      <Body muted small>
-        {COPY.privacyQualifier}
-      </Body>
+      <FaceFramePlate />
+      <View style={{ gap: theme.space[2] }}>
+        <Heading>This needs a second photo</Heading>
+        {productName ? <Body muted>{productName}</Body> : null}
+      </View>
+      <PromiseList items={PROMISES} />
       <Body>
         {mode === 'multi'
           ? 'YouCam reads your skin tone once to pick two shades, then renders both on the same photo. The tone is used for this try-on only and is never shown or kept.'
           : 'YouCam renders the shade on your photo.'}
       </Body>
-      <Body>The previews stay on screen only. There is no save button, and they are gone when you close this screen.</Body>
+      <View style={{ gap: theme.space[1] }}>
+        <Body accessible style={[cs.privacyLead, { color: cs.privacyColor }]}>
+          {COPY.privacyLine}
+        </Body>
+        <DetailsRow>{COPY.privacyQualifier}</DetailsRow>
+      </View>
+      <Body muted small>
+        The previews stay on screen only. There is no save button, and they are gone when you close this screen.
+      </Body>
       <Note>Preview, not a shade guarantee.</Note>
       <Note>{COPY.accuracyNote}</Note>
-      <CheckboxRow label={ADULT_LABEL} checked={adult} onChange={setAdult} />
     </Screen>
   );
 }

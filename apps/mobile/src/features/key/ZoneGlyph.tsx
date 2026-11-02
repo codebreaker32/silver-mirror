@@ -41,9 +41,20 @@ export function ZoneGlyph({ model, highlight = [], width = 200, showLegend = tru
       accessible
       accessibilityRole="image"
       accessibilityLabel={[model.accessibilityLabel, ...model.lines].join(' ')}
-      style={{ backgroundColor: m.bg, borderRadius: m.radius, padding: theme.space[4], gap: theme.space[3], alignItems: 'center' }}
+      style={{
+        backgroundColor: m.bg,
+        borderRadius: m.radius,
+        borderWidth: 1,
+        borderColor: m.border,
+        borderTopColor: theme.dark ? theme.colors.sheenEdge : m.border,
+        padding: m.padding,
+        gap: theme.space[3],
+        alignItems: 'center',
+      }}
     >
-      <Text style={[theme.type.label, { color: m.labelColor, alignSelf: 'flex-start' }]}>{model.title}</Text>
+      <Text {...theme.textProps.section} style={[theme.typography.section, { color: m.labelColor, alignSelf: 'flex-start' }]}>
+        {model.title}
+      </Text>
       <Svg width={width} height={height} viewBox="0 0 200 240">
         <Defs>
           <Pattern id={ids.medium} patternUnits="userSpaceOnUse" width={6} height={6} patternTransform="rotate(45)">

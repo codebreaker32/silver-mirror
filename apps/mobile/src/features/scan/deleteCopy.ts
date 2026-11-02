@@ -1,6 +1,7 @@
 import { COPY, type DeleteState } from '@skinkey/contracts';
 
-export const DELETED_LABEL = 'Deleted from YouCam ✓';
+/** Shown with a drawn check-circle wherever it appears; never a unicode tick in the text. */
+export const DELETED_LABEL = COPY.scanStepsDone.delete;
 export const PHOTO_DELETED_STAMP = 'Photo deleted';
 
 export function deleteStateLabel(state: DeleteState): string {

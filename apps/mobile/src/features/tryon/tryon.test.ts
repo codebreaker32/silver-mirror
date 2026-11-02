@@ -50,7 +50,7 @@ describe('runTryon', () => {
     expect(log).toEqual(['start 768x1024 multi', 'put', 'rm']);
     expect(result.phase).toBe('done');
     expect(result.status?.renders.map((r) => r.shadeName)).toEqual(['Rose', 'Berry']);
-    expect(result.steps.at(-1)?.label).toBe('Deleting from YouCam ✓');
+    expect(result.steps.at(-1)?.label).toBe('Deleted from YouCam');
   });
 
   it('keeps renders that arrive before the delete finishes', async () => {

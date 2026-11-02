@@ -1,4 +1,4 @@
-import type { ApiError } from '@skinkey/contracts';
+import { COPY, type ApiError } from '@skinkey/contracts';
 
 export interface FriendlyError {
   title: string;
@@ -14,7 +14,7 @@ export function friendlyError(
   const code = e.body?.error.code;
   if (code === 'cap_reached') {
     return flow === 'scan'
-      ? { title: 'Scan limit reached', body: 'This install has used its free scan. Your Key and the Demo Key still work.', retryable: false }
+      ? { title: 'Scan limit reached', body: `This install has used its free scan. ${COPY.reading.yours} and the ${COPY.reading.demo} still work.`, retryable: false }
       : { title: 'Try-on limit reached', body: 'This install has used its 3 try-ons.', retryable: false };
   }
   if (code === 'rate_limited') {
@@ -23,7 +23,7 @@ export function friendlyError(
   if (e.status === undefined && err instanceof TypeError) {
     return {
       title: flow === 'scan' ? 'You need a connection to scan' : 'You need a connection for a try-on',
-      body: 'SkinKey kept no photo.',
+      body: `${COPY.appName} kept no photo.`,
       retryable: true,
     };
   }

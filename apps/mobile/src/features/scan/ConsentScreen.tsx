@@ -1,11 +1,18 @@
 import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COPY } from '@skinkey/contracts';
+import { Body, Button, ButtonPair, Heading, Note, Screen, TextLink } from '@/components';
+import { CheckboxRow, DetailsRow, FaceFramePlate, KeepCard, PromiseList } from '@/components/scan';
 import { useTheme } from '@/theme/ThemeProvider';
 import { saveScanConsent } from '../key';
-import { ADULT_HELPER, ADULT_LABEL, KEEP_CHIPS, makeConsent, SCAN_CONSENT_VERSION } from './consent';
-import { Body, Button, ButtonPair, CheckboxRow, Heading, KeepChip, Note, Overline, Screen, TextLink } from './ui';
+import { ADULT_HELPER, ADULT_LABEL, KEPT_ON_PHONE, NOT_KEPT, makeConsent, SCAN_CONSENT_VERSION } from './consent';
+
+const PROMISES = [
+  { icon: 'camera', label: 'One photo, analysed by YouCam' },
+  { icon: 'trash', label: 'Deleted from YouCam right after' },
+  { icon: 'phone-lock', label: 'Only bands kept, on this phone' },
+] as const;
 
 export function ConsentScreen() {
   const theme = useTheme();
@@ -26,10 +33,9 @@ export function ConsentScreen() {
 
   return (
     <Screen
-      title="Skin scan"
       footer={
         <>
-          {!adult ? <Body muted small>{ADULT_HELPER}</Body> : null}
+          <CheckboxRow label={ADULT_LABEL} checked={adult} onChange={setAdult} supporting={adult ? undefined : ADULT_HELPER} />
           <ButtonPair>
             <Button
               label="Start scan"
@@ -38,40 +44,23 @@ export function ConsentScreen() {
               busy={opening}
               busyLabel="Opening camera…"
               onPress={() => void start()}
-              style={{ flex: 1 }}
             />
-            <Button label="Not now" variant="consentPair" onPress={() => router.replace('/')} style={{ flex: 1 }} />
+            <Button label="Not now" variant="consentPair" onPress={() => router.replace('/')} />
           </ButtonPair>
         </>
       }
     >
+      <FaceFramePlate />
       <Heading>Before your scan</Heading>
-      <Text accessible style={[cs.privacyLead, { color: cs.privacyColor }]}>
-        {COPY.privacyLine}
-      </Text>
-      <Body muted small>
-        {COPY.privacyQualifier}
-      </Body>
-      <View
-        style={{
-          backgroundColor: theme.colors.surface,
-          borderColor: theme.colors.border,
-          borderWidth: 1,
-          borderRadius: theme.radius.lg,
-          padding: theme.space[4],
-          gap: theme.space[3],
-        }}
-      >
-        <Overline>What we keep</Overline>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.space[2] }} accessible accessibilityLabel={`What we keep: ${KEEP_CHIPS.join(', ')}. On this phone only.`}>
-          {KEEP_CHIPS.map((c) => (
-            <KeepChip key={c} label={c} />
-          ))}
-        </View>
-        <Text style={[cs.keepList, { color: theme.colors.text }]}>On this phone only. Bands, never scores. No photo.</Text>
+      <PromiseList items={PROMISES} />
+      <KeepCard title="What stays on this phone" kept={KEPT_ON_PHONE} dropped={NOT_KEPT} footnote="Bands, never scores." />
+      <View style={{ gap: theme.space[1] }}>
+        <Body accessible style={[cs.privacyLead, { color: cs.privacyColor }]}>
+          {COPY.privacyLine}
+        </Body>
+        <DetailsRow>{COPY.privacyQualifier}</DetailsRow>
       </View>
       <Note>{COPY.accuracyNote}</Note>
-      <CheckboxRow label={ADULT_LABEL} checked={adult} onChange={setAdult} />
       <TextLink label="Read how deletion works" onPress={() => router.push('/how')} />
     </Screen>
   );

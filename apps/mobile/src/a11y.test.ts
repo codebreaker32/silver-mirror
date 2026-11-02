@@ -42,7 +42,8 @@ describe('accessibility: touch targets and labels', () => {
   const all = controls();
 
   it('finds the app controls', () => {
-    expect(all.length).toBeGreaterThan(20);
+    // Most controls now come from the shared kit (IconButton, PillButton, ListRow, Chip), so raw Pressables are fewer.
+    expect(all.length).toBeGreaterThan(15);
   });
 
   it('every touch-size token in the design system is ≥ 48 dp', () => {

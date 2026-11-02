@@ -2,9 +2,12 @@ import { COPY, type DeleteState, type StepState, type ScanStep, type TryonStep, 
 
 export interface DisplayStep {
   id: string;
+  /** The done wording once finished (COPY.scanStepsDone), shown with the drawn check-circle; never a "✓" in the text. */
   label: string;
   state: StepState;
   detail?: string;
+  /** Small stamp after the label, e.g. "Photo deleted · 21:04" on the delete row (set by the screen). */
+  stamp?: string;
 }
 
 function deleteDetail(deleteState: DeleteState | undefined): string | undefined {
@@ -15,7 +18,7 @@ function deleteDetail(deleteState: DeleteState | undefined): string | undefined 
 }
 
 function deleteLabel(base: string, state: StepState, deleteState: DeleteState | undefined): string {
-  if (state === 'done' && (deleteState === undefined || deleteState === 'deleted')) return `${base} ✓`;
+  if (state === 'done' && (deleteState === undefined || deleteState === 'deleted')) return COPY.scanStepsDone.delete;
   return base;
 }
 
@@ -35,7 +38,7 @@ export function scanDisplaySteps(
     if (id === 'delete') {
       return { id, state, label: deleteLabel(base, state, deleteState), detail: deleteDetail(deleteState) ?? server?.detail };
     }
-    return { id, state, label: base, detail: server?.detail };
+    return { id, state, label: state === 'done' ? COPY.scanStepsDone[id] : base, detail: server?.detail };
   });
 }
 
@@ -58,7 +61,7 @@ export function tryonDisplaySteps(
       if (id === 'delete') {
         return { id, state, label: deleteLabel(base, state, deleteState), detail: deleteDetail(deleteState) ?? server?.detail };
       }
-      return { id, state, label: base, detail: server?.detail };
+      return { id, state, label: id === 'upload' && state === 'done' ? COPY.scanStepsDone.upload : base, detail: server?.detail };
     })
     .filter((s) => s.state !== 'skipped');
 }

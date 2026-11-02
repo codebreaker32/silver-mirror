@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import type { Band, Concern, KeyProfile } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Body, Button, Sheet, haptic } from '../scan/ui';
+import { Body, Button, Icon, Sheet, haptic } from '@/components';
 import { BANDS, CONCERNS, CONCERN_LABEL, SELF_REPORTED_TAG } from './model';
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
 export function BandEditSheet({ visible, keyProfile, onClose, onSave }: Props) {
   const theme = useTheme();
   const [busy, setBusy] = useState<Concern | null>(null);
+  const chip = theme.components.chip;
 
   const choose = async (concern: Concern, level: Band) => {
     if (keyProfile.bands[concern].level === level) return;
@@ -28,7 +29,7 @@ export function BandEditSheet({ visible, keyProfile, onClose, onSave }: Props) {
   };
 
   return (
-    <Sheet visible={visible} title="Feels wrong? Edit" onClose={onClose} actions={<Button label="Done" variant="secondary" onPress={onClose} />}>
+    <Sheet visible={visible} title="Feels wrong? Edit" onClose={onClose} actions={<Button label="Done" onPress={onClose} />}>
       <Body muted small>
         Pick the band that feels right. Edited bands are tagged "{SELF_REPORTED_TAG}" everywhere they appear.
       </Body>
@@ -36,7 +37,7 @@ export function BandEditSheet({ visible, keyProfile, onClose, onSave }: Props) {
         const reading = keyProfile.bands[concern];
         return (
           <View key={concern} style={{ gap: theme.space[2] }}>
-            <Text style={[theme.type.label, { color: theme.colors.text }]}>
+            <Text {...theme.textProps.bodyStrong} style={[theme.typography.bodyStrong, { color: theme.colors.text }]}>
               {CONCERN_LABEL[concern]}
               {reading.selfReported && reading.measuredLevel ? `  ·  measured: ${reading.measuredLevel}` : ''}
             </Text>
@@ -53,15 +54,18 @@ export function BandEditSheet({ visible, keyProfile, onClose, onSave }: Props) {
                     style={({ pressed }) => ({
                       flex: 1,
                       minHeight: theme.touch.min,
-                      borderRadius: theme.radius.md,
-                      borderWidth: selected ? 2 : 1.5,
-                      borderColor: selected ? theme.colors.text : theme.colors.borderStrong,
-                      backgroundColor: pressed ? theme.colors.state.pressed : selected ? theme.components.bandChip.bg : 'transparent',
+                      borderRadius: chip.radius,
+                      backgroundColor: selected ? chip.selectedBg : pressed ? theme.colors.state.pressed : chip.bg,
+                      flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      gap: theme.space[1],
                     })}
                   >
-                    <Text style={[selected ? theme.type.label : theme.type.bodySm, { color: theme.colors.text }]}>{level}</Text>
+                    {selected ? <Icon name="check" size={theme.icon.sm} color={chip.selectedFg} strokeWidth={2} /> : null}
+                    <Text {...theme.textProps.label} style={[chip.type, { color: selected ? chip.selectedFg : chip.fg }]}>
+                      {level}
+                    </Text>
                   </Pressable>
                 );
               })}

@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COPY, type YouCamErrorCode } from '@skinkey/contracts';
 import { demo } from '@/demo';
 import { call } from '@/lib/api';
 import { useTheme } from '@/theme/ThemeProvider';
-import { loadScanConsent, saveKey, saveScanLedger } from '../key';
+import { ResolvingFaceFrame } from '@/components/scan';
+import { loadScanConsent, saveKey, saveScanLedger, useKey } from '../key';
+import { PHOTO_DELETED_STAMP } from './deleteCopy';
 import { hintForError, isRetakeError } from './captureHints';
 import { cancelJob, ensureInstallToken } from './install';
 import { friendlyError } from './errors';
@@ -13,7 +15,7 @@ import { recordLedger } from './ledgerStore';
 import { deleteLocal, sleep, uploadToSlot } from './native';
 import { runScan, type ScanDeps, type ScanProgress } from './runScan';
 import { scanSession } from './session';
-import { scanDisplaySteps } from './steps';
+import { scanDisplaySteps, type DisplayStep } from './steps';
 import { Body, Button, Heading, Screen, Stepper, haptic } from './ui';
 
 const scanDeps: ScanDeps = {
@@ -37,9 +39,13 @@ export function ProcessingScreen() {
   const router = useRouter();
   const started = useRef(false);
   const alive = useRef(true);
+  const { width } = useWindowDimensions();
+  const { key, isDemo, useDemo: enableDemo } = useKey();
   const [progress, setProgress] = useState<ScanProgress>(
     () => demo?.scanProgress ?? { phase: 'uploading', steps: scanDisplaySteps(undefined, 'pending') },
   );
+  const deletedAt = useRef<Date | null>(null);
+  if (!deletedAt.current && progress.steps.some((s) => s.id === 'delete' && s.state === 'done')) deletedAt.current = new Date();
 
   useEffect(() => {
     alive.current = true;
@@ -77,10 +83,12 @@ export function ProcessingScreen() {
   const youcamCode: YouCamErrorCode | undefined = failed ? progress.status?.error?.code : undefined;
   const retake = youcamCode !== undefined && isRetakeError(youcamCode);
   const friendly = failed && !retake ? friendlyError(progress.error, 'scan') : null;
+  const doneCount = progress.steps.filter((s) => s.state === 'done').length;
+  const steps = withDeleteStamp(progress.steps, deletedAt.current);
+  const frame = Math.min(176, Math.round((width - theme.spacing.gutter * 2) * 0.44));
 
   return (
     <Screen
-      title="Skin scan"
       onBack={() => router.replace('/')}
       footer={
         failed ? (
@@ -90,23 +98,47 @@ export function ProcessingScreen() {
             ) : friendly?.retryable ? (
               <Button label="Try again" onPress={() => router.replace('/scan/capture')} />
             ) : null}
-            <Button label="Try later" variant="tertiary" onPress={() => router.replace('/')} />
+            {!key || isDemo ? (
+              <Button
+                label={COPY.reading.useDemo}
+                variant="secondary"
+                onPress={() => {
+                  enableDemo();
+                  router.replace('/');
+                }}
+              />
+            ) : null}
+            <Button label="Try later" variant="tertiary" fullWidth onPress={() => router.replace('/')} />
           </>
         ) : undefined
       }
     >
-      <Heading>{failed ? (retake ? 'Let’s take that again' : friendly?.title) : 'Making your Key'}</Heading>
-      {failed ? (
-        <Body>{retake ? hintForError(youcamCode) : friendly?.body}</Body>
-      ) : (
-        <Body muted>Real steps from YouCam. Your photo is deleted from this phone as soon as it is uploaded.</Body>
-      )}
-      <View style={{ paddingTop: theme.space[2] }}>
-        <Stepper steps={progress.steps} />
+      <View style={{ alignItems: 'center', paddingTop: theme.space[2] }}>
+        <ResolvingFaceFrame width={frame} progress={failed ? 0 : doneCount / progress.steps.length} />
       </View>
+      <View style={{ gap: theme.space[2] }}>
+        <Heading>{failed ? (retake ? 'Let’s take that again' : friendly?.title) : COPY.reading.making}</Heading>
+        {failed ? (
+          <Body>{retake ? hintForError(youcamCode) : friendly?.body}</Body>
+        ) : (
+          <Body muted>Stay on this screen. This takes about 10 seconds.</Body>
+        )}
+      </View>
+      <Stepper steps={steps} />
       <Body muted small>
         {COPY.privacyLine}
       </Body>
     </Screen>
+  );
+}
+
+const pad = (n: number) => String(n).padStart(2, '0');
+
+/** "Photo deleted · 21:04" on the delete row once YouCam confirms the delete. */
+function withDeleteStamp(steps: readonly DisplayStep[], at: Date | null): DisplayStep[] {
+  return steps.map((s) =>
+    s.id === 'delete' && s.state === 'done' && s.label === COPY.scanStepsDone.delete && at
+      ? { ...s, stamp: `${PHOTO_DELETED_STAMP} · ${pad(at.getHours())}:${pad(at.getMinutes())}` }
+      : s,
   );
 }

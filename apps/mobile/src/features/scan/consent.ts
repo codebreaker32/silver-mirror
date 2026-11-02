@@ -13,6 +13,10 @@ export const KEEP_CHIPS = [
   'Scan date',
 ] as const;
 
+/** "What stays on this phone" (DESIGN.md §9.6): kept rows get the check-circle, not-kept rows the minus-circle. */
+export const KEPT_ON_PHONE = ['Skin-type reading', 'Low / Medium / High bands', 'Zone labels', 'Scan date'] as const;
+export const NOT_KEPT = ['Your photo', 'Face shape'] as const;
+
 export const ADULT_LABEL = "I'm 18 or older";
 export const ADULT_HELPER = "Tick to confirm you're 18 or older.";
 

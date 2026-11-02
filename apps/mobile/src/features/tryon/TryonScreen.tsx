@@ -11,7 +11,8 @@ import { cancelJob, ensureInstallToken } from '../scan/install';
 import { recordLedger } from '../scan/ledgerStore';
 import { deleteLocal, sleep, uploadToSlot } from '../scan/native';
 import { tryonDisplaySteps } from '../scan/steps';
-import { Body, Button, Heading, Screen, StateView, Stepper, haptic } from '../scan/ui';
+import { Body, Button, EmptyState, Heading, Screen, haptic } from '@/components';
+import { Stepper } from '../scan/ui';
 import { prepareSelfie } from './prepareSelfie';
 import { runTryon, type TryonDeps, type TryonProgress } from './runTryon';
 import { TryonConsent } from './TryonConsent';
@@ -58,9 +59,9 @@ export function TryonScreen() {
   if (!params.productId) {
     return (
       <Screen title="Try-on" onBack={close}>
-        <StateView title="Pick a tinted product first" body="Try-on starts from a product check.">
+        <EmptyState title="Pick a tinted product first" body="Try-on starts from a product check." plate={{ icon: 'tag-check' }}>
           <Button label="Back" variant="secondary" onPress={close} />
-        </StateView>
+        </EmptyState>
       </Screen>
     );
   }
@@ -122,10 +123,10 @@ export function TryonScreen() {
 
   if (progress.phase === 'done') {
     return (
-      <Screen title="Try-on" onBack={close} footer={<Button label="Close" variant="secondary" onPress={close} />}>
+      <Screen title="Try-on" onBack={close} footer={<Button label="Close" onPress={close} />}>
         <Heading>{params.productName ?? 'Your preview'}</Heading>
         <TryonResult status={progress.status} />
-        <Button label="How this was made" variant="tertiary" onPress={() => router.push('/how')} />
+        <Button label="How this was made" variant="tertiary" trailingIcon="chevron-right" onPress={() => router.push('/how')} />
         <Body muted small>
           {COPY.footer}
         </Body>
@@ -151,6 +152,9 @@ export function TryonScreen() {
       <Heading>{failed ? (retake ? 'Let’s take that again' : friendly?.title) : 'Making your preview'}</Heading>
       {failed ? <Body>{retake ? hintForError(code) : friendly?.body}</Body> : <Body muted>Real steps from YouCam. Your photo was resized on this phone and deleted after upload.</Body>}
       <Stepper steps={progress.steps} />
+      <Body muted small>
+        {COPY.privacyLine}
+      </Body>
     </Screen>
   );
 }

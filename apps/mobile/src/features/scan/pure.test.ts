@@ -59,7 +59,10 @@ describe('steps', () => {
 
   it('ticks the delete step only when YouCam confirmed it', () => {
     const server = (['upload', 'analyse', 'read', 'delete'] as const).map((id) => ({ id, state: 'done' as const, label: id }));
-    expect(scanDisplaySteps(server, 'done', 'deleted')[3]).toMatchObject({ label: 'Deleting from YouCam ✓', state: 'done' });
+    const done = scanDisplaySteps(server, 'done', 'deleted');
+    expect(done.map((s) => s.label)).toEqual(['Uploaded', 'Analysed (YouCam HD)', 'Results read', 'Deleted from YouCam']);
+    expect(done[3]).toMatchObject({ label: 'Deleted from YouCam', state: 'done' });
+    expect(done.some((s) => s.label.includes('✓'))).toBe(false);
     const failed = scanDisplaySteps(server.map((s) => (s.id === 'delete' ? { ...s, state: 'failed' as const } : s)), 'done', 'delete_failed')[3];
     expect(failed).toMatchObject({ label: 'Deleting from YouCam', detail: COPY.deleteFailed });
     expect(scanDisplaySteps(server, 'done', 'orphan')[3]?.detail).toBe(COPY.orphanUpload);
@@ -82,7 +85,7 @@ describe('steps', () => {
 
 describe('delete copy and errors', () => {
   it('labels delete states', () => {
-    expect(deleteStateLabel('deleted')).toBe('Deleted from YouCam ✓');
+    expect(deleteStateLabel('deleted')).toBe('Deleted from YouCam');
     expect(deleteStateLabel('delete_failed')).toBe(COPY.deleteFailed);
     expect(deleteStateLabel('orphan')).toContain(COPY.orphanUpload);
   });

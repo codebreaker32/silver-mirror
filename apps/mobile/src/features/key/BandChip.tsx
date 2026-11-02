@@ -1,41 +1,72 @@
-import { Text, View } from 'react-native';
-import type { BandReading, Concern } from '@skinkey/contracts';
+import { View, useWindowDimensions } from 'react-native';
+import type { BandReading, Concern, KeyProfile } from '@skinkey/contracts';
+import { BandChip as KitBandChip, BandMeter, Tag, Txt } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Tag } from '../scan/ui';
-import { BANDS, CONCERN_LABEL, SELF_REPORTED_TAG } from './model';
+import { CONCERNS, CONCERN_LABEL, SELF_REPORTED_TAG } from './model';
 
+/** One reading as a compact kit chip ("Oiliness · High ▮▮▮"). */
 export function BandChip({ concern, reading }: { concern: Concern; reading: BandReading }) {
-  const theme = useTheme();
-  const c = theme.components.bandChip;
-  const l = theme.components.bandList;
-  const filled = BANDS.indexOf(reading.level) + 1;
+  return <KitBandChip name={CONCERN_LABEL[concern]} level={reading.level} selfReported={reading.selfReported} />;
+}
+
+/**
+ * Reading bands as rows in a rounded card (component.bandList): name left, bodyStrong band word right with the
+ * neutral three-segment meter under it, hairlines between rows, one Low · Medium · High legend. No numbers.
+ * Each row is one TalkBack node. At 1.5× font the value stacks under the name.
+ */
+export function BandList({ keyProfile }: { keyProfile: KeyProfile }) {
+  const t = useTheme();
+  const l = t.components.bandList;
+  const { fontScale } = useWindowDimensions();
+  const stack = fontScale >= l.stackAtFontScale;
   return (
     <View
-      accessible
-      accessibilityLabel={`${CONCERN_LABEL[concern]} reading: ${reading.level.toLowerCase()}${reading.selfReported ? `, ${SELF_REPORTED_TAG}` : ''}.`}
-      style={{ flexGrow: 1, flexBasis: '45%', minHeight: c.target, padding: c.paddingX, borderRadius: c.radius, backgroundColor: c.bg, gap: theme.space[2] }}
+      style={{
+        backgroundColor: t.colors.surface,
+        borderRadius: t.radius.lg,
+        borderWidth: 1,
+        borderColor: t.colors.border,
+        borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
+        paddingHorizontal: t.spacing.insetCard,
+        paddingVertical: t.space[2],
+      }}
     >
-      <Text style={[l.name, { color: l.nameColor }]}>{CONCERN_LABEL[concern]}</Text>
-      <Text style={[l.value, { color: l.valueColor }]}>{reading.level}</Text>
-      <View style={{ flexDirection: 'row', gap: c.meter.segmentGap }} importantForAccessibility="no-hide-descendants">
-        {BANDS.map((b, i) => (
+      <Txt variant="caption" style={[l.legend, { color: l.legendColor, paddingVertical: t.space[2] }]} importantForAccessibility="no">
+        Bands: Low · Medium · High
+      </Txt>
+      {CONCERNS.map((c) => {
+        const r = keyProfile.bands[c];
+        return (
           <View
-            key={b}
+            key={c}
+            testID={`band-${c}`}
+            accessible
+            accessibilityLabel={`${CONCERN_LABEL[c]} reading: ${r.level.toLowerCase()}${r.selfReported ? `, ${SELF_REPORTED_TAG}` : ''}.`}
             style={{
-              width: 18,
-              height: c.meter.segmentHeight,
-              borderRadius: c.meter.segmentRadius,
-              backgroundColor: i < filled ? c.meter.filled : c.meter.emptyFill,
-              borderWidth: i < filled ? 0 : c.meter.emptyStrokeWidth,
-              borderColor: c.meter.emptyStroke,
+              minHeight: l.rowMinHeight,
+              paddingVertical: l.rowPaddingY,
+              borderTopWidth: 1,
+              borderTopColor: l.rowDivider,
+              flexDirection: stack ? 'column' : 'row',
+              alignItems: stack ? 'flex-start' : 'center',
+              gap: t.space[2],
             }}
-          />
-        ))}
-      </View>
-      <Text style={[c.meter.label, { color: c.meter.labelColor }]} importantForAccessibility="no">
-        Low · Medium · High
-      </Text>
-      {reading.selfReported ? <Tag label={SELF_REPORTED_TAG} variant="outline" /> : null}
+          >
+            <View style={{ flex: stack ? undefined : 1, gap: t.space[1] }}>
+              <Txt variant="body" style={[l.name, { color: l.nameColor }]}>
+                {CONCERN_LABEL[c]}
+              </Txt>
+              {r.selfReported ? <Tag label={SELF_REPORTED_TAG} variant="outline" /> : null}
+            </View>
+            <View style={{ alignItems: stack ? 'flex-start' : 'flex-end', gap: l.meterGap }}>
+              <Txt variant="bodyStrong" style={[l.value, { color: l.valueColor }]}>
+                {r.level}
+              </Txt>
+              <BandMeter level={r.level} />
+            </View>
+          </View>
+        );
+      })}
     </View>
   );
 }

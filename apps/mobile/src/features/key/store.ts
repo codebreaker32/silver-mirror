@@ -18,7 +18,7 @@ export const STORAGE_KEYS = {
 
 export class NoKeyError extends Error {
   constructor() {
-    super('No Key on this phone');
+    super('No reading on this phone');
   }
 }
 

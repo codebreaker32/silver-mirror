@@ -1,13 +1,24 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { KeyProfile } from '@skinkey/contracts';
+import { haptic } from '@/components';
 import { clearLedger } from '../scan/ledgerStore';
-import { haptic } from '../scan/ui';
 import { BandEditSheet } from './BandEditSheet';
 import { ConfirmSheet, type ConfirmKind } from './ConfirmSheet';
 import { deleteKey, editBand, withdrawConsent } from './index';
 import { KeyCard } from './KeyCard';
 
-export function KeyPanel({ keyProfile, isDemo, showGlyph, onRemoved }: { keyProfile: KeyProfile; isDemo: boolean; showGlyph?: boolean; onRemoved: (k: ConfirmKind) => void }) {
+interface Props {
+  keyProfile: KeyProfile;
+  isDemo: boolean;
+  showGlyph?: boolean;
+  /** Replaces the zone glyph (result screen: overlay → glyph). */
+  glyph?: ReactNode;
+  /** Shown after the reading, before the delete actions. */
+  extra?: ReactNode;
+  onRemoved: (k: ConfirmKind) => void;
+}
+
+export function KeyPanel({ keyProfile, isDemo, showGlyph, glyph, extra, onRemoved }: Props) {
   const [editing, setEditing] = useState(false);
   const [confirm, setConfirm] = useState<ConfirmKind | null>(null);
 
@@ -17,6 +28,8 @@ export function KeyPanel({ keyProfile, isDemo, showGlyph, onRemoved }: { keyProf
         keyProfile={keyProfile}
         isDemo={isDemo}
         showGlyph={showGlyph}
+        glyph={glyph}
+        extra={extra}
         onEdit={() => setEditing(true)}
         onDelete={() => setConfirm('delete')}
         onWithdraw={() => setConfirm('withdraw')}

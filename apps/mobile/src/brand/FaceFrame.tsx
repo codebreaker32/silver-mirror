@@ -48,7 +48,8 @@ export function FaceFrame({ width, progress = 0, dots = true }: FaceFrameProps) 
       style={{ width, height, borderRadius: f.radius, overflow: 'hidden', backgroundColor: f.bg }}
     >
       <SheenBackdrop radius={f.radius} />
-      <Svg width={width} height={height} viewBox={`0 0 ${w} ${h}`}>
+      {/* Positioned after the sheen so it paints above it on web too (an absolute sibling otherwise covers static SVG). */}
+      <Svg width={width} height={height} viewBox={`0 0 ${w} ${h}`} style={{ position: 'absolute', top: 0, left: 0 }}>
         <Ellipse cx={50} cy={h / 2} rx={24} ry={h * 0.34} stroke={f.oval} strokeWidth={(f.ovalWidth / width) * w} fill="none" />
         {grid.map((p) => (
           <Circle key={`${p.x}-${p.y}`} cx={p.x} cy={p.y} r={0.6} fill={f.dots} opacity={f.dotsOpacity} />
