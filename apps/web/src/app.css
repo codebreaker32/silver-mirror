@@ -483,12 +483,20 @@ a {
   display: grid;
 }
 
+/* Steps are a little over half a screen apart, so one step's copy is in view while the panel shows its screen;
+   the last step keeps room below so the verdict stays pinned while its copy is read. */
 .stage-step {
-  min-height: 82svh;
+  min-height: 62svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 64px 0;
+  padding: 48px 0;
+}
+
+@media (min-width: 901px) {
+  .stage-step:last-child {
+    padding-bottom: 22svh;
+  }
 }
 
 .stage-step h3 {
@@ -789,16 +797,19 @@ a {
   padding: 16px 18px;
 }
 
+/* Reasons and ledger are rows on the sheet, split by hairlines: no card inside the sheet (DESIGN.md: no nested cards). */
 .ui-reasons {
   display: grid;
-  gap: 8px;
 }
 
 .ui-reasons li {
-  padding: 12px 14px;
-  border-radius: var(--sk-radius-md);
-  background: var(--sk-color-surface);
-  border: 1px solid var(--sk-color-border);
+  display: grid;
+  gap: 2px;
+  padding: 12px 0;
+}
+
+.ui-reasons li + li {
+  border-top: 1px solid var(--sk-color-border);
 }
 
 .ui-reasons .reason-reading {
@@ -811,10 +822,8 @@ a {
 
 .ui-ledger {
   display: grid;
-  border-radius: var(--sk-radius-md);
-  background: var(--sk-color-surface);
-  border: 1px solid var(--sk-color-border);
-  padding: 4px 14px;
+  border-top: 1px solid var(--sk-color-border-strong);
+  padding-top: 4px;
 }
 
 .ui-ledger div {

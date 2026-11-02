@@ -20,20 +20,22 @@ const sampleVerdict = () =>
     title: SAMPLE_PRODUCT.name,
   });
 
-/** Which [data-stage] block sits across the middle of the viewport. */
+/** Which [data-stage] block is being read: the last one whose centre (where its copy sits) has risen past 60% of the viewport. */
 export function useActiveStage(root: RefObject<HTMLElement | null>, initial: StageId = 'verdict') {
   const [active, setActive] = useState<StageId>(initial);
   useEffect(() => {
     const el = root.current;
     if (!el) return;
     let frame = 0;
-    // The last stage whose top has passed the middle of the screen; robust to jumps (keyboard, find, anchors).
+    // Keyed to the block's centre, not its top, so the panel changes as its copy comes into the reading line rather
+    // than while the copy is still at the bottom edge; robust to jumps (keyboard, find, anchors).
     const update = () => {
       frame = 0;
-      const mid = window.innerHeight / 2;
+      const line = window.innerHeight * 0.6;
       let current: StageId = initial;
       el.querySelectorAll<HTMLElement>('[data-stage]').forEach((s) => {
-        if (s.getBoundingClientRect().top <= mid) current = s.dataset.stage as StageId;
+        const r = s.getBoundingClientRect();
+        if (r.top + r.height / 2 <= line) current = s.dataset.stage as StageId;
       });
       setActive(current);
     };
