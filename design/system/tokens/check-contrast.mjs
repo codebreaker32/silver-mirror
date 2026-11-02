@@ -349,9 +349,9 @@ lint('CAUTION tint confined to the verdict head', tokens.component.verdictCard.b
 for (const mode of MODES) {
   const sem = resolve(tokens, tokens.semantic.color[mode], mode);
   const acc = sem.accent.toUpperCase();
-  // Neutral = drawn from the pearl / silver / graphite / mauve (2.2 plum-grey) ramps (by alias, not by guessing from the hex) and never equal to the accent.
+  // Neutral = drawn from the pearl / silver / graphite / mauve / mirror (2.3 silver & graphite) ramps (by alias, not by guessing from the hex) and never equal to the accent.
   const raw = tokens.semantic.color[mode].meter;
-  const bad = Object.entries(raw).filter(([k, v]) => !/^\{(pearl|silver|graphite|mauve)\./.test(v) || sem.meter[k].toUpperCase() === acc);
+  const bad = Object.entries(raw).filter(([k, v]) => !/^\{(pearl|silver|graphite|mauve|mirror)\./.test(v) || sem.meter[k].toUpperCase() === acc);
   lint(`Band meter is neutral ink, not accent (${mode})`, bad.length === 0, Object.entries(raw).map(([k, v]) => `${k} ${v} ${sem.meter[k]}`).join(', ') + `; accent ${acc}`);
   const vcols = Object.values(sem.verdict).flatMap((o) => Object.values(o).map((x) => x.toUpperCase()));
   lint(`No verdict colour equals the accent (${mode})`, !vcols.includes(acc), `accent ${acc}`);
@@ -367,13 +367,15 @@ for (const mode of MODES) {
   lint('Primary pill label >= 7:1 in both modes; dark pill is pearl with a slate label', rl >= 7 && rd >= 7 && inverted, `light ${L.accent} / ${L['on-accent']} = ${rl.toFixed(2)}:1; dark ${d.accent} / ${d['on-accent']} = ${rd.toFixed(2)}:1`);
 }
 
-// UNKNOWN never looks like the primary pill: no slate fill, dashed edge.
+// UNKNOWN never looks like the primary pill: no graphite fill.
 for (const mode of MODES) {
   const sem = resolve(tokens, tokens.semantic.color[mode], mode);
   const u = tokens.component.verdictCard.head.unknown;
   const fill = sem.verdict.unknown.bg.toUpperCase();
   const pill = ratio(parse(sem.verdict.unknown.bg), parse(sem.accent));
-  lint(`UNKNOWN head is not the primary fill and has a dashed edge (${mode})`, fill !== sem.accent.toUpperCase() && u.borderStyle === 'dashed' && pill >= 3, `unknown.bg ${fill} vs accent ${sem.accent} = ${pill.toFixed(2)}:1, ${u.borderStyle}`);
+  // 2.3: the head sits on the surface tone and the UNKNOWN disc is the neutral well; it must never be the graphite primary fill.
+  const neutralWell = /^\{(pearl|silver|graphite|mirror)\./.test(tokens.semantic.color[mode].verdict.unknown.bg);
+  lint(`UNKNOWN is a neutral well, never the primary fill (${mode})`, fill !== sem.accent.toUpperCase() && neutralWell && pill >= 3, `unknown.bg ${fill} vs accent ${sem.accent} = ${pill.toFixed(2)}:1, ${u.borderStyle}`);
 }
 
 // Buttons are pills; outlined boxes are retired.
