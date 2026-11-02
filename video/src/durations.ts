@@ -10,6 +10,35 @@ export type SceneMeta = {
 };
 export const SCENE_META: SceneMeta[] = [
   {
+    "id": "greetIn",
+    "seconds": 3.39,
+    "voiceSeconds": 2.788,
+    "voice": "voiceover/greet-in.mp3",
+    "clip": null,
+    "marks": [
+      {
+        "w": "Namaste",
+        "t": 187
+      },
+      {
+        "w": "Welcome",
+        "t": 1654
+      },
+      {
+        "w": "to",
+        "t": 2026
+      },
+      {
+        "w": "Silver",
+        "t": 2194
+      },
+      {
+        "w": "Mirror",
+        "t": 2566
+      }
+    ]
+  },
+  {
     "id": "hook",
     "seconds": 5.84,
     "voiceSeconds": 4.944,
@@ -779,6 +808,35 @@ export const SCENE_META: SceneMeta[] = [
       {
         "w": "know",
         "t": 6103
+      }
+    ]
+  },
+  {
+    "id": "greetOut",
+    "seconds": 4.38,
+    "voiceSeconds": 3.076,
+    "voice": "voiceover/greet-out.mp3",
+    "clip": null,
+    "marks": [
+      {
+        "w": "Thank",
+        "t": 137
+      },
+      {
+        "w": "you",
+        "t": 437
+      },
+      {
+        "w": "for",
+        "t": 557
+      },
+      {
+        "w": "watching",
+        "t": 725
+      },
+      {
+        "w": "Namaste",
+        "t": 2145
       }
     ]
   }

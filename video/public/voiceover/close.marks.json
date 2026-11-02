@@ -1,14 +1,14 @@
-{"time":201,"type":"word","start":28,"end":34,"value":"Silver"}
-{"time":550,"type":"word","start":35,"end":41,"value":"Mirror"}
-{"time":1104,"type":"word","start":43,"end":64,"value":"<break time=\"250ms\"/>"}
-{"time":1937,"type":"word","start":65,"end":70,"value":"Check"}
-{"time":2141,"type":"word","start":71,"end":77,"value":"before"}
-{"time":2466,"type":"word","start":78,"end":81,"value":"you"}
-{"time":2707,"type":"word","start":82,"end":85,"value":"buy"}
-{"time":3058,"type":"word","start":87,"end":108,"value":"<break time=\"250ms\"/>"}
-{"time":3879,"type":"word","start":109,"end":115,"value":"Mirror"}
-{"time":4391,"type":"word","start":117,"end":123,"value":"mirror"}
-{"time":4921,"type":"word","start":125,"end":146,"value":"<break time=\"250ms\"/>"}
-{"time":5741,"type":"word","start":147,"end":150,"value":"Now"}
-{"time":5922,"type":"word","start":151,"end":154,"value":"you"}
-{"time":6103,"type":"word","start":155,"end":159,"value":"know"}
+{"time": 139, "type": "word", "start": 19, "end": 23, "value": "Silver"}
+{"time": 380, "type": "word", "start": 24, "end": 28, "value": "Mirror"}
+{"time": 762, "type": "word", "start": 30, "end": 44, "value": "<break time=\"250ms\"/>"}
+{"time": 1337, "type": "word", "start": 45, "end": 48, "value": "Check"}
+{"time": 1477, "type": "word", "start": 49, "end": 53, "value": "before"}
+{"time": 1702, "type": "word", "start": 54, "end": 56, "value": "you"}
+{"time": 1868, "type": "word", "start": 57, "end": 59, "value": "buy"}
+{"time": 2110, "type": "word", "start": 60, "end": 75, "value": "<break time=\"250ms\"/>"}
+{"time": 2677, "type": "word", "start": 75, "end": 79, "value": "Mirror"}
+{"time": 3030, "type": "word", "start": 81, "end": 85, "value": "mirror"}
+{"time": 3396, "type": "word", "start": 86, "end": 101, "value": "<break time=\"250ms\"/>"}
+{"time": 3962, "type": "word", "start": 101, "end": 104, "value": "Now"}
+{"time": 4086, "type": "word", "start": 104, "end": 106, "value": "you"}
+{"time": 4211, "type": "word", "start": 107, "end": 110, "value": "know"}

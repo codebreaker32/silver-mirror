@@ -11,11 +11,14 @@ import { Verdict } from "./scenes/Verdict";
 import { TryOn } from "./scenes/TryOn";
 import { Tour } from "./scenes/Tour";
 import { Close } from "./scenes/Close";
+import { GreetIn } from "./scenes/GreetIn";
+import { GreetOut } from "./scenes/GreetOut";
 import "./fonts";
 
 // Scene durations come from src/durations.ts (generated from public/voiceover/durations.json:
 // voice seconds + 0.3s lead + 0.6s tail, or fixed estimates when no voice exists yet).
 export const SCENES: Record<string, React.FC> = {
+  greetIn: GreetIn,
   hook: Hook,
   shelf: Shelf,
   gap: Gap,
@@ -25,6 +28,7 @@ export const SCENES: Record<string, React.FC> = {
   tryon: TryOn,
   tour: Tour,
   close: Close,
+  greetOut: GreetOut,
 };
 
 export const sceneFrames = (fps: number) => SCENE_META.map((s) => Math.round(s.seconds * fps));

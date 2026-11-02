@@ -79,7 +79,7 @@ export const Verdict: React.FC = () => {
         <div style={{ display: "flex", gap: 30 }}>
           <Part at={cue(ID, "ingredient", fps, 1, 170)} k="The ingredient" v="Glycerin" />
           <Part at={cue(ID, "reading", fps, 1, 190)} k="Your reading" v="U-zone · Dry" />
-          <Part at={cue(ID, "rule", fps, 1, 210)} k="The rule" v="Humectant suits dry" />
+          <Part at={cue(ID, "rule", fps, 1, 210)} k="The rule" v="Humectant fits dry skin" />
         </div>
       </div>
       <div style={{ position: "absolute", left: 720, top: 700, width: 1080 }}>

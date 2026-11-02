@@ -1,15 +1,15 @@
-{"time":197,"type":"word","start":28,"end":33,"value":"Store"}
-{"time":514,"type":"word","start":34,"end":38,"value":"skin"}
-{"time":830,"type":"word","start":39,"end":46,"value":"quizzes"}
-{"time":1399,"type":"word","start":47,"end":51,"value":"only"}
-{"time":1653,"type":"word","start":52,"end":56,"value":"know"}
-{"time":1868,"type":"word","start":57,"end":62,"value":"their"}
-{"time":2159,"type":"word","start":63,"end":66,"value":"own"}
-{"time":2311,"type":"word","start":67,"end":76,"value":"catalogue"}
-{"time":2995,"type":"word","start":78,"end":99,"value":"<break time=\"250ms\"/>"}
-{"time":3857,"type":"word","start":100,"end":103,"value":"And"}
-{"time":3983,"type":"word","start":104,"end":106,"value":"no"}
-{"time":4236,"type":"word","start":107,"end":114,"value":"listing"}
-{"time":4679,"type":"word","start":115,"end":120,"value":"knows"}
-{"time":4932,"type":"word","start":121,"end":125,"value":"your"}
-{"time":5122,"type":"word","start":126,"end":130,"value":"skin"}
+{"time": 163, "type": "word", "start": 23, "end": 27, "value": "Store"}
+{"time": 425, "type": "word", "start": 28, "end": 31, "value": "skin"}
+{"time": 686, "type": "word", "start": 32, "end": 38, "value": "quizzes"}
+{"time": 1157, "type": "word", "start": 39, "end": 42, "value": "only"}
+{"time": 1367, "type": "word", "start": 43, "end": 46, "value": "know"}
+{"time": 1545, "type": "word", "start": 47, "end": 51, "value": "their"}
+{"time": 1785, "type": "word", "start": 52, "end": 55, "value": "own"}
+{"time": 1911, "type": "word", "start": 55, "end": 63, "value": "catalogue"}
+{"time": 2476, "type": "word", "start": 64, "end": 82, "value": "<break time=\"250ms\"/>"}
+{"time": 3189, "type": "word", "start": 83, "end": 85, "value": "And"}
+{"time": 3293, "type": "word", "start": 86, "end": 88, "value": "no"}
+{"time": 3502, "type": "word", "start": 88, "end": 94, "value": "listing"}
+{"time": 3869, "type": "word", "start": 95, "end": 99, "value": "knows"}
+{"time": 4078, "type": "word", "start": 100, "end": 103, "value": "your"}
+{"time": 4235, "type": "word", "start": 104, "end": 107, "value": "skin"}

@@ -28,6 +28,7 @@ export const FADE = 11;
 
 // Final narration, one line per scene. Used to estimate word timing when no speech marks exist.
 export const NARRATION: Record<string, string> = {
+  greetIn: "Namaste! Welcome to Silver Mirror.",
   hook: "Mirror, mirror, on the wall. Will this serum suit me at all?",
   shelf: "Every skincare shelf has one. The bottle that didn't suit you. And opened skincare can't go back.",
   gap: "Store skin quizzes only know their own catalogue. And no listing knows your skin.",
@@ -37,4 +38,5 @@ export const NARRATION: Record<string, string> = {
   tryon: "Tinted sunscreen? Try the real shades on your own face, with YouCam Makeup try-on. Nothing is saved.",
   tour: "Your reading, in plain words. A routine built only from products that fit you. And a shop of verified products, each one checked against your skin.",
   close: "Silver Mirror. Check before you buy. Mirror, mirror. Now you know.",
+  greetOut: "Thank you for watching. Namaste!",
 };

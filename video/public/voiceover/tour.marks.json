@@ -1,28 +1,28 @@
-{"time":188,"type":"word","start":28,"end":32,"value":"Your"}
-{"time":369,"type":"word","start":33,"end":40,"value":"reading"}
-{"time":980,"type":"word","start":42,"end":44,"value":"in"}
-{"time":1101,"type":"word","start":45,"end":50,"value":"plain"}
-{"time":1402,"type":"word","start":51,"end":56,"value":"words"}
-{"time":1958,"type":"word","start":58,"end":79,"value":"<break time=\"250ms\"/>"}
-{"time":2781,"type":"word","start":80,"end":81,"value":"A"}
-{"time":2829,"type":"word","start":82,"end":89,"value":"routine"}
-{"time":3203,"type":"word","start":90,"end":95,"value":"built"}
-{"time":3626,"type":"word","start":96,"end":100,"value":"only"}
-{"time":3867,"type":"word","start":101,"end":105,"value":"from"}
-{"time":4108,"type":"word","start":106,"end":114,"value":"products"}
-{"time":4567,"type":"word","start":115,"end":119,"value":"that"}
-{"time":4784,"type":"word","start":120,"end":123,"value":"fit"}
-{"time":5026,"type":"word","start":124,"end":127,"value":"you"}
-{"time":5329,"type":"word","start":129,"end":150,"value":"<break time=\"250ms\"/>"}
-{"time":6152,"type":"word","start":151,"end":154,"value":"And"}
-{"time":6272,"type":"word","start":155,"end":156,"value":"a"}
-{"time":6369,"type":"word","start":157,"end":161,"value":"shop"}
-{"time":6659,"type":"word","start":162,"end":164,"value":"of"}
-{"time":6779,"type":"word","start":165,"end":173,"value":"verified"}
-{"time":7359,"type":"word","start":174,"end":182,"value":"products"}
-{"time":8038,"type":"word","start":184,"end":188,"value":"each"}
-{"time":8279,"type":"word","start":189,"end":192,"value":"one"}
-{"time":8521,"type":"word","start":193,"end":200,"value":"checked"}
-{"time":8810,"type":"word","start":201,"end":208,"value":"against"}
-{"time":9173,"type":"word","start":209,"end":213,"value":"your"}
-{"time":9342,"type":"word","start":214,"end":218,"value":"skin"}
+{"time": 174, "type": "word", "start": 26, "end": 30, "value": "Your"}
+{"time": 341, "type": "word", "start": 30, "end": 37, "value": "reading"}
+{"time": 905, "type": "word", "start": 39, "end": 41, "value": "in"}
+{"time": 1017, "type": "word", "start": 42, "end": 46, "value": "plain"}
+{"time": 1295, "type": "word", "start": 47, "end": 52, "value": "words"}
+{"time": 1808, "type": "word", "start": 54, "end": 73, "value": "<break time=\"250ms\"/>"}
+{"time": 2569, "type": "word", "start": 74, "end": 75, "value": "A"}
+{"time": 2613, "type": "word", "start": 76, "end": 82, "value": "routine"}
+{"time": 2958, "type": "word", "start": 83, "end": 88, "value": "built"}
+{"time": 3349, "type": "word", "start": 89, "end": 92, "value": "only"}
+{"time": 3572, "type": "word", "start": 93, "end": 97, "value": "from"}
+{"time": 3794, "type": "word", "start": 98, "end": 105, "value": "products"}
+{"time": 4218, "type": "word", "start": 106, "end": 110, "value": "that"}
+{"time": 4419, "type": "word", "start": 111, "end": 114, "value": "fit"}
+{"time": 4642, "type": "word", "start": 115, "end": 117, "value": "you"}
+{"time": 4922, "type": "word", "start": 119, "end": 139, "value": "<break time=\"250ms\"/>"}
+{"time": 5682, "type": "word", "start": 139, "end": 142, "value": "And"}
+{"time": 5793, "type": "word", "start": 143, "end": 144, "value": "a"}
+{"time": 5883, "type": "word", "start": 145, "end": 149, "value": "shop"}
+{"time": 6151, "type": "word", "start": 150, "end": 151, "value": "of"}
+{"time": 6261, "type": "word", "start": 152, "end": 160, "value": "verified"}
+{"time": 6797, "type": "word", "start": 161, "end": 168, "value": "products"}
+{"time": 7424, "type": "word", "start": 170, "end": 174, "value": "each"}
+{"time": 7647, "type": "word", "start": 175, "end": 177, "value": "one"}
+{"time": 7870, "type": "word", "start": 178, "end": 185, "value": "checked"}
+{"time": 8137, "type": "word", "start": 186, "end": 192, "value": "against"}
+{"time": 8473, "type": "word", "start": 193, "end": 197, "value": "your"}
+{"time": 8629, "type": "word", "start": 198, "end": 201, "value": "skin"}

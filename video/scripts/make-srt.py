@@ -22,7 +22,8 @@ def ts(t):
 cues, t0 = [], 0.0
 for s in scenes:
     dur = round(s["seconds"] * FPS) / FPS
-    mp = root / "public/voiceover" / f"{s['id']}.marks.json"
+    mp = root / "public" / (s["voice"] or f"voiceover/{s['id']}.mp3").rsplit(".", 1)[0]
+    mp = mp.with_name(mp.name + ".marks.json")
     marks = [json.loads(l) for l in mp.read_text().splitlines() if l.strip()] if mp.exists() else []
     sentences = [x.strip() for x in re.split(r"(?<=[.?!])\s+", narr.get(s["id"], "")) if x.strip()]
     groups, cur = [], []

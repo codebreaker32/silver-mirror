@@ -1,13 +1,13 @@
-{"time":204,"type":"word","start":28,"end":34,"value":"Mirror"}
-{"time":732,"type":"word","start":36,"end":42,"value":"mirror"}
-{"time":1394,"type":"word","start":44,"end":46,"value":"on"}
-{"time":1524,"type":"word","start":47,"end":50,"value":"the"}
-{"time":1655,"type":"word","start":51,"end":55,"value":"wall"}
-{"time":2115,"type":"word","start":57,"end":78,"value":"<break time=\"250ms\"/>"}
-{"time":2952,"type":"word","start":79,"end":83,"value":"Will"}
-{"time":3135,"type":"word","start":84,"end":88,"value":"this"}
-{"time":3397,"type":"word","start":89,"end":94,"value":"serum"}
-{"time":3854,"type":"word","start":95,"end":99,"value":"suit"}
-{"time":4116,"type":"word","start":100,"end":102,"value":"me"}
-{"time":4312,"type":"word","start":103,"end":105,"value":"at"}
-{"time":4508,"type":"word","start":106,"end":109,"value":"all"}
+{"time": 168, "type": "word", "start": 23, "end": 28, "value": "Mirror"}
+{"time": 604, "type": "word", "start": 30, "end": 35, "value": "mirror"}
+{"time": 1150, "type": "word", "start": 36, "end": 38, "value": "on"}
+{"time": 1258, "type": "word", "start": 39, "end": 41, "value": "the"}
+{"time": 1366, "type": "word", "start": 42, "end": 45, "value": "wall"}
+{"time": 1745, "type": "word", "start": 47, "end": 64, "value": "<break time=\"250ms\"/>"}
+{"time": 2436, "type": "word", "start": 65, "end": 68, "value": "Will"}
+{"time": 2587, "type": "word", "start": 69, "end": 73, "value": "this"}
+{"time": 2803, "type": "word", "start": 73, "end": 78, "value": "serum"}
+{"time": 3180, "type": "word", "start": 78, "end": 82, "value": "suit"}
+{"time": 3397, "type": "word", "start": 83, "end": 84, "value": "me"}
+{"time": 3558, "type": "word", "start": 85, "end": 87, "value": "at"}
+{"time": 3720, "type": "word", "start": 87, "end": 90, "value": "all"}

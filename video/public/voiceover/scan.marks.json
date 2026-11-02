@@ -1,38 +1,38 @@
-{"time":211,"type":"word","start":28,"end":30,"value":"So"}
-{"time":389,"type":"word","start":31,"end":37,"value":"Silver"}
-{"time":769,"type":"word","start":38,"end":44,"value":"Mirror"}
-{"time":1162,"type":"word","start":45,"end":51,"value":"starts"}
-{"time":1593,"type":"word","start":52,"end":56,"value":"with"}
-{"time":1784,"type":"word","start":57,"end":60,"value":"one"}
-{"time":1974,"type":"word","start":61,"end":70,"value":"consented"}
-{"time":2557,"type":"word","start":71,"end":75,"value":"scan"}
-{"time":3104,"type":"word","start":77,"end":98,"value":"<break time=\"250ms\"/>"}
-{"time":3968,"type":"word","start":120,"end":126,"value":"YouCam"}
-{"time":4386,"type":"word","start":132,"end":139,"value":"&apos;s"}
-{"time":4538,"type":"word","start":140,"end":142,"value":"HD"}
-{"time":4931,"type":"word","start":143,"end":147,"value":"Skin"}
-{"time":5236,"type":"word","start":148,"end":156,"value":"Analysis"}
-{"time":5844,"type":"word","start":157,"end":162,"value":"reads"}
-{"time":6237,"type":"word","start":163,"end":171,"value":"oiliness"}
-{"time":6953,"type":"word","start":173,"end":178,"value":"pores"}
-{"time":7479,"type":"word","start":180,"end":188,"value":"moisture"}
-{"time":8100,"type":"word","start":189,"end":192,"value":"and"}
-{"time":8227,"type":"word","start":193,"end":200,"value":"redness"}
-{"time":8863,"type":"word","start":202,"end":223,"value":"<break time=\"250ms\"/>"}
-{"time":9674,"type":"word","start":224,"end":228,"value":"Then"}
-{"time":9851,"type":"word","start":229,"end":232,"value":"the"}
-{"time":10041,"type":"word","start":233,"end":238,"value":"photo"}
-{"time":10422,"type":"word","start":239,"end":241,"value":"is"}
-{"time":10548,"type":"word","start":242,"end":249,"value":"deleted"}
-{"time":11068,"type":"word","start":250,"end":254,"value":"from"}
-{"time":11322,"type":"word","start":276,"end":282,"value":"YouCam"}
-{"time":12296,"type":"word","start":290,"end":311,"value":"<break time=\"250ms\"/>"}
-{"time":13161,"type":"word","start":312,"end":316,"value":"Only"}
-{"time":13477,"type":"word","start":317,"end":320,"value":"Low"}
-{"time":13825,"type":"word","start":322,"end":328,"value":"Medium"}
-{"time":14370,"type":"word","start":329,"end":332,"value":"and"}
-{"time":14484,"type":"word","start":333,"end":337,"value":"High"}
-{"time":14763,"type":"word","start":338,"end":342,"value":"stay"}
-{"time":15093,"type":"word","start":343,"end":345,"value":"on"}
-{"time":15195,"type":"word","start":346,"end":350,"value":"your"}
-{"time":15321,"type":"word","start":351,"end":356,"value":"phone"}
+{"time": 186, "type": "word", "start": 25, "end": 26, "value": "So"}
+{"time": 342, "type": "word", "start": 27, "end": 33, "value": "Silver"}
+{"time": 676, "type": "word", "start": 33, "end": 39, "value": "Mirror"}
+{"time": 1022, "type": "word", "start": 40, "end": 45, "value": "starts"}
+{"time": 1401, "type": "word", "start": 46, "end": 49, "value": "with"}
+{"time": 1569, "type": "word", "start": 50, "end": 53, "value": "one"}
+{"time": 1736, "type": "word", "start": 54, "end": 62, "value": "consented"}
+{"time": 2249, "type": "word", "start": 62, "end": 66, "value": "scan"}
+{"time": 2730, "type": "word", "start": 68, "end": 86, "value": "<break time=\"250ms\"/>"}
+{"time": 3490, "type": "word", "start": 106, "end": 111, "value": "YouCam"}
+{"time": 3858, "type": "word", "start": 116, "end": 122, "value": "&apos;s"}
+{"time": 3992, "type": "word", "start": 123, "end": 125, "value": "HD"}
+{"time": 4337, "type": "word", "start": 126, "end": 129, "value": "Skin"}
+{"time": 4605, "type": "word", "start": 130, "end": 137, "value": "Analysis"}
+{"time": 5140, "type": "word", "start": 138, "end": 142, "value": "reads"}
+{"time": 5486, "type": "word", "start": 143, "end": 150, "value": "oiliness"}
+{"time": 6116, "type": "word", "start": 152, "end": 157, "value": "pores"}
+{"time": 6578, "type": "word", "start": 158, "end": 165, "value": "moisture"}
+{"time": 7125, "type": "word", "start": 166, "end": 169, "value": "and"}
+{"time": 7236, "type": "word", "start": 170, "end": 176, "value": "redness"}
+{"time": 7796, "type": "word", "start": 178, "end": 196, "value": "<break time=\"250ms\"/>"}
+{"time": 8509, "type": "word", "start": 197, "end": 201, "value": "Then"}
+{"time": 8665, "type": "word", "start": 201, "end": 204, "value": "the"}
+{"time": 8832, "type": "word", "start": 205, "end": 209, "value": "photo"}
+{"time": 9167, "type": "word", "start": 210, "end": 212, "value": "is"}
+{"time": 9278, "type": "word", "start": 213, "end": 219, "value": "deleted"}
+{"time": 9735, "type": "word", "start": 220, "end": 223, "value": "from"}
+{"time": 9959, "type": "word", "start": 243, "end": 248, "value": "YouCam"}
+{"time": 10815, "type": "word", "start": 255, "end": 274, "value": "<break time=\"250ms\"/>"}
+{"time": 11576, "type": "word", "start": 274, "end": 278, "value": "Only"}
+{"time": 11854, "type": "word", "start": 279, "end": 281, "value": "Low"}
+{"time": 12160, "type": "word", "start": 283, "end": 288, "value": "Medium"}
+{"time": 12639, "type": "word", "start": 289, "end": 292, "value": "and"}
+{"time": 12740, "type": "word", "start": 293, "end": 296, "value": "High"}
+{"time": 12985, "type": "word", "start": 297, "end": 301, "value": "stay"}
+{"time": 13275, "type": "word", "start": 302, "end": 303, "value": "on"}
+{"time": 13365, "type": "word", "start": 304, "end": 308, "value": "your"}
+{"time": 13476, "type": "word", "start": 309, "end": 313, "value": "phone"}

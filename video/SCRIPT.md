@@ -1,6 +1,7 @@
 # Silver Mirror demo video: script and shot list
 
-Voice: Amazon Polly, Kajal (en-IN, generative), one mp3 + speech marks per scene in
+Voice: Amazon Polly generative, a mix: Kajal (en-IN) for the Namaste greetings, Matthew (en-US) for hook
+and close, Danielle (en-US) for the rest. One mp3 per scene (marks rescaled from the older render) in
 `public/voiceover/`. Scene length = 0.3s lead + voice + 0.6s tail, plus a few extra seconds on the
 footage scenes so the phone recording can play out (`EXTRA` in `scripts/sync-durations.mjs`).
 

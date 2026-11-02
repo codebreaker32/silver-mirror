@@ -7,12 +7,15 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const pub = path.join(root, "public");
-const SCENES = ["hook", "shelf", "gap", "scan", "share", "verdict", "tryon", "tour", "close"];
-const FALLBACK = [6, 7, 6, 16, 7, 13, 8, 11, 7];
+const SCENES = ["greetIn", "hook", "shelf", "gap", "scan", "share", "verdict", "tryon", "tour", "close", "greetOut"];
+const FALLBACK = [3, 6, 7, 6, 16, 7, 13, 8, 11, 7, 3.5];
+// Voice/marks file stem per scene when it differs from the scene id.
+const FILE = { greetIn: "greet-in", greetOut: "greet-out" };
+const stem = (id) => FILE[id] ?? id;
 const TAIL = 0.6;
 const LEAD = 0.3; // voice starts 0.3s into each scene
 // Extra seconds after the voice so the phone footage can play out.
-const EXTRA = { scan: 4.5, share: 3, verdict: 4, tryon: 4, tour: 4, close: 1 };
+const EXTRA = { scan: 4.5, share: 3, verdict: 4, tryon: 4, tour: 4, close: 1, greetIn: -0.3, greetOut: 0.4 };
 
 const readJson = (p) => {
   try { return JSON.parse(fs.readFileSync(p, "utf8")); } catch { return null; }
@@ -38,7 +41,7 @@ const lookup = (id) => {
 
 // Speech marks: JSON array, {marks:[...]}, or Polly-style JSON lines. Times in ms.
 const readMarks = (id) => {
-  const p = path.join(pub, "voiceover", `${id}.marks.json`);
+  const p = path.join(pub, "voiceover", `${stem(id)}.marks.json`);
   if (!fs.existsSync(p)) return null;
   const text = fs.readFileSync(p, "utf8").trim();
   let arr = null;
@@ -73,7 +76,7 @@ const findFile = (dir, id, exts) => {
 
 const scenes = SCENES.map((id, i) => {
   const voice = lookup(id);
-  const voiceFile = findFile("voiceover", id, ["mp3", "wav", "m4a"]);
+  const voiceFile = findFile("voiceover", stem(id), ["mp3", "wav", "m4a"]);
   const seconds = (voice && voice > 0 ? LEAD + voice + TAIL : FALLBACK[i]) + (EXTRA[id] ?? 0);
   return {
     id,
