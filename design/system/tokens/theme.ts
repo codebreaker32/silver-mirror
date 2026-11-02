@@ -172,7 +172,7 @@ export const palette = {
   }
 } as const;
 
-export type TypeStyleName = 'display' | 'title' | 'appBarTitle' | 'value' | 'headline' | 'verdictLine' | 'section' | 'reason' | 'reasonIndex' | 'figure' | 'verdictLabel' | 'body' | 'bodyStrong' | 'bodySm' | 'label' | 'labelSm' | 'labelSmRegular' | 'button' | 'overline' | 'caption' | 'fine';
+export type TypeStyleName = 'display' | 'title' | 'appBarTitle' | 'value' | 'valueHero' | 'headline' | 'verdictLine' | 'section' | 'reason' | 'reasonIndex' | 'figure' | 'verdictLabel' | 'body' | 'bodyStrong' | 'bodySm' | 'label' | 'labelSm' | 'labelSmRegular' | 'button' | 'overline' | 'caption' | 'fine';
 export interface TypeStyle extends TextStyle {
   fontFamily: FontFamilyKey;
   fontSize: number;
@@ -208,6 +208,13 @@ export const typography: Record<TypeStyleName, TypeStyle> = {
     "fontSize": 24,
     "lineHeight": 30,
     "letterSpacing": -0.4,
+    "includeFontPadding": false
+  },
+  "valueHero": {
+    "fontFamily": "Geist_600SemiBold",
+    "fontSize": 28,
+    "lineHeight": 34,
+    "letterSpacing": -0.5,
     "includeFontPadding": false
   },
   "headline": {
@@ -353,6 +360,10 @@ export const textProps: Record<TypeStyleName, { allowFontScaling: true; maxFontS
     "maxFontSizeMultiplier": 2
   },
   "value": {
+    "allowFontScaling": true,
+    "maxFontSizeMultiplier": 2
+  },
+  "valueHero": {
     "allowFontScaling": true,
     "maxFontSizeMultiplier": 2
   },
@@ -1747,6 +1758,14 @@ export interface ThemeComponents {
     discHero: number;
     heroPadding: number;
     heroDiscBg: string;
+    valueHero: {
+      fontFamily: string;
+      fontSize: number;
+      lineHeight: number;
+      letterSpacing: number;
+      includeFontPadding: boolean;
+    };
+    heroLabelColor: string;
     gradientAngle: number;
     gradientMid: number;
     arrow: string;
@@ -3467,6 +3486,14 @@ export const lightTheme: SkinKeyTheme = {
         "discHero": 72,
         "heroPadding": 24,
         "heroDiscBg": "rgba(255, 255, 255, 0.55)",
+        "valueHero": {
+          "fontFamily": "Geist_600SemiBold",
+          "fontSize": 28,
+          "lineHeight": 34,
+          "letterSpacing": -0.5,
+          "includeFontPadding": false
+        },
+        "heroLabelColor": "#1A1B23",
         "gradientAngle": 120,
         "gradientMid": 0.55,
         "arrow": "#1A1B23"
@@ -3970,11 +3997,11 @@ export const darkTheme: SkinKeyTheme = {
       "tabInactive": "#A8A5B3",
       "tabInactiveLabel": "#A8A5B3",
       "skinGradient": {
-        "start": "#2C2942",
-        "mid": "#24232F",
+        "start": "#3A3458",
+        "mid": "#2A2838",
         "end": "#20212A",
         "edge": "rgba(239, 238, 243, 0.07)",
-        "disc": "#34304F"
+        "disc": "#463F69"
       },
       "accentWarm": "#3D3936",
       "onAccentWarm": "#E4DCD5",
@@ -5178,7 +5205,15 @@ export const darkTheme: SkinKeyTheme = {
         "disc": 56,
         "discHero": 72,
         "heroPadding": 24,
-        "heroDiscBg": "#34304F",
+        "heroDiscBg": "#463F69",
+        "valueHero": {
+          "fontFamily": "Geist_600SemiBold",
+          "fontSize": 28,
+          "lineHeight": 34,
+          "letterSpacing": -0.5,
+          "includeFontPadding": false
+        },
+        "heroLabelColor": "#EFEEF3",
         "gradientAngle": 120,
         "gradientMid": 0.55,
         "arrow": "#EFEEF3"
@@ -5403,7 +5438,7 @@ export const darkTheme: SkinKeyTheme = {
         "thumbBg": "#272832",
         "thumbRadius": 16,
         "thumbSize": 64,
-        "heroBg": "#24232F",
+        "heroBg": "#2A2838",
         "verdictTagIcon": 16,
         "minHeight": 96,
         "listGap": 12

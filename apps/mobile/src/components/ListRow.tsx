@@ -111,11 +111,26 @@ export function ListRow({ title, supporting, leadingIcon, thumb, trailing = 'che
  * shadow in light, sheen edge in dark), optional sans group head. `thumbs` insets the dividers to the text column
  * (gutter + 56 + 16), as in the showcase list.
  */
-export function ListGroup({ title, children, testID, thumbs = false, accessibilityLabel }: { title?: string; children: ReactNode; testID?: string; thumbs?: boolean; accessibilityLabel?: string }) {
+export function ListGroup({
+  title,
+  children,
+  testID,
+  thumbs = false,
+  inset: insetOverride,
+  accessibilityLabel,
+}: {
+  title?: string;
+  children: ReactNode;
+  testID?: string;
+  thumbs?: boolean;
+  /** Divider left inset for rows with a custom leading tile (Settings: gutter + 44 + gap). Overrides `thumbs`. */
+  inset?: number;
+  accessibilityLabel?: string;
+}) {
   const t = useTheme();
   const r = t.components.listRow;
   const rows = Children.toArray(children);
-  const inset = thumbs ? r.paddingX + r.thumbSize + r.gap : r.dividerInset;
+  const inset = insetOverride ?? (thumbs ? r.paddingX + r.thumbSize + r.gap : r.dividerInset);
   return (
     <View testID={testID} style={{ gap: t.space[2] }}>
       {title ? (

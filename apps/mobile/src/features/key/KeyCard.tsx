@@ -49,6 +49,9 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
       ? `Sample reading for trying ${COPY.appName}.`
       : `Measured by YouCam Skin Analysis HD, ${date}.`;
   const ruleIds = [...new Set(focus.flatMap((f) => f.rules))];
+  // A short focus row (one or two tiles) carries the rules caption beside it, in the empty columns.
+  const shortRow = focus.length < theme.components.focusTile.columns;
+  const rulesCaption = <Caption>{`From our published rules (${ruleIds.join(', ')}). Traits to look for on a label.`}</Caption>;
   const ranked = CONCERNS.filter((c) => keyProfile.bands[c]?.level).sort((a, b) => BAND_RANK[keyProfile.bands[a].level] - BAND_RANK[keyProfile.bands[b].level]);
 
   return (
@@ -90,8 +93,8 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
         <SectionHeader title="What this means for products" />
         {focus.length > 0 ? (
           <>
-            <FocusTiles items={focus} />
-            <Caption>{`From our published rules (${ruleIds.join(', ')}). Traits to look for on a label.`}</Caption>
+            <FocusTiles items={focus} aside={shortRow ? rulesCaption : undefined} />
+            {shortRow ? null : rulesCaption}
           </>
         ) : (
           <Body muted small>

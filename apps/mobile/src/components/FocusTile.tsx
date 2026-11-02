@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from './Icon';
@@ -48,21 +49,26 @@ export function FocusTile({ label, icon, wide = false }: FocusItem & { wide?: bo
 
 /**
  * Three tiles across with 12dp gaps (focusTile.columns). Fewer than three keep the one-third width and sit left
- * (never stretched); extra ones are dropped.
+ * (never stretched); extra ones are dropped. `aside` (an explanation caption) fills the empty columns beside a short
+ * row, centred vertically, instead of blank spacers.
  */
-export function FocusTiles({ items, accessibilityLabel = 'What this means for products' }: { items: readonly FocusItem[]; accessibilityLabel?: string }) {
+export function FocusTiles({ items, aside, accessibilityLabel = 'What this means for products' }: { items: readonly FocusItem[]; aside?: ReactNode; accessibilityLabel?: string }) {
   const t = useTheme();
   const f = t.components.focusTile;
   const shown = items.slice(0, f.columns);
   const spacers = Math.max(0, f.columns - shown.length);
+  // Flat row so a tile is exactly one third: the aside spans the spare columns plus the gaps between them.
+  const gap = t.space[3];
   return (
-    <View accessibilityRole="list" accessibilityLabel={accessibilityLabel} style={{ flexDirection: 'row', gap: t.space[3] }}>
+    <View accessibilityRole="list" accessibilityLabel={accessibilityLabel} style={{ flexDirection: 'row', gap }}>
       {shown.map((it) => (
         <FocusTile key={it.label} {...it} />
       ))}
-      {Array.from({ length: spacers }, (_, i) => (
-        <View key={`spacer${i}`} style={{ flex: 1 }} importantForAccessibility="no" />
-      ))}
+      {spacers > 0 && aside ? (
+        <View style={{ flex: spacers, marginLeft: (spacers - 1) * gap, justifyContent: 'center' }}>{aside}</View>
+      ) : (
+        Array.from({ length: spacers }, (_, i) => <View key={`spacer${i}`} style={{ flex: 1 }} importantForAccessibility="no" />)
+      )}
     </View>
   );
 }

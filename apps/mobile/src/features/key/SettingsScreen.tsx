@@ -15,8 +15,9 @@ const CREDITS = [
   'Fonts: Noto Serif Display and Geist (SIL Open Font License)',
 ];
 
-/** 40dp lavender disc (showcase 00_brand_panel feature list); local to Settings, the kit's IconDisc starts at 48. */
-const DISC = 40;
+/** 44dp rounded-square icon tile, radius 12 (showcase 00_brand_panel feature list; kit thumb tile §3.6 at row scale). */
+const TILE = 44;
+const TILE_RADIUS = 12;
 
 interface RowProps {
   title: string;
@@ -29,7 +30,7 @@ interface RowProps {
 }
 
 /**
- * Settings row: 40dp lavender disc with a 20dp iris line icon, title (bodyStrong) over supporting (bodySm muted),
+ * Settings row: 44dp rounded-square lavender tile (hairline, sheen top edge in dark) with a 20dp iris line icon, title (bodyStrong) over supporting (bodySm muted),
  * trailing chevron when it opens a screen. ≥64dp, one TalkBack node. Tokens from component.listRow / iconDisc.
  */
 function SettingsRow({ title, supporting, icon, onPress, chevron = true, testID }: RowProps) {
@@ -42,7 +43,17 @@ function SettingsRow({ title, supporting, icon, onPress, chevron = true, testID 
       <View
         importantForAccessibility="no-hide-descendants"
         accessibilityElementsHidden
-        style={{ width: DISC, height: DISC, borderRadius: DISC / 2, backgroundColor: d.bg, alignItems: 'center', justifyContent: 'center' }}
+        style={{
+          width: TILE,
+          height: TILE,
+          borderRadius: TILE_RADIUS,
+          backgroundColor: d.bg,
+          borderWidth: 1,
+          borderColor: t.colors.border,
+          borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
         <Icon name={icon} size={t.icon.md} color={d.fg} />
       </View>
@@ -81,7 +92,7 @@ function SettingsRow({ title, supporting, icon, onPress, chevron = true, testID 
   );
 }
 
-/** Settings (DESIGN.md §9.12, showcase 00_brand_panel rows): centred title, white r24 groups, disc rows. */
+/** Settings (DESIGN.md §9.12, showcase 00_brand_panel rows): centred title, white r24 groups, icon-tile rows, dividers inset to the text column. */
 export function SettingsScreen() {
   const theme = useTheme();
   const router = useRouter();
@@ -89,12 +100,14 @@ export function SettingsScreen() {
   const [confirm, setConfirm] = useState<ConfirmKind | null>(null);
   const [done, setDone] = useState<string | null>(null);
   const go = (href: Href) => () => router.push(href);
+  // Row dividers start at the text column, so each tile-plus-text row reads as one unit (§3.6).
+  const ROW_INSET = theme.components.listRow.paddingX + TILE + theme.components.listRow.gap;
 
   return (
     <Screen title="Settings">
 
       <View style={{ gap: theme.space[3] }}>
-        <ListGroup title="Your data">
+        <ListGroup title="Your data" inset={ROW_INSET}>
           <SettingsRow
             title={COPY.reading.yours}
             supporting={key ? (isDemo ? `${COPY.reading.demo} in use` : 'Stored on this phone only') : COPY.reading.none}
@@ -106,7 +119,7 @@ export function SettingsScreen() {
           <SettingsRow
             title="Withdraw consent"
             supporting="Deletes your reading and consent from this phone"
-            icon="trash"
+            icon="minus-circle"
             chevron={false}
             onPress={() => setConfirm('withdraw')}
           />
@@ -118,7 +131,7 @@ export function SettingsScreen() {
         ) : null}
       </View>
 
-      <ListGroup title="About">
+      <ListGroup title="About" inset={ROW_INSET}>
         <SettingsRow title="How this was made" supporting="Task ids, units, time and delete status" icon="document" onPress={go('/how')} />
         <SettingsRow title="Published rules" supporting={`Version ${rulesetHash().slice(0, 7)}, the same one each verdict names. ${COPY.howMadeBoundary}`} icon="info" />
       </ListGroup>

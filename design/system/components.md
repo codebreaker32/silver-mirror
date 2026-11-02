@@ -93,11 +93,11 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 | `color.tab-active` | #1A1B23 (`graphite.900`) | #EFEEF3 (`pearl.100`) |
 | `color.tab-inactive` | #7E7B8B (`silver.500`) | #A8A5B3 (`silver.400`) |
 | `color.tab-inactive-label` | #5E5B6B (`color.text-subtle`) | #A8A5B3 (`silver.400`) |
-| `color.skin-gradient.start` | #E2DBF3 | #2C2942 |
-| `color.skin-gradient.mid` | #EEEAF6 | #24232F |
+| `color.skin-gradient.start` | #E2DBF3 | #3A3458 |
+| `color.skin-gradient.mid` | #EEEAF6 | #2A2838 |
 | `color.skin-gradient.end` | #F8F6FB | #20212A |
 | `color.skin-gradient.edge` | rgba(255, 255, 255, 0.60) | rgba(239, 238, 243, 0.07) (`color.sheen-edge`) |
-| `color.skin-gradient.disc` | rgba(255, 255, 255, 0.55) | #34304F (`lavender.800`) |
+| `color.skin-gradient.disc` | rgba(255, 255, 255, 0.55) | #463F69 (`lavender.700`) |
 | `color.accent-warm` | #CFC4BB (`greige.300`) | #3D3936 (`greige.850`) |
 | `color.on-accent-warm` | #4A4038 (`greige.800`) | #E4DCD5 (`greige.200`) |
 | `color.icon-disc` | #E6E2F4 (`lavender.150`) | #34304F (`lavender.800`) |
@@ -177,7 +177,8 @@ Android: `includeFontPadding: false`; never set `fontWeight` on a custom family 
 | `type.display` | Geist_600SemiBold | Geist 600 | 26 / 32 | -0.5 | Home greeting, empty-state headline (showcase: semibold sans, never serif) |
 | `type.title` | Geist_600SemiBold | Geist 600 | 22 / 28 | -0.4 | Product title on /check, in-body page heads, medicine line |
 | `type.appBarTitle` | Geist_600SemiBold | Geist 600 | 18 / 24 | -0.2 | Centred app-bar title |
-| `type.value` | Geist_600SemiBold | Geist 600 | 24 / 30 | -0.4 | Skin-type value ('Combination') in the skin-type card |
+| `type.value` | Geist_600SemiBold | Geist 600 | 24 / 30 | -0.4 | Skin-type value ('Combination') in the compact Home skin-type card |
+| `type.valueHero` | Geist_600SemiBold | Geist 600 | 28 / 34 | -0.5 | Skin-type value in the hero skin-type card (Reading, Result; showcase 04_report 'Combination') |
 | `type.headline` | Geist_600SemiBold | Geist 600 | 20 / 26 | -0.2 | Card heads, sheet titles, 'Where this comes from', empty-state sentence |
 | `type.verdictLine` | Geist_600SemiBold | Geist 600 | 18 / 26 | -0.1 | Verdict sentence (reasons stay 18/500; the caps label stays 15/600) |
 | `type.section` | Geist_600SemiBold | Geist 600 | 18 / 24 | -0.2 | Sentence-case section heads: 'Why · 2 reasons', 'What stays on this phone', 'Better matches' |
@@ -1701,7 +1702,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `productMatchCard.thumbBg` | `color.thumb-tile` | #F5F3F8 | #272832 |
 | `productMatchCard.thumbRadius` | `radius.md` | 16 | same |
 | `productMatchCard.thumbSize` | — | 64 | same |
-| `productMatchCard.heroBg` | `color.skin-gradient.mid` | #EEEAF6 | #24232F |
+| `productMatchCard.heroBg` | `color.skin-gradient.mid` | #EEEAF6 | #2A2838 |
 | `productMatchCard.verdictTagIcon` | `icon.sm` | 16 | same |
 | `productMatchCard.minHeight` | — | 96 | same |
 | `productMatchCard.listGap` | `space.3` | 12 | same |

@@ -36,7 +36,8 @@ export interface SkinTypeCardProps {
  * Skin-type card (component.readingCard, showcase 02_home "Your Skin Type / Combination ->" and 04_report hero).
  * compact: raised white card, padding 20, ≥96dp: 56dp lavender disc, label (14/20 muted) over the value (Geist 600
  * 24/30), an optional caption, trailing 24dp arrow-right when pressable. hero: the skin gradient, padding 24, a 72dp
- * disc on a white-glass fill (lavender-800 in dark), label, value, one cosmetic line, no arrow.
+ * disc on a white-glass fill (lavender-700 in dark), the label in text (not muted), the value in type.valueHero
+ * (Geist 600 28/34) so it dominates as in 04_report, one cosmetic line, no arrow.
  */
 export function SkinTypeCard({
   size = 'compact',
@@ -65,10 +66,10 @@ export function SkinTypeCard({
     >
       {hero ? <IconDisc icon={icon} size="xl" bg={rc.heroDiscBg} /> : <IconDisc icon={icon} size="lg" />}
       <View style={{ flex: 1, gap: 2 }}>
-        <Txt variant="bodySm" style={[rc.label, { color: rc.labelColor }]}>
+        <Txt variant="bodySm" style={[rc.label, { color: hero ? rc.heroLabelColor : rc.labelColor }]}>
           {label}
         </Txt>
-        <Txt variant={quiet ? 'bodyStrong' : 'value'} style={{ color: rc.valueColor }}>
+        <Txt variant={quiet ? 'bodyStrong' : hero ? 'valueHero' : 'value'} style={{ color: rc.valueColor }}>
           {value}
         </Txt>
         {hero && line ? (

@@ -304,11 +304,11 @@
         "tab-inactive": "{silver.400}",
         "tab-inactive-label": "{silver.400}",
         "skin-gradient": {
-          "start": "#2C2942",
-          "mid": "#24232F",
+          "start": "#3A3458",
+          "mid": "#2A2838",
           "end": "#20212A",
           "edge": "{color.sheen-edge}",
-          "disc": "{lavender.800}"
+          "disc": "{lavender.700}"
         },
         "accent-warm": "{greige.850}",
         "on-accent-warm": "{greige.200}",
@@ -488,7 +488,16 @@
         "size": 24,
         "lineHeight": 30,
         "letterSpacing": -0.4,
-        "use": "Skin-type value ('Combination') in the skin-type card"
+        "use": "Skin-type value ('Combination') in the compact Home skin-type card"
+      },
+      "valueHero": {
+        "font": "sans-semibold",
+        "family": "sans",
+        "weight": 600,
+        "size": 28,
+        "lineHeight": 34,
+        "letterSpacing": -0.5,
+        "use": "Skin-type value in the hero skin-type card (Reading, Result; showcase 04_report 'Combination')"
       },
       "headline": {
         "font": "sans-semibold",
@@ -1632,6 +1641,8 @@
       "discHero": 72,
       "heroPadding": "{space.6}",
       "heroDiscBg": "{color.skin-gradient.disc}",
+      "valueHero": "{type.valueHero}",
+      "heroLabelColor": "{color.text}",
       "gradientAngle": 120,
       "gradientMid": 0.55,
       "arrow": "{color.text}"
