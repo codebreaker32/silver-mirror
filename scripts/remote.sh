@@ -8,7 +8,7 @@
 # 3. rsyncs each --pull path back (e.g. design/web-shots, dist-apk, audit)
 # Runs are serialised with a local lock so parallel callers don't trample each other.
 set -euo pipefail
-HOST="${SM_HOST:-<build-vm>}"
+HOST="${SM_HOST:?set SM_HOST to your build VM ssh alias}"
 REMOTE=/srv/sm
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PULLS=()
