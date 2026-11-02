@@ -62,7 +62,7 @@ describe('kit', () => {
     await wrap(<VerdictHead tone="unknown" line="We can't read this listing." />);
     const head = flat(screen.getByTestId('verdict-head').props.style);
     expect(head.borderStyle).toBe('solid');
-    expect(head.borderColor).toBe(lightTheme.colors.border);
+    expect(head.borderColor).toBe(lightTheme.colors.glassEdge);
     expect(head.backgroundColor).not.toBe(lightTheme.colors.accent);
     expect(screen.getByText('UNKNOWN')).toBeTruthy();
     await screen.unmount();

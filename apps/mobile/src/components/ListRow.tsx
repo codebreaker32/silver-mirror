@@ -142,12 +142,12 @@ export function ListGroup({
         accessibilityLabel={accessibilityLabel}
         style={{
           ...(t.dark ? null : t.elevation['1'].style),
-          backgroundColor: t.dark ? r.groupBg : t.colors.surfaceRaised,
+          backgroundColor: t.dark ? r.groupBg : t.colors.glass,
           borderRadius: r.groupRadius,
           overflow: 'hidden',
           borderWidth: 1,
-          borderColor: t.colors.border,
-          borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
+          borderColor: t.dark ? t.colors.border : t.colors.glassEdge,
+          borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.glassEdge,
         }}
       >
         {rows.map((row, i) => (

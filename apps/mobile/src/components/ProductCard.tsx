@@ -28,8 +28,8 @@ export interface ProductCardProps {
 }
 
 /**
- * Better-matches product row (component.productMatchCard, showcase 02_home / 06_discover): white, radius 18, hairline +
- * the very soft shadow (graphite-850 + sheen edge in dark), a 44dp grey thumb tile (radius 12), the name on
+ * Better-matches product row (component.productMatchCard, showcase 02_home / 06_discover): glass, radius 18, the white
+ * hairline + the soft plum shadow (graphite-850 + sheen edge in dark), a 44dp pastel thumb tile (radius 12) with a plum glyph, the name on
  * one line in 15 medium, then one reason line with the grey verdict chip inline after it, destination caption. No ratings, review counts, ribbons or logos.
  * One target with one label in visual order.
  */
@@ -43,16 +43,19 @@ export function ProductCard({ name, reason, verdict, destination, linkOut = !!de
     ? { backgroundColor: m.heroBg, borderRadius: radius }
     : t.dark
       ? { backgroundColor: t.colors.surfaceRaised, borderRadius: radius, borderWidth: 1, borderColor: m.border, borderTopColor: t.colors.sheenEdge }
-      : { ...t.elevation['1'].style, borderRadius: radius, borderWidth: 1, borderColor: t.colors.border };
+      : { ...t.elevation['1'].style, borderRadius: radius };
+  // Pastel product tile (colors reference): pink, lilac or lavender, picked from the name so a product keeps its tile.
+  const tiles = [t.colors.tilePink, t.colors.tileLilac, t.colors.tileLavender];
+  const tile = t.dark ? m.thumbBg : tiles[[...name].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7) % tiles.length];
   const label = accessibilityLabel ?? [name, verdict?.label, reason, destination].filter(Boolean).join('. ');
   const body = (
     <>
       <View
         importantForAccessibility="no-hide-descendants"
         accessibilityElementsHidden
-        style={{ width: thumb, height: thumb, borderRadius: 12, backgroundColor: t.dark ? m.thumbBg : t.colors.secondaryBg, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
+        style={{ width: thumb, height: thumb, borderRadius: 12, backgroundColor: tile, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
       >
-        {image ? <Image source={image} style={{ width: thumb, height: thumb }} resizeMode="cover" /> : <Icon name={glyph} size={t.icon.md} color={t.colors.textMuted} />}
+        {image ? <Image source={image} style={{ width: thumb, height: thumb }} resizeMode="cover" /> : <Icon name={glyph} size={t.icon.md} color={t.dark ? t.colors.textMuted : t.colors.onIconDisc} />}
       </View>
       <View style={{ flex: 1, gap: 2 }}>
         <Txt variant="bodyStrong" numberOfLines={1} style={[m.name, { fontFamily: 'Geist_500Medium', fontSize: 15, lineHeight: 20, color: m.nameColor }]}>

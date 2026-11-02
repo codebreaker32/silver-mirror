@@ -302,7 +302,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `appBar.minHeight` | — | 56 | same |
-| `appBar.bg` | `color.bg` | #F3E7F7 | #121319 |
+| `appBar.bg` | — | transparent | same |
 | `appBar.fg` | `color.text` | #241B29 | #EFEEF3 |
 | `appBar.title` | `type.appBarTitle` | Geist 600 18/24 | same |
 | `appBar.titleAlign` | — | center | same |
@@ -443,7 +443,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.translucent.type` | `type.button` | Geist 600 15/20 | same |
 | `button.translucent.fgDisabled` | `color.disabled-fg` | #67596E | #A8A5B3 |
 | `button.translucent.borderDisabled` | `color.disabled-bg` | #EEE4F1 | #30313C |
-| `actionBar.bg` | `color.bg` | #F3E7F7 | #121319 |
+| `actionBar.bg` | — | transparent | same |
 | `actionBar.border` | `elevation.2.border` | #EBDDEF | #30313C |
 | `actionBar.shadow` | `elevation.2` | elevation 2 | same |
 | `actionBar.paddingTop` | `space.3` | 12 | same |

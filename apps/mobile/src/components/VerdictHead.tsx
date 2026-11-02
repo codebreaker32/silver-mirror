@@ -83,7 +83,8 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
           backgroundColor: t.dark ? c.bg : t.colors.surface,
           borderWidth: 1,
           borderStyle: 'solid' as const,
-          borderColor: t.colors.border,
+          // Light: the glass card's white hairline (tokens 2.2); the verdict colour lives in the icon disc and label.
+          borderColor: t.dark ? t.colors.border : t.colors.glassEdge,
           borderRadius: RADIUS,
           paddingHorizontal: t.space[4],
           paddingVertical: t.space[4],

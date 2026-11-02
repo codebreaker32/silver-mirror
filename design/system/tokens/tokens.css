@@ -734,7 +734,7 @@
   --sk-brand-hero-mark: 152px;
   --sk-brand-wordmark-hero: 32px;
   --sk-app-bar-min-height: 56px;
-  --sk-app-bar-bg: var(--sk-color-bg);
+  --sk-app-bar-bg: transparent;
   --sk-app-bar-fg: var(--sk-color-text);
   --sk-app-bar-title: var(--sk-type-app-bar-title);
   --sk-app-bar-title-tracking: var(--sk-type-app-bar-title-tracking);
@@ -826,7 +826,7 @@
   --sk-button-translucent-type-tracking: var(--sk-type-button-tracking);
   --sk-button-translucent-fg-disabled: var(--sk-color-disabled-fg);
   --sk-button-translucent-border-disabled: var(--sk-color-disabled-bg);
-  --sk-action-bar-bg: var(--sk-color-bg);
+  --sk-action-bar-bg: transparent;
   --sk-action-bar-border: var(--sk-elevation-2-border);
   --sk-action-bar-shadow: var(--sk-elevation-2-shadow);
   --sk-action-bar-padding-top: var(--sk-space-3);
@@ -1269,7 +1269,7 @@
   --sk-reading-card-gradient-angle: 120px;
   --sk-reading-card-gradient-mid: 0.55px;
   --sk-reading-card-arrow: var(--sk-color-text);
-  --sk-focus-tile-bg: var(--sk-color-surface-raised);
+  --sk-focus-tile-bg: var(--sk-color-glass);
   --sk-focus-tile-fg: var(--sk-color-text);
   --sk-focus-tile-radius: var(--sk-radius-tile);
   --sk-focus-tile-padding: var(--sk-space-3);

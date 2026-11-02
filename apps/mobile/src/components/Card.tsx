@@ -4,9 +4,9 @@ import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 
 /**
- * raised: white card, radius 24, 1dp mist hairline and the soft violet shadow in light (showcase); graphite-850 with a
- *   hairline and the 1dp sheen edge in dark.
- * surface: plain white / graphite-900 card with a hairline, no shadow.
+ * raised: frosted glass card (tokens 2.2, colors reference): glass fill, a 1dp white hairline at 70% and the soft
+ *   plum-tinted shadow (elevation.1) in light; graphite-850 with a hairline and the 1dp sheen edge in dark.
+ * surface: the same glass fill and white hairline with no shadow (graphite-900 with a hairline in dark).
  * sunken: bg-sunken well, no edge (chips track, thumbnails, quiet rows).
  * hero: the flat skin-gradient mid tone (legacy first match card).
  * gradient: the skin-type gradient (120 deg lavender -> mist -> white; lavender-graphite in dark), a light edge, no
@@ -67,7 +67,7 @@ export function useCardStyle(variant: CardVariant, radius?: number): ViewStyle {
         ? { backgroundColor: t.colors.surfaceRaised, borderRadius: r, borderWidth: 1, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge }
         : { ...t.elevation['1'].style, borderRadius: r };
     case 'surface':
-      return { backgroundColor: t.colors.surface, borderRadius: r, borderWidth: 1, borderColor: t.colors.border };
+      return { backgroundColor: t.colors.surface, borderRadius: r, borderWidth: 1, borderColor: t.dark ? t.colors.border : t.colors.glassEdge };
     case 'sunken':
       return { backgroundColor: t.colors.bgSunken, borderRadius: r };
     case 'hero':

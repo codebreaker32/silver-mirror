@@ -2544,7 +2544,7 @@ export const lightTheme: SkinKeyTheme = {
       },
       "appBar": {
         "minHeight": 56,
-        "bg": "#F3E7F7",
+        "bg": "transparent",
         "fg": "#241B29",
         "title": {
           "fontFamily": "Geist_600SemiBold",
@@ -2700,7 +2700,7 @@ export const lightTheme: SkinKeyTheme = {
         }
       },
       "actionBar": {
-        "bg": "#F3E7F7",
+        "bg": "transparent",
         "border": "#EBDDEF",
         "shadow": {
           "backgroundColor": "#FEFCFF",
@@ -3561,7 +3561,7 @@ export const lightTheme: SkinKeyTheme = {
         "arrow": "#241B29"
       },
       "focusTile": {
-        "bg": "#FEFCFF",
+        "bg": "#FCF8FE",
         "fg": "#241B29",
         "radius": 20,
         "padding": 12,
@@ -4276,7 +4276,7 @@ export const darkTheme: SkinKeyTheme = {
       },
       "appBar": {
         "minHeight": 56,
-        "bg": "#121319",
+        "bg": "transparent",
         "fg": "#EFEEF3",
         "title": {
           "fontFamily": "Geist_600SemiBold",
@@ -4432,7 +4432,7 @@ export const darkTheme: SkinKeyTheme = {
         }
       },
       "actionBar": {
-        "bg": "#121319",
+        "bg": "transparent",
         "border": "#30313C",
         "shadow": {
           "backgroundColor": "#20212A",

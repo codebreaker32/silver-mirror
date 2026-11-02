@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from './Icon';
 
@@ -9,8 +9,8 @@ export interface FocusItem {
 }
 
 /**
- * Quiet tile surface (showcase 04_report "Recommended Focus"): white, radius 18, a hairline and a very soft violet
- * shadow in light; graphite + sheen edge in dark. Kept local so the tile reads lighter than the raised cards.
+ * Quiet tile surface (showcase 04_report "Recommended Focus"): glass, radius 18, the white hairline and a very soft plum
+ * shadow in light (tokens 2.2); graphite + sheen edge in dark. Kept local so the tile reads lighter than the raised cards.
  */
 function useTileSurface() {
   const t = useTheme();
@@ -19,10 +19,10 @@ function useTileSurface() {
     ? { backgroundColor: f.bg, borderWidth: 1, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge }
     : {
         backgroundColor: f.bg,
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: t.colors.border,
+        borderWidth: 1,
+        borderColor: t.colors.glassEdge,
         shadowColor: t.colors.shadow,
-        shadowOpacity: 0.06,
+        shadowOpacity: 0.08,
         shadowRadius: 12,
         shadowOffset: { width: 0, height: 4 },
         elevation: 1,

@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY, DEMO_KEY, type HowThisWasMade, type Store } from '@skinkey/contracts';
 import { FACET_MAP, medicineGate, rank, verdict } from '@skinkey/rules';
 import { useTheme } from '@/theme/ThemeProvider';
-import { AppBar, Body, Card, EmptyState, FooterFade, Icon, IconButton, IconDisc, PillButton, Tag, Txt, type IconName } from '@/components';
+import { AppBar, Body, Card, EmptyState, FooterFade, Icon, IconButton, IconDisc, PageBackdrop, PillButton, Tag, Txt, type IconName } from '@/components';
 import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
 import { BetterMatches, guessCategory, storeLinks, StoreSearchSheet, useBetterMatches } from '@/features/matches';
 import { openStoreUrl } from '@/features/matches/openStoreUrl';
@@ -354,6 +354,7 @@ export default function CheckScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: t.colors.bg, paddingTop: insets.top }}>
+      <PageBackdrop />
       <AppBar onBack={goBack} title="Your check" />
 
       {state.phase === 'crop' ? (

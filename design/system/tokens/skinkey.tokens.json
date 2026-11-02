@@ -1088,7 +1088,7 @@
     },
     "appBar": {
       "minHeight": 56,
-      "bg": "{color.bg}",
+      "bg": "transparent",
       "fg": "{color.text}",
       "title": "{type.appBarTitle}",
       "titleAlign": "center",
@@ -1200,8 +1200,8 @@
       }
     },
     "actionBar": {
-      "$rule": "Sticky dock on /check: ONE primary pill naming its destination ('Back to Nykaa listing'), plus a 48dp round tonal 'More' button that opens the store-search sheet. 'Better matches' pill hides once that section is on screen. It floats on the page (showcase 04_report): page fill, no shadow; a 1dp top hairline (sheen edge in dark) appears only while content scrolls under it. Rendered after the ScrollView so TalkBack reaches it last. At font scale >= 1.5 the actions move inline.",
-      "bg": "{color.bg}",
+      "$rule": "Sticky dock on /check: ONE primary pill naming its destination ('Back to Nykaa listing'), plus a 48dp round tonal 'More' button that opens the store-search sheet. 'Better matches' pill hides once that section is on screen. It floats on the page (showcase 04_report): transparent over the page gradient (2.2), no shadow; a 1dp top hairline (sheen edge in dark) appears only while content scrolls under it. Rendered after the ScrollView so TalkBack reaches it last. At font scale >= 1.5 the actions move inline.",
+      "bg": "transparent",
       "border": "{elevation.2.border}",
       "shadow": "{elevation.2}",
       "paddingTop": "{space.3}",
@@ -1720,7 +1720,7 @@
     },
     "focusTile": {
       "$rule": "'What this means for products' square tiles (moodboard 'Recommended Focus'). Come from the published facet map, never from Claude. Product-trait words only (Lighter textures, Fragrance-free, Hydration); never 'repair', 'treat', 'fix'.",
-      "bg": "{color.surface-raised}",
+      "bg": "{color.glass}",
       "fg": "{color.text}",
       "radius": "{radius.tile}",
       "padding": "{space.3}",
