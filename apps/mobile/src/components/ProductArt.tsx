@@ -3,9 +3,12 @@ import { Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-n
 import Svg, { Defs, G, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import { PHOTOS, PHOTO_SUBJECT } from './photos';
+import { PRODUCT_PHOTOS, PRODUCT_PHOTO_TITLES } from './productPhotos';
 
 /**
- * Product art: a licensed, illustrative photo per category (apps/mobile/assets/images/photos, credits in
+ * Product art. When `productId` names a catalogue product with a real pack photo from Open Beauty Facts
+ * (apps/mobile/assets/images/products, CC BY-SA 3.0, see productPhotos.ts), that photo is shown whole ("contain") on the
+ * #E9E7F0 plate and labelled "Photo of <brand name>". Otherwise: a licensed, illustrative photo per category (apps/mobile/assets/images/photos, credits in
  * docs/CREDITS.md), cover-cropped to fill the box with the box's own corner radius. Unknown categories get the serum
  * photo. The photo stands for the category, never the exact product: its label says "(illustrative)".
  *
@@ -23,6 +26,16 @@ export interface ProductArtProps {
   /** Edge of the square box, in dp. */
   size: number;
   style?: StyleProp<ViewStyle>;
+  /** Catalogue id: shows the product's own pack photo when one is bundled. */
+  productId?: string | null;
+}
+
+/** The plate behind a pack photo, so a contained photo never shows a hole at its edges. */
+export const PRODUCT_PHOTO_PLATE = '#E9E7F0';
+
+/** True when `productId` has a bundled pack photo (the hero uses it to pick its caption). */
+export function hasProductPhoto(productId: string | null | undefined): boolean {
+  return !!productId && PRODUCT_PHOTOS[productId] !== undefined;
 }
 
 /** Normalises a catalogue category ("Moisturizer", "tinted-spf", "SPF") to one of the five shapes. */
@@ -39,13 +52,34 @@ export function artShape(category: string): ProductArtCategory | 'bottle' {
 // Sand tint for the tinted-SPF swatch only: a muted neutral, never pink.
 const TINT = '#CDBFB1';
 
-export function ProductArt({ category, size, style }: ProductArtProps) {
+export function ProductArt({ category, size, style, productId }: ProductArtProps) {
   const t = useTheme();
   const [failed, setFailed] = useState(false);
+  const [packFailed, setPackFailed] = useState(false);
+  const radius = StyleSheet.flatten(style)?.borderRadius;
+  const pack = productId && !packFailed ? PRODUCT_PHOTOS[productId] : undefined;
+  if (pack !== undefined && productId) {
+    return (
+      <View
+        style={[{ width: size, height: size, overflow: 'hidden', backgroundColor: PRODUCT_PHOTO_PLATE }, style]}
+        accessible
+        accessibilityRole="image"
+        accessibilityLabel={`Photo of ${PRODUCT_PHOTO_TITLES[productId] ?? 'the product'}`}
+        pointerEvents="none"
+        testID="product-photo"
+      >
+        <Image
+          source={pack}
+          resizeMode="contain"
+          onError={() => setPackFailed(true)}
+          style={{ width: '100%', height: '100%', borderRadius: typeof radius === 'number' ? radius : 0 }}
+        />
+      </View>
+    );
+  }
   if (failed) return <ProductArtDrawing category={category} size={size} style={style} />;
   const shape = artShape(category);
   const key = shape === 'bottle' ? 'serum' : shape;
-  const radius = StyleSheet.flatten(style)?.borderRadius;
   return (
     <View
       style={[{ width: size, height: size, overflow: 'hidden', backgroundColor: t.colors.bgSunken }, style]}

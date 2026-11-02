@@ -71,7 +71,7 @@ export function RoutineScreen() {
 
   const steps = state.status === 'ready' ? state.steps[time] : null;
 
-  const open = (p: RoutineProduct) => router.push({ pathname: '/check', params: { q: p.query } });
+  const open = (p: RoutineProduct) => router.push({ pathname: '/check', params: { catalogId: p.productId, q: p.query } });
 
   const choose = (p: RoutineProduct) => {
     if (!changing) return;
@@ -244,7 +244,7 @@ function StepRow({
       accessibilityHint="Opens a check for this product"
       style={shell}
     >
-      <ProductArt category={step.category} size={PLATE} style={{ borderRadius: 12 }} />
+      <ProductArt category={step.category} productId={p.productId} size={PLATE} style={{ borderRadius: 12 }} />
       <View style={{ flex: 1, gap: 2 }}>
         <Text numberOfLines={1} style={[homeType.bodyStrong, { fontFamily: homeType.smallStrong.fontFamily, color: t.colors.text }]}>
           {step.label}
@@ -279,7 +279,7 @@ function SwapRow({ product, current, onPress, testID }: { product: RoutineProduc
         backgroundColor: pressed ? t.colors.bgSunken : t.colors.surface,
       })}
     >
-      <ProductArt category={product.category} size={44} style={{ borderRadius: 12 }} />
+      <ProductArt category={product.category} productId={product.productId} size={44} style={{ borderRadius: 12 }} />
       <View style={{ flex: 1, gap: 2 }}>
         <Text numberOfLines={2} style={[homeType.bodyStrong, { color: t.colors.text }]}>
           {product.brand} {product.name}

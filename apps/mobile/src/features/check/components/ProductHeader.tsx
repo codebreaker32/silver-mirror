@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, Txt, type IconName } from '@/components';
-import { ProductArt } from '@/components/ProductArt';
+import { ProductArt, hasProductPhoto } from '@/components/ProductArt';
 import { displayTitle } from '../display';
 
 const TITLE_TYPE = { fontFamily: 'Geist_600SemiBold', fontSize: 18, lineHeight: 24, letterSpacing: -0.2 } as const;
@@ -17,7 +17,8 @@ const CAPTION_TYPE = { fontFamily: 'Geist_400Regular', fontSize: 11, lineHeight:
 
 /**
  * Product hero (reference product detail): a full-width image plate filled edge to edge by the category's licensed
- * photo (ProductArt), a tiny muted "Illustrative photo" caption under it so it never reads as the exact product, then
+ * photo (ProductArt), a tiny muted "Illustrative photo" caption under it so it never reads as the exact product (or, when
+ * the catalogue id has a real Open Beauty Facts pack photo, that photo shown whole with "Photo: Open Beauty Facts, CC BY-SA"), then
  * the brand (14 muted), the name in the serif display face on at most two lines, and one muted meta line (size · source). `trailing` sits in the plate's top-right corner (the SaveHeart).
  */
 export function ProductHero({
@@ -25,12 +26,15 @@ export function ProductHero({
   name,
   meta,
   category,
+  productId,
   trailing,
 }: {
   brand: string | null;
   name: string;
   meta?: string | null;
   category: string;
+  /** Catalogue id, when known: picks the product's own pack photo. */
+  productId?: string | null;
   trailing?: ReactNode;
 }) {
   const t = useTheme();
@@ -41,11 +45,11 @@ export function ProductHero({
           style={{ height: PLATE_HEIGHT, borderRadius: 16, backgroundColor: PLATE, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
           testID="product-plate"
         >
-          <ProductArt category={category} size={PLATE_HEIGHT} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: 16 }} />
+          <ProductArt category={category} productId={productId} size={PLATE_HEIGHT} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: 16 }} />
           {trailing ? <View style={{ position: 'absolute', top: t.space[2], right: t.space[2] }}>{trailing}</View> : null}
         </View>
         <Txt variant="caption" testID="product-photo-caption" style={[CAPTION_TYPE, { color: t.colors.textMuted }]}>
-          Illustrative photo
+          {hasProductPhoto(productId) ? 'Photo: Open Beauty Facts, CC BY-SA' : 'Illustrative photo'}
         </Txt>
       </View>
       <View style={{ gap: t.space[1] }}>

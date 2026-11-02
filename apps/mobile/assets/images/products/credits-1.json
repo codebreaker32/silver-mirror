@@ -1,0 +1,42 @@
+[
+  {
+    "id": "nivea-nivea-soft",
+    "file": "nivea-nivea-soft.jpg",
+    "obfCode": "5025970022574",
+    "obfUrl": "https://world.openbeautyfacts.org/product/5025970022574/nivea-soft-moisturising-cream",
+    "licence": "CC BY-SA 3.0",
+    "author": "Open Beauty Facts contributors"
+  },
+  {
+    "id": "nivea-nivea-soft-daily-uv-spf-15-light-moisturising-cream",
+    "file": "nivea-nivea-soft-daily-uv-spf-15-light-moisturising-cream.jpg",
+    "obfCode": "4006000155913",
+    "obfUrl": "https://world.openbeautyfacts.org/product/4006000155913/nivea-soft-daily-uv-spf15-creme",
+    "licence": "CC BY-SA 3.0",
+    "author": "Open Beauty Facts contributors"
+  },
+  {
+    "id": "nivea-nivea-derma-skin-clear-wash-gel",
+    "file": "nivea-nivea-derma-skin-clear-wash-gel.jpg",
+    "obfCode": "4005900977953",
+    "obfUrl": "https://world.openbeautyfacts.org/product/4005900977953/nivea-derma-skin-clear-reinigingsgel",
+    "licence": "CC BY-SA 3.0",
+    "author": "Open Beauty Facts contributors"
+  },
+  {
+    "id": "sebamed-liquid-face-body-wash",
+    "file": "sebamed-liquid-face-body-wash.jpg",
+    "obfCode": "4103040901095",
+    "obfUrl": "https://world.openbeautyfacts.org/product/4103040901095/sebamed-zeepvrije-wasemulsie",
+    "licence": "CC BY-SA 3.0",
+    "author": "Open Beauty Facts contributors"
+  },
+  {
+    "id": "sebamed-moisturizing-cream",
+    "file": "sebamed-moisturizing-cream.jpg",
+    "obfCode": "4103040113412",
+    "obfUrl": "https://world.openbeautyfacts.org/product/4103040113412/sebamed-sensitive-skin-hydraterende-gezichtscreme",
+    "licence": "CC BY-SA 3.0",
+    "author": "Open Beauty Facts contributors"
+  }
+]

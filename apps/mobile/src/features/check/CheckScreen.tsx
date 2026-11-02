@@ -30,13 +30,14 @@ const ENGINE: Engine = { verdict, medicineGate };
 /** Web `?demo=` only: offline catalogue answers for screenshots. Always the Worker on native. */
 const API = demo?.checkApi ?? workerCheckApi;
 
-type Origin = 'share' | 'paste' | 'sample' | 'screenshot';
+type Origin = 'share' | 'paste' | 'sample' | 'screenshot' | 'catalog';
 
 const STORE_NAME: Record<Store, string | null> = { flipkart: 'Flipkart', amazon_in: 'Amazon', nykaa: 'Nykaa', other: null };
 
 function sourceLine(origin: Origin | null, store: Store): string {
   if (origin === 'sample') return 'Sample share';
   if (origin === 'paste') return 'Pasted link';
+  if (origin === 'catalog') return `From the ${COPY.appName} catalogue`;
   if (origin === 'screenshot') return 'Shared screenshot';
   const name = STORE_NAME[store];
   return name ? `Shared from ${name}` : 'Shared link';
@@ -100,7 +101,7 @@ export default function CheckScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { fontScale } = useWindowDimensions();
-  const params = useLocalSearchParams<{ q?: string; sample?: string; share?: string }>();
+  const params = useLocalSearchParams<{ q?: string; sample?: string; share?: string; catalogId?: string }>();
   const { key: storedKey, isDemo, loading: keyLoading, useDemo: chooseDemo } = useKey();
   const [origin, setOrigin] = useState<Origin | null>(null);
   const [listingUrl, setListingUrl] = useState<string | null>(null);
@@ -117,7 +118,7 @@ export default function CheckScreen() {
       .then(setScanLedger)
       .catch(() => undefined);
   }, [storedKey?.source, storedKey?.scanId]);
-  const { state, start, reset } = flow;
+  const { state, start, openProduct, reset } = flow;
 
   // Scroll geometry: the "Better matches" pill shows only while that section is off screen (component.actionBar).
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
@@ -135,43 +136,67 @@ export default function CheckScreen() {
     setContentUnder(viewport > 0 && y + viewport < content - 1);
   }, [t.space]);
 
+  const fresh = useCallback(() => {
+    // Each new input is a fresh check: drop the previous result, sheets and listing link.
+    reset();
+    // A share that replaces a scrolled check starts at the top. Android can clamp the offset without an onScroll,
+    // so reset the remembered geometry too, or the "Better matches" pill stays hidden on the new page.
+    scroll.current?.scrollTo({ y: 0, animated: false });
+    geo.current.y = 0;
+    matchesY.current = null;
+    setMatchesOnScreen(false);
+    setHowOpen(false);
+    setMoreOpen(false);
+    setCameraOpen(false);
+  }, [reset]);
+
   const begin = useCallback(
     (input: CheckInput, from: Origin) => {
-      // Each new input is a fresh check: drop the previous result, sheets and listing link.
-      reset();
-      // A share that replaces a scrolled check starts at the top. Android can clamp the offset without an onScroll,
-      // so reset the remembered geometry too, or the "Better matches" pill stays hidden on the new page.
-      scroll.current?.scrollTo({ y: 0, animated: false });
-      geo.current.y = 0;
-      matchesY.current = null;
-      setMatchesOnScreen(false);
-      setHowOpen(false);
-      setMoreOpen(false);
-      setCameraOpen(false);
+      fresh();
       setOrigin(input.kind === 'image' ? 'screenshot' : from);
       // The sample listing's URL is not a real listing: never offer to go back to it.
       setListingUrl(input.kind === 'text' && from !== 'sample' ? input.parsed.url : null);
       start(input);
     },
-    [start, reset],
+    [start, fresh],
+  );
+
+  // A catalogue product (Shop, Home picks, Routine) is already known: open its check by id, no confirm sheet.
+  const beginCatalog = useCallback(
+    (catalogId: string, title: string | null) => {
+      fresh();
+      setOrigin('catalog');
+      setListingUrl(null);
+      openProduct(catalogId, title);
+    },
+    [openProduct, fresh],
   );
 
   // Shares (cold or warm start) arrive as /check?share=<id> from the root ShareRouter.
   const started = useRef<string | null>(null);
   useEffect(() => {
     if (keyLoading) return;
-    const tag = params.share ? `share:${params.share}` : params.sample ? 'sample' : params.q ? `q:${params.q}` : null;
+    const tag = params.share
+      ? `share:${params.share}`
+      : params.sample
+        ? 'sample'
+        : params.catalogId
+          ? `id:${params.catalogId}`
+          : params.q
+            ? `q:${params.q}`
+            : null;
     if (!tag || started.current === tag) return;
     started.current = tag;
     if (params.share) {
       const input = takeShare(params.share);
       if (input) begin(input, 'share');
     } else if (params.sample) begin(sampleInput(), 'sample');
+    else if (params.catalogId) beginCatalog(params.catalogId, params.q ?? null);
     else if (params.q) {
       const input = inputFromPaste(params.q);
       if (input) begin(input, 'paste');
     }
-  }, [params.share, params.sample, params.q, keyLoading, begin]);
+  }, [params.share, params.sample, params.q, params.catalogId, keyLoading, begin, beginCatalog]);
 
   const result = state.phase === 'result' ? state.result : null;
   const view = useMemo(
@@ -368,6 +393,7 @@ export default function CheckScreen() {
                 name={headerProduct.name}
                 meta={headerMeta}
                 category={headerProduct.category}
+                productId={headerProduct.id}
                 trailing={result?.product ? <SaveHeart productId={result.product.id} /> : null}
               />
             ) : state.phase === 'resolving' && !header ? (

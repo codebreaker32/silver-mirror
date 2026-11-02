@@ -40,7 +40,7 @@ export function Picks({ picks, onOpen, onViewAll }: { picks: readonly HomePick[]
             })}
           >
             <View style={{ height: PLATE, backgroundColor: t.colors.bgSunken, alignItems: 'center', justifyContent: 'center' }}>
-              <ProductArt category={p.category ?? 'serum'} size={PLATE} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
+              <ProductArt category={p.category ?? 'serum'} productId={p.productId} size={PLATE} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
               <SaveHeart productId={p.productId} productName={p.name} style={{ position: 'absolute', top: t.space[1], right: t.space[1] }} />
             </View>
             <View style={{ padding: t.space[3], gap: 2 }}>

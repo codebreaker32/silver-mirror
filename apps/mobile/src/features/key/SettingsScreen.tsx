@@ -147,6 +147,9 @@ export function SettingsScreen() {
               {`${c.shows}: ${c.photographer}`}
             </Body>
           ))}
+          <Body small testID="product-photo-credit">
+            Product photos: Open Beauty Facts contributors, CC BY-SA 3.0 (openbeautyfacts.org)
+          </Body>
         </Card>
       </View>
 
