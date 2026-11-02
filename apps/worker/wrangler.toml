@@ -27,3 +27,24 @@ id = "skinkey-local"
 crons = ["*/5 * * * *"]
 
 # Secrets (wrangler secret put ...; locally from .dev.vars): YOUCAM_API_KEY, ANTHROPIC_API_KEY, INSTALL_HMAC_SECRET, ADMIN_TOKEN
+
+# Production: `wrangler deploy --env production`. Live YouCam + Claude, real KV, judge reserve via UNIT_FLOOR.
+[env.production]
+name = "skinkey-worker"
+[env.production.vars]
+YOUCAM_MODE = "live"
+MOCK_YOUCAM = "0"
+CLAUDE_MODE = "live"
+YOUCAM_BASE_URL = "https://yce-api-01.makeupar.com"
+YOUCAM_MIN_INTERVAL_MS = "1200"
+CLAUDE_MODEL = "claude-opus-5-5"
+SCAN_CAP = "1"
+TRYON_CAP = "3"
+UNIT_BALANCE_START = "1022"
+UNIT_FLOOR = "300"
+AFFILIATE_NYKAA = "off"
+[[env.production.kv_namespaces]]
+binding = "KV"
+id = "7735dc53577944a89e464e85a67ed952"
+[env.production.triggers]
+crons = ["*/5 * * * *"]
