@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { COPY, TryonMode, type ConsentRecord } from '@skinkey/contracts';
+import { demo } from '@/demo';
 import { call } from '@/lib/api';
 import { hintForError, isRetakeError } from '../scan/captureHints';
 import { CaptureGuide, type CapturedPhoto } from '../scan/CaptureGuide';
@@ -97,6 +98,12 @@ export function TryonScreen() {
         onDecline={close}
         onAccept={() => {
           consent.current = makeConsent(TRYON_CONSENT_VERSION, true);
+          if (demo) {
+            // Web `?demo=` only: skip the camera and show labelled placeholder renders; no upload, no Worker call.
+            const status = demo.tryon(productId, mode, params.shadeName);
+            setPhase({ name: 'running', progress: { phase: 'done', status, steps: tryonDisplaySteps(status.steps, 'done', mode, status.deleteState) } });
+            return;
+          }
           setPhase({ name: 'capture', hint: null });
         }}
       />

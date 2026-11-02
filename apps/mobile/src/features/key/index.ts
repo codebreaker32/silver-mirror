@@ -1,5 +1,6 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import { demo } from '@/demo';
 import { DEMO_KEY, type Band, type ConsentRecord, type Concern, type HowThisWasMade, type KeyProfile } from '@skinkey/contracts';
 import { applyBandEdit } from './model';
 import { createKeyStore, type KVBackend } from './store';
@@ -17,7 +18,8 @@ const secureBackend: KVBackend = {
   del: (k) => SecureStore.deleteItemAsync(k),
 };
 
-const store = createKeyStore(secureBackend);
+// Web `?demo=` only: seeded in-memory storage for screenshots. Native always uses SecureStore.
+const store = createKeyStore(demo?.kv ?? secureBackend);
 
 let state: KeyState = { key: null, isDemo: false, loading: true };
 let demoOverride: KeyProfile | null = null;

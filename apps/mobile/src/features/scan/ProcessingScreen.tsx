@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COPY, type YouCamErrorCode } from '@skinkey/contracts';
+import { demo } from '@/demo';
 import { call } from '@/lib/api';
 import { useTheme } from '@/theme/ThemeProvider';
 import { loadScanConsent, saveKey, saveScanLedger } from '../key';
@@ -36,12 +37,16 @@ export function ProcessingScreen() {
   const router = useRouter();
   const started = useRef(false);
   const alive = useRef(true);
-  const [progress, setProgress] = useState<ScanProgress>({ phase: 'uploading', steps: scanDisplaySteps(undefined, 'pending') });
+  const [progress, setProgress] = useState<ScanProgress>(
+    () => demo?.scanProgress ?? { phase: 'uploading', steps: scanDisplaySteps(undefined, 'pending') },
+  );
 
   useEffect(() => {
     alive.current = true;
     if (started.current) return;
     started.current = true;
+    // Web `?demo=` only: hold a mid-scan state for screenshots; no capture, no Worker call.
+    if (demo) return;
     const capture = scanSession.takeCapture();
     void (async () => {
       const consent = await loadScanConsent();

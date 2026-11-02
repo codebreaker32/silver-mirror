@@ -52,11 +52,11 @@ function walk(dir: Directory, found: string[], depth: number): void {
 /** Cache-directory check: lists any image files left in the app's cache or document folders. */
 export function findStoredImages(): string[] {
   const found: string[] = [];
-  for (const dir of [Paths.cache, Paths.document]) {
+  for (const get of [() => Paths.cache, () => Paths.document]) {
     try {
-      walk(dir, found, 0);
+      walk(get(), found, 0);
     } catch {
-      // unreadable folder
+      // unreadable folder (or no app folders at all, as on web)
     }
   }
   return found;
