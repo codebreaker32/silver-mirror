@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { ROUTINE_STEPS, fillRoutine, parseChoices, setChoice, type RoutineProduct, type StepCategory } from './model';
 
-const prod = (id: string, category: StepCategory): RoutineProduct => ({
+const prod = (id: string, category: StepCategory, brand = 'Brand'): RoutineProduct => ({
   productId: id,
-  brand: 'Brand',
+  brand,
   name: `Name ${id}`,
   category,
-  query: `Brand Name ${id}`,
+  query: `${brand} Name ${id}`,
   reason: 'Niacinamide · fits your oiliness reading',
 });
 
@@ -29,6 +29,28 @@ describe('routine model', () => {
   it('ignores a stored choice that no longer fits the reading', () => {
     const choices = setChoice(parseChoices(null), 'pm', 'cleanser', 'gone');
     expect(fillRoutine('pm', { cleanser: [prod('c1', 'cleanser')] }, choices)[0]?.product?.productId).toBe('c1');
+  });
+
+  it('prefers a brand not already in the routine when another fit exists', () => {
+    const fitting = {
+      cleanser: [prod('c1', 'cleanser', 'Beardo'), prod('c2', 'cleanser', 'Minimalist')],
+      serum: [prod('s1', 'serum', 'Beardo'), prod('s2', 'serum', 'Minimalist'), prod('s3', 'serum', 'Plum')],
+      moisturiser: [prod('m1', 'moisturiser', 'Beardo')],
+    };
+    const steps = fillRoutine('pm', fitting, parseChoices(null));
+    expect(steps.map((s) => s.product?.productId)).toEqual(['c1', 's2', 'm1']);
+    expect(steps[1]?.alternatives.map((p) => p.productId)).toEqual(['s1', 's3']);
+  });
+
+  it('keeps stored and saved picks even when they repeat a brand, and steers defaults around them', () => {
+    const fitting = {
+      cleanser: [prod('c1', 'cleanser', 'Beardo'), prod('c2', 'cleanser', 'Plum')],
+      serum: [prod('s1', 'serum', 'Plum'), prod('s2', 'serum', 'Beardo')],
+      moisturiser: [prod('m1', 'moisturiser', 'Beardo'), prod('m2', 'moisturiser', 'Plum'), prod('m3', 'moisturiser', 'Dot & Key')],
+    };
+    const choices = setChoice(parseChoices(null), 'pm', 'serum', 's2');
+    const steps = fillRoutine('pm', fitting, choices, new Set(['c1']));
+    expect(steps.map((s) => s.product?.productId)).toEqual(['c1', 's2', 'm2']);
   });
 
   it('parses only known categories and string ids', () => {

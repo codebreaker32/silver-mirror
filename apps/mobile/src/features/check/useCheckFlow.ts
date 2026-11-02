@@ -31,6 +31,8 @@ export function errorMessage(e: unknown): string {
 export interface CheckFlow {
   state: CheckState;
   start: (input: CheckInput) => void;
+  /** Open a known catalogue product by id: the verdict straight away, no "Is this the product?" sheet. */
+  openProduct: (catalogId: string, title: string | null) => void;
   sendCrop: (imageBase64: string) => void;
   confirm: (candidate: ResolveCandidate) => void;
   notThis: () => void;
@@ -45,6 +47,7 @@ export interface CheckFlow {
 export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | null): CheckFlow {
   const [state, dispatch] = useReducer(checkReducer, { phase: 'idle' });
   const last = useRef<{ req: ResolveRequest; title: string | null; store: Store } | null>(null);
+  const lastCatalog = useRef<{ catalogId: string; title: string | null } | null>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
   const keyRef = useRef(key);
@@ -55,6 +58,7 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
   const resolve = useCallback(
     async (req: ResolveRequest, title: string | null, store: Store) => {
       last.current = { req, title, store };
+      lastCatalog.current = null;
       const mine = gen.current;
       dispatch({ type: 'resolving', title, store });
       try {
@@ -88,6 +92,25 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
       void resolve(toResolveRequest(input), input.parsed.title, input.parsed.store);
     },
     [resolve],
+  );
+
+  const openProduct = useCallback(
+    async (catalogId: string, title: string | null) => {
+      gen.current += 1;
+      const mine = gen.current;
+      last.current = null;
+      lastCatalog.current = { catalogId, title };
+      dispatch({ type: 'resolving', title, store: 'other' });
+      try {
+        const { product } = await api.product(catalogId);
+        if (gen.current !== mine) return;
+        dispatch({ type: 'catalog', product, verdict: evaluateProduct(engine, keyRef.current, product) });
+      } catch (e) {
+        if (gen.current !== mine) return;
+        dispatch({ type: 'error', message: errorMessage(e), retry: 'start' });
+      }
+    },
+    [api, engine],
   );
 
   const sendCrop = useCallback(
@@ -127,8 +150,9 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
   }, [engine]);
 
   const retry = useCallback(() => {
-    if (last.current) void resolve(last.current.req, last.current.title, last.current.store);
-  }, [resolve]);
+    if (lastCatalog.current) void openProduct(lastCatalog.current.catalogId, lastCatalog.current.title);
+    else if (last.current) void resolve(last.current.req, last.current.title, last.current.store);
+  }, [resolve, openProduct]);
 
   const readLabel = useCallback(
     async (imageBase64: string) => {
@@ -187,8 +211,9 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
   const reset = useCallback(() => {
     gen.current += 1;
     last.current = null;
+    lastCatalog.current = null;
     dispatch({ type: 'reset' });
   }, []);
 
-  return { state, start, sendCrop, confirm, notThis, retry, readLabel, setChips, cancelLabel, runLabel, reset };
+  return { state, start, openProduct, sendCrop, confirm, notThis, retry, readLabel, setChips, cancelLabel, runLabel, reset };
 }

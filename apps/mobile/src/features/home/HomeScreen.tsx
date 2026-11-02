@@ -143,7 +143,10 @@ export default function HomeScreen() {
           <FadeRise index={4} style={{ marginTop: section }}>
             <Picks
               picks={picks}
-              onOpen={(q) => router.push({ pathname: '/check', params: { q } })}
+              onOpen={(q) => {
+                const id = picks.find((p) => p.query === q)?.productId;
+                router.push({ pathname: '/check', params: id ? { catalogId: id, q } : { q } });
+              }}
               onViewAll={() => router.navigate('/shop' as Href)}
             />
           </FadeRise>

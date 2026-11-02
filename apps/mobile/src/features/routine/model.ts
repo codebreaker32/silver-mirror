@@ -75,7 +75,9 @@ export interface FilledStep extends RoutineStepDef {
 
 /**
  * Fills each step of one routine: the stored choice if it still fits the reading, else the first saved product that
- * fits, else the first fitting product in rule order. Pure, so the choice is testable.
+ * fits, else the first fitting product in rule order whose brand is not already used in this routine (falling back
+ * to the first fit when every fit repeats a brand), so one brand that sorts first does not fill every step. Stored
+ * and saved picks are placed first and their brands count as used. Pure, so the choice is testable.
  */
 export function fillRoutine(
   time: RoutineTime,
@@ -83,11 +85,20 @@ export function fillRoutine(
   choices: RoutineChoices,
   savedIds: ReadonlySet<string> = new Set(),
 ): FilledStep[] {
-  return ROUTINE_STEPS[time].map((def) => {
+  const defs = ROUTINE_STEPS[time];
+  const fixed = defs.map((def) => {
     const list = fitting[def.category] ?? [];
     const chosen = choices[time][def.category];
-    const product =
-      list.find((p) => p.productId === chosen) ?? list.find((p) => savedIds.has(p.productId)) ?? list[0] ?? null;
+    return list.find((p) => p.productId === chosen) ?? list.find((p) => savedIds.has(p.productId)) ?? null;
+  });
+  const used = new Set(fixed.filter((p): p is RoutineProduct => p != null).map((p) => p.brand.toLowerCase()));
+  return defs.map((def, i) => {
+    const list = fitting[def.category] ?? [];
+    let product = fixed[i] ?? null;
+    if (!product) {
+      product = list.find((p) => !used.has(p.brand.toLowerCase())) ?? list[0] ?? null;
+      if (product) used.add(product.brand.toLowerCase());
+    }
     return { ...def, product, alternatives: list.filter((p) => p.productId !== product?.productId) };
   });
 }

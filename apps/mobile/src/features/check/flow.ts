@@ -70,6 +70,8 @@ export type CheckAction =
   | { type: 'not_this' }
   | { type: 'choose'; candidate: ResolveCandidate }
   | { type: 'product'; product: CatalogProduct; verdict: Verdict }
+  /** A catalogue product opened by id (Shop, Home picks, Routine): no resolve and no confirm sheet. */
+  | { type: 'catalog'; product: CatalogProduct; verdict: Verdict }
   | { type: 'unknown'; verdict: Verdict }
   | { type: 'label'; label: LabelState; ledger?: HowThisWasMade }
   | { type: 'label_verdict'; verdict: Verdict; inci: InciToken[] }
@@ -206,6 +208,10 @@ export function checkReducer(state: CheckState, action: CheckAction): CheckState
         title: productTitle(action.product),
         store: state.resolve.store,
       });
+    }
+    case 'catalog': {
+      if (state.phase !== 'resolving') return state;
+      return result(action.verdict, null, { product: action.product, title: productTitle(action.product), store: 'other' });
     }
     case 'unknown': {
       const resolve = state.phase === 'confirm' || state.phase === 'loading' || state.phase === 'not_skincare' ? state.resolve : null;

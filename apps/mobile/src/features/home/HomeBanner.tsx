@@ -16,7 +16,7 @@ const BACKDROP = PHOTOS.texture;
  * presses to the darker charcoal with a 0.98 scale; no shadow at rest.
  */
 /** Width of the serum photo at the banner's right edge (dp). */
-const BANNER_ART = 128;
+const BANNER_ART = 108;
 
 export function HomeBanner({ onSample, hint }: { onSample: () => void; hint: string }) {
   const t = useTheme();
@@ -33,10 +33,12 @@ export function HomeBanner({ onSample, hint }: { onSample: () => void; hint: str
         <ProductArt category="serum" size={BANNER_ART} style={{ borderRadius: 12 }} />
       </View>
       <View style={{ padding: t.space[5], gap: t.space[4], flex: 1, justifyContent: 'space-between' }}>
-        {/* The title stops short of the photo (photo + its 12 inset + an 8 gap, less the column's own 20 padding). */}
+        {/* The title stops short of the photo (photo + its 12 inset + a 12 gap, less the column's own 20 padding) and never
+            takes more than 55% of the column, so the serif line cannot run under the photo on a 384dp phone. */}
         <Text
           accessibilityRole="header"
-          style={{ marginRight: BANNER_ART + t.space[3] + t.space[2] - t.space[5], fontFamily: fonts.serifDisplay, fontSize: 28, lineHeight: 34, letterSpacing: -0.3, color: t.colors.text }}
+          maxFontSizeMultiplier={1.3}
+          style={{ marginRight: BANNER_ART + t.space[3] + t.space[3] - t.space[5], maxWidth: '55%', fontFamily: fonts.serifDisplay, fontSize: 28, lineHeight: 34, letterSpacing: -0.3, color: t.colors.text }}
         >
           Check before you buy
         </Text>

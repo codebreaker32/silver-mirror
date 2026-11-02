@@ -45,7 +45,7 @@ export function ShopScreen() {
   const cardW = Math.floor((width - gutter * 2 - GAP) / 2);
 
   const open = useCallback(
-    (it: ShopItem) => router.push({ pathname: '/check', params: { q: productTitle(it) } }),
+    (it: ShopItem) => router.push({ pathname: '/check', params: { catalogId: it.id, q: productTitle(it) } }),
     [router],
   );
 
