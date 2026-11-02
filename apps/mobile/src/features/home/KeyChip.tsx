@@ -1,19 +1,27 @@
-import { Text, View } from 'react-native';
 import { COPY, type KeyProfile } from '@skinkey/contracts';
-import { useTheme } from '@/theme/ThemeProvider';
+import { deriveSkinType } from '@skinkey/rules';
 import { shortDate } from '@/features/check/format';
-import { CONCERN_LABEL } from '@/features/key/model';
-import { BandMeter, Card, Heading, Icon, IconDisc, PillButton, Txt } from '@/components';
+import { PillButton, SkinTypeCard } from '@/components';
 
-/** Readings shown on the Home card (≤3; the full list lives on the Reading tab). */
-const CARD_CONCERNS = ['oiliness', 'moisture', 'redness'] as const;
+export interface KeyChipText {
+  /** Card label: "Your skin type", or "No reading yet" when empty. */
+  title: string;
+  /** The value line: the skin-type class, or "Scan once, about a minute" when empty. */
+  value: string;
+  /** Caption: the scan stamp, the Demo reading line or the mock-fixture line. */
+  sub: string;
+}
 
-export function keyChipText(key: KeyProfile | null, isDemo: boolean): { title: string; sub: string } {
-  if (!key) return { title: COPY.reading.none, sub: 'Scan once, about a minute' };
-  if (isDemo || key.source === 'demo') return { title: COPY.reading.demo, sub: 'Labelled sample readings, not a scan' };
-  if (key.source === 'mock') return { title: COPY.reading.yours, sub: COPY.mockReading };
+/** Strings for the Home skin-type card. Without hd_skin_type the published band mapping fills in (as on the Reading tab). */
+export function keyChipText(key: KeyProfile | null, isDemo: boolean): KeyChipText {
+  if (!key) return { title: COPY.reading.none, value: 'Scan once, about a minute', sub: '' };
+  const value =
+    key.skinType?.value ??
+    deriveSkinType({ oiliness: key.bands.oiliness.level, moisture: key.bands.moisture.level, redness: key.bands.redness.level, pore: key.bands.pore.level });
+  if (isDemo || key.source === 'demo') return { title: COPY.reading.skinType, value, sub: `${COPY.reading.demo} · sample, not a scan` };
+  if (key.source === 'mock') return { title: COPY.reading.skinType, value, sub: COPY.mockReading };
   const date = shortDate(key.scanDate);
-  return { title: COPY.reading.yours, sub: [date ? `Scan ${date}` : null, key.photoDeleted ? 'photo deleted' : null].filter(Boolean).join(' · ') };
+  return { title: COPY.reading.skinType, value, sub: [date ? `Scan ${date}` : null, key.photoDeleted ? 'photo deleted' : null].filter(Boolean).join(' · ') };
 }
 
 interface ReadingCardProps {
@@ -26,91 +34,33 @@ interface ReadingCardProps {
 }
 
 /**
- * Home reading card (component.readingCard, DESIGN.md §8.3): droplet disc, "Your reading", the skin-type reading,
- * the scan stamp and a chevron, with up to three band chips. One target, one label in visual order. Empty: "No
- * reading yet" with slate Start scan and tonal Use the Demo reading.
+ * Home skin-type card (SkinTypeCard compact, DESIGN.md §9.2 item 3, showcase 02_home "Your Skin Type / Combination ->"):
+ * droplet disc, "Your skin type" over the value, the scan stamp, a trailing arrow; one target, one label in visual
+ * order. The band meters live on the Reading tab. Empty: a face-frame disc, "No reading yet", "Scan once, about a
+ * minute", then slate Start scan and tonal Use the Demo reading inside the same card.
  */
 export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardProps) {
-  const t = useTheme();
-  const r = t.components.readingCard;
-  const { title, sub } = keyChipText(keyProfile, isDemo);
+  const { title, value, sub } = keyChipText(keyProfile, isDemo);
 
   if (!keyProfile) {
     return (
-      <View testID="key-chip" style={{ backgroundColor: r.bg, borderRadius: r.radius, padding: r.padding, gap: t.space[4], ...(t.dark ? { borderWidth: 1, borderColor: r.border, borderTopColor: t.colors.sheenEdge } : t.elevation['1'].style) }}>
-        <View style={{ flexDirection: 'row', gap: t.space[3], alignItems: 'center' }}>
-          <IconDisc icon="droplet" />
-          <View style={{ flex: 1, gap: t.space[1] }}>
-            <Heading level="headline" style={[r.value, { color: r.valueColor }]}>
-              {title}
-            </Heading>
-            <Txt variant="caption" style={[r.meta, { color: r.metaColor }]}>
-              {sub}
-            </Txt>
-          </View>
-        </View>
-        <View style={{ gap: t.space[2] }}>
-          <PillButton label="Start scan" trailingIcon="arrow-right" onPress={onPress} testID="home-start-scan" />
-          {onUseDemo ? <PillButton label={COPY.reading.useDemo} variant="secondary" onPress={onUseDemo} testID="home-use-demo" /> : null}
-        </View>
-      </View>
+      <SkinTypeCard testID="key-chip" icon="face-frame" label={title} value={value} quiet accessibilityLabel={`${title}. ${value}`}>
+        <PillButton label="Start scan" trailingIcon="arrow-right" onPress={onPress} testID="home-start-scan" />
+        {onUseDemo ? <PillButton label={COPY.reading.useDemo} variant="secondary" onPress={onUseDemo} testID="home-use-demo" /> : null}
+      </SkinTypeCard>
     );
   }
 
-  const skinType = keyProfile.skinType ? `Skin-type reading: ${keyProfile.skinType.value}` : null;
-  const bands = CARD_CONCERNS.map((c) => ({ name: CONCERN_LABEL[c], level: keyProfile.bands[c].level, selfReported: keyProfile.bands[c].selfReported }));
-  const bandWords = bands.map((b) => `${b.name} reading: ${b.level.toLowerCase()}${b.selfReported ? `, ${COPY.selfReported}` : ''}`).join(', ');
-  const a11y = [title, skinType, sub, bandWords].filter(Boolean).join('. ');
-
+  const selfReported = Object.values(keyProfile.bands).some((b) => b.selfReported);
   return (
-    <Card
+    <SkinTypeCard
       testID="key-chip"
+      label={title}
+      value={value}
+      caption={sub}
       onPress={onPress}
-      accessibilityLabel={`${a11y}. Open`}
-      accessibilityHint="Opens your reading"
-      padding={r.padding}
-      gap={t.space[4]}
-      style={t.dark ? { backgroundColor: r.bg, borderColor: r.border, borderTopColor: t.colors.sheenEdge } : undefined}
-    >
-      <View style={{ flexDirection: 'row', gap: t.space[3], alignItems: 'center', minHeight: r.minHeight - r.padding * 2 }}>
-        <IconDisc icon="droplet" />
-        <View style={{ flex: 1, gap: 2 }}>
-          <Text {...t.textProps.section} style={[r.title, { color: r.titleColor }]}>
-            {title}
-          </Text>
-          {skinType ? (
-            <Text {...t.textProps.headline} style={[r.value, { color: r.valueColor }]}>
-              {skinType}
-            </Text>
-          ) : null}
-          <Text {...t.textProps.caption} style={[r.meta, { color: r.metaColor }]}>
-            {sub}
-          </Text>
-        </View>
-        <Icon name="chevron-right" size={t.icon.lg} color={r.chevron} />
-      </View>
-      <View
-        importantForAccessibility="no-hide-descendants"
-        accessibilityElementsHidden
-        style={{ flexDirection: 'row', backgroundColor: t.components.bandChip.bg, borderRadius: t.radius.md, paddingVertical: t.space[3] }}
-      >
-        {bands.map((b, i) => (
-          <View
-            key={b.name}
-            style={{ flex: 1, minWidth: 0, paddingHorizontal: t.space[3], gap: t.space[1], borderLeftWidth: i ? 1 : 0, borderLeftColor: t.colors.border }}
-          >
-            <Text {...t.textProps.caption} numberOfLines={1} style={[t.typography.caption, { color: t.colors.textMuted }]}>
-              {b.name}
-            </Text>
-            <Text {...t.textProps.label} numberOfLines={1} style={[t.typography.label, { color: t.colors.text }]}>
-              {b.level}
-              {b.selfReported ? '*' : ''}
-            </Text>
-            <BandMeter level={b.level} segmentWidth={14} />
-          </View>
-        ))}
-      </View>
-      {bands.some((b) => b.selfReported) ? <Txt variant="caption" tone="muted">* {COPY.selfReported}</Txt> : null}
-    </Card>
+      accessibilityLabel={[`${title}, ${value}`, sub, selfReported ? `Some readings ${COPY.selfReported}` : null, 'Open your reading'].filter(Boolean).join('. ')}
+      accessibilityHint="Opens the Reading tab"
+    />
   );
 }

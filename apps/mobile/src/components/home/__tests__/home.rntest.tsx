@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import { COPY, DEMO_KEY, type KeyProfile } from '@skinkey/contracts';
 import type { ColorScheme } from '@skinkey/design';
 import { ThemeProvider } from '@/theme/ThemeProvider';
-import { PIN_TIP, ShareTeachingCard, sharePathFor } from '@/components/home/ShareTeachingCard';
+import { ShareSteps, sharePathFor } from '@/components/home/ShareSteps';
 import { KeyChip, keyChipText } from '@/features/home/KeyChip';
 import { PasteLinkField } from '@/features/home/PasteLinkField';
 
@@ -13,17 +13,20 @@ jest.mock('expo-router', () => ({ useRouter: () => ({ push: jest.fn(), back: jes
 const wrap = (ui: ReactNode, scheme: ColorScheme = 'light') => render(<ThemeProvider scheme={scheme}>{ui}</ThemeProvider>);
 const scanned: KeyProfile = { ...DEMO_KEY, source: 'youcam_hd', scanDate: '2026-11-02T10:00:00.000Z', photoDeleted: true };
 
-describe('ShareTeachingCard', () => {
-  it('shows the chrome-S art, one store path at a time and the pin tip', async () => {
+describe('ShareSteps', () => {
+  it('shows three thumb-tile steps for one store at a time, with the store path as the summary', async () => {
     const onDismiss = jest.fn();
-    await wrap(<ShareTeachingCard onDismiss={onDismiss} />, 'dark');
-    expect(screen.getByLabelText(`Share menu with ${COPY.appName} highlighted`)).toBeTruthy();
-    expect(screen.getByText(COPY.sharePaths[0])).toBeTruthy();
-    expect(screen.getByText(PIN_TIP)).toBeTruthy();
+    await wrap(<ShareSteps onDismiss={onDismiss} testID="share-tip" dismissTestID="share-tip-dismiss" />, 'dark');
+    expect(screen.getByText('Share from a store app')).toBeTruthy();
+    for (const step of COPY.shareSteps('Flipkart')) expect(screen.getByText(step.title)).toBeTruthy();
+    expect(screen.getByText('On the product page in Flipkart')).toBeTruthy();
+    expect(screen.getByTestId('share-paths').props.accessibilityLabel).toMatch(/^Flipkart: Share → Silver Mirror\. Tap Share: /);
     await fireEvent.press(screen.getByTestId('share-store-amazon'));
-    expect(screen.getByTestId('amazon-coach-mark').props.children).toBe(COPY.amazonCoachMark);
     expect(screen.getByTestId('share-store-amazon').props.accessibilityState).toEqual({ selected: true });
-    await fireEvent.press(screen.getByRole('button', { name: 'Got it' }));
+    expect(screen.getByText('Tap More first, then Silver Mirror')).toBeTruthy();
+    expect(screen.getByTestId('amazon-coach-mark')).toBeTruthy();
+    expect(screen.getByTestId('share-paths').props.accessibilityLabel).toMatch(new RegExp(`^${COPY.amazonCoachMark}`));
+    await fireEvent.press(screen.getByTestId('share-tip-dismiss'));
     expect(onDismiss).toHaveBeenCalled();
   });
 
@@ -34,18 +37,20 @@ describe('ShareTeachingCard', () => {
   });
 });
 
-describe('Home reading card', () => {
+describe('Home skin-type card', () => {
   it('uses the reading glossary', () => {
     expect(keyChipText(null, false).title).toBe('No reading yet');
-    expect(keyChipText(DEMO_KEY, true).title).toBe('Demo reading');
-    expect(keyChipText(scanned, false)).toEqual({ title: 'Your reading', sub: 'Scan 2 Nov · photo deleted' });
+    expect(keyChipText(null, false).value).toBe('Scan once, about a minute');
+    expect(keyChipText(DEMO_KEY, true).sub).toBe('Demo reading · sample, not a scan');
+    expect(keyChipText(scanned, false)).toMatchObject({ title: 'Your skin type', sub: 'Scan 2 Nov · photo deleted' });
+    expect(keyChipText(scanned, false).value.length).toBeGreaterThan(0);
   });
 
   it('is one target with one label in visual order', async () => {
     const onPress = jest.fn();
     await wrap(<KeyChip keyProfile={scanned} isDemo={false} onPress={onPress} />);
     const card = screen.getByTestId('key-chip');
-    expect(card.props.accessibilityLabel).toMatch(/^Your reading\. .*Scan 2 Nov · photo deleted\. Oiliness /);
+    expect(card.props.accessibilityLabel).toMatch(/^Your skin type, \w+\. Scan 2 Nov · photo deleted\. Open your reading$/);
     await fireEvent.press(card);
     expect(onPress).toHaveBeenCalled();
   });
@@ -54,6 +59,8 @@ describe('Home reading card', () => {
     const onPress = jest.fn();
     const onUseDemo = jest.fn();
     await wrap(<KeyChip keyProfile={null} isDemo={false} onPress={onPress} onUseDemo={onUseDemo} />, 'dark');
+    expect(screen.getByText('No reading yet')).toBeTruthy();
+    expect(screen.getByText('Scan once, about a minute')).toBeTruthy();
     await fireEvent.press(screen.getByRole('button', { name: 'Start scan' }));
     await fireEvent.press(screen.getByRole('button', { name: COPY.reading.useDemo }));
     expect(onPress).toHaveBeenCalled();

@@ -232,18 +232,23 @@ Empty and error states: a face-frame or mark plate on the sheen, one `type.displ
 
 File paths, owners and the step-by-step checklist live in `design/redesign-screens.md`. Specs:
 
-### 9.1 Splash and first launch
-Splash: the chrome S centred on pearl `#F6F5F8` (light) or graphite `#121319` (dark), 120dp. No full-bleed liquid photo. Optional first-run welcome only if it adds no step before a share can be checked: sheen backdrop, `BrandLockup variant="welcome"` with "Check a product against your skin reading before you buy.", slate pill **Get started**, tonal **Try a sample share**. No carousel.
+### 9.1 Splash and first launch (`app/welcome.tsx`, `features/home/WelcomeScreen.tsx`, `welcomeStore.ts`) → showcase `01_welcome`
+Splash: the chrome S centred on pearl `#F6F5F8` (light) or graphite `#121319` (dark), 120dp. No full-bleed liquid photo.
 
-### 9.2 Home = Check tab (`(tabs)/index.tsx`, `features/home/*`)
-Top to bottom, fitting a 6.5" phone above the fold:
-1. Top bar: `BrandLockup variant="header"` left, 48dp gear icon button right (Settings).
-2. Greeting in `type.display` ("Good evening"), with one muted line under it ("Our catalogue: 180 products, 125 checked against the brand page"). No name field.
-3. **Reading card** (§8.3), full width, on the sheen-lit hero band.
-4. Section head "Check a product". The **paste field** with the inline **Check** pill. One primary path; no competing full-width "Check it" box.
-5. **Compact share tip** (`shareTeachingCard`): a mini share-sheet strip of three generic tiles where the highlighted tile is the real chrome-S labelled "Silver Mirror"; a Flipkart / Amazon / Nykaa segmented control showing one path line at a time (`COPY.sharePaths`); tertiary "Got it".
-6. Tonal pill **Try a sample share** with its caption.
-7. Footer captions: "Cosmetic guidance, not medical advice." · "Not affiliated with Flipkart, Amazon or Nykaa."
+**Welcome** (first run only): full-bleed `LiquidBackdrop`, no app bar or tab bar. One centred block in the space above the actions: `SilverMark` 72dp (`brand.heroMark`, no tile), 20dp, `Wordmark` at cap height 32 (`brand.wordmarkHero`), 12dp, `COPY.welcome.tagline` in Geist 400 16/22 muted, max width 300. Bottom, 24dp gutter above the inset: slate **Get started** with an arrow (56dp), 12dp, translucent **Use the Demo reading** (52dp). No carousel, no account line.
+- **Get started** → mark seen → `router.replace('/')` (Home with "No reading yet" and **Start scan**). **Use the Demo reading** → `useDemo()` → mark seen → `replace('/')`. Android back = Get started. TalkBack order: wordmark, tagline, Get started, Use the Demo reading.
+- **Gate** (`(tabs)/index.tsx`): once the reading and the `welcomeSeen` flag (SecureStore, same KV as the share tip; also kept in memory so web cannot loop) have loaded, no reading + not seen + no web `?demo=` → `replace('/welcome')`. It runs on focus only, so a cold share still lands on /check. While the flag loads (one read) the tab shows the plain page colour, never Home then a jump.
+- QA: `ops/vm/qa-full.sh <theme> fresh` waits for "Get started", shoots `00_welcome`, taps it, then shoots `01_home_first_run`. Web shot: `welcome` (`/welcome?demo=none`).
+
+### 9.2 Home = Check tab (`(tabs)/index.tsx`, `features/home/*`, `components/home/*`) → showcase `02_home`
+Mist page, no brand bar, no sheen hero band. Top to bottom (above the fold on a 6.1" phone: greeting, line, card, paste field):
+1. **Greeting row**, 56dp, top inset + 8: greeting in `type.display` ("Good afternoon", by the phone's clock; no name, no sparkle) left, 48dp gear **Settings** (`home-settings`, plain, no disc) right with its glyph on the gutter.
+2. One muted line, `body`: `COPY.welcome.tagline`.
+3. 20dp, **skin-type card** (`KeyChip` → `SkinTypeCard size="compact"`, `key-chip`): droplet disc, "Your skin type" over the value (hd skin type, or the published band mapping), caption "Scan 2 Nov · photo deleted" / "Demo reading · sample, not a scan" / the mock line, trailing arrow. One target → Reading tab. Band meters live on the Reading tab only. **Empty**, same footprint: face-frame disc, "No reading yet" over "Scan once, about a minute", then slate **Start scan** (`home-start-scan`) and tonal **Use the Demo reading** (`home-use-demo`) inside the card.
+4. 28dp, section "Check a product", the **paste field** with its visible label and inline **Check** pill. Unchanged behaviour.
+5. 28dp, **Share from a store app** (`ShareSteps`, `share-tip`; hidden for good by tertiary **Got it**, `share-tip-dismiss`, `tipStore`): Flipkart / Amazon / Nykaa `Segmented`, then one white `ListGroup thumbs` card of three rows from `COPY.shareSteps(store)`: `share` tile "Tap Share", chrome-S tile "Pick Silver Mirror" (Amazon: "Tap More first…"), `seal-check` tile "See if it fits". No numerals (the showcase's 1–4 are not built). The card reads to TalkBack as the store's `COPY.sharePaths` line plus the steps, polite live region on store change.
+6. 20dp, tonal **Try a sample share** (`sample-share`) with its centred caption.
+7. Footer captions: `COPY.footer` · `COPY.notAffiliated`.
 
 ### 9.3 SKU confirm sheet (`features/check/components/SkuConfirmSheet.tsx`)
 Bottom sheet, title "Which product is this?". Candidate rows are 20dp-radius surface cards: a sunken category-glyph tile, name in bodyStrong, size line muted ("50 g · also 30 g, 100 g"); mismatched tokens (SPF 30 vs SPF 50, "Body") in bold. Radio ring + check circle on selection. A full-width tonal pill **None of these: check by name only**. Keep the line "We check nothing until you pick." No verdict before a pick.

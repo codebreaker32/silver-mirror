@@ -11,6 +11,9 @@ interface PasteLinkFieldProps {
   ref?: Ref<PasteInputRef>;
   /** Slate Check pill when this is the screen's main action; tonal when another primary (Start scan) is showing. */
   emphasis?: 'primary' | 'secondary';
+  /** Drop the visible "Product link or name" line when a section head right above names the field (Home). The
+   *  input keeps its accessible name. */
+  hideLabel?: boolean;
 }
 
 /**
@@ -18,7 +21,7 @@ interface PasteLinkFieldProps {
  * trailing Check pill (48dp target) inside it. Focus = 2dp focus-ring edge; error = 2dp text-colour edge, an info
  * icon and the message below.
  */
-export function PasteLinkField({ onSubmit, ref, emphasis = 'primary' }: PasteLinkFieldProps) {
+export function PasteLinkField({ onSubmit, ref, emphasis = 'primary', hideLabel = false }: PasteLinkFieldProps) {
   const t = useTheme();
   const f = t.components.field;
   const [value, setValue] = useState('');
@@ -37,9 +40,11 @@ export function PasteLinkField({ onSubmit, ref, emphasis = 'primary' }: PasteLin
   const primary = emphasis === 'primary';
   return (
     <View style={{ gap: t.space[2] }}>
-      <Text nativeID="paste-label" {...t.textProps.label} style={[f.label, { color: f.labelColor }]}>
-        Product link or name
-      </Text>
+      {hideLabel ? null : (
+        <Text nativeID="paste-label" {...t.textProps.label} style={[f.label, { color: f.labelColor }]}>
+          Product link or name
+        </Text>
+      )}
       <View
         style={{
           minHeight: f.minHeight,
@@ -61,7 +66,7 @@ export function PasteLinkField({ onSubmit, ref, emphasis = 'primary' }: PasteLin
         <TextInput
           ref={ref}
           testID="paste-input"
-          accessibilityLabelledBy="paste-label"
+          accessibilityLabelledBy={hideLabel ? undefined : 'paste-label'}
           accessibilityLabel="Product link or name"
           placeholder="Paste a link or name"
           placeholderTextColor={f.placeholder}

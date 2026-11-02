@@ -2,7 +2,7 @@
 # Full emulator walkthrough for one theme (BUILD VM only; run through remote.sh). Assumes emu.sh start + worker-start
 # and the local-worker APK installed.
 #   ops/vm/qa-full.sh light|dark [fresh]
-# fresh: pm clear first, shoot the first-run Home, then turn on the Demo reading.
+# fresh: pm clear first, shoot the welcome, tap Get started, shoot the first-run Home, then turn on the Demo reading.
 set -uo pipefail
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/android-sdk}"
 export PATH="$ANDROID_HOME/platform-tools:$PATH"
@@ -20,7 +20,12 @@ adb reverse tcp:8787 tcp:8787 >/dev/null
 
 if [[ "$FRESH" == fresh ]]; then
   $E kill; adb shell pm clear "$PKG" >/dev/null
-  home "first run"; shot 01_home_first_run
+  $E launch >/dev/null 2>&1
+  $U wait "^Get started$" 25 || fail "first run: no welcome"
+  sleep 2; shot 00_welcome
+  $U tap "^Get started$" || fail "first run: no 'Get started' button"
+  $U wait "Check, tab 1 of 3" 25 || fail "first run: home did not load after the welcome"; sleep 2
+  shot 01_home_first_run
   $U scroll; sleep 1; shot 01_home_first_run_2
   $U scroll up; sleep 1
   $U tap "^Use the Demo reading$" || fail "first run: no 'Use the Demo reading' button"

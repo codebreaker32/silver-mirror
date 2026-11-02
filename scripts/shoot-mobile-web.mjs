@@ -168,6 +168,7 @@ const GROUPS = [
   [['settings', `/settings${q()}`]],
   [['how', `/how${q()}`]],
   [['home-empty', `/?demo=none`]],
+  [['welcome', '/welcome?demo=none']],
   [['key-empty', `/reading?demo=none`]],
   [['kit-1', `/kit${q({ part: '1' })}`]],
   [['kit-2', `/kit${q({ part: '2' })}`]],
