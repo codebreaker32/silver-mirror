@@ -132,7 +132,7 @@ export function SettingsScreen() {
             </Body>
           ))}
           <Body small testID="product-photo-credit">
-            Product photos: Open Beauty Facts contributors, CC BY-SA 3.0 (openbeautyfacts.org)
+            Product photos: brand official sites, and Open Beauty Facts contributors (CC BY-SA 3.0)
           </Body>
         </View>
       </Disclosure>
