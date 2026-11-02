@@ -38,6 +38,8 @@ function SamplePreview({ index }: { index: number }) {
  */
 export function TryonResult({ status }: { status: TryonStatusResponse }) {
   const theme = useTheme();
+  // The mock Worker returns a placeholder image, not the user's photo: say so to TalkBack too.
+  const imageLabel = (shade: string) => (status.ledger.mock ? `Mock render placeholder for ${shade} (test, not your photo)` : `Your photo with a ${shade} preview`);
   const t = theme.components.tryOnCompare;
   const caption = status.renders.length >= 2 ? COPY.tryonCaption : SINGLE_CAPTION;
   const deleted = status.deleteState === 'deleted';
@@ -55,7 +57,7 @@ export function TryonResult({ status }: { status: TryonStatusResponse }) {
                 cachePolicy="none"
                 contentFit="cover"
                 style={{ flex: 1 }}
-                accessibilityLabel={`Your photo with a ${r.shadeName} preview`}
+                accessibilityLabel={imageLabel(r.shadeName)}
               />
               )}
             </View>

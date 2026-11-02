@@ -250,4 +250,4 @@ export function litZones(v: Verdict): LitZone[] {
   return [];
 }
 
-export const reasonsHeading = (n: number) => `Why · ${n} reason${n === 1 ? '' : 's'}`;
+export const reasonsHeading = (n: number) => (n === 0 ? 'Why' : `Why · ${n} reason${n === 1 ? '' : 's'}`);

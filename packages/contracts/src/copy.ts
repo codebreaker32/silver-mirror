@@ -15,7 +15,8 @@ export const COPY = {
   linkOutFacet: (facet: string) => `Opens a Flipkart search, filtered to ${facet}`,
   linkOutKeyword: (store: 'Flipkart' | 'Amazon' | 'Nykaa', q: string) =>
     `Opens a${store === 'Amazon' ? 'n' : ''} ${store} keyword search for "${q}"`,
-  linkOutMatch: 'Opens a Flipkart search for this product',
+  /** Better-match card destination: the store the product was shared from (Flipkart when unknown). */
+  linkOutMatch: (store: 'Flipkart' | 'Amazon' | 'Nykaa') => `Opens a${store === 'Amazon' ? 'n' : ''} ${store} search for this product`,
   backToListing: (store: string) => `Returns to the ${store} listing`,
   shareTipTitle: 'In Flipkart, tap Share → Silver Mirror',
   /** Per-store share paths from spikes/FINDINGS.md S1: Amazon's own panel hides Silver Mirror behind More. */
@@ -38,8 +39,11 @@ export const COPY = {
   snapLabel: 'Snap the ingredient list.',
   labelPhotoProvenance: 'Photo of label, confirmed by you.',
   tryonCaption: 'Two shades, same photo. Preview, not a shade guarantee.',
-  tryonSingleClaim: 'The listing says one shade suits everyone. Try it on me.',
-  tryonMulti: 'Try two shades on me.',
+  /** Only when the listing itself claims one shade for everyone (claim one_shade / universal_tint). Button label: no full stop. */
+  tryonSingleClaim: 'The listing says one shade suits everyone. Try it on me',
+  /** A single shade colour on file, no such claim: never put words in the seller's mouth. */
+  tryonSingle: 'Try this shade on me',
+  tryonMulti: 'Try two shades on me',
   footer: 'Cosmetic guidance, not medical advice.',
   notAffiliated: 'Not affiliated with Flipkart, Amazon or Nykaa.',
   accuracyNote: 'Skin AI can be less accurate on deeper skin tones and in poor light.',

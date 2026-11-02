@@ -88,6 +88,7 @@ describe('presentVerdict', () => {
   });
 
   it('heading pluralises', () => {
+    expect(reasonsHeading(0)).toBe('Why');
     expect(reasonsHeading(1)).toBe('Why · 1 reason');
     expect(reasonsHeading(3)).toBe('Why · 3 reasons');
   });

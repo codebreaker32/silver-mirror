@@ -140,8 +140,9 @@ export function tryonEntry(product: CatalogProduct | null): { mode: TryonMode; l
   if (coloured === 0) return null;
   const shadeClaim = product.claims.some((c) => c.type === 'one_shade' || c.type === 'universal_tint');
   const mode: TryonMode = coloured >= 2 ? 'multi' : 'single';
-  if (shadeClaim || mode === 'single') return { mode, label: COPY.tryonSingleClaim };
-  return { mode, label: COPY.tryonMulti };
+  // Only quote the listing when it actually makes the one-shade claim; a single colour on file is not a claim.
+  if (shadeClaim) return { mode, label: COPY.tryonSingleClaim };
+  return { mode, label: mode === 'single' ? COPY.tryonSingle : COPY.tryonMulti };
 }
 
 export const productLine = (p: { brand: string; name: string; size?: string | undefined }) =>

@@ -200,7 +200,7 @@ describe('Tier 1 flows against the mock Worker (phone logic + Worker in-process)
     const pilgrim = row('pilgrim-korean-white-lotus-tinted-sunscreen-spf-50-pa');
     expect(foxtale.category).toBe('tinted_spf');
     expect(tryonEntry(foxtale)).toEqual({ mode: 'multi', label: COPY.tryonMulti });
-    expect(tryonEntry(pilgrim)).toEqual({ mode: 'single', label: COPY.tryonSingleClaim });
+    expect(tryonEntry(pilgrim)).toEqual({ mode: 'single', label: COPY.tryonSingle });
 
     // Every colour on file records where it came from (the brand's own swatch or image), never a guess.
     const coloured = rows.flatMap((p) => p.shades.filter((s) => s.hex).map((s) => ({ p, s })));

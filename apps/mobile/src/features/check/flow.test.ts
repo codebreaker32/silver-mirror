@@ -96,7 +96,8 @@ describe('helpers', () => {
     expect(tryonEntry(PRODUCT)).toBeNull();
     expect(tryonEntry(TINTED)).toEqual({ mode: 'multi', label: COPY.tryonMulti });
     expect(tryonEntry({ ...TINTED, claims: [{ type: 'universal_tint' }] })?.label).toBe(COPY.tryonSingleClaim);
-    expect(tryonEntry({ ...TINTED, shades: [{ name: 'Only', hex: '#C8A27E' }] })).toEqual({ mode: 'single', label: COPY.tryonSingleClaim });
+    expect(tryonEntry({ ...TINTED, shades: [{ name: 'Only', hex: '#C8A27E' }] })).toEqual({ mode: 'single', label: COPY.tryonSingle });
+    expect(tryonEntry({ ...TINTED, shades: [{ name: 'Only', hex: '#C8A27E' }], claims: [{ type: 'one_shade' }] })).toEqual({ mode: 'single', label: COPY.tryonSingleClaim });
     // No colour on file → no try-on button (the Worker would reject it).
     expect(tryonEntry({ ...TINTED, shades: [{ name: 'Only' }] })).toBeNull();
     expect(tryonEntry({ ...TINTED, shades: [] })).toBeNull();

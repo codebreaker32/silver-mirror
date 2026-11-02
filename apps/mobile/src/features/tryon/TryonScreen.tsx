@@ -36,7 +36,9 @@ type Phase = { name: 'consent' } | { name: 'capture'; hint: string | null } | { 
 
 export function TryonScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ productId?: string; mode?: string; shadeName?: string; productName?: string }>();
+  const params = useLocalSearchParams<{ productId?: string; mode?: string; shadeName?: string; productName?: string; productSize?: string }>();
+  // Pack size on its own meta line (DESIGN.md §9.3), never inline in the heading where " ·" can dangle at a wrap.
+  const productSize = params.productSize?.trim() || null;
   const mode = TryonMode.catch('multi').parse(params.mode);
   const [phase, setPhase] = useState<Phase>({ name: 'consent' });
   const consent = useRef<ConsentRecord | null>(null);
@@ -94,7 +96,7 @@ export function TryonScreen() {
   if (phase.name === 'consent') {
     return (
       <TryonConsent
-        productName={params.productName}
+        productName={params.productName ? [params.productName, productSize].filter(Boolean).join(' · ') : undefined}
         mode={mode}
         onDecline={close}
         onAccept={() => {
@@ -125,6 +127,11 @@ export function TryonScreen() {
     return (
       <Screen title="Try-on" onBack={close} footer={<Button label="Close" onPress={close} />}>
         <Heading>{params.productName ?? 'Your preview'}</Heading>
+        {params.productName && productSize ? (
+          <Body muted small>
+            {productSize}
+          </Body>
+        ) : null}
         <TryonResult status={progress.status} />
         <Button label="How this was made" variant="tertiary" trailingIcon="chevron-right" onPress={() => router.push('/how')} />
         <Body muted small>

@@ -21,8 +21,8 @@ interface Props {
 }
 
 /**
- * Reasons before verdicts (DESIGN.md §9.4): head (the only tint) → reasons → next step → where it comes from →
- * how it was made → better matches. MEDICINE stops after the head.
+ * Reasons before verdicts (DESIGN.md §9.4): head (the only tint) → reasons → try-on (tinted) → next step → where it
+ * comes from → how it was made → better matches. MEDICINE stops after the head.
  */
 export function VerdictSheet({ view, afterHead, unknown, tryon, matches, glyph, demo = false, onHowMade }: Props) {
   const t = useTheme();
@@ -36,11 +36,13 @@ export function VerdictSheet({ view, afterHead, unknown, tryon, matches, glyph, 
       {view.showReasons ? (
         <View style={{ gap: t.space[5] }}>
           <ReasonList reasons={view.reasons} emptyNote={view.emptyReasonsNote} />
+          {/* Try-on straight under the reasons: for a tinted product, shade is the shopper's next question. */}
+          {tryon ?? null}
           {glyph ?? null}
         </View>
       ) : null}
       {view.unknownKind === 'ingredients' && unknown ? unknown : null}
-      {tryon ?? null}
+      {!view.showReasons ? (tryon ?? null) : null}
       {!medicine ? (
         <View style={{ gap: t.space[3] }}>
           <ProvenanceLedger rows={view.ledger} line={null} />
