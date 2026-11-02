@@ -7,10 +7,13 @@ import { reasonsHeading, type ReasonView } from '../present';
 import { useReveal } from './useReveal';
 
 const VISIBLE = 3;
+// Showcase card copy: the reading line 15 regular in text ink, the product fact 14 regular muted.
+const READING_TYPE = { fontFamily: 'Geist_400Regular', fontSize: 15, lineHeight: 21, letterSpacing: 0 } as const;
+const FACT_TYPE = { fontFamily: 'Geist_400Regular', fontSize: 14, lineHeight: 20, letterSpacing: 0 } as const;
 
 /**
- * One reason (component.reasonRow) as a quiet surface row, three tiers: reading line (type.reason, larger than the
- * verdict label) → product fact (type.body) → under a 1dp rule (reasonRow.divider), the meta row: band chip and rule tag. No decorative numerals; one TalkBack node in visual order.
+ * One reason (component.reasonRow) as a white card (radius 18, hairline), three tiers: reading line (15 regular) →
+ * product fact (14 regular muted) → under a 1dp rule (reasonRow.divider), the meta row: band chip and rule tag. No decorative numerals; one TalkBack node in visual order.
  */
 function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
   const t = useTheme();
@@ -24,11 +27,11 @@ function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
       style={[
         {
           backgroundColor: r.bg,
-          borderRadius: r.radius,
+          borderRadius: 18,
           paddingHorizontal: r.paddingX,
           paddingVertical: r.paddingY,
-          gap: r.factGap,
-          borderWidth: t.dark ? 1 : 0,
+          gap: 4,
+          borderWidth: 1,
           borderColor: t.colors.border,
           borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
         },
@@ -42,8 +45,8 @@ function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
           {reason.kindNote}
         </Txt>
       ) : null}
-      {reason.reading ? <Txt variant="reason" style={[r.reading, { color: r.readingColor }]}>{reason.reading}</Txt> : null}
-      <Txt variant="body" style={[r.fact, { color: r.factColor }]}>
+      {reason.reading ? <Txt variant="reason" style={[r.reading, READING_TYPE, { color: r.readingColor }]}>{reason.reading}</Txt> : null}
+      <Txt variant="body" style={[r.fact, FACT_TYPE, { color: t.colors.textMuted }]}>
         {reason.fact}
       </Txt>
       <View
@@ -54,7 +57,7 @@ function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
           columnGap: r.chipGap,
           rowGap: t.space[2],
           marginTop: t.space[2],
-          paddingTop: t.space[3],
+          paddingTop: t.space[2] + 2,
           borderTopWidth: 1,
           borderTopColor: r.divider,
         }}
@@ -78,7 +81,7 @@ export function ReasonList({ reasons, emptyNote }: { reasons: ReasonView[]; empt
     <View testID="reasons" style={{ gap: t.space[3] }}>
       <SectionHeader title={reasonsHeading(reasons.length)} />
       {emptyNote ? (
-        <Txt variant="reason" style={[t.components.reasonRow.reading, { color: t.colors.text }]}>
+        <Txt variant="reason" style={[t.components.reasonRow.reading, READING_TYPE, { color: t.colors.text }]}>
           {emptyNote}
         </Txt>
       ) : null}

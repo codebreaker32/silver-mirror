@@ -92,10 +92,12 @@ export function ChipRow({ children }: { children: ReactNode }) {
   return <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: t.components.chip.gap, rowGap: t.space[1] }}>{children}</View>;
 }
 
+const TAG_TYPE = { fontFamily: 'Geist_500Medium', fontSize: 12, lineHeight: 16, letterSpacing: 0 } as const;
+
 type TagVariant = 'neutral' | 'outline' | 'demo' | { verdict: Verdict };
 
 /**
- * Small 24dp tag (component.tag): neutral fill, outline (self-reported, flagged), demo (greige Demo reading badge)
+ * Small 24dp tag (component.tag): neutral fill, outline (self-reported, flagged), demo (lavender-grey Demo reading chip)
  * or a verdict tag (icon + label in the verdict colours). Not interactive.
  */
 export function Tag({ label, variant = 'neutral', icon, accessibilityLabel }: { label: string; variant?: TagVariant; icon?: IconName | LegacyIconName; accessibilityLabel?: string }) {
@@ -103,7 +105,8 @@ export function Tag({ label, variant = 'neutral', icon, accessibilityLabel }: { 
   const tag = t.components.tag;
   const tone = typeof variant === 'object' ? variant.verdict : null;
   const v = tone ? t.colors.verdict[tone] : null;
-  const demo = variant === 'demo' ? t.components.verdictCard.demoBadge : null;
+  // Demo reading: a small lavender-grey chip (showcase 04_report chips), not the old greige badge.
+  const demo = variant === 'demo' ? { bg: t.colors.iconDisc, fg: t.colors.onIconDisc } : null;
   // Verdict tags are the same light grey pill as every other chip (2.1 round 1); the verdict glyph in its own ink
   // carries the state, the label stays in text colour.
   const fg = demo ? demo.fg : tag.fg;
@@ -113,7 +116,7 @@ export function Tag({ label, variant = 'neutral', icon, accessibilityLabel }: { 
       accessibilityLabel={accessibilityLabel}
       style={{
         minHeight: tag.visualMinHeight,
-        paddingHorizontal: tag.paddingX,
+        paddingHorizontal: tag.paddingX - 2,
         borderRadius: tag.radius,
         alignSelf: 'flex-start',
         flexDirection: 'row',
@@ -125,7 +128,7 @@ export function Tag({ label, variant = 'neutral', icon, accessibilityLabel }: { 
       }}
     >
       {tone ? <VerdictIcon tone={tone} size={tag.iconSize} color={v?.icon} /> : icon ? <Icon name={icon} size={tag.iconSize} color={fg} /> : null}
-      <Text {...t.textProps.labelSm} style={[tag.type, { color: fg }]}>
+      <Text {...t.textProps.labelSm} style={[tag.type, TAG_TYPE, { color: fg }]}>
         {label}
       </Text>
     </View>

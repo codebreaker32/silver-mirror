@@ -58,10 +58,11 @@ describe('kit', () => {
     expect(b.props.accessibilityState).toEqual({ disabled: true, busy: false });
   });
 
-  it('UNKNOWN head is dashed and never uses the primary pill fill; medicine has no label', async () => {
+  it('UNKNOWN head is the same solid hairline card and never uses the primary pill fill; medicine has no label', async () => {
     await wrap(<VerdictHead tone="unknown" line="We can't read this listing." />);
     const head = flat(screen.getByTestId('verdict-head').props.style);
-    expect(head.borderStyle).toBe('dashed');
+    expect(head.borderStyle).toBe('solid');
+    expect(head.borderColor).toBe(lightTheme.colors.border);
     expect(head.backgroundColor).not.toBe(lightTheme.colors.accent);
     expect(screen.getByText('UNKNOWN')).toBeTruthy();
     await screen.unmount();

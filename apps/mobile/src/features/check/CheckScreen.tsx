@@ -62,7 +62,7 @@ function SourceChip({ label, icon }: { label: string; icon: IconName }) {
         alignItems: 'center',
         gap: t.space[1] + 2,
         paddingHorizontal: t.space[3],
-        minHeight: t.components.tag.visualMinHeight + t.space[2],
+        minHeight: t.components.tag.visualMinHeight + t.space[1],
         borderRadius: t.radius.full,
         backgroundColor: bg,
         maxWidth: '100%',
@@ -70,22 +70,25 @@ function SourceChip({ label, icon }: { label: string; icon: IconName }) {
       }}
     >
       <Icon name={icon} size={t.icon.sm} color={fg} />
-      <Txt variant="label" numberOfLines={1} style={{ color: fg, flexShrink: 1 }}>
+      <Txt variant="label" numberOfLines={1} style={{ color: fg, flexShrink: 1, fontFamily: 'Geist_500Medium', fontSize: 13, lineHeight: 18 }}>
         {label}
       </Txt>
     </View>
   );
 }
 
+/** Row title in the showcase cards: 15 medium. */
+const ROW_TITLE = { fontFamily: 'Geist_500Medium', fontSize: 15, lineHeight: 20, letterSpacing: -0.1 } as const;
+
 /** Compact "No reading yet" card, always under the verdict (DESIGN.md §9.4). */
-function NoReadingCard({ onScan, onDemo, primary }: { onScan: () => void; onDemo: () => void; primary: boolean }) {
+function NoReadingCard({ onScan, onDemo }: { onScan: () => void; onDemo: () => void }) {
   const t = useTheme();
   return (
     <Card variant="raised" testID="no-key" gap={t.space[4]}>
       <View style={{ flexDirection: 'row', gap: t.space[3], alignItems: 'flex-start' }}>
         <IconDisc icon="face-frame" />
         <View style={{ flex: 1, gap: t.space[1] }}>
-          <Txt accessibilityRole="header" variant="section">
+          <Txt accessibilityRole="header" variant="section" style={ROW_TITLE}>
             {COPY.reading.none}
           </Txt>
           <Body small muted>
@@ -94,7 +97,7 @@ function NoReadingCard({ onScan, onDemo, primary }: { onScan: () => void; onDemo
         </View>
       </View>
       <View style={{ gap: t.space[1] }}>
-        <PillButton label="Start scan" variant={primary ? 'primary' : 'secondary'} leadingIcon="face-frame" onPress={onScan} />
+        <PillButton label="Start scan" variant="secondary" leadingIcon="face-frame" onPress={onScan} />
         <PillButton label={COPY.reading.useDemo} variant="tertiary" trailingIcon="chevron-right" onPress={onDemo} style={{ alignSelf: 'center' }} />
       </View>
     </Card>
@@ -102,7 +105,7 @@ function NoReadingCard({ onScan, onDemo, primary }: { onScan: () => void; onDemo
 }
 
 /**
- * "Better matches" jump pill (DESIGN.md §8.7). It sits in the dock, above the primary row, only while that section is
+ * "Better matches" jump, a quiet muted text button (DESIGN.md §8.7). It sits in the dock, above the primary row, only while that section is
  * off screen, so it never covers copy.
  */
 function MatchesPill({ onPress }: { onPress: () => void }) {
@@ -118,19 +121,11 @@ function MatchesPill({ onPress }: { onPress: () => void }) {
         style={{ minHeight: t.touch.min, justifyContent: 'center' }}
       >
         {({ pressed }) => (
-          <View
-            style={{
-              borderRadius: t.radius.full,
-              backgroundColor: pressed ? t.components.button.secondary.bgPressed : t.components.button.secondary.bg,
-              minHeight: t.components.chip.visualMinHeight + t.space[1],
-              paddingHorizontal: t.space[4],
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: t.space[2],
-            }}
-          >
-            <Txt variant="label">Better matches</Txt>
-            <Icon name="chevron-down" size={t.icon.sm} color={t.colors.text} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[1], paddingHorizontal: t.space[3], opacity: pressed ? 0.6 : 1 }}>
+            <Txt variant="label" style={{ color: t.colors.textMuted, fontFamily: 'Geist_500Medium', fontSize: 14, lineHeight: 20 }}>
+              Better matches
+            </Txt>
+            <Icon name="chevron-down" size={t.icon.sm} color={t.colors.textMuted} />
           </View>
         )}
       </Pressable>
@@ -307,9 +302,8 @@ export default function CheckScreen() {
   const inlineDock = fontScale >= t.components.actionBar.inlineAtFontScale;
   const showMore = !!view && view.showMatches;
   const showPill = !!view && view.showMatches && !matchesOnScreen && !inlineDock;
-  // UNKNOWN puts its next step (Snap the ingredient list, or Start scan) in the content as the one primary, so the
-  // dock's way back steps down to the tonal pill there (one filled primary per view, DESIGN.md §8.1).
-  const inContentPrimary = !!view && view.unknownKind != null;
+  // The dock carries the one slate primary (the way back, showcase 04_report); in-content next steps (Snap the
+  // ingredient list, Start scan) are the grey secondary pill, so there is one filled primary per view (DESIGN.md §8.1).
   const dockActions =
     view && result ? (
       <View style={{ gap: t.space[1] }}>
@@ -318,14 +312,22 @@ export default function CheckScreen() {
         <View style={{ flex: 1 }}>
           <PillButton
             label={backLabel}
-            variant={inContentPrimary ? 'secondary' : 'primary'}
+            variant="primary"
             onPress={backToProduct}
             trailingIcon={toListing ? 'arrow-up-right' : undefined}
             accessibilityHint={backDestination}
             testID="back-to-product"
           />
         </View>
-        {showMore ? <IconButton icon="more-horizontal" variant="tonal" accessibilityLabel="More: search the stores" onPress={() => setMoreOpen(true)} testID="dock-more" /> : null}
+        {showMore ? (
+          <IconButton
+            icon="more-horizontal"
+            accessibilityLabel="More: search the stores"
+            onPress={() => setMoreOpen(true)}
+            testID="dock-more"
+            style={{ backgroundColor: t.colors.surface, borderWidth: 1, borderColor: t.colors.border }}
+          />
+        ) : null}
       </View>
       </View>
     ) : null;
@@ -407,7 +409,7 @@ export default function CheckScreen() {
                   onHowMade={() => setHowOpen(true)}
                   afterHead={
                     !key && !medicine ? (
-                      <NoReadingCard onScan={() => router.push('/scan')} onDemo={chooseDemo} primary={view.unknownKind !== 'ingredients'} />
+                      <NoReadingCard onScan={() => router.push('/scan')} onDemo={chooseDemo} />
                     ) : null
                   }
                   glyph={

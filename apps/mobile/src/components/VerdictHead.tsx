@@ -10,17 +10,24 @@ import { textStyle, Txt } from './Text';
 const LABEL: Record<Exclude<Verdict, 'medicine'>, string> = { fits: 'FITS', caution: 'CAUTION', unknown: 'UNKNOWN' };
 const SPOKEN: Record<Verdict, string> = { fits: 'Fits', caution: 'Caution', unknown: 'Unknown', medicine: 'Medicine' };
 
+// Showcase 04_report card language: radius 18, hairline, a 36dp icon disc, a small tracked label and a 16 medium line.
+const RADIUS = 18;
+const DISC = 36;
+const LABEL_TYPE = { fontFamily: 'Geist_500Medium', fontSize: 12, lineHeight: 16, letterSpacing: 1 } as const;
+const QUALIFIER_TYPE = { fontFamily: 'Geist_400Regular', fontSize: 12, lineHeight: 16, letterSpacing: 0 } as const;
+const LINE_TYPE = { fontFamily: 'Geist_500Medium', fontSize: 16, lineHeight: 22, letterSpacing: -0.1 } as const;
+
 export interface VerdictHeadProps {
   tone: Verdict;
   /** Caps label; defaults to FITS / CAUTION / UNKNOWN. Ignored for medicine (no label). */
   label?: string | null;
   /** The verdict sentence, set in type.verdictLine, Geist 600 18/26 (medicine: the one title line). */
   line: string;
-  /** Checked from the product name only: dashed edge + the qualifier line. */
+  /** Checked from the product name only: the qualifier line under the label. */
   nameOnly?: boolean;
   /** Qualifier under the label when nameOnly; defaults to "based on product name only". */
   qualifier?: string;
-  /** The Demo reading is in use: greige badge in the head. */
+  /** The Demo reading is in use: small lavender-grey chip in the head. */
   demo?: boolean;
   /** Defaults to "Fits. <line>" etc. */
   accessibilityLabel?: string;
@@ -30,10 +37,10 @@ export interface VerdictHeadProps {
 }
 
 /**
- * Verdict head (component.verdictCard.head, 2.1 round 1): a white raised card like every other card (hairline + the
- * soft violet shadow; graphite + sheen edge in dark), radius 24, padding 20. The verdict lives in a 40dp tinted disc
- * holding the 24dp verdict icon and the caps label in the verdict fg; the sans sentence is in full text colour.
- * UNKNOWN and name-only get a dashed meaningful edge. No leading stripe. MEDICINE: no box and no label, the 32dp
+ * Verdict head (component.verdictCard.head, showcase 04_report): the same white card as every other card (hairline +
+ * the very soft shadow; graphite + sheen edge in dark), radius 18, padding 16. The verdict lives in a 36dp tinted disc
+ * (grey for UNKNOWN) holding the 20dp verdict icon, a small tracked label in the verdict fg, then the sentence in 16
+ * medium. No dashed edges, no leading stripe; name-only is carried by the qualifier line. MEDICINE: no box and no label, the 32dp
  * pharmacist icon over one title line.
  */
 export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = 'based on product name only', demo = false, accessibilityLabel, revealStyle, testID = 'verdict-head' }: VerdictHeadProps) {
@@ -41,7 +48,7 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
   const head = t.components.verdictCard.head;
   const c = head[tone];
   const a11y = accessibilityLabel ?? `${SPOKEN[tone]}. ${nameOnly ? `${qualifier}. ` : ''}${line}`;
-  const raised = useCardStyle('raised', head.radius);
+  const raised = useCardStyle('raised', RADIUS);
 
   if (tone === 'medicine') {
     const g = t.components.verdictCard.medicineGate;
@@ -63,8 +70,6 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
     );
   }
 
-  const dashed = nameOnly || c.borderStyle === 'dashed';
-  const dashEdge = c.borderStyle === 'dashed' ? c.border : t.colors.borderStrong;
   const shownLabel = label === null ? null : (label ?? LABEL[tone]);
   return (
     <Animated.View
@@ -75,36 +80,38 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
       style={[
         raised,
         {
-          backgroundColor: c.bg,
-          borderWidth: c.borderWidth,
-          borderRadius: head.radius,
-          padding: head.padding,
+          backgroundColor: t.dark ? c.bg : t.colors.surface,
+          borderWidth: 1,
+          borderStyle: 'solid' as const,
+          borderColor: t.colors.border,
+          borderRadius: RADIUS,
+          paddingHorizontal: t.space[4],
+          paddingVertical: t.space[4],
           gap: t.space[3],
         },
-        // A dashed edge carries meaning (UNKNOWN, checked by name only), so it is drawn in a visible ink, all round.
-        dashed ? { borderStyle: 'dashed' as const, borderColor: dashEdge, borderTopColor: dashEdge } : { borderColor: c.border },
+        t.dark ? { borderTopColor: t.colors.sheenEdge } : null,
         revealStyle,
       ]}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: head.iconGap }}>
-        <View testID={`${testID}-disc`} style={{ width: c.iconDiscSize, height: c.iconDiscSize, borderRadius: t.radius.full, backgroundColor: c.iconDisc, alignItems: 'center', justifyContent: 'center' }}>
-          <VerdictIcon tone={tone} size={c.iconSize} color={c.icon} />
+        <View testID={`${testID}-disc`} style={{ width: DISC, height: DISC, borderRadius: t.radius.full, backgroundColor: tone === 'unknown' ? t.colors.secondaryBg : c.iconDisc, alignItems: 'center', justifyContent: 'center' }}>
+          <VerdictIcon tone={tone} size={20} color={c.icon} />
         </View>
         <View style={{ flex: 1, gap: 2 }}>
           {shownLabel && c.showLabel ? (
-            <Text {...t.textProps.verdictLabel} style={[textStyle(head.label), { color: c.fg }]}>
+            <Text {...t.textProps.verdictLabel} style={[textStyle(head.label), LABEL_TYPE, { color: c.fg }]}>
               {shownLabel}
             </Text>
           ) : null}
           {nameOnly ? (
-            <Text {...t.textProps.label} style={[t.components.verdictCard.nameOnly.qualifier, { color: t.components.verdictCard.nameOnly.qualifierColor }]}>
+            <Text {...t.textProps.label} style={[t.components.verdictCard.nameOnly.qualifier, QUALIFIER_TYPE, { color: t.colors.textMuted }]}>
               {qualifier}
             </Text>
           ) : null}
         </View>
         {demo ? <Tag label={COPY.reading.demo} variant="demo" /> : null}
       </View>
-      <Text {...t.textProps.verdictLine} style={[c.subtitle, { color: head.subtitleColor }]}>
+      <Text {...t.textProps.verdictLine} style={[c.subtitle, LINE_TYPE, { color: head.subtitleColor }]}>
         {line}
       </Text>
     </Animated.View>

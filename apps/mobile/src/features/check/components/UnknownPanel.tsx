@@ -18,7 +18,7 @@ interface Props {
 const SNAP_LABEL = COPY.snapLabel.replace(/\.$/, '');
 
 /**
- * Designed UNKNOWN (spec §2D, DESIGN.md §9.4): one next step as the in-content primary, the real catalogue count,
+ * Designed UNKNOWN (spec §2D, DESIGN.md §9.4): one next step as a grey in-content pill (the dock holds the slate primary), the real catalogue count,
  * never an error state. After the photo, the editable ingredient chips take its place.
  */
 export function UnknownPanel({ catalogCount, label, onSnap, onChips, onRun }: Props) {
@@ -33,7 +33,9 @@ export function UnknownPanel({ catalogCount, label, onSnap, onChips, onRun }: Pr
         <View style={{ flexDirection: 'row', gap: t.space[3], alignItems: 'flex-start' }}>
           <IconDisc icon="document" />
           <View style={{ flex: 1, gap: t.space[1] }}>
-            <Txt variant="bodyStrong">Check it from the pack</Txt>
+            <Txt variant="bodyStrong" style={{ fontFamily: 'Geist_500Medium', fontSize: 15, lineHeight: 20 }}>
+              Check it from the pack
+            </Txt>
             {label.step === 'error' ? (
               <Body small accessibilityLiveRegion="polite">
                 {label.message}
@@ -48,6 +50,7 @@ export function UnknownPanel({ catalogCount, label, onSnap, onChips, onRun }: Pr
         <PillButton
           testID="snap-label"
           label={SNAP_LABEL}
+          variant="secondary"
           leadingIcon="camera"
           onPress={onSnap}
           busy={label.step === 'reading'}
