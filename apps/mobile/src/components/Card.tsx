@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
-import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
+import { View, type StyleProp, type ViewStyle } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
+import { PressableScale } from './PressableScale';
 
 /**
- * Silver & graphite (tokens 2.3): a card is a tone step, never a line or a shadow.
- * raised / surface: the surface tone (#F8F8FA) one step up from the page, radius 16, no border, no shadow.
- * sunken: the well tone (#E1E3E8) one step down (chip tracks, thumbnails, quiet rows).
+ * Lavender-grey & charcoal (tokens 2.4): a card is a tone step, never a line or a shadow at rest.
+ * raised / surface: the near-white surface tone (#F7F6FA) one step up from the page, radius 16, no border.
+ * Pressable cards scale to 0.98 and lift with one soft shadow only while pressed (PressableScale).
+ * sunken: the well tone (#E4E2EB) one step down (chip tracks, thumbnails, quiet rows).
  * hero: legacy name; draws the flat surface tone (no gradient fill). The gradient variant is gone.
  * Never nest a card inside a card: group with spacing, or use a sunken well for the inner thing.
  */
@@ -64,16 +66,15 @@ export function Card({
     );
   }
   return (
-    <Pressable
+    <PressableScale
       testID={testID}
       onPress={onPress}
       accessibilityRole={accessibilityRole}
       accessibilityLabel={accessibilityLabel}
       accessibilityHint={accessibilityHint}
-      android_ripple={{ color: t.colors.state.ripple }}
-      style={({ pressed }) => [base, inner, { minHeight: t.touch.min, overflow: 'hidden', transform: [{ scale: pressed ? 0.99 : 1 }] }, style]}
+      style={[base, inner, { minHeight: t.touch.min }, style]}
     >
       {children}
-    </Pressable>
+    </PressableScale>
   );
 }

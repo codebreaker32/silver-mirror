@@ -1,13 +1,20 @@
 import { Children, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions, type StyleProp, type ViewStyle } from 'react-native';
+import Animated, { Easing, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useTheme } from '@/theme/ThemeProvider';
+import { haptic } from './haptics';
 import { Icon, type IconName, type LegacyIconName } from './Icon';
+import { useReduceMotion } from './useReduceMotion';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 /**
- * Tokens 2.3 Silver & graphite: every button is flat, one fill, no outline, no shadow.
- * primary: the one graphite pill per screen state (#1E2026, white label), 52dp with a 15dp label; pass
+ * Tokens 2.4 Lavender-grey & charcoal: every button is flat, one fill, no outline, no shadow.
+ * Press: scale 0.97 and a step to the pressed tone over motion.duration.press (150ms, ease-out), released the
+ * same way; reduced motion keeps the tone step and drops the scale. A light haptic on the primary pill.
+ * primary: the one charcoal pill per screen state (#3A3546, white label), 52dp with a 15dp label; pass
  * trailingIcon="arrow-right" when it moves forward ("Get started", "Start scan", "Check a product").
- * secondary: the well-tone pill (#E1E3E8), 52dp. tertiary: steel text + optional chevron in a 48dp box.
+ * secondary: the well-tone pill (#E4E2EB), 52dp, tinting to its pressed tone. tertiary: charcoal text + optional chevron in a 48dp box.
  * translucent: welcome only, the translucent silver pill over the liquid-silver photo (light); sheen edge in dark.
  * destructiveNeutral: text pill with a leading trash icon, never red; always followed by a confirm sheet.
  * consentPair: two identical pills at equal weight (Start scan / Not now).
@@ -73,31 +80,50 @@ export function PillButton({
   const flat = StyleSheet.flatten(style) ?? {};
   const hang = variant === 'tertiary' && !stretch && flat.alignSelf !== 'center' && flat.alignSelf !== 'flex-end' ? -v.paddingX : 0;
 
+  const reduced = useReduceMotion();
+  const press = useSharedValue(0);
+  const restBg = bg;
+  const downBg = inactive ? bg : v.bgPressed;
+  const pressAnim = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(press.value, [0, 1], [restBg, downBg]),
+    transform: [{ scale: reduced ? 1 : 1 - 0.03 * press.value }],
+  }));
+  const to = (v1: number) => {
+    press.value = withTiming(v1, { duration: t.motion.duration.press, easing: Easing.out(Easing.cubic) });
+  };
+
   return (
     <View style={[{ gap: t.space[2], alignSelf: stretch ? 'stretch' : 'flex-start', marginLeft: hang }, style]}>
-      <Pressable
+      <AnimatedPressable
         testID={testID}
-        onPress={onPress}
+        onPress={() => {
+          if (variant === 'primary') haptic('contextClick');
+          onPress();
+        }}
+        onPressIn={() => !inactive && to(1)}
+        onPressOut={() => to(0)}
         disabled={inactive}
         accessibilityRole="button"
         accessibilityLabel={a11y}
         accessibilityHint={accessibilityHint}
         accessibilityState={{ disabled: inactive, busy }}
         android_ripple={{ color: variant === 'primary' ? b.primary.ripple : t.colors.state.ripple, borderless: false }}
-        style={({ pressed }) => ({
-          minHeight: Math.max(v.minHeight, t.touch.min),
-          paddingHorizontal: v.paddingX,
-          borderRadius: v.radius,
-          borderWidth,
-          borderColor,
-          backgroundColor: pressed && !inactive ? v.bgPressed : bg,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: b.primary.gap,
-          overflow: 'hidden',
-          transform: [{ scale: pressed && !inactive ? 0.98 : 1 }],
-        })}
+        style={[
+          {
+            minHeight: Math.max(v.minHeight, t.touch.min),
+            paddingHorizontal: v.paddingX,
+            borderRadius: v.radius,
+            borderWidth,
+            borderColor,
+            backgroundColor: bg,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: b.primary.gap,
+            overflow: 'hidden',
+          },
+          pressAnim,
+        ]}
       >
         {({ pressed }) => {
           const color = variant === 'tertiary' && pressed && !inactive ? b.tertiary.fgPressed : fg;
@@ -111,7 +137,7 @@ export function PillButton({
             </>
           );
         }}
-      </Pressable>
+      </AnimatedPressable>
       {destination ? (
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: t.space[1] }} importantForAccessibility="no-hide-descendants">
           <Icon name="search" size={t.icon.sm} color={t.components.storeLinkOut.destinationColor} />
