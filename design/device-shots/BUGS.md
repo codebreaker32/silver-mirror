@@ -18,3 +18,12 @@
 - Verdict screen: the UNKNOWN card works structurally. Too many full-width buttons stack at the bottom (Find better matches, Back to product, plus three store buttons).
 
 Screens: 01–19 *.png in this folder; contact sheets sheet.png, sheet2.png, sheet3.png, sheet4.png.
+
+## Production (live Worker) findings — 2026-11-02 ~10:00 IST
+7. **CRITICAL: Flipkart short links don't resolve on the live Worker.** POST /v1/resolve with `https://dl.flipkart.com/s/qPYPSuNNNN` gives `outcome: unknown, extractedTitle: null`. The same lookup works from a residential IP. The Worker's `flipkartLocation` sends a GET with no User-Agent and a 4 s timeout from Cloudflare IPs, which Flipkart probably blocks or stalls. Fix:
+   - (a) **Resolve on the phone first:** `fetch(shortUrl)` → read `response.url` (the final link address only), cancel the body, and send that URL in `ResolveRequest.url`. The Worker parses the slug and pid from a `flipkart.com/.../p/...` URL without any network call.
+   - (b) Server fallback: send a mobile browser User-Agent and allow a longer timeout (8 s).
+   - (c) Test both paths.
+8. **CRITICAL (config, needs Aman): live `/v1/install` returns "Install tokens are not configured".** `INSTALL_HMAC_SECRET` was missing from `.env` when the secrets were uploaded, so an empty value was stored. It has now been generated in `.env`. Aman runs once:
+   `cd /home/aman/youcam && set -a && . ./.env && set +a && cd apps/worker && printf '%s' "$INSTALL_HMAC_SECRET" | npx wrangler secret put INSTALL_HMAC_SECRET --env production`
+   Re-check with `curl -X POST https://skinkey-worker.skinkey-worker.workers.dev/v1/install`.
