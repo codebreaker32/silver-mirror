@@ -24,7 +24,7 @@ export interface TabItem {
 }
 
 /**
- * Home · Shop · Scan · Reading · You (experience reference). Scan is the raised centre disc. A tab whose route file is
+ * Home · Shop · Scan · Reading · Routine (experience reference). Settings opens from the Home gear. Scan is the raised centre disc. A tab whose route file is
  * not in app/(tabs) is left out, so the bar never shows a dead slot.
  */
 export const TAB_ITEMS: readonly TabItem[] = [
@@ -32,15 +32,16 @@ export const TAB_ITEMS: readonly TabItem[] = [
   { key: 'shop', label: 'Shop', icon: 'bag', route: 'shop' },
   { key: 'scan', label: 'Scan', icon: 'face-frame', href: '/scan', accessibilityHint: 'Opens the skin scan' },
   { key: 'reading', label: 'Reading', icon: 'droplet', route: 'reading' },
-  { key: 'you', label: 'You', icon: 'person', route: 'you' },
+  { key: 'routine', label: 'Routine', icon: 'calendar', route: 'routine' },
 ];
 
 /** Tab-only line glyphs (24dp grid, round caps, the Icon set's stroke). Filled when selected. */
-type TabGlyphName = 'house' | 'bag' | 'person';
+type TabGlyphName = 'house' | 'bag' | 'person' | 'calendar';
 const TAB_GLYPHS: Record<TabGlyphName, string> = {
   house: 'M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z',
   bag: 'M5.5 8h13l-1 11.2a1 1 0 0 1-1 .8H7.5a1 1 0 0 1-1-.8zM9 8V7a3 3 0 0 1 6 0v1',
   person: 'M12 12a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5zM4.75 20c.6-3.6 3.6-5.75 7.25-5.75S18.65 16.4 19.25 20z',
+  calendar: 'M6 5.5h12A1.5 1.5 0 0 1 19.5 7v11.5A1.5 1.5 0 0 1 18 20H6a1.5 1.5 0 0 1-1.5-1.5V7A1.5 1.5 0 0 1 6 5.5zM4.5 10h15M8.5 3.75v3.5M15.5 3.75v3.5M8 13.75h8M8 16.75h5',
 };
 const isTabGlyph = (n: string): n is TabGlyphName => n in TAB_GLYPHS;
 
@@ -53,7 +54,7 @@ function TabGlyph({ name, size, color, filled, strokeWidth }: { name: TabGlyphNa
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill={filled && name !== 'bag' ? color : 'none'}
+        fill={filled && name !== 'bag' && name !== 'calendar' ? color : 'none'}
       />
     </Svg>
   );

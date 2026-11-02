@@ -19,7 +19,7 @@ function tabProps(index: number) {
     { key: 'index-k', name: 'index' },
     { key: 'shop-k', name: 'shop' },
     { key: 'reading-k', name: 'reading' },
-    { key: 'you-k', name: 'you' },
+    { key: 'routine-k', name: 'routine' },
   ];
   const emit = jest.fn((_event: unknown) => ({ defaultPrevented: false }));
   const navigateToTab = jest.fn();
@@ -30,11 +30,11 @@ function tabProps(index: number) {
 }
 
 describe('TabBar', () => {
-  it('renders Home · Shop · Scan · Reading · You as tabs with the selected state on the focused route', async () => {
+  it('renders Home · Shop · Scan · Reading · Routine as tabs with the selected state on the focused route', async () => {
     const { props } = tabProps(0);
     await wrap(<TabBar {...props} />);
     const tabs = screen.getAllByRole('tab');
-    expect(tabs.map((t) => t.props.accessibilityLabel)).toEqual(['Home, tab 1 of 5', 'Shop, tab 2 of 5', 'Scan, tab 3 of 5', 'Reading, tab 4 of 5', 'You, tab 5 of 5']);
+    expect(tabs.map((t) => t.props.accessibilityLabel)).toEqual(['Home, tab 1 of 5', 'Shop, tab 2 of 5', 'Scan, tab 3 of 5', 'Reading, tab 4 of 5', 'Routine, tab 5 of 5']);
     expect(tabs[0]!.props.accessibilityState).toEqual({ selected: true });
     expect(tabs[2]!.props.accessibilityState).toEqual({ selected: false });
     expect(screen.getByTestId('tab-bar').props.accessibilityRole).toBe('tablist');
