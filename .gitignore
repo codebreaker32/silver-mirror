@@ -32,3 +32,4 @@ npm-debug.*
 
 # loop runner log
 ops/ralph.log
+design/web-shots/
