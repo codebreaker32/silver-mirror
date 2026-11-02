@@ -68,89 +68,89 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 <!-- tokens:@semantic -->
 | Token | Light | Dark |
 |---|---|---|
-| `color.bg` | #ECEDF0 (`mirror.100`) | #121319 (`graphite.950`) |
-| `color.bg-sunken` | #E1E3E8 (`mirror.200`) | #0E0F14 (`graphite.975`) |
-| `color.page-top` | #ECEDF0 (`mirror.100`) | #121319 (`graphite.950`) |
-| `color.page-bottom` | #ECEDF0 (`mirror.100`) | #121319 (`graphite.950`) |
-| `color.page-glow` | rgba(236, 237, 240, 0.00) | #121319 (`graphite.950`) |
-| `color.surface` | #F8F8FA (`mirror.25`) | #1A1B23 (`graphite.900`) |
-| `color.surface-raised` | #F8F8FA (`mirror.25`) | #20212A (`graphite.850`) |
-| `color.glass` | #F8F8FA (`mirror.25`) | #20212A (`graphite.850`) |
-| `color.glass-edge` | rgba(248, 248, 250, 0.00) | rgba(239, 238, 243, 0.07) (`color.sheen-edge`) |
-| `color.text` | #15161A (`mirror.950`) | #EFEEF3 (`pearl.100`) |
-| `color.text-muted` | #565964 (`mirror.600`) | #C6C3CF (`pearl.300`) |
-| `color.text-subtle` | #5F626C (`mirror.500`) | #A8A5B3 (`silver.400`) |
-| `color.border` | #E1E3E8 (`mirror.200`) | #30313C (`graphite.750`) |
-| `color.border-strong` | #7A7E89 (`mirror.400`) | #7E7B8B (`silver.500`) |
-| `color.accent` | #1E2026 (`mirror.900`) | #F6F5F8 (`pearl.50`) |
+| `color.bg` | #EDECF2 (`mirror.100`) | #121319 (`graphite.950`) |
+| `color.bg-sunken` | #E4E2EB (`mirror.200`) | #0E0F14 (`graphite.975`) |
+| `color.page-top` | #EDECF2 (`mirror.100`) | #121319 (`graphite.950`) |
+| `color.page-bottom` | #EDECF2 (`mirror.100`) | #121319 (`graphite.950`) |
+| `color.page-glow` | rgba(237, 236, 242, 0.00) | #121319 (`graphite.950`) |
+| `color.surface` | #F7F6FA (`mirror.25`) | #1A1B23 (`graphite.900`) |
+| `color.surface-raised` | #F7F6FA (`mirror.25`) | #20212A (`graphite.850`) |
+| `color.glass` | #F7F6FA (`mirror.25`) | #20212A (`graphite.850`) |
+| `color.glass-edge` | rgba(247, 246, 250, 0.00) | rgba(239, 238, 243, 0.07) (`color.sheen-edge`) |
+| `color.text` | #1B1A22 (`mirror.950`) | #EFEEF3 (`pearl.100`) |
+| `color.text-muted` | #575566 (`mirror.600`) | #C6C3CF (`pearl.300`) |
+| `color.text-subtle` | #625F70 (`mirror.500`) | #A8A5B3 (`silver.400`) |
+| `color.border` | #E4E2EB (`mirror.200`) | #30313C (`graphite.750`) |
+| `color.border-strong` | #7D7A8A (`mirror.400`) | #7E7B8B (`silver.500`) |
+| `color.accent` | #3A3546 (`mirror.900`) | #F6F5F8 (`pearl.50`) |
 | `color.on-accent` | #FFFFFF (`white`) | #2F3243 (`slate.800`) |
-| `color.accent-pressed` | #34363E (`mirror.800`) | #C6C3CF (`pearl.300`) |
-| `color.accent-subtle` | #E1E3E8 (`mirror.200`) | #2F3243 (`slate.800`) |
-| `color.on-accent-subtle` | #15161A (`mirror.950`) | #E1E4EE (`slate.100`) |
-| `color.plum` | #1E2026 (`mirror.900`) | #F6F5F8 (`pearl.50`) |
-| `color.plum-pressed` | #34363E (`mirror.800`) | #C6C3CF (`pearl.300`) |
-| `color.tile-pink` | #E1E3E8 (`mirror.200`) | #34304F (`lavender.800`) |
-| `color.tile-lilac` | #DADDE3 (`mirror.250`) | #272832 (`graphite.800`) |
-| `color.tile-lavender` | #E6E7EB (`mirror.150`) | #34304F (`lavender.800`) |
-| `color.accent-pink` | #E1E3E8 (`mirror.200`) | #463F69 (`lavender.700`) |
-| `color.secondary-bg` | #E1E3E8 (`mirror.200`) | #30313C (`graphite.750`) |
-| `color.secondary-bg-pressed` | #DADDE3 (`mirror.250`) | #3A3B47 (`graphite.700`) |
-| `color.on-secondary` | #15161A (`mirror.950`) | #EFEEF3 (`pearl.100`) |
-| `color.secondary-translucent` | rgba(248, 248, 250, 0.72) | rgba(239, 238, 243, 0.10) |
-| `color.secondary-translucent-edge` | rgba(248, 248, 250, 0.00) | rgba(239, 238, 243, 0.07) (`color.sheen-edge`) |
-| `color.welcome-wash` | rgba(236, 237, 240, 0.00) | rgba(18, 19, 25, 0.00) |
-| `color.thumb-tile` | #E1E3E8 (`mirror.200`) | #272832 (`graphite.800`) |
-| `color.segment-track` | #E1E3E8 (`mirror.200`) | #272832 (`graphite.800`) |
-| `color.segment-thumb` | #F8F8FA (`mirror.25`) | #3A3B47 (`graphite.700`) |
-| `color.segment-selected-fg` | #15161A (`mirror.950`) | #EFEEF3 (`pearl.100`) |
-| `color.tab-active` | #44607A (`mirror.steel`) | #EFEEF3 (`pearl.100`) |
-| `color.tab-inactive` | #7A7E89 (`mirror.400`) | #A8A5B3 (`silver.400`) |
-| `color.tab-inactive-label` | #5F626C (`color.text-subtle`) | #A8A5B3 (`silver.400`) |
-| `color.skin-gradient.start` | #F8F8FA (`mirror.25`) | #3A3458 |
-| `color.skin-gradient.mid` | #F8F8FA (`mirror.25`) | #2A2838 |
-| `color.skin-gradient.end` | #F8F8FA (`mirror.25`) | #20212A |
-| `color.skin-gradient.edge` | rgba(248, 248, 250, 0.00) | rgba(239, 238, 243, 0.07) (`color.sheen-edge`) |
-| `color.skin-gradient.disc` | #E1E3E8 (`mirror.200`) | #463F69 (`lavender.700`) |
-| `color.accent-warm` | #E1E3E8 (`mirror.200`) | #3D3936 (`greige.850`) |
-| `color.on-accent-warm` | #15161A (`mirror.950`) | #E4DCD5 (`greige.200`) |
-| `color.icon-disc` | #E1E3E8 (`mirror.200`) | #34304F (`lavender.800`) |
-| `color.on-icon-disc` | #15161A (`mirror.950`) | #BEB6DE (`lavender.300`) |
-| `color.bracket` | #565964 (`mirror.600`) | #A6ADC2 (`slate.300`) |
-| `color.link` | #44607A (`mirror.steel`) | #C7CCDB (`slate.200`) |
-| `color.link-pressed` | #34495D (`mirror.steel-pressed`) | #E1E4EE (`slate.100`) |
-| `color.focus-ring` | #44607A (`mirror.steel`) | #BEB6DE (`lavender.300`) |
-| `color.focus-ring-inverse` | #A9BFD3 (`mirror.steel-light`) | #50576F (`slate.600`) |
+| `color.accent-pressed` | #2C2836 (`mirror.800`) | #C6C3CF (`pearl.300`) |
+| `color.accent-subtle` | #E4E2EB (`mirror.200`) | #2F3243 (`slate.800`) |
+| `color.on-accent-subtle` | #1B1A22 (`mirror.950`) | #E1E4EE (`slate.100`) |
+| `color.plum` | #3A3546 (`mirror.900`) | #F6F5F8 (`pearl.50`) |
+| `color.plum-pressed` | #2C2836 (`mirror.800`) | #C6C3CF (`pearl.300`) |
+| `color.tile-pink` | #E4E2EB (`mirror.200`) | #34304F (`lavender.800`) |
+| `color.tile-lilac` | #DAD7E2 (`mirror.250`) | #272832 (`graphite.800`) |
+| `color.tile-lavender` | #E9E7F0 (`mirror.150`) | #34304F (`lavender.800`) |
+| `color.accent-pink` | #E4E2EB (`mirror.200`) | #463F69 (`lavender.700`) |
+| `color.secondary-bg` | #E4E2EB (`mirror.200`) | #30313C (`graphite.750`) |
+| `color.secondary-bg-pressed` | #DAD7E2 (`mirror.250`) | #3A3B47 (`graphite.700`) |
+| `color.on-secondary` | #1B1A22 (`mirror.950`) | #EFEEF3 (`pearl.100`) |
+| `color.secondary-translucent` | rgba(247, 246, 250, 0.72) | rgba(239, 238, 243, 0.10) |
+| `color.secondary-translucent-edge` | rgba(247, 246, 250, 0.00) | rgba(239, 238, 243, 0.07) (`color.sheen-edge`) |
+| `color.welcome-wash` | rgba(237, 236, 242, 0.00) | rgba(18, 19, 25, 0.00) |
+| `color.thumb-tile` | #E4E2EB (`mirror.200`) | #272832 (`graphite.800`) |
+| `color.segment-track` | #E4E2EB (`mirror.200`) | #272832 (`graphite.800`) |
+| `color.segment-thumb` | #F7F6FA (`mirror.25`) | #3A3B47 (`graphite.700`) |
+| `color.segment-selected-fg` | #1B1A22 (`mirror.950`) | #EFEEF3 (`pearl.100`) |
+| `color.tab-active` | #3A3546 (`mirror.steel`) | #EFEEF3 (`pearl.100`) |
+| `color.tab-inactive` | #7D7A8A (`mirror.400`) | #A8A5B3 (`silver.400`) |
+| `color.tab-inactive-label` | #625F70 (`color.text-subtle`) | #A8A5B3 (`silver.400`) |
+| `color.skin-gradient.start` | #F7F6FA (`mirror.25`) | #3A3458 |
+| `color.skin-gradient.mid` | #F7F6FA (`mirror.25`) | #2A2838 |
+| `color.skin-gradient.end` | #F7F6FA (`mirror.25`) | #20212A |
+| `color.skin-gradient.edge` | rgba(247, 246, 250, 0.00) | rgba(239, 238, 243, 0.07) (`color.sheen-edge`) |
+| `color.skin-gradient.disc` | #E4E2EB (`mirror.200`) | #463F69 (`lavender.700`) |
+| `color.accent-warm` | #E4E2EB (`mirror.200`) | #3D3936 (`greige.850`) |
+| `color.on-accent-warm` | #1B1A22 (`mirror.950`) | #E4DCD5 (`greige.200`) |
+| `color.icon-disc` | #E4E2EB (`mirror.200`) | #34304F (`lavender.800`) |
+| `color.on-icon-disc` | #4A4658 | #BEB6DE (`lavender.300`) |
+| `color.bracket` | #575566 (`mirror.600`) | #A6ADC2 (`slate.300`) |
+| `color.link` | #3A3546 (`mirror.steel`) | #C7CCDB (`slate.200`) |
+| `color.link-pressed` | #2C2836 (`mirror.steel-pressed`) | #E1E4EE (`slate.100`) |
+| `color.focus-ring` | #3A3546 (`mirror.steel`) | #BEB6DE (`lavender.300`) |
+| `color.focus-ring-inverse` | #CBC6D8 (`mirror.steel-light`) | #50576F (`slate.600`) |
 | `color.focus-ring-overlay` | #FFFFFF (`white`) | #FFFFFF (`white`) |
-| `color.overlay` | rgba(21, 22, 26, 0.40) | rgba(8, 9, 12, 0.64) |
+| `color.overlay` | rgba(27, 26, 34, 0.40) | rgba(8, 9, 12, 0.64) |
 | `color.overlay-camera` | rgba(14, 15, 20, 0.62) | rgba(14, 15, 20, 0.62) |
 | `color.on-overlay` | #FFFFFF (`white`) | #FFFFFF (`white`) |
 | `color.overlay-halo` | rgba(14, 15, 20, 0.60) | rgba(14, 15, 20, 0.60) |
-| `color.inverse-surface` | #1E2026 (`mirror.900`) | #E7E5EC (`pearl.150`) |
-| `color.inverse-text` | #F8F8FA (`mirror.25`) | #1A1B23 (`graphite.900`) |
-| `color.inverse-link` | #A9BFD3 (`mirror.steel-light`) | #50576F (`slate.600`) |
-| `color.disabled-bg` | #E1E3E8 (`mirror.200`) | #30313C (`graphite.750`) |
-| `color.disabled-fg` | #565964 (`mirror.600`) | #A8A5B3 (`silver.400`) |
-| `color.shadow` | #15161A (`mirror.950`) | transparent |
+| `color.inverse-surface` | #3A3546 (`mirror.900`) | #E7E5EC (`pearl.150`) |
+| `color.inverse-text` | #F7F6FA (`mirror.25`) | #1A1B23 (`graphite.900`) |
+| `color.inverse-link` | #CBC6D8 (`mirror.steel-light`) | #50576F (`slate.600`) |
+| `color.disabled-bg` | #E4E2EB (`mirror.200`) | #30313C (`graphite.750`) |
+| `color.disabled-fg` | #575566 (`mirror.600`) | #A8A5B3 (`silver.400`) |
+| `color.shadow` | #1B1A22 (`mirror.950`) | transparent |
 | `color.sheen-edge` | rgba(255, 255, 255, 0.00) | rgba(239, 238, 243, 0.07) |
-| `color.state.pressed` | rgba(21, 22, 26, 0.08) | rgba(239, 238, 243, 0.10) |
-| `color.state.hover` | rgba(21, 22, 26, 0.05) | rgba(239, 238, 243, 0.06) |
-| `color.state.ripple` | rgba(21, 22, 26, 0.12) | rgba(239, 238, 243, 0.14) |
+| `color.state.pressed` | rgba(27, 26, 34, 0.08) | rgba(239, 238, 243, 0.10) |
+| `color.state.hover` | rgba(27, 26, 34, 0.05) | rgba(239, 238, 243, 0.06) |
+| `color.state.ripple` | rgba(27, 26, 34, 0.12) | rgba(239, 238, 243, 0.14) |
 | `color.state.ripple-on-accent` | rgba(255, 255, 255, 0.18) | rgba(47, 50, 67, 0.16) |
-| `color.sheen.start` | #F8F8FA | #262733 |
-| `color.sheen.lavender` | #EEEFF2 | #24222F |
-| `color.sheen.silver` | #E6E8EC | #1C1D25 |
-| `color.sheen.end` | #ECEDF0 | #121319 (`graphite.950`) |
+| `color.sheen.start` | #F7F6FA | #262733 |
+| `color.sheen.lavender` | #EEEDF3 | #24222F |
+| `color.sheen.silver` | #E8E6EE | #1C1D25 |
+| `color.sheen.end` | #EDECF2 | #121319 (`graphite.950`) |
 | `color.mark.tile-top` | #FFFFFF (`white`) | #30313C (`graphite.750`) |
-| `color.mark.tile-bottom` | #E6E7EB (`mirror.150`) | #1A1B23 (`graphite.900`) |
-| `color.mark.tile-edge` | #E1E3E8 (`mirror.200`) | #3A3B47 (`graphite.700`) |
-| `color.mark.chrome-hi` | #EEEFF2 (`mirror.50`) | #FBFBFD (`chrome.50`) |
-| `color.mark.chrome-1` | #A3A7B0 | #D9D8E1 (`chrome.200`) |
-| `color.mark.chrome-2` | #6E727C | #9F9DAE (`chrome.400`) |
-| `color.mark.chrome-3` | #C9CCD3 | #CBC5E0 (`chrome.lav`) |
-| `color.mark.chrome-4` | #4E525B | #838194 (`chrome.500`) |
-| `color.mark.chrome-lo` | #2A2C33 (`mirror.850`) | #686678 (`chrome.600`) |
+| `color.mark.tile-bottom` | #E9E7F0 (`mirror.150`) | #1A1B23 (`graphite.900`) |
+| `color.mark.tile-edge` | #E4E2EB (`mirror.200`) | #3A3B47 (`graphite.700`) |
+| `color.mark.chrome-hi` | #EEEDF3 (`mirror.50`) | #FBFBFD (`chrome.50`) |
+| `color.mark.chrome-1` | #A6A3B1 | #D9D8E1 (`chrome.200`) |
+| `color.mark.chrome-2` | #706C7D | #9F9DAE (`chrome.400`) |
+| `color.mark.chrome-3` | #CCC9D4 | #CBC5E0 (`chrome.lav`) |
+| `color.mark.chrome-4` | #504C5C | #838194 (`chrome.500`) |
+| `color.mark.chrome-lo` | #28242F (`mirror.850`) | #686678 (`chrome.600`) |
 | `color.mark.glint` | #FFFFFF (`white`) | #FFFFFF (`white`) |
-| `color.mark.shade` | #15161A (`mirror.950`) | #0E0F14 (`graphite.975`) |
+| `color.mark.shade` | #1B1A22 (`mirror.950`) | #0E0F14 (`graphite.975`) |
 | `verdict.fits.bg` | #E2EEE8 (`sage.100`) | #1A2A25 (`sage.900`) |
 | `verdict.fits.fg` | #2B5145 (`sage.700`) | #C4DDD2 (`sage.200`) |
 | `verdict.fits.border` | #568676 (`sage.500`) | #568676 (`sage.500`) |
@@ -159,25 +159,25 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 | `verdict.caution.fg` | #66460C (`amber.700`) | #EDD6AE (`amber.200`) |
 | `verdict.caution.border` | #A57A2F (`amber.500`) | #A57A2F (`amber.500`) |
 | `verdict.caution.icon` | #8A6118 (`amber.600`) | #D4A65A (`amber.400`) |
-| `verdict.unknown.bg` | #E1E3E8 (`mirror.200`) | #20212A (`graphite.850`) |
-| `verdict.unknown.fg` | #30333B (`mirror.700`) | #C7CCDB (`slate.200`) |
-| `verdict.unknown.border` | #7A7E89 (`mirror.400`) | #848CA5 (`slate.400`) |
-| `verdict.unknown.icon` | #565964 (`mirror.600`) | #A6ADC2 (`slate.300`) |
-| `verdict.unknown.disc` | #F8F8FA (`mirror.25`) | #0E0F14 (`graphite.975`) |
-| `verdict.medicine.bg` | #ECEDF0 (`mirror.100`) | #121319 (`graphite.950`) |
-| `verdict.medicine.fg` | #15161A (`mirror.950`) | #EFEEF3 (`pearl.100`) |
-| `verdict.medicine.border` | #15161A (`mirror.950`) | #C6C3CF (`pearl.300`) |
-| `verdict.medicine.icon` | #15161A (`mirror.950`) | #EFEEF3 (`pearl.100`) |
-| `meter.filled` | #30333B (`mirror.700`) | #E7E5EC (`pearl.150`) |
-| `meter.empty` | #7A7E89 (`mirror.400`) | #7E7B8B (`silver.500`) |
+| `verdict.unknown.bg` | #E4E2EB (`mirror.200`) | #20212A (`graphite.850`) |
+| `verdict.unknown.fg` | #1B1A22 (`mirror.950`) | #C7CCDB (`slate.200`) |
+| `verdict.unknown.border` | #7D7A8A (`mirror.400`) | #848CA5 (`slate.400`) |
+| `verdict.unknown.icon` | #575566 (`mirror.600`) | #A6ADC2 (`slate.300`) |
+| `verdict.unknown.disc` | #F7F6FA (`mirror.25`) | #0E0F14 (`graphite.975`) |
+| `verdict.medicine.bg` | #EDECF2 (`mirror.100`) | #121319 (`graphite.950`) |
+| `verdict.medicine.fg` | #1B1A22 (`mirror.950`) | #EFEEF3 (`pearl.100`) |
+| `verdict.medicine.border` | #1B1A22 (`mirror.950`) | #C6C3CF (`pearl.300`) |
+| `verdict.medicine.icon` | #1B1A22 (`mirror.950`) | #EFEEF3 (`pearl.100`) |
+| `meter.filled` | #3F3B4C (`mirror.700`) | #E7E5EC (`pearl.150`) |
+| `meter.empty` | #7D7A8A (`mirror.400`) | #7E7B8B (`silver.500`) |
 | `color.qr.module` | #000000 (`black`) | #000000 (`black`) |
 | `color.qr.field` | #FFFFFF (`white`) | #FFFFFF (`white`) |
-| `color.liquid.ribbon-start` | #D6D9E0 | #20212A (`graphite.850`) |
-| `color.liquid.ribbon-mid` | #E6E7EB (`mirror.150`) | #34304F (`lavender.800`) |
+| `color.liquid.ribbon-start` | #D9D6E1 | #20212A (`graphite.850`) |
+| `color.liquid.ribbon-mid` | #E9E7F0 (`mirror.150`) | #34304F (`lavender.800`) |
 | `color.liquid.ribbon-end` | #FFFFFF (`white`) | #121319 (`graphite.950`) |
 | `color.liquid.crest` | rgba(255, 255, 255, 0.90) | rgba(239, 238, 243, 0.16) |
 | `color.liquid.rim` | rgba(255, 255, 255, 0.80) | rgba(239, 238, 243, 0.22) |
-| `color.liquid.drop` | #E8E9ED | #2A2838 |
+| `color.liquid.drop` | #E9E7F0 | #2A2838 |
 <!-- /tokens -->
 
 ### 1.4 Type styles (generated)
@@ -219,7 +219,7 @@ The motion personality is **ink settling**: unhurried, no springs, no overshoot,
 | Token | Value |
 |---|---|
 | `motion.duration.instant` | 0ms |
-| `motion.duration.press` | 100ms |
+| `motion.duration.press` | 150ms |
 | `motion.duration.state` | 160ms |
 | `motion.duration.base` | 220ms |
 | `motion.duration.enter` | 300ms |
@@ -227,10 +227,12 @@ The motion personality is **ink settling**: unhurried, no springs, no overshoot,
 | `motion.duration.reasonStagger` | 60ms |
 | `motion.duration.stepTick` | 220ms |
 | `motion.duration.bracketResolve` | 420ms |
-| `motion.duration.sheetEnter` | 300ms |
+| `motion.duration.sheetEnter` | 280ms |
 | `motion.duration.sheetExit` | 220ms |
 | `motion.duration.screen` | 280ms |
 | `motion.duration.crossfade` | 120ms |
+| `motion.duration.toast` | 180ms |
+| `motion.duration.pulse` | 1200ms |
 | `motion.ease.standard` | cubic-bezier(0.2, 0, 0, 1) |
 | `motion.ease.decelerate` | cubic-bezier(0.05, 0.7, 0.1, 1) |
 | `motion.ease.exit` | cubic-bezier(0.3, 0, 1, 1) |
@@ -304,27 +306,27 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 |---|---|---|---|
 | `appBar.minHeight` | — | 56 | same |
 | `appBar.bg` | — | transparent | same |
-| `appBar.fg` | `color.text` | #15161A | #EFEEF3 |
+| `appBar.fg` | `color.text` | #1B1A22 | #EFEEF3 |
 | `appBar.title` | `type.appBarTitle` | Geist 600 17/24 | same |
 | `appBar.titleAlign` | — | center | same |
 | `appBar.source` | `type.caption` | Geist 400 13/18 | same |
-| `appBar.sourceColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `appBar.sourceColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `appBar.sourceIcon` | — | arrow-down-left | same |
 | `appBar.iconButton` | `touch.min` | 48 | same |
 | `appBar.iconSize` | `icon.lg` | 24 | same |
 | `appBar.backIcon` | — | arrow-left | same |
-| `appBar.borderOnScroll` | `color.border` | #E1E3E8 | #30313C |
+| `appBar.borderOnScroll` | `color.border` | #E4E2EB | #30313C |
 | `appBar.paddingX` | `space.1` | 4 | same |
 | `appBar.backIconStroke` | — | 1.75 | same |
 | `iconButton.target` | `touch.min` | 48 | same |
 | `iconButton.iconSize` | `icon.lg` | 24 | same |
 | `iconButton.radius` | `radius.full` | 9999 | same |
-| `iconButton.fg` | `color.text` | #15161A | #EFEEF3 |
+| `iconButton.fg` | `color.text` | #1B1A22 | #EFEEF3 |
 | `iconButton.bg` | — | transparent | same |
-| `iconButton.bgTonal` | `color.secondary-bg` | #E1E3E8 | #30313C |
-| `iconButton.bgPressed` | `color.state.pressed` | rgba(21, 22, 26, 0.08) | rgba(239, 238, 243, 0.10) |
-| `iconButton.ripple` | `color.state.ripple` | rgba(21, 22, 26, 0.12) | rgba(239, 238, 243, 0.14) |
-| `iconButton.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
+| `iconButton.bgTonal` | `color.secondary-bg` | #E4E2EB | #30313C |
+| `iconButton.bgPressed` | `color.state.pressed` | rgba(27, 26, 34, 0.08) | rgba(239, 238, 243, 0.10) |
+| `iconButton.ripple` | `color.state.ripple` | rgba(27, 26, 34, 0.12) | rgba(239, 238, 243, 0.14) |
+| `iconButton.fgDisabled` | `color.disabled-fg` | #575566 | #A8A5B3 |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -376,9 +378,9 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:button actionBar focus -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `button.primary.bg` | `color.accent` | #1E2026 | #F6F5F8 |
+| `button.primary.bg` | `color.accent` | #3A3546 | #F6F5F8 |
 | `button.primary.fg` | `color.on-accent` | #FFFFFF | #2F3243 |
-| `button.primary.bgPressed` | `color.accent-pressed` | #34363E | #C6C3CF |
+| `button.primary.bgPressed` | `color.accent-pressed` | #2C2836 | #C6C3CF |
 | `button.primary.ripple` | `color.state.ripple-on-accent` | rgba(255, 255, 255, 0.18) | rgba(47, 50, 67, 0.16) |
 | `button.primary.minHeight` | — | 52 | same |
 | `button.primary.paddingX` | `space.6` | 24 | same |
@@ -386,64 +388,64 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.primary.type` | `type.button` | Geist 600 15/20 | same |
 | `button.primary.gap` | `space.2` | 8 | same |
 | `button.primary.trailingIcon` | — | arrow-right | same |
-| `button.primary.bgDisabled` | `color.disabled-bg` | #E1E3E8 | #30313C |
-| `button.primary.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
-| `button.secondary.bg` | `color.secondary-bg` | #E1E3E8 | #30313C |
-| `button.secondary.fg` | `color.on-secondary` | #15161A | #EFEEF3 |
-| `button.secondary.border` | `color.secondary-bg` | #E1E3E8 | #30313C |
+| `button.primary.bgDisabled` | `color.disabled-bg` | #E4E2EB | #30313C |
+| `button.primary.fgDisabled` | `color.disabled-fg` | #575566 | #A8A5B3 |
+| `button.secondary.bg` | `color.secondary-bg` | #E4E2EB | #30313C |
+| `button.secondary.fg` | `color.on-secondary` | #1B1A22 | #EFEEF3 |
+| `button.secondary.border` | `color.secondary-bg` | #E4E2EB | #30313C |
 | `button.secondary.borderWidth` | — | 0 | same |
-| `button.secondary.bgPressed` | `color.secondary-bg-pressed` | #DADDE3 | #3A3B47 |
+| `button.secondary.bgPressed` | `color.secondary-bg-pressed` | #DAD7E2 | #3A3B47 |
 | `button.secondary.minHeight` | — | 52 | same |
 | `button.secondary.paddingX` | `space.5` | 20 | same |
 | `button.secondary.radius` | `radius.full` | 9999 | same |
 | `button.secondary.type` | `type.button` | Geist 600 15/20 | same |
-| `button.secondary.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
-| `button.secondary.borderDisabled` | `color.disabled-bg` | #E1E3E8 | #30313C |
+| `button.secondary.fgDisabled` | `color.disabled-fg` | #575566 | #A8A5B3 |
+| `button.secondary.borderDisabled` | `color.disabled-bg` | #E4E2EB | #30313C |
 | `button.tertiary.bg` | — | transparent | same |
-| `button.tertiary.fg` | `color.link` | #44607A | #C7CCDB |
-| `button.tertiary.fgPressed` | `color.link-pressed` | #34495D | #E1E4EE |
-| `button.tertiary.bgPressed` | `color.state.pressed` | rgba(21, 22, 26, 0.08) | rgba(239, 238, 243, 0.10) |
+| `button.tertiary.fg` | `color.link` | #3A3546 | #C7CCDB |
+| `button.tertiary.fgPressed` | `color.link-pressed` | #2C2836 | #E1E4EE |
+| `button.tertiary.bgPressed` | `color.state.pressed` | rgba(27, 26, 34, 0.08) | rgba(239, 238, 243, 0.10) |
 | `button.tertiary.minHeight` | — | 48 | same |
 | `button.tertiary.paddingX` | `space.3` | 12 | same |
 | `button.tertiary.radius` | `radius.full` | 9999 | same |
 | `button.tertiary.type` | `type.button` | Geist 600 15/20 | same |
 | `button.tertiary.trailingIcon` | — | chevron-right | same |
-| `button.tertiary.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
+| `button.tertiary.fgDisabled` | `color.disabled-fg` | #575566 | #A8A5B3 |
 | `button.destructiveNeutral.bg` | — | transparent | same |
-| `button.destructiveNeutral.fg` | `color.text` | #15161A | #EFEEF3 |
-| `button.destructiveNeutral.border` | `color.border-strong` | #7A7E89 | #7E7B8B |
+| `button.destructiveNeutral.fg` | `color.text` | #1B1A22 | #EFEEF3 |
+| `button.destructiveNeutral.border` | `color.border-strong` | #7D7A8A | #7E7B8B |
 | `button.destructiveNeutral.borderWidth` | — | 0 | same |
-| `button.destructiveNeutral.bgPressed` | `color.state.pressed` | rgba(21, 22, 26, 0.08) | rgba(239, 238, 243, 0.10) |
+| `button.destructiveNeutral.bgPressed` | `color.state.pressed` | rgba(27, 26, 34, 0.08) | rgba(239, 238, 243, 0.10) |
 | `button.destructiveNeutral.minHeight` | — | 52 | same |
 | `button.destructiveNeutral.paddingX` | `space.4` | 16 | same |
 | `button.destructiveNeutral.radius` | `radius.full` | 9999 | same |
 | `button.destructiveNeutral.type` | `type.button` | Geist 600 15/20 | same |
 | `button.destructiveNeutral.leadingIcon` | — | trash | same |
-| `button.destructiveNeutral.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
-| `button.destructiveNeutral.borderDisabled` | `color.border` | #E1E3E8 | #30313C |
-| `button.consentPair.bg` | `color.secondary-bg` | #E1E3E8 | #30313C |
-| `button.consentPair.fg` | `color.text` | #15161A | #EFEEF3 |
+| `button.destructiveNeutral.fgDisabled` | `color.disabled-fg` | #575566 | #A8A5B3 |
+| `button.destructiveNeutral.borderDisabled` | `color.border` | #E4E2EB | #30313C |
+| `button.consentPair.bg` | `color.secondary-bg` | #E4E2EB | #30313C |
+| `button.consentPair.fg` | `color.text` | #1B1A22 | #EFEEF3 |
 | `button.consentPair.border` | — | transparent | same |
 | `button.consentPair.borderWidth` | — | 0 | same |
-| `button.consentPair.bgPressed` | `color.secondary-bg-pressed` | #DADDE3 | #3A3B47 |
+| `button.consentPair.bgPressed` | `color.secondary-bg-pressed` | #DAD7E2 | #3A3B47 |
 | `button.consentPair.minHeight` | — | 52 | same |
 | `button.consentPair.paddingX` | `space.4` | 16 | same |
 | `button.consentPair.radius` | `radius.full` | 9999 | same |
 | `button.consentPair.type` | `type.button` | Geist 600 15/20 | same |
-| `button.consentPair.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
+| `button.consentPair.fgDisabled` | `color.disabled-fg` | #575566 | #A8A5B3 |
 | `button.consentPair.borderDisabled` | — | transparent | same |
 | `button.stackAtFontScale` | — | 1.3 | same |
-| `button.translucent.bg` | `color.secondary-translucent` | rgba(248, 248, 250, 0.72) | rgba(239, 238, 243, 0.10) |
-| `button.translucent.fg` | `color.text` | #15161A | #EFEEF3 |
-| `button.translucent.border` | `color.secondary-translucent-edge` | rgba(248, 248, 250, 0.00) | rgba(239, 238, 243, 0.07) |
+| `button.translucent.bg` | `color.secondary-translucent` | rgba(247, 246, 250, 0.72) | rgba(239, 238, 243, 0.10) |
+| `button.translucent.fg` | `color.text` | #1B1A22 | #EFEEF3 |
+| `button.translucent.border` | `color.secondary-translucent-edge` | rgba(247, 246, 250, 0.00) | rgba(239, 238, 243, 0.07) |
 | `button.translucent.borderWidth` | — | 1 | same |
-| `button.translucent.bgPressed` | `color.secondary-bg` | #E1E3E8 | #30313C |
+| `button.translucent.bgPressed` | `color.secondary-bg` | #E4E2EB | #30313C |
 | `button.translucent.minHeight` | — | 52 | same |
 | `button.translucent.paddingX` | `space.5` | 20 | same |
 | `button.translucent.radius` | `radius.full` | 9999 | same |
 | `button.translucent.type` | `type.button` | Geist 600 15/20 | same |
-| `button.translucent.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
-| `button.translucent.borderDisabled` | `color.disabled-bg` | #E1E3E8 | #30313C |
+| `button.translucent.fgDisabled` | `color.disabled-fg` | #575566 | #A8A5B3 |
+| `button.translucent.borderDisabled` | `color.disabled-bg` | #E4E2EB | #30313C |
 | `actionBar.bg` | — | transparent | same |
 | `actionBar.border` | `elevation.2.border` | none | #30313C |
 | `actionBar.shadow` | `elevation.2` | elevation 2 | same |
@@ -454,8 +456,8 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `actionBar.moreTarget` | `touch.min` | 48 | same |
 | `actionBar.maxHeightAt1x` | — | 112 | same |
 | `actionBar.inlineAtFontScale` | — | 1.5 | same |
-| `focus.color` | `color.focus-ring` | #44607A | #BEB6DE |
-| `focus.inverse` | `color.focus-ring-inverse` | #A9BFD3 | #50576F |
+| `focus.color` | `color.focus-ring` | #3A3546 | #BEB6DE |
+| `focus.inverse` | `color.focus-ring-inverse` | #CBC6D8 | #50576F |
 | `focus.overlay` | `color.focus-ring-overlay` | #FFFFFF | same |
 | `focus.overlayHalo` | `color.overlay-halo` | rgba(14, 15, 20, 0.60) | same |
 | `focus.width` | — | 2 | same |
@@ -521,12 +523,12 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:textLink -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `textLink.fg` | `color.link` | #44607A | #C7CCDB |
-| `textLink.fgPressed` | `color.link-pressed` | #34495D | #E1E4EE |
-| `textLink.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
+| `textLink.fg` | `color.link` | #3A3546 | #C7CCDB |
+| `textLink.fgPressed` | `color.link-pressed` | #2C2836 | #E1E4EE |
+| `textLink.fgDisabled` | `color.disabled-fg` | #575566 | #A8A5B3 |
 | `textLink.type` | `type.label` | Geist 600 13/18 | same |
 | `textLink.disabledCaption` | `type.caption` | Geist 400 13/18 | same |
-| `textLink.disabledCaptionColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `textLink.disabledCaptionColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `textLink.underlineWidth` | — | 1 | same |
 | `textLink.underlineOffset` | — | 3 | same |
 | `textLink.minTarget` | `touch.min` | 48 | same |
@@ -577,24 +579,24 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `productHeader.kicker` | `type.bodySm` | Geist 400 13/18 | same |
-| `productHeader.kickerColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `productHeader.kickerColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `productHeader.title` | `type.title` | Geist 600 22/28 | same |
-| `productHeader.titleColor` | `color.text` | #15161A | #EFEEF3 |
+| `productHeader.titleColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `productHeader.meta` | `type.caption` | Geist 400 13/18 | same |
-| `productHeader.metaColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `productHeader.sourceChipBg` | `color.bg-sunken` | #E1E3E8 | #0E0F14 |
-| `productHeader.sourceChipFg` | `color.text-muted` | #565964 | #C6C3CF |
+| `productHeader.metaColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `productHeader.sourceChipBg` | `color.bg-sunken` | #E4E2EB | #0E0F14 |
+| `productHeader.sourceChipFg` | `color.text-muted` | #575566 | #C6C3CF |
 | `productHeader.gap` | `space.1` | 4 | same |
 | `productHeader.editTarget` | `touch.min` | 48 | same |
-| `field.bg` | `color.surface-raised` | #F8F8FA | #20212A |
-| `field.fg` | `color.text` | #15161A | #EFEEF3 |
-| `field.placeholder` | `color.text-subtle` | #5F626C | #A8A5B3 |
-| `field.border` | `color.border` | #E1E3E8 | #30313C |
+| `field.bg` | `color.surface-raised` | #F7F6FA | #20212A |
+| `field.fg` | `color.text` | #1B1A22 | #EFEEF3 |
+| `field.placeholder` | `color.text-subtle` | #625F70 | #A8A5B3 |
+| `field.border` | `color.border` | #E4E2EB | #30313C |
 | `field.borderWidth` | — | 0 | same |
-| `field.focusBorder` | `color.focus-ring` | #44607A | #BEB6DE |
+| `field.focusBorder` | `color.focus-ring` | #3A3546 | #BEB6DE |
 | `field.focusBorderWidth` | — | 2 | same |
 | `field.label` | `type.label` | Geist 600 13/18 | same |
-| `field.labelColor` | `color.text` | #15161A | #EFEEF3 |
+| `field.labelColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `field.value` | `type.body` | Geist 400 15/22 | same |
 | `field.minHeight` | — | 56 | same |
 | `field.radius` | `radius.full` | 9999 | same |
@@ -678,10 +680,10 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.head.gap` | `space.2` | 8 | same |
 | `verdictCard.head.label` | `type.verdictLabel` | Geist 600 13/18 | same |
 | `verdictCard.head.iconGap` | `space.3` | 12 | same |
-| `verdictCard.head.subtitleColor` | `color.text` | #15161A | #EFEEF3 |
-| `verdictCard.head.fits.bg` | `color.surface` | #F8F8FA | #1A1B23 |
+| `verdictCard.head.subtitleColor` | `color.text` | #1B1A22 | #EFEEF3 |
+| `verdictCard.head.fits.bg` | `color.surface` | #F7F6FA | #1A1B23 |
 | `verdictCard.head.fits.fg` | `verdict.fits.fg` | #2B5145 | #C4DDD2 |
-| `verdictCard.head.fits.border` | `color.surface` | #F8F8FA | #1A1B23 |
+| `verdictCard.head.fits.border` | `color.surface` | #F7F6FA | #1A1B23 |
 | `verdictCard.head.fits.icon` | `verdict.fits.icon` | #3D6B5C | #97C0B0 |
 | `verdictCard.head.fits.iconDisc` | `verdict.fits.bg` | #E2EEE8 | #1A2A25 |
 | `verdictCard.head.fits.iconDiscSize` | — | 40 | same |
@@ -690,9 +692,9 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.head.fits.showLabel` | — | true | same |
 | `verdictCard.head.fits.subtitle` | `type.verdictLine` | Geist 600 18/26 | same |
 | `verdictCard.head.fits.iconSize` | `icon.verdict.size` | 24 | same |
-| `verdictCard.head.caution.bg` | `color.surface` | #F8F8FA | #1A1B23 |
+| `verdictCard.head.caution.bg` | `color.surface` | #F7F6FA | #1A1B23 |
 | `verdictCard.head.caution.fg` | `verdict.caution.fg` | #66460C | #EDD6AE |
-| `verdictCard.head.caution.border` | `color.surface` | #F8F8FA | #1A1B23 |
+| `verdictCard.head.caution.border` | `color.surface` | #F7F6FA | #1A1B23 |
 | `verdictCard.head.caution.icon` | `verdict.caution.icon` | #8A6118 | #D4A65A |
 | `verdictCard.head.caution.iconDisc` | `verdict.caution.bg` | #F5EAD6 | #2A2317 |
 | `verdictCard.head.caution.iconDiscSize` | — | 40 | same |
@@ -701,21 +703,21 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.head.caution.showLabel` | — | true | same |
 | `verdictCard.head.caution.subtitle` | `type.verdictLine` | Geist 600 18/26 | same |
 | `verdictCard.head.caution.iconSize` | `icon.verdict.size` | 24 | same |
-| `verdictCard.head.unknown.bg` | `color.surface` | #F8F8FA | #1A1B23 |
-| `verdictCard.head.unknown.fg` | `verdict.unknown.fg` | #30333B | #C7CCDB |
-| `verdictCard.head.unknown.border` | `color.surface` | #F8F8FA | #1A1B23 |
-| `verdictCard.head.unknown.icon` | `verdict.unknown.icon` | #565964 | #A6ADC2 |
-| `verdictCard.head.unknown.iconDisc` | `verdict.unknown.bg` | #E1E3E8 | #20212A |
+| `verdictCard.head.unknown.bg` | `color.surface` | #F7F6FA | #1A1B23 |
+| `verdictCard.head.unknown.fg` | `verdict.unknown.fg` | #1B1A22 | #C7CCDB |
+| `verdictCard.head.unknown.border` | `color.surface` | #F7F6FA | #1A1B23 |
+| `verdictCard.head.unknown.icon` | `verdict.unknown.icon` | #575566 | #A6ADC2 |
+| `verdictCard.head.unknown.iconDisc` | `verdict.unknown.bg` | #E4E2EB | #20212A |
 | `verdictCard.head.unknown.iconDiscSize` | — | 40 | same |
 | `verdictCard.head.unknown.borderWidth` | — | 0 | same |
 | `verdictCard.head.unknown.borderStyle` | — | solid | same |
 | `verdictCard.head.unknown.showLabel` | — | true | same |
 | `verdictCard.head.unknown.subtitle` | `type.verdictLine` | Geist 600 18/26 | same |
 | `verdictCard.head.unknown.iconSize` | `icon.verdict.size` | 24 | same |
-| `verdictCard.head.medicine.bg` | `verdict.medicine.bg` | #ECEDF0 | #121319 |
-| `verdictCard.head.medicine.fg` | `verdict.medicine.fg` | #15161A | #EFEEF3 |
-| `verdictCard.head.medicine.border` | `verdict.medicine.border` | #15161A | #C6C3CF |
-| `verdictCard.head.medicine.icon` | `verdict.medicine.icon` | #15161A | #EFEEF3 |
+| `verdictCard.head.medicine.bg` | `verdict.medicine.bg` | #EDECF2 | #121319 |
+| `verdictCard.head.medicine.fg` | `verdict.medicine.fg` | #1B1A22 | #EFEEF3 |
+| `verdictCard.head.medicine.border` | `verdict.medicine.border` | #1B1A22 | #C6C3CF |
+| `verdictCard.head.medicine.icon` | `verdict.medicine.icon` | #1B1A22 | #EFEEF3 |
 | `verdictCard.head.medicine.iconDisc` | — | transparent | same |
 | `verdictCard.head.medicine.iconDiscSize` | — | 0 | same |
 | `verdictCard.head.medicine.borderWidth` | — | 0 | same |
@@ -726,12 +728,12 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.medicineGate.offsetTopPct` | — | 28 | same |
 | `verdictCard.medicineGate.iconGap` | `space.4` | 16 | same |
 | `verdictCard.medicineGate.line` | `type.title` | Geist 600 22/28 | same |
-| `verdictCard.medicineGate.lineColor` | `color.text` | #15161A | #EFEEF3 |
+| `verdictCard.medicineGate.lineColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `verdictCard.nameOnly.borderStyle` | — | solid | same |
 | `verdictCard.nameOnly.qualifier` | `type.label` | Geist 600 13/18 | same |
-| `verdictCard.nameOnly.qualifierColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `verdictCard.demoBadge.bg` | `color.accent-warm` | #E1E3E8 | #3D3936 |
-| `verdictCard.demoBadge.fg` | `color.on-accent-warm` | #15161A | #E4DCD5 |
+| `verdictCard.nameOnly.qualifierColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `verdictCard.demoBadge.bg` | `color.accent-warm` | #E4E2EB | #3D3936 |
+| `verdictCard.demoBadge.fg` | `color.on-accent-warm` | #1B1A22 | #E4DCD5 |
 | `verdictCard.demoBadge.type` | `type.labelSm` | Geist 600 13/16 | same |
 | `verdictCard.demoBadge.radius` | `radius.full` | 9999 | same |
 | `verdictCard.demoBadge.paddingX` | `space.3` | 12 | same |
@@ -809,21 +811,21 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `reasonRow.heading` | `type.section` | Geist 600 17/22 | same |
-| `reasonRow.headingColor` | `color.text` | #15161A | #EFEEF3 |
+| `reasonRow.headingColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `reasonRow.index` | `type.reasonIndex` | Geist 500 15/22 tabular | same |
-| `reasonRow.indexColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `reasonRow.indexColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `reasonRow.indexWidth` | — | 28 | same |
 | `reasonRow.reading` | `type.reason` | Geist 500 18/26 | same |
-| `reasonRow.readingColor` | `color.text` | #15161A | #EFEEF3 |
+| `reasonRow.readingColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `reasonRow.fact` | `type.body` | Geist 400 15/22 | same |
-| `reasonRow.factColor` | `color.text` | #15161A | #EFEEF3 |
+| `reasonRow.factColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `reasonRow.factGap` | — | 6 | same |
 | `reasonRow.chipGap` | `space.3` | 12 | same |
 | `reasonRow.paddingY` | `space.4` | 16 | same |
-| `reasonRow.bg` | `elevation.1.surface` | #F8F8FA | #1A1B23 |
+| `reasonRow.bg` | `elevation.1.surface` | #F7F6FA | #1A1B23 |
 | `reasonRow.radius` | `radius.lg` | 16 | same |
 | `reasonRow.paddingX` | `space.4` | 16 | same |
-| `reasonRow.divider` | `color.border` | #E1E3E8 | #30313C |
+| `reasonRow.divider` | `color.border` | #E4E2EB | #30313C |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -886,14 +888,14 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:bandChip bandList -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `bandChip.bg` | `color.bg-sunken` | #E1E3E8 | #0E0F14 |
-| `bandChip.fg` | `color.text` | #15161A | #EFEEF3 |
+| `bandChip.bg` | `color.bg-sunken` | #E4E2EB | #0E0F14 |
+| `bandChip.fg` | `color.text` | #1B1A22 | #EFEEF3 |
 | `bandChip.radius` | `radius.md` | 12 | same |
 | `bandChip.paddingX` | `space.3` | 12 | same |
 | `bandChip.visualMinHeight` | — | 32 | same |
 | `bandChip.type` | `type.label` | Geist 600 13/18 | same |
-| `bandChip.separatorColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `bandChip.bgPressed` | `color.state.pressed` | rgba(21, 22, 26, 0.08) | rgba(239, 238, 243, 0.10) |
+| `bandChip.separatorColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `bandChip.bgPressed` | `color.state.pressed` | rgba(27, 26, 34, 0.08) | rgba(239, 238, 243, 0.10) |
 | `bandChip.target` | `touch.min` | 48 | same |
 | `bandChip.meter.orientation` | — | horizontal | same |
 | `bandChip.meter.segments` | — | 3 | same |
@@ -901,28 +903,28 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `bandChip.meter.segmentHeight` | — | 6 | same |
 | `bandChip.meter.segmentGap` | — | 3 | same |
 | `bandChip.meter.segmentRadius` | `radius.xs` | 2 | same |
-| `bandChip.meter.filled` | `meter.filled` | #30333B | #E7E5EC |
-| `bandChip.meter.emptyStroke` | `meter.empty` | #7A7E89 | #7E7B8B |
+| `bandChip.meter.filled` | `meter.filled` | #3F3B4C | #E7E5EC |
+| `bandChip.meter.emptyStroke` | `meter.empty` | #7D7A8A | #7E7B8B |
 | `bandChip.meter.emptyStrokeWidth` | — | 1 | same |
 | `bandChip.meter.emptyFill` | — | transparent | same |
 | `bandChip.meter.label` | `type.caption` | Geist 400 13/18 | same |
-| `bandChip.meter.labelColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `bandChip.noData.valueColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `bandChip.meter.labelColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `bandChip.noData.valueColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `bandChip.noData.filledSegments` | — | 0 | same |
-| `bandList.topRule` | `color.border` | #E1E3E8 | #30313C |
+| `bandList.topRule` | `color.border` | #E4E2EB | #30313C |
 | `bandList.topRuleWidth` | — | 1 | same |
-| `bandList.bottomRule` | `color.border` | #E1E3E8 | #30313C |
+| `bandList.bottomRule` | `color.border` | #E4E2EB | #30313C |
 | `bandList.bottomRuleWidth` | — | 1 | same |
 | `bandList.rowMinHeight` | — | 56 | same |
 | `bandList.rowPaddingY` | `space.2` | 8 | same |
-| `bandList.rowDivider` | `color.border` | #E1E3E8 | #30313C |
+| `bandList.rowDivider` | `color.border` | #E4E2EB | #30313C |
 | `bandList.name` | `type.body` | Geist 400 15/22 | same |
-| `bandList.nameColor` | `color.text` | #15161A | #EFEEF3 |
+| `bandList.nameColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `bandList.value` | `type.bodyStrong` | Geist 600 15/20 | same |
-| `bandList.valueColor` | `color.text` | #15161A | #EFEEF3 |
+| `bandList.valueColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `bandList.meterGap` | `space.1` | 4 | same |
 | `bandList.legend` | `type.caption` | Geist 400 13/18 | same |
-| `bandList.legendColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `bandList.legendColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `bandList.stackAtFontScale` | — | 1.5 | same |
 <!-- /tokens -->
 
@@ -978,36 +980,36 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:skinMap segmented -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `skinMap.bg` | `color.surface` | #F8F8FA | #1A1B23 |
+| `skinMap.bg` | `color.surface` | #F7F6FA | #1A1B23 |
 | `skinMap.radius` | `radius.lg` | 16 | same |
 | `skinMap.padding` | `space.4` | 16 | same |
-| `skinMap.border` | `color.border` | #E1E3E8 | #30313C |
+| `skinMap.border` | `color.border` | #E4E2EB | #30313C |
 | `skinMap.heading` | `type.section` | Geist 600 17/22 | same |
 | `skinMap.listToggleTarget` | `touch.min` | 48 | same |
-| `skinMap.faceOutline` | `color.border-strong` | #7A7E89 | #7E7B8B |
+| `skinMap.faceOutline` | `color.border-strong` | #7D7A8A | #7E7B8B |
 | `skinMap.faceStrokeWidth` | — | 1.5 | same |
-| `skinMap.zoneStroke` | `color.text` | #15161A | #EFEEF3 |
+| `skinMap.zoneStroke` | `color.text` | #1B1A22 | #EFEEF3 |
 | `skinMap.zoneStrokeWidth` | — | 1.5 | same |
-| `skinMap.hatch` | `meter.filled` | #30333B | #E7E5EC |
+| `skinMap.hatch` | `meter.filled` | #3F3B4C | #E7E5EC |
 | `skinMap.hatchWidth` | — | 1 | same |
 | `skinMap.hatchSpacingMedium` | — | 6 | same |
 | `skinMap.hatchSpacingHigh` | — | 5 | same |
 | `skinMap.label` | `type.caption` | Geist 400 13/18 | same |
-| `skinMap.labelColor` | `color.text` | #15161A | #EFEEF3 |
+| `skinMap.labelColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `skinMap.legend` | `type.caption` | Geist 400 13/18 | same |
-| `skinMap.legendColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `skinMap.legendColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `segmented.minHeight` | `touch.min` | 48 | same |
-| `segmented.track` | `color.segment-track` | #E1E3E8 | #272832 |
-| `segmented.border` | `color.border-strong` | #7A7E89 | #7E7B8B |
+| `segmented.track` | `color.segment-track` | #E4E2EB | #272832 |
+| `segmented.border` | `color.border-strong` | #7D7A8A | #7E7B8B |
 | `segmented.borderWidth` | — | 0 | same |
 | `segmented.radius` | `radius.full` | 9999 | same |
-| `segmented.fg` | `color.text-muted` | #565964 | #C6C3CF |
+| `segmented.fg` | `color.text-muted` | #575566 | #C6C3CF |
 | `segmented.type` | `type.label` | Geist 600 13/18 | same |
-| `segmented.selectedBg` | `color.segment-thumb` | #F8F8FA | #3A3B47 |
-| `segmented.selectedFg` | `color.segment-selected-fg` | #15161A | #EFEEF3 |
+| `segmented.selectedBg` | `color.segment-thumb` | #F7F6FA | #3A3B47 |
+| `segmented.selectedFg` | `color.segment-selected-fg` | #1B1A22 | #EFEEF3 |
 | `segmented.selectedIcon` | — | check | same |
-| `segmented.bgPressed` | `color.state.pressed` | rgba(21, 22, 26, 0.08) | rgba(239, 238, 243, 0.10) |
-| `segmented.thumbShadow.shadowColor` | `color.shadow` | #15161A | transparent |
+| `segmented.bgPressed` | `color.state.pressed` | rgba(27, 26, 34, 0.08) | rgba(239, 238, 243, 0.10) |
+| `segmented.thumbShadow.shadowColor` | `color.shadow` | #1B1A22 | transparent |
 | `segmented.thumbShadow.shadowOpacity` | — | 0 | same |
 | `segmented.thumbShadow.shadowRadius` | — | 0 | same |
 | `segmented.thumbShadow.shadowOffsetY` | — | 0 | same |
@@ -1063,25 +1065,25 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `provenanceLedger.title` | `type.headline` | Geist 600 22/28 | same |
-| `provenanceLedger.titleColor` | `color.text` | #15161A | #EFEEF3 |
-| `provenanceLedger.bg` | `elevation.1.surface` | #F8F8FA | #1A1B23 |
+| `provenanceLedger.titleColor` | `color.text` | #1B1A22 | #EFEEF3 |
+| `provenanceLedger.bg` | `elevation.1.surface` | #F7F6FA | #1A1B23 |
 | `provenanceLedger.radius` | `radius.lg` | 16 | same |
 | `provenanceLedger.paddingX` | `space.4` | 16 | same |
-| `provenanceLedger.topRule` | `color.border` | #E1E3E8 | #30313C |
+| `provenanceLedger.topRule` | `color.border` | #E4E2EB | #30313C |
 | `provenanceLedger.topRuleWidth` | — | 1 | same |
-| `provenanceLedger.bottomRule` | `color.border` | #E1E3E8 | #30313C |
+| `provenanceLedger.bottomRule` | `color.border` | #E4E2EB | #30313C |
 | `provenanceLedger.bottomRuleWidth` | — | 1 | same |
-| `provenanceLedger.rowDivider` | `color.border` | #E1E3E8 | #30313C |
+| `provenanceLedger.rowDivider` | `color.border` | #E4E2EB | #30313C |
 | `provenanceLedger.rowPaddingY` | `space.3` | 12 | same |
 | `provenanceLedger.key` | `type.overline` | Geist 600 13/18 | same |
-| `provenanceLedger.keyColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `provenanceLedger.keyColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `provenanceLedger.keyWidth` | — | 96 | same |
 | `provenanceLedger.keyGap` | `space.4` | 16 | same |
 | `provenanceLedger.value` | `type.bodySm` | Geist 400 13/18 | same |
-| `provenanceLedger.valueColor` | `color.text` | #15161A | #EFEEF3 |
+| `provenanceLedger.valueColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `provenanceLedger.mono` | `type.caption` | Geist 400 13/18 | same |
 | `provenanceLedger.caption` | `type.caption` | Geist 400 13/18 | same |
-| `provenanceLedger.captionColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `provenanceLedger.captionColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `provenanceLedger.keys` | — | Reading / Product / Rules / Limits | same |
 | `provenanceLedger.stackBelowWidth` | — | 360 | same |
 | `provenanceLedger.stackAtFontScale` | — | 1.5 | same |
@@ -1144,9 +1146,9 @@ No screen-level overline ("Before the camera opens" is gone).
 |---|---|---|---|
 | `consentSheet.privacyLead` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `consentSheet.privacyRest` | `type.body` | Geist 400 15/22 | same |
-| `consentSheet.privacyColor` | `color.text` | #15161A | #EFEEF3 |
-| `consentSheet.keepBox.bg` | `elevation.1.surface` | #F8F8FA | #1A1B23 |
-| `consentSheet.keepBox.border` | `color.border` | #E1E3E8 | #30313C |
+| `consentSheet.privacyColor` | `color.text` | #1B1A22 | #EFEEF3 |
+| `consentSheet.keepBox.bg` | `elevation.1.surface` | #F7F6FA | #1A1B23 |
+| `consentSheet.keepBox.border` | `color.border` | #E4E2EB | #30313C |
 | `consentSheet.keepBox.radius` | `radius.lg` | 16 | same |
 | `consentSheet.keepBox.padding` | `space.5` | 20 | same |
 | `consentSheet.keepBox.title` | `type.section` | Geist 600 17/22 | same |
@@ -1154,11 +1156,11 @@ No screen-level overline ("Before the camera opens" is gone).
 | `consentSheet.keepIcon` | — | check-circle | same |
 | `consentSheet.dropIcon` | — | minus-circle | same |
 | `consentSheet.accuracyNote` | `type.bodySm` | Geist 400 13/18 | same |
-| `consentSheet.accuracyColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `consentSheet.accuracyColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `consentSheet.checkbox.size` | — | 24 | same |
 | `consentSheet.checkbox.target` | `touch.min` | 48 | same |
-| `consentSheet.checkbox.border` | `color.border-strong` | #7A7E89 | #7E7B8B |
-| `consentSheet.checkbox.checked` | `color.accent` | #1E2026 | #F6F5F8 |
+| `consentSheet.checkbox.border` | `color.border-strong` | #7D7A8A | #7E7B8B |
+| `consentSheet.checkbox.checked` | `color.accent` | #3A3546 | #F6F5F8 |
 | `consentSheet.checkbox.check` | `color.on-accent` | #FFFFFF | #2F3243 |
 | `consentSheet.checkbox.preTicked` | — | false | same |
 | `consentSheet.checkbox.rowBg` | — | transparent | same |
@@ -1312,33 +1314,33 @@ Status glyphs avoid every verdict silhouette. Pending and active rings hold the 
 |---|---|---|---|
 | `processingStepper.rowMinHeight` | — | 56 | same |
 | `processingStepper.indicator` | — | 24 | same |
-| `processingStepper.connector` | `color.border-strong` | #7A7E89 | #7E7B8B |
-| `processingStepper.connectorDone` | `color.text` | #15161A | #EFEEF3 |
+| `processingStepper.connector` | `color.border-strong` | #7D7A8A | #7E7B8B |
+| `processingStepper.connectorDone` | `color.text` | #1B1A22 | #EFEEF3 |
 | `processingStepper.connectorWidth` | — | 1.5 | same |
-| `processingStepper.done.fill` | `color.text` | #15161A | #EFEEF3 |
-| `processingStepper.done.check` | `color.bg` | #ECEDF0 | #121319 |
+| `processingStepper.done.fill` | `color.text` | #1B1A22 | #EFEEF3 |
+| `processingStepper.done.check` | `color.bg` | #EDECF2 | #121319 |
 | `processingStepper.done.label` | `type.body` | Geist 400 15/22 | same |
-| `processingStepper.done.labelColor` | `color.text` | #15161A | #EFEEF3 |
-| `processingStepper.current.ring` | `color.text` | #15161A | #EFEEF3 |
+| `processingStepper.done.labelColor` | `color.text` | #1B1A22 | #EFEEF3 |
+| `processingStepper.current.ring` | `color.text` | #1B1A22 | #EFEEF3 |
 | `processingStepper.current.ringWidth` | — | 1.5 | same |
 | `processingStepper.current.numeral` | `type.labelSm` | Geist 600 13/16 | same |
-| `processingStepper.current.numeralColor` | `color.text` | #15161A | #EFEEF3 |
+| `processingStepper.current.numeralColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `processingStepper.current.label` | `type.bodyStrong` | Geist 600 15/20 | same |
-| `processingStepper.current.labelColor` | `color.text` | #15161A | #EFEEF3 |
-| `processingStepper.pending.ring` | `color.border-strong` | #7A7E89 | #7E7B8B |
+| `processingStepper.current.labelColor` | `color.text` | #1B1A22 | #EFEEF3 |
+| `processingStepper.pending.ring` | `color.border-strong` | #7D7A8A | #7E7B8B |
 | `processingStepper.pending.ringWidth` | — | 1.5 | same |
 | `processingStepper.pending.numeral` | `type.labelSm` | Geist 600 13/16 | same |
-| `processingStepper.pending.numeralColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `processingStepper.pending.numeralColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `processingStepper.pending.label` | `type.body` | Geist 400 15/22 | same |
-| `processingStepper.pending.labelColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `processingStepper.failed.ring` | `color.text` | #15161A | #EFEEF3 |
+| `processingStepper.pending.labelColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `processingStepper.failed.ring` | `color.text` | #1B1A22 | #EFEEF3 |
 | `processingStepper.failed.ringWidth` | — | 1.5 | same |
-| `processingStepper.failed.bar` | `color.text` | #15161A | #EFEEF3 |
+| `processingStepper.failed.bar` | `color.text` | #1B1A22 | #EFEEF3 |
 | `processingStepper.failed.label` | `type.bodyStrong` | Geist 600 15/20 | same |
-| `processingStepper.failed.labelColor` | `color.text` | #15161A | #EFEEF3 |
+| `processingStepper.failed.labelColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `processingStepper.deletedStep.label` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `processingStepper.deletedStep.caption` | `type.caption` | Geist 400 13/18 | same |
-| `processingStepper.deletedStep.captionColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `processingStepper.deletedStep.captionColor` | `color.text-muted` | #575566 | #C6C3CF |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -1397,11 +1399,11 @@ Status glyphs avoid every verdict silhouette. Pending and active rings hold the 
 |---|---|---|---|
 | `storeLinkOut.label` | `type.button` | Geist 600 15/20 | same |
 | `storeLinkOut.destination` | `type.caption` | Geist 400 13/18 | same |
-| `storeLinkOut.destinationColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `storeLinkOut.destinationDisabledColor` | `color.disabled-fg` | #565964 | #A8A5B3 |
+| `storeLinkOut.destinationColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `storeLinkOut.destinationDisabledColor` | `color.disabled-fg` | #575566 | #A8A5B3 |
 | `storeLinkOut.destinationGap` | `space.1` | 4 | same |
 | `storeLinkOut.icon` | — | arrow-up-right | same |
-| `storeLinkOut.iconColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `storeLinkOut.iconColor` | `color.text-muted` | #575566 | #C6C3CF |
 <!-- /tokens -->
 
 **Accessibility:** the label merges the button and the destination: "Find better matches. Opens a Flipkart search, filtered to Oily Skin. Leaves SkinKey."
@@ -1452,8 +1454,8 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `rankingDisclosure.type` | `type.body` | Geist 400 15/22 | same |
-| `rankingDisclosure.color` | `color.text` | #15161A | #EFEEF3 |
-| `rankingDisclosure.rule` | `color.border-strong` | #7A7E89 | #7E7B8B |
+| `rankingDisclosure.color` | `color.text` | #1B1A22 | #EFEEF3 |
+| `rankingDisclosure.rule` | `color.border-strong` | #7D7A8A | #7E7B8B |
 | `rankingDisclosure.ruleWidth` | — | 1 | same |
 | `rankingDisclosure.paddingY` | `space.3` | 12 | same |
 | `rankingDisclosure.paddingX` | `space.3` | 12 | same |
@@ -1500,17 +1502,17 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:shareTeachingCard -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `shareTeachingCard.bg` | `elevation.1.surface` | #F8F8FA | #1A1B23 |
-| `shareTeachingCard.border` | `color.border` | #E1E3E8 | #30313C |
+| `shareTeachingCard.bg` | `elevation.1.surface` | #F7F6FA | #1A1B23 |
+| `shareTeachingCard.border` | `color.border` | #E4E2EB | #30313C |
 | `shareTeachingCard.radius` | `radius.lg` | 16 | same |
 | `shareTeachingCard.padding` | `space.4` | 16 | same |
 | `shareTeachingCard.stepIndex` | `type.reasonIndex` | Geist 500 15/22 tabular | same |
-| `shareTeachingCard.stepIndexColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `shareTeachingCard.stepIndexColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `shareTeachingCard.body` | `type.body` | Geist 400 15/22 | same |
 | `shareTeachingCard.title` | `type.section` | Geist 600 17/22 | same |
-| `shareTeachingCard.illustrationBg` | `color.bg-sunken` | #E1E3E8 | #0E0F14 |
-| `shareTeachingCard.illustrationStroke` | `color.border-strong` | #7A7E89 | #7E7B8B |
-| `shareTeachingCard.highlight` | `color.accent` | #1E2026 | #F6F5F8 |
+| `shareTeachingCard.illustrationBg` | `color.bg-sunken` | #E4E2EB | #0E0F14 |
+| `shareTeachingCard.illustrationStroke` | `color.border-strong` | #7D7A8A | #7E7B8B |
+| `shareTeachingCard.highlight` | `color.accent` | #3A3546 | #F6F5F8 |
 | `shareTeachingCard.highlightWidth` | — | 2 | same |
 | `shareTeachingCard.grain` | — | false | same |
 <!-- /tokens -->
@@ -1563,17 +1565,17 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:forecastCard -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `forecastCard.bg` | `elevation.1.surface` | #F8F8FA | #1A1B23 |
-| `forecastCard.border` | `color.border` | #E1E3E8 | #30313C |
+| `forecastCard.bg` | `elevation.1.surface` | #F7F6FA | #1A1B23 |
+| `forecastCard.border` | `color.border` | #E4E2EB | #30313C |
 | `forecastCard.radius` | `radius.lg` | 16 | same |
 | `forecastCard.padding` | `space.4` | 16 | same |
 | `forecastCard.kicker` | `type.label` | Geist 600 13/18 | same |
-| `forecastCard.kickerColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `forecastCard.kickerColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `forecastCard.figure` | `type.headline` | Geist 600 22/28 | same |
-| `forecastCard.figureColor` | `color.text` | #15161A | #EFEEF3 |
+| `forecastCard.figureColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `forecastCard.body` | `type.body` | Geist 400 15/22 | same |
 | `forecastCard.credit` | `type.fine` | Geist 400 12/16 | same |
-| `forecastCard.creditColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `forecastCard.creditColor` | `color.text-muted` | #575566 | #C6C3CF |
 <!-- /tokens -->
 
 **Accessibility:**
@@ -1623,14 +1625,14 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `tryOnCompare.radius` | `radius.lg` | 16 | same |
-| `tryOnCompare.frameBorder` | `color.border` | #E1E3E8 | #30313C |
+| `tryOnCompare.frameBorder` | `color.border` | #E4E2EB | #30313C |
 | `tryOnCompare.divider` | `color.on-overlay` | #FFFFFF | same |
 | `tryOnCompare.dividerWidth` | — | 2 | same |
 | `tryOnCompare.dividerHalo` | `color.overlay-halo` | rgba(14, 15, 20, 0.60) | same |
 | `tryOnCompare.dividerHaloWidth` | — | 1 | same |
 | `tryOnCompare.handle` | `touch.min` | 48 | same |
-| `tryOnCompare.handleBg` | `color.inverse-surface` | #1E2026 | #E7E5EC |
-| `tryOnCompare.handleFg` | `color.inverse-text` | #F8F8FA | #1A1B23 |
+| `tryOnCompare.handleBg` | `color.inverse-surface` | #3A3546 | #E7E5EC |
+| `tryOnCompare.handleFg` | `color.inverse-text` | #F7F6FA | #1A1B23 |
 | `tryOnCompare.handleRing` | `color.on-overlay` | #FFFFFF | same |
 | `tryOnCompare.handleRingWidth` | — | 2 | same |
 | `tryOnCompare.badge.bg` | `color.overlay-camera` | rgba(14, 15, 20, 0.62) | same |
@@ -1638,10 +1640,10 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `tryOnCompare.badge.type` | `type.labelSm` | Geist 600 13/16 | same |
 | `tryOnCompare.badge.radius` | `radius.full` | 9999 | same |
 | `tryOnCompare.disclaimer` | `type.label` | Geist 600 13/18 | same |
-| `tryOnCompare.disclaimerColor` | `color.text` | #15161A | #EFEEF3 |
-| `tryOnCompare.disclaimerBg` | `color.surface` | #F8F8FA | #1A1B23 |
+| `tryOnCompare.disclaimerColor` | `color.text` | #1B1A22 | #EFEEF3 |
+| `tryOnCompare.disclaimerBg` | `color.surface` | #F7F6FA | #1A1B23 |
 | `tryOnCompare.note` | `type.caption` | Geist 400 13/18 | same |
-| `tryOnCompare.noteColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `tryOnCompare.noteColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `tryOnCompare.focus` | `color.focus-ring-overlay` | #FFFFFF | same |
 | `tryOnCompare.previewTintOpacity` | — | 0.13 | same |
 <!-- /tokens -->
@@ -1700,22 +1702,22 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:productMatchCard -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `productMatchCard.bg` | `elevation.1.surface` | #F8F8FA | #1A1B23 |
-| `productMatchCard.border` | `color.border` | #E1E3E8 | #30313C |
+| `productMatchCard.bg` | `elevation.1.surface` | #F7F6FA | #1A1B23 |
+| `productMatchCard.border` | `color.border` | #E4E2EB | #30313C |
 | `productMatchCard.radius` | `radius.lg` | 16 | same |
 | `productMatchCard.padding` | `space.3` | 12 | same |
 | `productMatchCard.index` | `type.reasonIndex` | Geist 500 15/22 tabular | same |
-| `productMatchCard.indexColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `productMatchCard.indexColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `productMatchCard.name` | `type.bodyStrong` | Geist 600 15/20 | same |
-| `productMatchCard.nameColor` | `color.text` | #15161A | #EFEEF3 |
+| `productMatchCard.nameColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `productMatchCard.fit` | `type.bodySm` | Geist 400 13/18 | same |
-| `productMatchCard.fitColor` | `color.text` | #15161A | #EFEEF3 |
+| `productMatchCard.fitColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `productMatchCard.meta` | `type.caption` | Geist 400 13/18 | same |
-| `productMatchCard.metaColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `productMatchCard.thumbBg` | `color.thumb-tile` | #E1E3E8 | #272832 |
+| `productMatchCard.metaColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `productMatchCard.thumbBg` | `color.thumb-tile` | #E4E2EB | #272832 |
 | `productMatchCard.thumbRadius` | `radius.md` | 12 | same |
 | `productMatchCard.thumbSize` | — | 56 | same |
-| `productMatchCard.heroBg` | `color.skin-gradient.mid` | #F8F8FA | #2A2838 |
+| `productMatchCard.heroBg` | `color.skin-gradient.mid` | #F7F6FA | #2A2838 |
 | `productMatchCard.verdictTagIcon` | `icon.sm` | 16 | same |
 | `productMatchCard.minHeight` | — | 80 | same |
 | `productMatchCard.listGap` | `space.3` | 12 | same |
@@ -1829,8 +1831,8 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:qrShareCard -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `qrShareCard.bg` | `elevation.1.surface` | #F8F8FA | #1A1B23 |
-| `qrShareCard.border` | `color.border` | #E1E3E8 | #30313C |
+| `qrShareCard.bg` | `elevation.1.surface` | #F7F6FA | #1A1B23 |
+| `qrShareCard.border` | `color.border` | #E4E2EB | #30313C |
 | `qrShareCard.radius` | `radius.lg` | 16 | same |
 | `qrShareCard.padding` | `space.5` | 20 | same |
 | `qrShareCard.title` | `type.headline` | Geist 600 22/28 | same |
@@ -1839,17 +1841,17 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `qrShareCard.qrSize` | — | 240 | same |
 | `qrShareCard.quietZone` | — | 16 | same |
 | `qrShareCard.countdown` | `type.figure` | Geist 600 28/34 tabular | same |
-| `qrShareCard.countdownColor` | `color.text` | #15161A | #EFEEF3 |
+| `qrShareCard.countdownColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `qrShareCard.countdownLabel` | `type.caption` | Geist 400 13/18 | same |
-| `qrShareCard.countdownLabelColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `qrShareCard.timeRule.filled` | `meter.filled` | #30333B | #E7E5EC |
-| `qrShareCard.timeRule.track` | `color.border` | #E1E3E8 | #30313C |
+| `qrShareCard.countdownLabelColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `qrShareCard.timeRule.filled` | `meter.filled` | #3F3B4C | #E7E5EC |
+| `qrShareCard.timeRule.track` | `color.border` | #E4E2EB | #30313C |
 | `qrShareCard.timeRule.height` | — | 4 | same |
 | `qrShareCard.summary` | `type.bodySm` | Geist 400 13/18 | same |
-| `qrShareCard.summaryColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `qrShareCard.expired.placeholderBg` | `color.bg-sunken` | #E1E3E8 | #0E0F14 |
+| `qrShareCard.summaryColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `qrShareCard.expired.placeholderBg` | `color.bg-sunken` | #E4E2EB | #0E0F14 |
 | `qrShareCard.expired.message` | `type.body` | Geist 400 15/22 | same |
-| `qrShareCard.expired.messageColor` | `color.text` | #15161A | #EFEEF3 |
+| `qrShareCard.expired.messageColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `qrShareCard.brightnessBoost` | — | true | same |
 <!-- /tokens -->
 
@@ -1908,23 +1910,23 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 |---|---|---|---|
 | `stateView.align` | — | start | same |
 | `stateView.title` | `type.title` | Geist 600 22/28 | same |
-| `stateView.titleColor` | `color.text` | #15161A | #EFEEF3 |
+| `stateView.titleColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `stateView.body` | `type.body` | Geist 400 15/22 | same |
-| `stateView.bodyColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `stateView.plateBg` | `color.sheen.lavender` | #EEEFF2 | #24222F |
+| `stateView.bodyColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `stateView.plateBg` | `color.sheen.lavender` | #EEEDF3 | #24222F |
 | `stateView.plateRadius` | `radius.lg` | 16 | same |
 | `stateView.gap` | `space.2` | 8 | same |
 | `stateView.offlineBanner.bg` | — | transparent | same |
-| `stateView.offlineBanner.fg` | `color.text` | #15161A | #EFEEF3 |
-| `stateView.offlineBanner.border` | `color.border` | #E1E3E8 | #30313C |
+| `stateView.offlineBanner.fg` | `color.text` | #1B1A22 | #EFEEF3 |
+| `stateView.offlineBanner.border` | `color.border` | #E4E2EB | #30313C |
 | `stateView.offlineBanner.type` | `type.bodySm` | Geist 400 13/18 | same |
 | `stateView.offlineBanner.icon` | — | cloud-off | same |
-| `stateView.offlineBanner.iconColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `stateView.offlineBanner.iconColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `stateView.offlineBanner.minHeight` | — | 48 | same |
-| `stateView.fieldInvalid.border` | `color.text` | #15161A | #EFEEF3 |
+| `stateView.fieldInvalid.border` | `color.text` | #1B1A22 | #EFEEF3 |
 | `stateView.fieldInvalid.borderWidth` | — | 2 | same |
 | `stateView.fieldInvalid.message` | `type.caption` | Geist 400 13/18 | same |
-| `stateView.fieldInvalid.messageColor` | `color.text` | #15161A | #EFEEF3 |
+| `stateView.fieldInvalid.messageColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `stateView.fieldInvalid.icon` | — | info | same |
 <!-- /tokens -->
 
@@ -1972,12 +1974,12 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:snackbar -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `snackbar.bg` | `color.inverse-surface` | #1E2026 | #E7E5EC |
-| `snackbar.fg` | `color.inverse-text` | #F8F8FA | #1A1B23 |
-| `snackbar.action` | `color.inverse-link` | #A9BFD3 | #50576F |
+| `snackbar.bg` | `color.inverse-surface` | #3A3546 | #E7E5EC |
+| `snackbar.fg` | `color.inverse-text` | #F7F6FA | #1A1B23 |
+| `snackbar.action` | `color.inverse-link` | #CBC6D8 | #50576F |
 | `snackbar.actionType` | `type.label` | Geist 600 13/18 | same |
 | `snackbar.actionTarget` | `touch.min` | 48 | same |
-| `snackbar.focus` | `color.focus-ring-inverse` | #A9BFD3 | #50576F |
+| `snackbar.focus` | `color.focus-ring-inverse` | #CBC6D8 | #50576F |
 | `snackbar.type` | `type.bodySm` | Geist 400 13/18 | same |
 | `snackbar.radius` | `radius.md` | 12 | same |
 | `snackbar.minHeight` | — | 48 | same |
@@ -2038,8 +2040,8 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `bottomNav.minHeight` | — | 64 | same |
-| `bottomNav.bg` | `color.surface-raised` | #F8F8FA | #20212A |
-| `bottomNav.border` | `color.border` | #E1E3E8 | #30313C |
+| `bottomNav.bg` | `color.surface-raised` | #F7F6FA | #20212A |
+| `bottomNav.border` | `color.border` | #E4E2EB | #30313C |
 | `bottomNav.sheenEdge` | `color.sheen-edge` | rgba(255, 255, 255, 0.00) | rgba(239, 238, 243, 0.07) |
 | `bottomNav.items` | — | 3 | same |
 | `bottomNav.itemMinWidth` | — | 72 | same |
@@ -2048,14 +2050,14 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 | `bottomNav.indicator.width` | — | 0 | same |
 | `bottomNav.indicator.height` | — | 0 | same |
 | `bottomNav.indicator.radius` | `radius.full` | 9999 | same |
-| `bottomNav.iconActive` | `color.tab-active` | #44607A | #EFEEF3 |
-| `bottomNav.iconInactive` | `color.tab-inactive` | #7A7E89 | #A8A5B3 |
+| `bottomNav.iconActive` | `color.tab-active` | #3A3546 | #EFEEF3 |
+| `bottomNav.iconInactive` | `color.tab-inactive` | #7D7A8A | #A8A5B3 |
 | `bottomNav.iconActiveStrokeWidth` | — | 2 | same |
 | `bottomNav.iconInactiveStrokeWidth` | — | 1.5 | same |
 | `bottomNav.labelActive` | `type.labelSm` | Geist 600 13/16 | same |
 | `bottomNav.labelInactive` | `type.labelSmRegular` | Geist 500 13/16 | same |
-| `bottomNav.labelActiveColor` | `color.tab-active` | #44607A | #EFEEF3 |
-| `bottomNav.labelInactiveColor` | `color.tab-inactive-label` | #5F626C | #A8A5B3 |
+| `bottomNav.labelActiveColor` | `color.tab-active` | #3A3546 | #EFEEF3 |
+| `bottomNav.labelInactiveColor` | `color.tab-inactive-label` | #625F70 | #A8A5B3 |
 | `bottomNav.labels` | — | Check / Scan / Reading | same |
 | `bottomNav.iconActiveFilled` | — | true | same |
 | `bottomNav.rippleRadius` | — | 28 | same |
@@ -2110,16 +2112,16 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 <!-- tokens:bottomSheet -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `bottomSheet.bg` | `elevation.3.surface` | #F8F8FA | #20212A |
+| `bottomSheet.bg` | `elevation.3.surface` | #F7F6FA | #20212A |
 | `bottomSheet.border` | `elevation.3.border` | none | #7E7B8B |
 | `bottomSheet.sheenEdge` | `color.sheen-edge` | rgba(255, 255, 255, 0.00) | rgba(239, 238, 243, 0.07) |
 | `bottomSheet.radius` | `radius.sheet` | 28 | same |
 | `bottomSheet.padding` | `space.6` | 24 | same |
-| `bottomSheet.scrim` | `color.overlay` | rgba(21, 22, 26, 0.40) | rgba(8, 9, 12, 0.64) |
+| `bottomSheet.scrim` | `color.overlay` | rgba(27, 26, 34, 0.40) | rgba(8, 9, 12, 0.64) |
 | `bottomSheet.title` | `type.headline` | Geist 600 22/28 | same |
 | `bottomSheet.handle.width` | — | 36 | same |
 | `bottomSheet.handle.height` | — | 4 | same |
-| `bottomSheet.handle.color` | `color.border-strong` | #7A7E89 | #7E7B8B |
+| `bottomSheet.handle.color` | `color.border-strong` | #7D7A8A | #7E7B8B |
 | `bottomSheet.handle.target` | `touch.min` | 48 | same |
 | `bottomSheet.maxHeightPct` | — | 90 | same |
 | `bottomSheet.closeTarget` | `touch.min` | 48 | same |
@@ -2173,34 +2175,34 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 | `listRow.paddingY` | `space.3` | 12 | same |
 | `listRow.gap` | `space.4` | 16 | same |
 | `listRow.title` | `type.bodyStrong` | Geist 600 15/20 | same |
-| `listRow.titleColor` | `color.text` | #15161A | #EFEEF3 |
+| `listRow.titleColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `listRow.supporting` | `type.bodySm` | Geist 400 13/18 | same |
-| `listRow.supportingColor` | `color.text-muted` | #565964 | #C6C3CF |
+| `listRow.supportingColor` | `color.text-muted` | #575566 | #C6C3CF |
 | `listRow.leadingIcon` | `icon.lg` | 24 | same |
 | `listRow.trailingIcon` | `icon.md` | 20 | same |
-| `listRow.trailingColor` | `color.text-muted` | #565964 | #C6C3CF |
-| `listRow.groupBg` | `elevation.1.surface` | #F8F8FA | #1A1B23 |
+| `listRow.trailingColor` | `color.text-muted` | #575566 | #C6C3CF |
+| `listRow.groupBg` | `elevation.1.surface` | #F7F6FA | #1A1B23 |
 | `listRow.groupRadius` | `radius.lg` | 16 | same |
-| `listRow.divider` | `color.border` | #E1E3E8 | #30313C |
+| `listRow.divider` | `color.border` | #E4E2EB | #30313C |
 | `listRow.dividerInset` | `space.gutter` | 20 | same |
-| `listRow.bgPressed` | `color.state.pressed` | rgba(21, 22, 26, 0.08) | rgba(239, 238, 243, 0.10) |
-| `listRow.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
+| `listRow.bgPressed` | `color.state.pressed` | rgba(27, 26, 34, 0.08) | rgba(239, 238, 243, 0.10) |
+| `listRow.fgDisabled` | `color.disabled-fg` | #575566 | #A8A5B3 |
 | `listRow.focusInset` | — | 2 | same |
 | `listRow.checkedBg` | — | transparent | same |
 | `listRow.thumbSize` | — | 56 | same |
 | `listRow.thumbRadius` | `radius.md` | 12 | same |
-| `listRow.thumbBg` | `color.thumb-tile` | #E1E3E8 | #272832 |
-| `listRow.thumbIcon` | `color.on-icon-disc` | #15161A | #BEB6DE |
+| `listRow.thumbBg` | `color.thumb-tile` | #E4E2EB | #272832 |
+| `listRow.thumbIcon` | `color.on-icon-disc` | #4A4658 | #BEB6DE |
 | `listRow.minHeightThumb` | — | 72 | same |
 | `switch.minTarget` | `touch.min` | 48 | same |
 | `switch.trackWidth` | — | 52 | same |
 | `switch.trackHeight` | — | 32 | same |
 | `switch.trackBorderWidth` | — | 2 | same |
 | `switch.radius` | `radius.full` | 9999 | same |
-| `switch.offTrackBorder` | `color.border-strong` | #7A7E89 | #7E7B8B |
-| `switch.offThumb` | `color.border-strong` | #7A7E89 | #7E7B8B |
+| `switch.offTrackBorder` | `color.border-strong` | #7D7A8A | #7E7B8B |
+| `switch.offThumb` | `color.border-strong` | #7D7A8A | #7E7B8B |
 | `switch.offThumbSize` | — | 16 | same |
-| `switch.onTrack` | `color.accent` | #1E2026 | #F6F5F8 |
+| `switch.onTrack` | `color.accent` | #3A3546 | #F6F5F8 |
 | `switch.onThumb` | `color.on-accent` | #FFFFFF | #2F3243 |
 | `switch.onThumbSize` | — | 24 | same |
 <!-- /tokens -->
@@ -2242,13 +2244,13 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 <!-- tokens:tag -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `tag.bg` | `color.bg-sunken` | #E1E3E8 | #0E0F14 |
-| `tag.fg` | `color.text` | #15161A | #EFEEF3 |
+| `tag.bg` | `color.bg-sunken` | #E4E2EB | #0E0F14 |
+| `tag.fg` | `color.text` | #1B1A22 | #EFEEF3 |
 | `tag.radius` | `radius.full` | 9999 | same |
 | `tag.visualMinHeight` | — | 24 | same |
 | `tag.paddingX` | `space.3` | 12 | same |
 | `tag.type` | `type.labelSm` | Geist 600 13/16 | same |
-| `tag.outlineBorder` | `color.border-strong` | #7A7E89 | #7E7B8B |
+| `tag.outlineBorder` | `color.border-strong` | #7D7A8A | #7E7B8B |
 | `tag.iconSize` | `icon.sm` | 16 | same |
 <!-- /tokens -->
 

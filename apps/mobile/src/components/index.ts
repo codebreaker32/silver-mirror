@@ -25,5 +25,7 @@ export { ProductCard, type ProductCardProps } from './ProductCard';
 export { AppBar, FooterFade, PageBackdrop, Screen, TabScene, useInTabScene } from './Screen';
 export { TabBar, TAB_ITEMS, type TabItem } from './TabBar';
 export { useReduceMotion } from './useReduceMotion';
+export { ProductArt, artShape, type ProductArtCategory, type ProductArtProps } from './ProductArt';
+export { ToastProvider, useToast } from './Toast';
 export { haptic } from './haptics';
 export { SilverMark, Wordmark, BrandLockup, SheenBackdrop, FaceFrame, LiquidBackdrop } from '@/brand';

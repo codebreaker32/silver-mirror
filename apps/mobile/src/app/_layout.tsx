@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { ShareIntentProvider } from 'expo-share-intent';
 import { useEffect } from 'react';
 import { fontAssets } from '@skinkey/design';
+import { ToastProvider } from '@/components/Toast';
 import { ShareRouter } from '@/features/share';
 import { SystemChrome } from '@/theme/SystemChrome';
 import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
@@ -46,7 +47,9 @@ export default function RootLayout() {
   return (
     <ShareIntentProvider>
       <ThemeProvider>
-        <RootStack />
+        <ToastProvider>
+          <RootStack />
+        </ToastProvider>
       </ThemeProvider>
     </ShareIntentProvider>
   );
