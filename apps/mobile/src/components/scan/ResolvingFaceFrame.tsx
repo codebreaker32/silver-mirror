@@ -8,7 +8,7 @@ import { useReduceMotion } from '../useReduceMotion';
  * The one authored moment (motion.bracketResolve): the face-frame brackets close in a step each time a scan step
  * finishes, on the glide ease, and rest closed after "Deleted from YouCam". Reduce motion = jump to the end state.
  */
-export function ResolvingFaceFrame({ width, progress }: { width: number; progress: number }) {
+export function ResolvingFaceFrame({ width, progress, tile = true }: { width: number; progress: number; /** Off when the frame sits on its own sheen plate. */ tile?: boolean }) {
   const t = useTheme();
   const reduced = useReduceMotion();
   const target = Math.min(1, Math.max(0, progress));
@@ -35,5 +35,5 @@ export function ResolvingFaceFrame({ width, progress }: { width: number; progres
     return () => anim.stop();
   }, [target, reduced, value, t]);
 
-  return <FaceFrame width={width} progress={shown} />;
+  return <FaceFrame width={width} progress={shown} tile={tile} />;
 }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { COPY } from '@skinkey/contracts';
-import { Body, Button, EmptyState, Heading, Screen } from '@/components';
+import { Body, Button, EmptyState, Screen } from '@/components';
 import { coachSeen, markCoachSeen, useKey } from '../key';
 import { KeyPanel } from '../key/KeyPanel';
 import { ShareCoachMark } from '../key/ShareCoachMark';
@@ -21,7 +21,7 @@ export function ResultScreen() {
     void coachSeen().then((seen) => setShowCoach(!seen));
   }, []);
 
-  if (loading) return <Screen onBack={home}>{null}</Screen>;
+  if (loading) return <Screen title={COPY.reading.ready} onBack={home}>{null}</Screen>;
   if (!key) {
     return (
       <Screen onBack={home}>
@@ -33,8 +33,7 @@ export function ResultScreen() {
   }
 
   return (
-    <Screen onBack={home} footer={<Button label="Check a product" trailingIcon="arrow-right" onPress={home} />}>
-      <Heading>{COPY.reading.ready}</Heading>
+    <Screen title={COPY.reading.ready} onBack={home} footer={<Button label="Check a product" trailingIcon="arrow-right" onPress={home} />}>
       <KeyPanel
         keyProfile={key}
         isDemo={isDemo}

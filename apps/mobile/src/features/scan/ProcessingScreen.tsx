@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { View, useWindowDimensions } from 'react-native';
+import { SheenBackdrop } from '@/brand';
 import { useRouter } from 'expo-router';
 import { COPY, type YouCamErrorCode } from '@skinkey/contracts';
 import { demo } from '@/demo';
@@ -39,7 +40,7 @@ export function ProcessingScreen() {
   const router = useRouter();
   const started = useRef(false);
   const alive = useRef(true);
-  const { width } = useWindowDimensions();
+  const { width, height: winHeight } = useWindowDimensions();
   const { key, isDemo, useDemo: enableDemo } = useKey();
   const [progress, setProgress] = useState<ScanProgress>(
     () => demo?.scanProgress ?? { phase: 'uploading', steps: scanDisplaySteps(undefined, 'pending') },
@@ -85,10 +86,15 @@ export function ProcessingScreen() {
   const friendly = failed && !retake ? friendlyError(progress.error, 'scan') : null;
   const doneCount = progress.steps.filter((s) => s.state === 'done').length;
   const steps = withDeleteStamp(progress.steps, deletedAt.current);
-  const frame = Math.min(176, Math.round((width - theme.spacing.gutter * 2) * 0.44));
+  // Showcase 03_analyze: the frame runs the full content width, close to square, so the checklist and the line under
+  // it still sit above the fold on a 6.1" phone. The FaceFrame (aspect 0.8) sits centred on its own sheen plate.
+  const plateW = Math.max(0, width - theme.spacing.gutter * 2);
+  const plateH = Math.round(Math.min(plateW / theme.components.faceFrame.aspect, Math.max(240, winHeight * 0.44)));
+  const frameW = Math.round((plateH - theme.space[2] * 2) * theme.components.faceFrame.aspect);
 
   return (
     <Screen
+      title={failed ? undefined : COPY.reading.making}
       onBack={() => router.replace('/')}
       footer={
         failed ? (
@@ -113,21 +119,33 @@ export function ProcessingScreen() {
         ) : undefined
       }
     >
-      <View style={{ alignItems: 'center', paddingTop: theme.space[2] }}>
-        <ResolvingFaceFrame width={frame} progress={failed ? 0 : doneCount / progress.steps.length} />
+      <View
+        style={{
+          height: plateH,
+          borderRadius: theme.radius.xl,
+          overflow: 'hidden',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth: 1,
+          borderColor: theme.dark ? theme.colors.border : theme.colors.surface,
+          borderTopColor: theme.dark ? theme.colors.sheenEdge : theme.colors.surface,
+        }}
+      >
+        <SheenBackdrop radius={theme.radius.xl} />
+        <ResolvingFaceFrame tile={false} width={frameW} progress={failed ? 0 : doneCount / progress.steps.length} />
       </View>
-      <View style={{ gap: theme.space[2] }}>
-        <Heading>{failed ? (retake ? 'Let’s take that again' : friendly?.title) : COPY.reading.making}</Heading>
-        {failed ? (
+      {failed ? (
+        <View style={{ gap: theme.space[2] }}>
+          <Heading>{retake ? 'Let’s take that again' : friendly?.title}</Heading>
           <Body>{retake ? hintForError(youcamCode) : friendly?.body}</Body>
-        ) : (
-          <Body muted>Stay on this screen. This takes about 10 seconds.</Body>
-        )}
+        </View>
+      ) : null}
+      <View style={{ gap: theme.space[4] }}>
+        <Stepper steps={steps} />
+        <Body muted small>
+          {failed ? COPY.privacyLine : 'Stay on this screen. This takes about 10 seconds.'}
+        </Body>
       </View>
-      <Stepper steps={steps} />
-      <Body muted small>
-        {COPY.privacyLine}
-      </Body>
     </Screen>
   );
 }

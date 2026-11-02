@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COPY } from '@skinkey/contracts';
-import { Body, Button, ButtonPair, Heading, Note, PillButton, Screen } from '@/components';
+import { Body, Button, ButtonPair, Note, PillButton, Screen } from '@/components';
 import { CheckboxRow, DetailsRow, FaceFramePlate, KeepCard, PromiseList } from '@/components/scan';
 import { useTheme } from '@/theme/ThemeProvider';
 import { saveScanConsent } from '../key';
@@ -33,6 +33,7 @@ export function ConsentScreen() {
 
   return (
     <Screen
+      title="Before your scan"
       footer={
         <>
           <CheckboxRow label={ADULT_LABEL} checked={adult} onChange={setAdult} supporting={adult ? undefined : ADULT_HELPER} />
@@ -51,7 +52,6 @@ export function ConsentScreen() {
       }
     >
       <FaceFramePlate />
-      <Heading>Before your scan</Heading>
       <PromiseList items={PROMISES} />
       <KeepCard title="What stays on this phone" kept={KEPT_ON_PHONE} dropped={NOT_KEPT} footnote="Bands, never scores." />
       <View style={{ gap: theme.space[1] }}>

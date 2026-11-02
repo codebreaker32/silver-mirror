@@ -1,29 +1,33 @@
-import { useState, type ReactNode } from 'react';
-import { Pressable, View, useWindowDimensions } from 'react-native';
+import { Fragment, useState, type ReactNode } from 'react';
+import { Pressable, View } from 'react-native';
 import { FaceFrame, SheenBackdrop } from '@/brand';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from '../Icon';
-import { IconDisc } from '../IconButton';
+import { useCardStyle } from '../Card';
+import { ThumbTile } from '../ListRow';
 import { Txt } from '../Text';
 
-/** Face-frame plate on the pearl sheen (consent hero). Decorative: the title beside it says what happens. */
-export function FaceFramePlate({ maxWidth = 136 }: { maxWidth?: number }) {
+/**
+ * Face-frame plate on the sheen (consent hero, showcase 03_analyze frame language): a 200dp, radius-28 plate with the
+ * bracket illustration centred. Decorative: the app-bar title says what happens.
+ */
+export function FaceFramePlate({ height = 200 }: { height?: number; /** @deprecated plate is sized by height now */ maxWidth?: number }) {
   const t = useTheme();
-  const { width } = useWindowDimensions();
-  const frame = Math.min(maxWidth, Math.round((width - t.spacing.gutter * 2) * 0.46));
+  const f = t.components.faceFrame;
+  const frame = Math.round((height - t.space[4] * 2) * f.aspect);
   return (
     <View
       importantForAccessibility="no-hide-descendants"
       accessibilityElementsHidden
       style={{
+        height,
         borderRadius: t.radius.xl,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: t.space[5],
-        borderWidth: t.dark ? 1 : 0,
-        borderColor: t.colors.border,
-        borderTopColor: t.colors.sheenEdge,
+        borderWidth: 1,
+        borderColor: t.dark ? t.colors.border : t.colors.surface,
+        borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.surface,
       }}
     >
       <SheenBackdrop radius={t.radius.xl} />
@@ -37,18 +41,29 @@ export interface PromiseItem {
   label: string;
 }
 
-/** Three icon-disc promise rows ("One photo, analysed by YouCam" …). One TalkBack node per row. */
+/**
+ * The three promises ("One photo, analysed by YouCam" …) as one white card of thumb-tile rows (showcase list rows:
+ * soft square tile, lavender icon, inset dividers). A 48dp tile and body weight keep each promise on one line at 1.0x.
+ * One TalkBack node per row.
+ */
 export function PromiseList({ items }: { items: readonly PromiseItem[] }) {
   const t = useTheme();
+  const card = useCardStyle('raised');
+  const tile = t.touch.min;
+  const padX = t.spacing.insetCard;
+  const gap = t.space[4];
   return (
-    <View accessibilityRole="list" style={{ gap: t.space[3] }}>
-      {items.map((it) => (
-        <View key={it.label} accessible accessibilityLabel={it.label} style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[4], minHeight: t.touch.min }}>
-          <IconDisc icon={it.icon} />
-          <Txt variant="bodyStrong" style={{ flex: 1 }}>
-            {it.label}
-          </Txt>
-        </View>
+    <View accessibilityRole="list" style={[card, { paddingHorizontal: 0, paddingVertical: t.space[1], gap: 0 }]}>
+      {items.map((it, i) => (
+        <Fragment key={it.label}>
+          {i > 0 ? <View importantForAccessibility="no" style={{ height: 1, marginLeft: padX + tile + gap, marginRight: padX, backgroundColor: t.components.listRow.divider }} /> : null}
+          <View accessible accessibilityLabel={it.label} style={{ flexDirection: 'row', alignItems: 'center', gap, minHeight: t.space[16], paddingHorizontal: padX, paddingVertical: t.space[2] }}>
+            <ThumbTile thumb={{ icon: it.icon }} size={tile} />
+            <Txt variant="body" style={{ flex: 1 }}>
+              {it.label}
+            </Txt>
+          </View>
+        </Fragment>
       ))}
     </View>
   );
@@ -65,7 +80,7 @@ export function KeepCard({ title, kept, dropped, footnote }: { title: string; ke
   const a11y = `${title}. Kept: ${kept.join(', ')}. Not kept: ${dropped.join(', ')}.${footnote ? ` ${footnote}` : ''}`;
   const row = (label: string, keep: boolean) => (
     <View key={label} style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[3], minHeight: 32 }}>
-      <Icon name={(keep ? cs.keepIcon : cs.dropIcon) as IconName} size={t.icon.md} color={keep ? t.colors.text : t.colors.textMuted} />
+      <Icon name={(keep ? cs.keepIcon : cs.dropIcon) as IconName} size={t.icon.md} color={t.colors.onIconDisc} />
       <Txt variant="body" style={[cs.keepList, { flex: 1, color: keep ? t.colors.text : t.colors.textMuted }]}>
         {label}
       </Txt>
@@ -76,6 +91,7 @@ export function KeepCard({ title, kept, dropped, footnote }: { title: string; ke
       accessible
       accessibilityLabel={a11y}
       style={{
+        ...(t.dark ? null : t.elevation['1'].style),
         backgroundColor: k.bg,
         borderRadius: k.radius,
         padding: k.padding,

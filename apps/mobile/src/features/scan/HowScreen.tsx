@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { COPY, type DeleteState, type HowThisWasMade, type LedgerEntry, type LedgerFeature } from '@skinkey/contracts';
-import { Body, Button, Caption, Card, Divider, Heading, Icon, Screen, SectionHeader, StepChecklist, Tag, Txt, type ChecklistStep } from '@/components';
+import { Body, Button, Caption, Card, Divider, Heading, IconDisc, Screen, SectionHeader, StepChecklist, Tag, Txt, type ChecklistStep } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
 import { loadScanLedger } from '../key';
 import { deleteStateLabel, isFinalDeleteState } from './deleteCopy';
@@ -131,14 +131,14 @@ export function HowScreen() {
     <Screen title="How this was made">
       <View style={{ gap: theme.space[3] }}>
         <Heading>{COPY.howMadeBoundary}</Heading>
-        <Body muted>
+        <Body>
           {`Task ids, units, time and delete status for each YouCam and Claude call, as recorded by the ${COPY.appName} Worker. Claude reads labels and listings. Our published rules decide the verdict.`}
         </Body>
       </View>
 
       <Card variant="raised" gap={theme.space[3]} testID="photos-on-phone">
         <View accessible accessibilityLiveRegion="polite" style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[3] }}>
-          <Icon name={images === null ? 'circle' : noPhotos ? 'check-circle' : 'info'} size={theme.icon.lg} color={theme.colors.text} />
+          <IconDisc icon={images === null ? 'circle' : noPhotos ? 'check-circle' : 'info'} />
           <View style={{ flex: 1, gap: 2 }}>
             <Txt variant="section">Photos on this phone</Txt>
             <Body small>
@@ -164,16 +164,9 @@ export function HowScreen() {
         {scanDeleted ? (
           <StepChecklist steps={deleteSteps} announcement={null} />
         ) : (
-          // Static explainer: numbered steps, not empty progress rings (nothing is running).
-          <View accessible accessibilityLabel={`Delete steps: ${DELETE_STEPS.join(', ')}`} style={{ gap: theme.space[2] }}>
-            {DELETE_STEPS.map((label, i) => (
-              <View key={label} style={{ flexDirection: 'row', gap: theme.space[3], alignItems: 'baseline' }}>
-                <Txt variant="label" tone="muted" style={{ minWidth: theme.space[5], fontVariant: ['tabular-nums'] }}>
-                  {`${i + 1}.`}
-                </Txt>
-                <Body small>{label}</Body>
-              </View>
-            ))}
+          // Static explainer: the same checklist card, read as one block (nothing is running, so no per-step state).
+          <View accessible accessibilityLabel={`Delete steps, in order: ${DELETE_STEPS.join(', ')}`}>
+            <StepChecklist steps={deleteSteps} announcement={null} />
           </View>
         )}
         <DeleteNotes lines={[`If an upload never became a task: ${COPY.orphanUpload}`, COPY.privacyQualifier]} />
