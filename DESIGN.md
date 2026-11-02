@@ -1,6 +1,6 @@
 # Silver Mirror: design system of record
 
-Version 2.1 · 2 Nov 2026 · tokens `2.1.0` (`design/system/tokens/skinkey.tokens.json`) · 2.1 = the showcase delta (`design/reference/showcase-delta.md`): the app now follows Aman's showcase (`design/reference/silver-mirror-showcase.png`)
+Version 2.2 · 2 Nov 2026 · tokens `2.2.0` (palette from `design/reference/colors-reference.png`, §2.0) · was tokens `2.1.0` (`design/system/tokens/skinkey.tokens.json`) · 2.1 = the showcase delta (`design/reference/showcase-delta.md`): the app now follows Aman's showcase (`design/reference/silver-mirror-showcase.png`)
 
 Silver Mirror is the user-facing name of the app formerly called SkinKey. This file owns the durable visual decisions. Product truth lives in `PRODUCT.md` and `research/skinkey_v2_spec.md`; copy rules and banned words in `design/research/00_research_summary_and_design_brief.md` §4. Where the moodboard and product law disagree, **product law wins** (the conflicts are listed in §11).
 
@@ -33,6 +33,25 @@ The product is a **mirror that shows its working**: you hold a product up to you
 ---
 
 ## 2. Colour
+
+### 2.0 Palette 2.2: pink-lavender glass (supersedes the light values below)
+
+Tokens `2.2.0` re-map light to `design/reference/colors-reference.png`. The app ships **light only**; dark tokens are kept but unused. Where a light value in §2.1 to §2.3 disagrees with this table, this table wins (the token file is the source).
+
+| Role (token → `theme.colors.*`) | Light | Notes |
+|---|---|---|
+| `color.page-top` → `pageTop` / `color.page-bottom` → `pageBottom` | `#F8F1F9` → `#EDDCF3` | Vertical page gradient, drawn by `PageBackdrop` (Screen, CheckScreen) with a `page-glow` `#F9D3E4` radial top-left |
+| `color.bg` | blush.150 `#F3E7F7` | Solid mid tone for fallbacks, camera masks, navigator scenes |
+| `color.glass` / `color.glass-edge` | `#FCF8FE` / `rgba(255,255,255,0.70)` | Card fill and its 1dp white hairline; elevation.1 adds a plum shadow `#5A3F6B` |
+| `color.accent` = `color.plum` / `color.plum-pressed` | plum.600 `#67506F` / `#574260` | Primary pill, active tab, round Scan button, links; white label 7.1:1 (reference `#776083` darkened for the 7:1 lint) |
+| `color.tile-pink` / `tile-lilac` / `tile-lavender` | `#F8D9DF` / `#EADEEA` / `#DCCFE9` | Pastel product and icon tiles; plum glyph `#6A4673` ≥5:1 on each |
+| `color.accent-pink` | `#F7B3CC` | Small fill accents only, never text or a meaningful edge |
+| `color.text` / `text-muted` / `text-subtle` | mauve `#241B29` / `#54475B` / `#67596E` | AA on page-top, bg, page-bottom, glass and the sunken well (lowest 4.79:1) |
+| `color.icon-disc` / `on-icon-disc` | `#F3DDEC` / `#6A4673` | Pinker lilac disc |
+| `color.border-strong` / `tab-inactive` | mauve.500 `#85768D` | ≥3:1 on every page stop |
+| Verdicts | FITS sage, CAUTION amber (unchanged); UNKNOWN blush neutral `#F3ECF5` with a plum fg; MEDICINE on the page bg | All AA |
+
+`check-contrast.mjs` (2.2) gates 462 pairs + 31 lints, 0 failures, including the page stops, glass, the plum button and the three tiles.
 
 Restrained strategy, tuned to the showcase: a lavender-grey **mist** page, clean white cards, one deep slate accent, lavender icon discs, one soft lavender gradient (skin-type card only), and four verdict roles. All values below are generated from the token file; never type a hex in UI code (use `theme.colors.*` / `var(--sk-color-*)`). `check-contrast.mjs` gates 370 pairs + 31 lints, 0 failures.
 
