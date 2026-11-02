@@ -12108,6 +12108,697 @@
     "source_kind": "brand_official"
   },
   {
+    "id": "lakme-lakme-fluid-spf-50-pa-in-vivo-tested-sunscreen-with-1-ceramide-niacinamide",
+    "brand": "Lakmé",
+    "name": "Lakme Fluid SPF 50 PA++++ In-Vivo tested Sunscreen With 1% Ceramide & Niacinamide, With New-Age UV Filters, Boosts Glow, Reduces Dullness & Dark Spots for all skin type 50ml",
+    "size": "50 ml",
+    "category": "sunscreen",
+    "tinted": false,
+    "spf": 50,
+    "inci": [
+      {
+        "token": "Aqua",
+        "position": 1
+      },
+      {
+        "token": "Dimethicone",
+        "position": 2
+      },
+      {
+        "token": "Ethylhexyl Salicylate",
+        "position": 3
+      },
+      {
+        "token": "Octocrylene",
+        "position": 4
+      },
+      {
+        "token": "Glycerin",
+        "position": 5
+      },
+      {
+        "token": "Phenylbenzimidazole Sulfonic Acid",
+        "position": 6
+      },
+      {
+        "token": "Butyl Methoxydibenzoylmethane",
+        "position": 7
+      },
+      {
+        "token": "Butylene Glycol",
+        "position": 8
+      },
+      {
+        "token": "Sodium hydroxide",
+        "position": 9
+      },
+      {
+        "token": "Acrylates/C10-30 Alkyl Acrylate Crosspolymer",
+        "position": 10
+      },
+      {
+        "token": "Niacinamide",
+        "position": 11
+      },
+      {
+        "token": "Steareth-21",
+        "position": 12
+      },
+      {
+        "token": "Silica",
+        "position": 13
+      },
+      {
+        "token": "Caprylyl Glycol",
+        "position": 14
+      },
+      {
+        "token": "Caprylic/Capric Triglyceride",
+        "position": 15
+      },
+      {
+        "token": "Dimethicone",
+        "position": 16
+      },
+      {
+        "token": "Polysorbate 20",
+        "position": 17
+      },
+      {
+        "token": "Steareth-2",
+        "position": 18
+      },
+      {
+        "token": "Fragrance",
+        "position": 19
+      },
+      {
+        "token": "Phenoxyethanol",
+        "position": 20
+      },
+      {
+        "token": "Stearic Acid",
+        "position": 21
+      },
+      {
+        "token": "Linoleamidopropyl PG-Dimonium Chloride Phosphate",
+        "position": 22
+      },
+      {
+        "token": "Propylene glycol",
+        "position": 23
+      },
+      {
+        "token": "Tocopheryl Acetate",
+        "position": 24
+      },
+      {
+        "token": "Disodium EDTA",
+        "position": 25
+      },
+      {
+        "token": "Pentylene Glycol",
+        "position": 26
+      },
+      {
+        "token": "Sodium Acetylated Hyaluronate",
+        "position": 27
+      },
+      {
+        "token": "Sodium Hyaluronate",
+        "position": 28
+      },
+      {
+        "token": "Sodium Lauroyl Lactylate",
+        "position": 29
+      },
+      {
+        "token": "Sodium Hyaluronate Crosspolymer",
+        "position": 30
+      },
+      {
+        "token": "Hydrolyzed Sodium Hyaluronate",
+        "position": 31
+      },
+      {
+        "token": "Ethylhexylglycerin",
+        "position": 32
+      },
+      {
+        "token": "Ceramide NP",
+        "position": 33
+      },
+      {
+        "token": "Ceramide AP",
+        "position": 34
+      },
+      {
+        "token": "Phytosphingosine",
+        "position": 35
+      },
+      {
+        "token": "Cholesterol",
+        "position": 36
+      },
+      {
+        "token": "Xanthan gum",
+        "position": 37
+      },
+      {
+        "token": "Carbomer",
+        "position": 38
+      },
+      {
+        "token": "Ceramide EOP",
+        "position": 39
+      },
+      {
+        "token": "Alpha Isomethyl iononel",
+        "position": 40
+      },
+      {
+        "token": "Benzyl Salicylate",
+        "position": 41
+      },
+      {
+        "token": "Citronellol",
+        "position": 42
+      },
+      {
+        "token": "Geraniol",
+        "position": 43
+      },
+      {
+        "token": "Hexyl Cinnamal",
+        "position": 44
+      },
+      {
+        "token": "Limonene",
+        "position": 45
+      },
+      {
+        "token": "Linalool",
+        "position": 46
+      }
+    ],
+    "claims": [
+      {
+        "type": "for_all_skin_types",
+        "quote": "all skin type"
+      },
+      {
+        "type": "for_oily_skin",
+        "quote": "oily skin and combination skin types"
+      },
+      {
+        "type": "for_combination_skin",
+        "quote": "oily skin and combination skin types"
+      }
+    ],
+    "shades": [],
+    "source_url": "https://www.lakmeindia.com/products/lakme-fluid-spf-50-pa-in-vivo-tested-sunscreen-with-1-ceramide-niacinamide-with-new-age-uv-filters-boosts-glow-reduces-dullness-dark-spots-for-all-skin-type-50ml",
+    "fetched_at": "2026-11-01T00:00:00.000Z",
+    "verified": false,
+    "status": "unverified",
+    "aliases": [
+      "Lakme Fluid SPF 50 PA++++ 1% Ceramide Niacinamide sunscreen 50ml"
+    ],
+    "claims_source": "marketed_for_phrase_match",
+    "source_kind": "brand_official"
+  },
+  {
+    "id": "lakme-lakme-5-niacinamide-vit-c-water-light-sunscreen-gel-spf-50-pa-in-vivo-test",
+    "brand": "Lakmé",
+    "name": "Lakmē 5% Niacinamide & VIT C water-light Sunscreen gel SPF 50 Pa++++In-Vivo tested With New-Age UV Filters, Reduces Dullness & Dark Spots , 2X Glow,56G",
+    "size": "56 g",
+    "category": "sunscreen",
+    "tinted": false,
+    "spf": 50,
+    "inci": [
+      {
+        "token": "Water",
+        "position": 1
+      },
+      {
+        "token": "Glycerine",
+        "position": 2
+      },
+      {
+        "token": "Octocrylene",
+        "position": 3
+      },
+      {
+        "token": "Ethylhexyl Salicylate",
+        "position": 4
+      },
+      {
+        "token": "Alcohol (Ethanol 95% v/v)",
+        "position": 5
+      },
+      {
+        "token": "Phenylbenzimidazole Sulfonic Acid",
+        "position": 6
+      },
+      {
+        "token": "Butyl Methoxydibenzoylmethane",
+        "position": 7
+      },
+      {
+        "token": "Cyclopentasiloxane",
+        "position": 8
+      },
+      {
+        "token": "Dimethicone/Vinyl Dimethicone Crosspolymer",
+        "position": 9
+      },
+      {
+        "token": "Silica",
+        "position": 10
+      },
+      {
+        "token": "Ethylhexyl Methoxycinnamate",
+        "position": 11
+      },
+      {
+        "token": "C18-36 Acid Triglyceride",
+        "position": 12
+      },
+      {
+        "token": "Ammonium Acryloyldimethyltaurate/VP Copolymer",
+        "position": 13
+      },
+      {
+        "token": "Niacinamide",
+        "position": 14
+      },
+      {
+        "token": "Caprylyl Glycol",
+        "position": 15
+      },
+      {
+        "token": "Fragrance",
+        "position": 16
+      },
+      {
+        "token": "Phenoxyethanol",
+        "position": 17
+      },
+      {
+        "token": "Sodium hydroxide",
+        "position": 18
+      },
+      {
+        "token": "Xanthan gum",
+        "position": 19
+      },
+      {
+        "token": "Sodium ascorbyl phosphate",
+        "position": 20
+      },
+      {
+        "token": "Ammonium Acryloyldimethyltaurate/Beheneth-25 Methacrylate Crosspolymer",
+        "position": 21
+      },
+      {
+        "token": "t-Butyl Alcohol",
+        "position": 22
+      },
+      {
+        "token": "Tocopheryl acetate",
+        "position": 23
+      },
+      {
+        "token": "Tocopheryl acetate",
+        "position": 24
+      },
+      {
+        "token": "Disodium EDTA",
+        "position": 25
+      },
+      {
+        "token": "Alpha-Isomethyl Ionone",
+        "position": 26
+      },
+      {
+        "token": "Benzyl salicylate",
+        "position": 27
+      },
+      {
+        "token": "Citronellol",
+        "position": 28
+      },
+      {
+        "token": "Geraniol",
+        "position": 29
+      },
+      {
+        "token": "Hexyl cinnamal",
+        "position": 30
+      },
+      {
+        "token": "Limonene",
+        "position": 31
+      },
+      {
+        "token": "Linalool",
+        "position": 32
+      },
+      {
+        "token": "Ethyl Alcohol (95% v/v alcohol)",
+        "position": 33
+      },
+      {
+        "token": "Content 5% w/w (denatured with 0.15% w/w t-Butyl Alcohol)",
+        "position": 34
+      }
+    ],
+    "claims": [
+      {
+        "type": "for_all_skin_types",
+        "quote": "all skin types"
+      }
+    ],
+    "shades": [],
+    "source_url": "https://www.lakmeindia.com/products/lakme-5-niacinamide-vit-c-water-light-sunscreen-gel-spf-50-pa-in-vivo-tested-with-new-age-uv-filters-reduces-dullness-dark-spots-2x-glow-56g",
+    "fetched_at": "2026-11-01T00:00:00.000Z",
+    "verified": false,
+    "status": "unverified",
+    "aliases": [
+      "Lakme 5% Niacinamide Vit C water light sunscreen gel SPF 50 56g"
+    ],
+    "claims_source": "marketed_for_phrase_match",
+    "source_kind": "brand_official"
+  },
+  {
+    "id": "lakme-lakme-peach-milk-spf-30-2-pro-ceramide-lotion-uv-defence-barrier-repair-uv",
+    "brand": "Lakmé",
+    "name": "Lakme Peach Milk SPF 30 2% Pro-Ceramide Lotion | UV Defence + Barrier Repair | UVA/UVB Protection & 24H Hydration | 200ml",
+    "size": "200 ml",
+    "category": "moisturiser",
+    "tinted": false,
+    "spf": 30,
+    "inci": [
+      {
+        "token": "WATER",
+        "position": 1
+      },
+      {
+        "token": "OCTYL SALICYLATE",
+        "position": 2
+      },
+      {
+        "token": "BUTYL METHOXYDIBENZOYL METHANE",
+        "position": 3
+      },
+      {
+        "token": "GLYCERINE",
+        "position": 4
+      },
+      {
+        "token": "PALMITIC ACID & STEARIC ACID",
+        "position": 5
+      },
+      {
+        "token": "PHENYL BENZIMIDAZOLE SULPHONIC ACID",
+        "position": 6
+      },
+      {
+        "token": "GLYCOL STEARATE",
+        "position": 7
+      },
+      {
+        "token": "STEARAMIDE AMP",
+        "position": 8
+      },
+      {
+        "token": "PEG-100 STEARATE",
+        "position": 9
+      },
+      {
+        "token": "DIMETHICONE",
+        "position": 10
+      },
+      {
+        "token": "GLYCERYL STEARATE",
+        "position": 11
+      },
+      {
+        "token": "XANTHAN GUM",
+        "position": 12
+      },
+      {
+        "token": "POTASSIUM HYDROXIDE",
+        "position": 13
+      },
+      {
+        "token": "CARBOMER",
+        "position": 14
+      },
+      {
+        "token": "CETYL ALCOHOL",
+        "position": 15
+      },
+      {
+        "token": "POTASSIUM LACTATE",
+        "position": 16
+      },
+      {
+        "token": "PERFUME",
+        "position": 17
+      },
+      {
+        "token": "SODIUM HYDROXIDE",
+        "position": 18
+      },
+      {
+        "token": "NIACINAMIDE",
+        "position": 19
+      },
+      {
+        "token": "LACTIC ACID",
+        "position": 20
+      },
+      {
+        "token": "TOCOPHERYL ACETATE",
+        "position": 21
+      },
+      {
+        "token": "DISODIUM EDTA",
+        "position": 22
+      },
+      {
+        "token": "PANTHENOL",
+        "position": 23
+      },
+      {
+        "token": "PEG-40 HYDROGENATED CASTOR OIL",
+        "position": 24
+      },
+      {
+        "token": "TRIBECETH-9",
+        "position": 25
+      },
+      {
+        "token": "PENTYLENE GLYCOL",
+        "position": 26
+      },
+      {
+        "token": "NONFAT DRY MILK (SINE ADIPE LAC)",
+        "position": 27
+      },
+      {
+        "token": "PRUNES PERSICA (PEACH) KERNEL OIL",
+        "position": 28
+      },
+      {
+        "token": "SODIUM ASCORBYL PHOSPHATE",
+        "position": 29
+      },
+      {
+        "token": "TOCOPHEROL",
+        "position": 30
+      },
+      {
+        "token": "PHENOXYETHANOL",
+        "position": 31
+      },
+      {
+        "token": "METHYL PARABEN",
+        "position": 32
+      },
+      {
+        "token": "PROPYL PARABEN",
+        "position": 33
+      },
+      {
+        "token": "ALPHA-ISOMETHYL IONONE",
+        "position": 34
+      },
+      {
+        "token": "CITRONELLOL",
+        "position": 35
+      },
+      {
+        "token": "LINALOOL, CI 17200",
+        "position": 36
+      }
+    ],
+    "claims": [
+      {
+        "type": "for_dry_skin",
+        "quote": "dry, dull or uncomfortable skin"
+      }
+    ],
+    "shades": [],
+    "source_url": "https://www.lakmeindia.com/products/lakme-peach-milk-spf-30-2-pro-ceramide-lotion-uv-defence-barrier-repair-uva-uvb-protection-24h-hydration-200ml",
+    "fetched_at": "2026-11-01T00:00:00.000Z",
+    "verified": false,
+    "status": "unverified",
+    "aliases": [
+      "Lakme Peach Milk SPF 30 2% Pro-Ceramide Lotion 200ml"
+    ],
+    "claims_source": "marketed_for_phrase_match",
+    "source_kind": "brand_official"
+  },
+  {
+    "id": "lakme-lakme-perfect-radiance-facewash-with-98-pure-niacinamide-for-glowing-skin",
+    "brand": "Lakmé",
+    "name": "Lakmē Perfect Radiance Facewash with 98% Pure Niacinamide for Glowing Skin, 100gm",
+    "size": "100 g",
+    "category": "cleanser",
+    "tinted": false,
+    "inci": [
+      {
+        "token": "MYRISTIC ACID",
+        "position": 1
+      },
+      {
+        "token": "GLYCERINE",
+        "position": 2
+      },
+      {
+        "token": "WATER",
+        "position": 3
+      },
+      {
+        "token": "PROPYLENE GLYCOL",
+        "position": 4
+      },
+      {
+        "token": "POTASSIUM HYDROXIDE",
+        "position": 5
+      },
+      {
+        "token": "PALMITIC AND STEARIC ACID",
+        "position": 6
+      },
+      {
+        "token": "GLYCOL DISTEARATE",
+        "position": 7
+      },
+      {
+        "token": "LAURIC ACID",
+        "position": 8
+      },
+      {
+        "token": "DECYL GLUCOSIDE",
+        "position": 9
+      },
+      {
+        "token": "GLYCERYL STEARATE",
+        "position": 10
+      },
+      {
+        "token": "FRAGRANCE",
+        "position": 11
+      },
+      {
+        "token": "PHENOXYETHANOL",
+        "position": 12
+      },
+      {
+        "token": "POLYQUATERNIUM-7",
+        "position": 13
+      },
+      {
+        "token": "DÍSODIUM EDTA",
+        "position": 14
+      },
+      {
+        "token": "PEG-4 LAURATE",
+        "position": 15
+      },
+      {
+        "token": "PEG-4 DILAURATE",
+        "position": 16
+      },
+      {
+        "token": "NIACINAMIDE",
+        "position": 17
+      },
+      {
+        "token": "PEG-4",
+        "position": 18
+      },
+      {
+        "token": "IODOPROPYNYL BUTYLCARBAMATE",
+        "position": 19
+      },
+      {
+        "token": "SODIUM BENZOATE",
+        "position": 20
+      },
+      {
+        "token": "ALPHA-ISOMETHYL IONONE",
+        "position": 21
+      },
+      {
+        "token": "BENZYL SALICYLATE",
+        "position": 22
+      },
+      {
+        "token": "CITRONELLOL",
+        "position": 23
+      },
+      {
+        "token": "HEXYL CINNAMAL",
+        "position": 24
+      },
+      {
+        "token": "LINALOOL",
+        "position": 25
+      },
+      {
+        "token": "CI 14700",
+        "position": 26
+      }
+    ],
+    "claims": [
+      {
+        "type": "for_all_skin_types",
+        "quote": "all skin types"
+      },
+      {
+        "type": "for_oily_skin",
+        "quote": "oily skin as well as dry skin"
+      },
+      {
+        "type": "for_dry_skin",
+        "quote": "oily skin as well as dry skin"
+      }
+    ],
+    "shades": [],
+    "source_url": "https://www.lakmeindia.com/products/lakme-perfect-radiance-facewash-with-98-pure-niacinamide-for-glowing-skin-100gm",
+    "fetched_at": "2026-11-01T00:00:00.000Z",
+    "verified": false,
+    "status": "unverified",
+    "aliases": [
+      "Lakme Perfect Radiance Facewash Niacinamide 100g"
+    ],
+    "claims_source": "marketed_for_phrase_match",
+    "source_kind": "brand_official"
+  },
+  {
     "id": "lotus-herbals-safe-sun-uv-screen-mattegel-sunscreen-spf-50-pa",
     "brand": "Lotus Herbals",
     "name": "Safe Sun UV Screen MatteGEL Sunscreen SPF 50 PA+++",
