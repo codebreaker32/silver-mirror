@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import type { Verdict } from '@skinkey/design';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, VerdictIcon, type IconName, type LegacyIconName } from './Icon';
@@ -17,8 +17,8 @@ interface ChipProps {
 }
 
 /**
- * Pill chip (component.chip): 36dp visual pill in a 48dp target. Selected = slate fill + check + weight, so the
- * state never rests on colour alone. Static chips are read with their card.
+ * Pill chip (component.chip): light mist pill, 36dp visual in a 48dp target, label 14/20 600. Selected = slate fill +
+ * check + weight, so the state never rests on colour alone. Static chips are read with their card.
  */
 export function Chip({ label, onPress, selected = false, icon, disabled = false, accessibilityLabel, testID }: ChipProps) {
   const t = useTheme();
@@ -62,6 +62,27 @@ export function Chip({ label, onPress, selected = false, icon, disabled = false,
     >
       {({ pressed }) => pill(pressed)}
     </Pressable>
+  );
+}
+
+/**
+ * One horizontal row of chips that scrolls sideways (showcase 06_discover): bleeds to the screen edge and uses the
+ * gutter as its content inset, so the first chip lines up with the content and the last one peeks. No wrap.
+ */
+export function ChipRail({ children, accessibilityLabel, testID }: { children: ReactNode; accessibilityLabel?: string; testID?: string }) {
+  const t = useTheme();
+  const g = t.spacing.gutter;
+  return (
+    <ScrollView
+      horizontal
+      testID={testID}
+      accessibilityLabel={accessibilityLabel}
+      showsHorizontalScrollIndicator={false}
+      style={{ marginHorizontal: -g, flexGrow: 0 }}
+      contentContainerStyle={{ paddingHorizontal: g, columnGap: t.components.chip.gap, alignItems: 'center' }}
+    >
+      {children}
+    </ScrollView>
   );
 }
 

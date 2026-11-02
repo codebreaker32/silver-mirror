@@ -5,28 +5,32 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY } from '@skinkey/contracts';
 import {
   BandChip,
-  BrandLockup,
   ButtonPair,
   Card,
-  Caption,
   Chip,
+  ChipRail,
   ChipRow,
   Divider,
   EmptyState,
   FocusTiles,
   Heading,
+  Icon,
   IconButton,
-  IconDisc,
   Ledger,
   ListGroup,
   ListRow,
+  LiquidBackdrop,
   PillButton,
   ProductCard,
   SectionHeader,
+  Segmented,
+  SilverMark,
+  SkinTypeCard,
   StepChecklist,
   Tag,
   Txt,
   VerdictHead,
+  Wordmark,
 } from '@/components';
 import { demo } from '@/demo';
 import { useTheme } from '@/theme/ThemeProvider';
@@ -42,6 +46,7 @@ export default function KitGallery() {
   const insets = useSafeAreaInsets();
   const { part } = useLocalSearchParams<{ part?: string }>();
   const [filter, setFilter] = useState('oil');
+  const [store, setStore] = useState<'Flipkart' | 'Amazon' | 'Nykaa'>('Flipkart');
   if (!demo) return <Redirect href="/" />;
   const p = part ?? '1';
 
@@ -49,46 +54,105 @@ export default function KitGallery() {
     <ScrollView style={{ flex: 1, backgroundColor: t.colors.bg }} contentContainerStyle={{ paddingTop: insets.top + t.space[2], paddingBottom: t.space[10], paddingHorizontal: t.spacing.gutter, gap: t.space[5] }}>
       {p === '1' ? (
         <>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <BrandLockup variant="header" />
-            <IconButton icon="gear" accessibilityLabel="Settings" onPress={noop} />
+          {/* Home (showcase 02_home): greeting row, skin-type card, share steps as thumb rows, pills. */}
+          <View style={{ gap: t.space[2] }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Heading level="display">Good afternoon</Heading>
+              <IconButton icon="gear" accessibilityLabel="Settings" onPress={noop} />
+            </View>
+            <Txt tone="muted">{COPY.welcome.tagline}</Txt>
           </View>
-          <Heading level="display">Good evening</Heading>
+          <SkinTypeCard value="Combination" caption="Scan 1 Nov · photo deleted" onPress={noop} />
+          <View style={{ gap: t.space[3] }}>
+            <SectionHeader title="Share from a store app" action={{ label: 'Got it', onPress: noop, chevron: false }} />
+            <Segmented options={['Flipkart', 'Amazon', 'Nykaa'] as const} value={store} onChange={setStore} accessibilityLabel="Store app" />
+            <ListGroup thumbs accessibilityLabel={COPY.sharePaths.join('. ')}>
+              {COPY.shareSteps(store).map((step, i) => (
+                <ListRow key={step.title} title={step.title} supporting={step.supporting} trailing="none" thumb={i === 0 ? { icon: 'share' } : i === 1 ? { mark: true } : { icon: 'seal-check' }} />
+              ))}
+            </ListGroup>
+          </View>
           <PillButton label="Start scan" trailingIcon="arrow-right" onPress={noop} />
           <PillButton label={COPY.reading.useDemo} variant="secondary" onPress={noop} />
-          <View style={{ flexDirection: 'row', gap: t.space[2], alignItems: 'center' }}>
-            <PillButton label="See all" variant="tertiary" trailingIcon="chevron-right" onPress={noop} />
-            <PillButton label={COPY.reading.delete} variant="destructiveNeutral" onPress={noop} />
-          </View>
-          <ButtonPair>
-            <PillButton label="Start scan" variant="consentPair" onPress={noop} />
-            <PillButton label="Not now" variant="consentPair" onPress={noop} />
-          </ButtonPair>
-          <PillButton label="Back to Nykaa listing" onPress={noop} disabled />
-          <SectionHeader title="Better matches" supporting="Ranked by fit to your readings. No paid placements." action={{ label: 'See all', onPress: noop }} />
-          <ChipRow>
-            <Chip label="For your oiliness" selected={filter === 'oil'} onPress={() => setFilter('oil')} />
-            <Chip label="Fragrance-free" selected={filter === 'ff'} onPress={() => setFilter('ff')} />
-            <Chip label="Lighter textures" selected={filter === 'lt'} onPress={() => setFilter('lt')} />
-          </ChipRow>
-          <ChipRow>
-            <Tag label="FITS" variant={{ verdict: 'fits' }} />
-            <Tag label="CAUTION" variant={{ verdict: 'caution' }} />
-            <Tag label="UNKNOWN" variant={{ verdict: 'unknown' }} />
-            <Tag label={COPY.reading.demo} variant="demo" />
-            <Tag label={COPY.selfReported} variant="outline" />
-          </ChipRow>
-          <ProductCard hero name="Minimalist Oil-Free Gel Moisturiser" reason="Light gel, no fragrance" verdict={{ tone: 'fits', label: 'FITS' }} destination="Opens an Amazon.in search" glyph="jar" onPress={noop} />
-          <ProductCard name="Sunscreen SPF 50 Matte Fluid" reason="Contains fragrance (parfum)" verdict={{ tone: 'caution', label: 'CAUTION' }} glyph="tube" onPress={noop} />
+          <SkinTypeCard value="Scan once, about a minute" label={COPY.reading.none} icon="face-frame" quiet>
+            <PillButton label="Start scan" trailingIcon="arrow-right" onPress={noop} />
+            <PillButton label={COPY.reading.useDemo} variant="secondary" onPress={noop} />
+          </SkinTypeCard>
         </>
       ) : null}
 
       {p === '2' ? (
         <>
+          {/* Report + analyze + discover (showcase 04_report / 03_analyze / 06_discover). */}
+          <SkinTypeCard size="hero" label="Skin type" value="Combination" line="Oily in the T-zone, normal on the cheeks." />
+          <View style={{ gap: t.space[3] }}>
+            <SectionHeader title={COPY.reading.keyReadings} />
+            <ChipRail>
+              <Chip label="Oiliness · High" accessibilityLabel="Oiliness, High" />
+              <Chip label="Redness · Medium" accessibilityLabel="Redness, Medium" />
+              <Chip label="Moisture · Low" accessibilityLabel="Moisture, Low" />
+            </ChipRail>
+          </View>
+          <View style={{ gap: t.space[3] }}>
+            <SectionHeader title="What this means for products" />
+            <FocusTiles
+              items={[
+                { label: 'Lighter textures', icon: 'waves' },
+                { label: 'Hydration', icon: 'droplet' },
+                { label: 'Fragrance-free', icon: 'spray-off' },
+              ]}
+            />
+          </View>
+          <StepChecklist
+            announcement={null}
+            steps={[
+              { id: 'upload', label: COPY.scanStepsDone.upload, state: 'done' },
+              { id: 'analyse', label: COPY.scanStepsDone.analyse, state: 'done' },
+              { id: 'read', label: COPY.scanSteps.read, state: 'active' },
+              { id: 'delete', label: COPY.scanSteps.delete, state: 'pending' },
+            ]}
+          />
+          <ChipRail>
+            <Chip label="For your oiliness" selected={filter === 'oil'} onPress={() => setFilter('oil')} />
+            <Chip label="Fragrance-free" selected={filter === 'ff'} onPress={() => setFilter('ff')} />
+            <Chip label="Lighter textures" selected={filter === 'lt'} onPress={() => setFilter('lt')} />
+          </ChipRail>
+          <Card variant="gradient" padding={t.space[6]}>
+            <Txt variant="headline">{COPY.matchesBanner('Combination')}</Txt>
+            <Txt tone="muted">{COPY.betterMatchesHeader}</Txt>
+          </Card>
+          <ProductCard name="Minimalist Oil-Free Gel Moisturiser" reason="Light gel, no fragrance" verdict={{ tone: 'fits', label: 'FITS' }} glyph="jar" linkOut onPress={noop} />
+          <ProductCard name="Sunscreen SPF 50 Matte Fluid" reason="Contains fragrance (parfum)" verdict={{ tone: 'caution', label: 'CAUTION' }} glyph="tube" linkOut onPress={noop} />
+        </>
+      ) : null}
+
+      {p === '3' ? (
+        <>
+          {/* Welcome panel (showcase 01_welcome): drawn liquid silver, chrome S, outlined serif wordmark, pills. */}
+          <View style={{ minHeight: 420, borderRadius: t.radius.lg, overflow: 'hidden', padding: t.space[5], justifyContent: 'flex-end', gap: t.space[3] }}>
+            <LiquidBackdrop />
+            <View style={{ alignItems: 'center', gap: t.space[3], marginBottom: t.space[8] }}>
+              <SilverMark size={t.components.brand.heroMark} tile={false} />
+              <Wordmark capHeight={t.components.brand.wordmarkWelcome} header />
+              <Txt tone="muted" style={{ textAlign: 'center' }}>
+                {COPY.welcome.tagline}
+              </Txt>
+            </View>
+            <PillButton label={COPY.welcome.start} trailingIcon="arrow-right" onPress={noop} />
+            <PillButton label={COPY.reading.useDemo} variant="translucent" onPress={noop} />
+          </View>
+          {/* Tab glyphs: outline (inactive) and filled (active) on the bar colour. */}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingVertical: t.space[3], backgroundColor: t.components.bottomNav.bg, borderRadius: t.radius.lg, borderWidth: 1, borderColor: t.colors.border }}>
+            {(['tag-check', 'face-frame', 'droplet'] as const).map((name) => (
+              <View key={name} style={{ flexDirection: 'row', gap: t.space[3] }}>
+                <Icon name={name} size={t.icon.lg} color={t.components.bottomNav.iconInactive} />
+                <Icon name={name} size={t.icon.lg} filled knockout={t.components.bottomNav.bg} color={t.components.bottomNav.iconActive} />
+              </View>
+            ))}
+          </View>
           <VerdictHead tone="fits" line={COPY.subtitle.FITS} />
           <VerdictHead tone="caution" line={COPY.subtitle.CAUTION} demo />
           <VerdictHead tone="unknown" line={COPY.subtitle.UNKNOWN} />
-          {/* MEDICINE before the name-only variant: the kit-2 web shot is one viewport tall and cut it off last. */}
           <VerdictHead tone="medicine" line={COPY.medicine('adapalene')} />
           <VerdictHead tone="fits" line={COPY.subtitle.FITS} nameOnly />
           <Ledger
@@ -99,46 +163,26 @@ export default function KitGallery() {
               { key: 'Limits', value: 'Cosmetic guidance, not medical advice.' },
             ]}
           />
-        </>
-      ) : null}
-
-      {p === '3' ? (
-        <>
-          <Card>
-            <View style={{ flexDirection: 'row', gap: t.space[3], alignItems: 'center' }}>
-              <IconDisc icon="droplet" />
-              <View style={{ flex: 1 }}>
-                <Txt variant="section">{COPY.reading.yours}</Txt>
-                <Txt variant="headline">Skin-type reading: Combination</Txt>
-                <Caption>Scan 2 Nov · photo deleted</Caption>
-              </View>
-            </View>
-            <ChipRow>
-              <BandChip name="Oiliness" level="High" />
-              <BandChip name="Redness" level="Medium" />
-              <BandChip name="Moisture" level="Low" selfReported />
-            </ChipRow>
-          </Card>
+          <ChipRow>
+            <Tag label="FITS" variant={{ verdict: 'fits' }} />
+            <Tag label="CAUTION" variant={{ verdict: 'caution' }} />
+            <Tag label="UNKNOWN" variant={{ verdict: 'unknown' }} />
+            <Tag label={COPY.reading.demo} variant="demo" />
+            <Tag label={COPY.selfReported} variant="outline" />
+          </ChipRow>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space[3] }}>
             <BandChip variant="tile" name="Oiliness" level="High" />
             <BandChip variant="tile" name="Pore" level={null} />
           </View>
-          <FocusTiles
-            items={[
-              { label: 'Lighter textures', icon: 'waves' },
-              { label: 'Hydration', icon: 'droplet' },
-              { label: 'Fragrance-free', icon: 'spray-off' },
-            ]}
-          />
-          <StepChecklist
-            announcement={null}
-            steps={[
-              { id: 'upload', label: COPY.scanStepsDone.upload, state: 'done' },
-              { id: 'analyse', label: COPY.scanStepsDone.analyse, state: 'done' },
-              { id: 'read', label: COPY.scanSteps.read, state: 'active' },
-              { id: 'delete', label: COPY.scanSteps.delete, state: 'pending' },
-            ]}
-          />
+          <View style={{ flexDirection: 'row', gap: t.space[2], alignItems: 'center' }}>
+            <PillButton label="See all" variant="tertiary" trailingIcon="chevron-right" onPress={noop} />
+            <PillButton label={COPY.reading.delete} variant="destructiveNeutral" onPress={noop} />
+          </View>
+          <ButtonPair>
+            <PillButton label="Start scan" variant="consentPair" onPress={noop} />
+            <PillButton label="Not now" variant="consentPair" onPress={noop} />
+          </ButtonPair>
+          <PillButton label="Back to Nykaa listing" onPress={noop} disabled />
           <ListGroup title="Your data">
             <ListRow title={COPY.reading.delete} leadingIcon="trash" onPress={noop} />
             <ListRow title="What stays on this phone" supporting="Bands, zone labels, scan date" leadingIcon="phone-lock" onPress={noop} />
@@ -146,7 +190,7 @@ export default function KitGallery() {
           </ListGroup>
           <Divider />
           <EmptyState title={COPY.reading.none} body="Scan once, about a minute.">
-            <PillButton label="Start scan" onPress={noop} />
+            <PillButton label="Start scan" trailingIcon="arrow-right" onPress={noop} />
             <PillButton label={COPY.reading.useDemo} variant="secondary" onPress={noop} />
           </EmptyState>
         </>

@@ -8,8 +8,8 @@ import { ShareRouter } from '@/features/share';
 import { SystemChrome } from '@/theme/SystemChrome';
 import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 
-// Hold the native splash (chrome S on pearl / graphite) until Noto Serif Display and Geist are loaded,
-// so no screen ever paints in a fallback face.
+// Hold the native splash (chrome S on pearl / graphite) until Geist (every text style) and Noto Serif Display (kept in
+// fontAssets; the wordmark itself is outlined paths) are loaded, so no screen ever paints in a fallback face.
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 function RootStack() {
@@ -18,6 +18,7 @@ function RootStack() {
     <SystemChrome>
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: t.colors.bg } }}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="welcome" options={{ animation: 'fade', gestureEnabled: false }} />
         <Stack.Screen name="check" options={{ presentation: 'modal' }} />
         <Stack.Screen name="scan" />
         <Stack.Screen name="tryon" options={{ presentation: 'modal' }} />

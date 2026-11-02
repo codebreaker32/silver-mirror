@@ -74,7 +74,25 @@ export const COPY = {
     making: 'Making your reading',
     ready: 'Your reading is ready',
     photoDeletedStamp: 'Photo deleted · bands only',
+    /** Skin-type card label (Home compact card, Reading/Result hero card). */
+    skinType: 'Your skin type',
+    /** Section head over the band chips on the Reading tab and Result. */
+    keyReadings: 'Key readings',
   },
+  /** First-run welcome (app/welcome.tsx). The tagline is the brand line; it makes no claim. */
+  welcome: {
+    tagline: 'Check a product against your skin reading before you buy.',
+    start: 'Get started',
+  },
+  /** Home share steps: three thumb-tile rows per store. COPY.sharePaths stays as the one-line accessibility summary. */
+  shareSteps: (store: 'Flipkart' | 'Amazon' | 'Nykaa') =>
+    [
+      { title: 'Tap Share', supporting: `On the product page in ${store}` },
+      { title: 'Pick Silver Mirror', supporting: store === 'Amazon' ? 'Tap More first, then Silver Mirror' : 'Pin it so it stays first' },
+      { title: 'See if it fits', supporting: 'Your check opens here, with the reasons' },
+    ] as const,
+  /** Title of the gradient banner above Better matches. */
+  matchesBanner: (skinType: string) => `Better matches for ${skinType.toLowerCase()} skin`,
   shareTo: 'In Flipkart, Amazon or Nykaa, tap Share → Silver Mirror.',
   scanSteps: {
     upload: 'Uploading',

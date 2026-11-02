@@ -44,9 +44,11 @@ interface StepChecklistProps {
 }
 
 /**
- * Processing checklist card (component.checklistCard + processingStepper): rows of 48dp+, done = drawn check-circle,
- * current = ring + centre dot in semibold, pending = empty ring, failed = minus ring with a text-colour bar (never red),
- * never a spinner. Each row is one TalkBack node; step changes are announced politely.
+ * Processing checklist card (component.checklistCard + processingStepper, showcase 03_analyze): a raised white card,
+ * radius 24, rows of 52dp+ with dividers. Leading: done = drawn check-circle, current = ring + centre dot in semibold,
+ * pending = empty ring, failed = minus ring with a text-colour bar (never red). Trailing state mark: done = a tick in
+ * the FITS icon colour, current = three muted dots, pending = nothing. Never a spinner. Each row is one TalkBack node
+ * (the marks are decorative); step changes are announced politely.
  */
 export function StepChecklist({ steps, announcement, bare = false, testID }: StepChecklistProps) {
   const t = useTheme();
@@ -70,7 +72,16 @@ export function StepChecklist({ steps, announcement, bare = false, testID }: Ste
       testID={testID}
       accessibilityRole="list"
       accessibilityLiveRegion="polite"
-      style={bare ? undefined : { backgroundColor: c.bg, borderRadius: c.radius, paddingHorizontal: c.padding, paddingVertical: t.space[2], borderWidth: t.dark ? 1 : 0, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge }}
+      style={
+        bare
+          ? undefined
+          : [
+              t.dark
+                ? { backgroundColor: t.colors.surfaceRaised, borderWidth: 1, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge }
+                : t.elevation['1'].style,
+              { borderRadius: c.radius, paddingHorizontal: c.padding, paddingVertical: t.space[1] },
+            ]
+      }
     >
       {steps.map((step, i) => {
         const pending = step.state === 'pending' || step.state === 'skipped';
@@ -113,6 +124,11 @@ export function StepChecklist({ steps, announcement, bare = false, testID }: Ste
                 </Txt>
               ) : null}
             </View>
+            {step.state === 'done' ? (
+              <Icon name={c.doneTrailing as IconName} size={t.icon.md} color={c.doneTrailingColor} strokeWidth={2} />
+            ) : step.state === 'active' ? (
+              <Icon name={c.currentTrailing as IconName} size={t.icon.md} color={c.currentTrailingColor} />
+            ) : null}
           </View>
         );
       })}

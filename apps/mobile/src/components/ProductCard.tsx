@@ -28,14 +28,19 @@ export interface ProductCardProps {
 }
 
 /**
- * Better-matches product card (component.productMatchCard): white with a soft shadow, 56dp sunken thumbnail,
+ * Better-matches product card (component.productMatchCard, showcase 06_discover): white, radius 24, hairline + the
+ * soft violet shadow (graphite-850 + sheen edge in dark), a 64dp soft square thumb tile (radius 16),
  * name in bodyStrong, one reason line, verdict tag, destination caption. No ratings, review counts, ribbons or logos.
  * One target with one label in visual order.
  */
 export function ProductCard({ name, reason, verdict, destination, linkOut = !!destination, image, glyph = 'bottle', hero = false, onPress, accessibilityLabel, accessibilityHint, testID }: ProductCardProps) {
   const t = useTheme();
   const m = t.components.productMatchCard;
-  const surface = hero ? { backgroundColor: m.heroBg, borderRadius: m.radius } : t.dark ? { backgroundColor: m.bg, borderRadius: m.radius, borderWidth: 1, borderColor: m.border, borderTopColor: t.colors.sheenEdge } : { ...t.elevation['1'].style, backgroundColor: m.bg, borderRadius: m.radius };
+  const surface = hero
+    ? { backgroundColor: m.heroBg, borderRadius: m.radius }
+    : t.dark
+      ? { backgroundColor: t.colors.surfaceRaised, borderRadius: m.radius, borderWidth: 1, borderColor: m.border, borderTopColor: t.colors.sheenEdge }
+      : { ...t.elevation['1'].style, borderRadius: m.radius };
   const label = accessibilityLabel ?? [name, verdict?.label, reason, destination].filter(Boolean).join('. ');
   const body = (
     <>
@@ -44,10 +49,10 @@ export function ProductCard({ name, reason, verdict, destination, linkOut = !!de
         accessibilityElementsHidden
         style={{ width: m.thumbSize, height: m.thumbSize, borderRadius: m.thumbRadius, backgroundColor: m.thumbBg, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
       >
-        {image ? <Image source={image} style={{ width: m.thumbSize, height: m.thumbSize }} resizeMode="cover" /> : <Icon name={glyph} size={t.icon.lg} color={t.colors.textMuted} />}
+        {image ? <Image source={image} style={{ width: m.thumbSize, height: m.thumbSize }} resizeMode="cover" /> : <Icon name={glyph} size={t.icon.lg + 4} color={t.colors.textMuted} />}
       </View>
       <View style={{ flex: 1, gap: t.space[1] }}>
-        <Txt variant="bodyStrong" style={[m.name, { color: m.nameColor }]}>
+        <Txt variant="bodyStrong" numberOfLines={2} style={[m.name, { color: m.nameColor }]}>
           {name}
         </Txt>
         {reason ? (
@@ -65,7 +70,7 @@ export function ProductCard({ name, reason, verdict, destination, linkOut = !!de
       {onPress ? <Icon name={linkOut ? 'arrow-up-right' : 'chevron-right'} size={t.icon.md} color={t.colors.textMuted} /> : null}
     </>
   );
-  const box = { ...surface, minHeight: m.minHeight, padding: m.padding, flexDirection: 'row' as const, alignItems: 'flex-start' as const, gap: t.space[3] };
+  const box = { ...surface, minHeight: m.minHeight, padding: m.padding, flexDirection: 'row' as const, alignItems: 'center' as const, gap: t.space[4] };
   if (!onPress) {
     return (
       <View testID={testID} accessible accessibilityLabel={label} style={box}>

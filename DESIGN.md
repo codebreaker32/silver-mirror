@@ -1,6 +1,6 @@
 # Silver Mirror: design system of record
 
-Version 2.0 · 2 Nov 2026 · tokens `2.0.0` (`design/system/tokens/skinkey.tokens.json`)
+Version 2.1 · 2 Nov 2026 · tokens `2.1.0` (`design/system/tokens/skinkey.tokens.json`) · 2.1 = the showcase delta (`design/reference/showcase-delta.md`): the app now follows Aman's showcase (`design/reference/silver-mirror-showcase.png`)
 
 Silver Mirror is the user-facing name of the app formerly called SkinKey. This file owns the durable visual decisions. Product truth lives in `PRODUCT.md` and `research/skinkey_v2_spec.md`; copy rules and banned words in `design/research/00_research_summary_and_design_brief.md` §4. Where the moodboard and product law disagree, **product law wins** (the conflicts are listed in §11).
 
@@ -34,35 +34,37 @@ The product is a **mirror that shows its working**: you hold a product up to you
 
 ## 2. Colour
 
-Restrained strategy: cool neutrals with a faint lavender cast, one deep slate accent, greige as warmth, and four verdict roles. All values below are generated from the token file; never type a hex in UI code (use `theme.colors.*` / `var(--sk-color-*)`).
+Restrained strategy, tuned to the showcase: a lavender-grey **mist** page, clean white cards, one deep slate accent, lavender icon discs, one soft lavender gradient (skin-type card only), and four verdict roles. All values below are generated from the token file; never type a hex in UI code (use `theme.colors.*` / `var(--sk-color-*)`). `check-contrast.mjs` gates 370 pairs + 31 lints, 0 failures.
 
 ### 2.1 Neutrals and accent
 
 | Role (token) | Light | Dark | Notes |
 |---|---|---|---|
-| `color.bg` | pearl.50 `#F6F5F8` | graphite.950 `#121319` | Screen |
-| `color.bg-sunken` | pearl.100 `#EFEEF3` | graphite.975 `#0E0F14` | Chips, track, sunken wells |
-| `color.surface` | pearl.25 `#FCFBFD` | graphite.900 `#1A1B23` | Plain cards, skin map |
+| `color.bg` | mist.100 `#EFECF2` | graphite.950 `#121319` | Page (showcase `#EFEBF1`) |
+| `color.bg-sunken` | mist.150 `#E7E3EC` | graphite.975 `#0E0F14` | Wells, meter track |
+| `color.surface` | white `#FFFFFF` | graphite.900 `#1A1B23` | Plain cards are white now |
 | `color.surface-raised` | white `#FFFFFF` | graphite.850 `#20212A` | Raised cards, sheets, tab bar, fields |
 | `color.text` | graphite.900 `#1A1B23` | pearl.100 `#EFEEF3` | 13.8:1+ |
-| `color.text-muted` | silver.700 `#4B4958` | pearl.300 `#C6C3CF` | 7.3:1 / 9.2:1 |
-| `color.text-subtle` | silver.600 `#636070` | silver.400 `#A8A5B3` | ≥4.5:1 on every surface |
-| `color.border` | pearl.200 `#DCDAE3` | graphite.750 `#30313C` | Decorative hairline |
-| `color.border-strong` | silver.500 `#7E7B8B` | silver.500 `#7E7B8B` | Meaningful edges, ≥3:1 |
-| `color.accent` (primary pill, active tab) | slate.700 `#3B3F52` | pearl.50 `#F6F5F8` | Dark is inverted |
-| `color.on-accent` | pearl.50 `#F6F5F8` | slate.800 `#2F3243` | 9.6:1 / 10.9:1 |
-| `color.accent-pressed` | slate.600 `#50576F` | pearl.300 `#C6C3CF` | |
-| `color.accent-subtle` / `on-accent-subtle` | slate.100 `#E1E4EE` / slate.800 | slate.800 `#2F3243` / slate.100 | Selected segment |
-| `color.secondary-bg` / `on-secondary` | pearl.150 `#E7E5EC` / graphite.900 | graphite.750 `#30313C` / pearl.100 | Tonal pill |
-| `color.accent-warm` / `on-accent-warm` | greige.300 `#CFC4BB` / greige.800 `#4A4038` | greige.800 / greige.200 `#E4DCD5` | Demo badge, focus tiles. Greige is a fill, never text on pearl (1.6:1) |
-| `color.icon-disc` / `on-icon-disc` | lavender.100 `#ECE9F5` / slate.700 | lavender.800 `#34304F` / lavender.200 `#DDD8EE` | The moodboard droplet disc |
+| `color.text-muted` | silver.700 `#4B4958` | pearl.300 `#C6C3CF` | |
+| `color.text-subtle` | silver.650 `#5E5B6B` | silver.400 `#A8A5B3` | ≥4.5:1 on every surface incl. mist wells |
+| `color.border` | mist.250 `#E3DFE9` | graphite.750 `#30313C` | Card hairline (decorative) |
+| `color.border-strong` | silver.500 `#7E7B8B` | silver.500 | Meaningful edges, ≥3:1 |
+| `color.accent` (primary pill) | slate.700 `#3B3F52` | pearl.50 `#F6F5F8` | Dark is inverted; showcase CTA `#3D3C51` |
+| `color.on-accent` | pearl.50 | slate.800 `#2F3243` | ≥7:1 both modes (lint) |
+| `color.secondary-bg` / `on-secondary` | mist.150 `#E7E3EC` / graphite.900 | graphite.750 / pearl.100 | Tonal pill, chips |
+| `color.secondary-translucent` / `-edge` | `rgba(255,255,255,0.55)` / `rgba(255,255,255,0.70)` | `rgba(239,238,243,0.10)` / sheen-edge | Welcome secondary pill over the backdrop |
+| `color.icon-disc` / `on-icon-disc` | lavender.150 `#E6E2F4` / iris.600 `#5A5B9F` | lavender.800 `#34304F` / lavender.300 `#BEB6DE` | The showcase droplet disc, 4.8:1 / 6.5:1 |
+| `color.thumb-tile` | mist.50 `#F5F3F8` | graphite.800 `#272832` | Soft square tile in list rows and product cards |
+| `color.segment-track` / `segment-thumb` | mist.200 `#DDD9E3` / white | graphite.800 / graphite.700 `#3A3B47` | Segmented control |
+| `color.tab-active` / `tab-inactive` / `tab-inactive-label` | graphite.900 / silver.500 / text-subtle | pearl.100 / silver.400 / silver.400 | Filled active glyph; outline inactive |
+| `color.shadow` | `#3A3360` (violet) | transparent | The one light shadow tint |
+| `color.accent-warm` / `on-accent-warm` | greige.300 / greige.800 | greige.850 / greige.200 | Demo-reading badge only (focus tiles left greige in 2.1) |
 | `color.link` | slate.600 `#50576F` | slate.200 `#C7CCDB` | |
-| `color.focus-ring` | slate.500 `#666E88` | lavender.300 `#BEB6DE` | 2dp ring, 2dp offset |
-| `color.bracket` | slate.500 | slate.300 `#A6ADC2` | Face-frame brackets on plates |
-| `color.sheen.start / lavender / silver / end` | `#FDFCFE` `#ECE8F4` `#E4E3EA` `#F6F5F8` | `#262733` `#24222F` `#1C1D25` `#121319` | Hero gradient; text gated on every stop |
-| `color.sheen-edge` | transparent | `rgba(239,238,243,0.07)` | 1dp top highlight on raised dark cards and sheets |
-| `color.overlay-camera` | `rgba(14,15,20,0.62)` | same | Over live camera; white text ≥5.4:1 on a white frame |
-| `color.inverse-surface` / `inverse-text` | graphite.850 / pearl.100 | pearl.150 / graphite.900 | Snackbar |
+| `color.focus-ring` | slate.500 `#666E88` | lavender.300 | 2dp ring, 2dp offset |
+| `color.bracket` | slate.500 | slate.300 | Face-frame brackets |
+| `color.sheen.start / lavender / silver / end` | `#FDFCFE` `#ECE8F4` `#E4E3EA` mist.100 | `#262733` `#24222F` `#1C1D25` `#121319` | Hero sheen; the end stop meets the page |
+| `color.sheen-edge` | transparent | `rgba(239,238,243,0.07)` | 1dp top highlight on raised dark surfaces |
+| `color.overlay-camera`, `inverse-*` | unchanged | unchanged | |
 
 ### 2.2 Verdict roles
 
@@ -77,9 +79,11 @@ Rules (lint-enforced): CAUTION hue stays 25–65° in every role and mode; no ve
 
 ### 2.3 Brand gradients
 
-- **Chrome S:** `theme.colors.mark.*` (chrome stops from `#EEEDF3` through lavender `#CBC5E0` to `#4F4D5E`, brighter set in dark). Banded along the stroke top-left → bottom-right, two thin glints inside the bowls, a soft offset under-stroke for depth. No SVG filters (unreliable on Android).
-- **Tile:** white → pearl.150 in light, graphite.750 → graphite.900 in dark, one radial highlight top-left (0.7 / 0.12 opacity).
-- **Sheen:** 135° pearl → lavender (40%) → silver (72%) → bg, plus one soft highlight. Static. Allowed only on: splash, welcome, Home hero band, empty-state plates, the reading-card header strip, the face frame. Never behind reasons, the ledger, forms or the verdict head.
+- **Chrome S:** `theme.colors.mark.*` (chrome stops from `#EEEDF3` through lavender `#CBC5E0` to `#4F4D5E`, brighter set in dark). No SVG filters (unreliable on Android).
+- **Tile:** white → pearl.150 in light, graphite.750 → graphite.900 in dark, one radial highlight top-left.
+- **Sheen:** 135° pearl → lavender (40%) → silver (72%) → page, plus one soft highlight. Static. Splash, welcome, empty-state plates, the face frame.
+- **Skin gradient** (`color.skin-gradient`, 2.1): 120°, `#E2DBF3` → `#EEEAF6` (55%) → `#F8F6FB` in light; `#2C2942` → `#24232F` → `#20212A` in dark; edge `rgba(255,255,255,0.6)` / sheen-edge; hero disc fill `rgba(255,255,255,0.55)` / lavender.800. `Card variant="gradient"` and the hero `SkinTypeCard` only, plus the better-matches banner. Never behind reasons, the ledger, forms or the verdict head.
+- **Liquid** (`color.liquid`, 2.1): the welcome `LiquidBackdrop` ribbons (lavender → silver → white at 60%, graphite → lavender-800 at 50% in dark), a bright crest line, droplets with a white rim. Drawn, static, decorative.
 
 ---
 
@@ -98,43 +102,40 @@ Clear space around the tile = 25% of its size. The mark never sits on the verdic
 
 ## 4. Typography
 
-Two faces, both from `@expo-google-fonts`, both containing **₹ (U+20B9)** (verified with fontTools on the build VM):
-
-- **Noto Serif Display** (high-contrast, Didone-like hairlines): wordmark, display, title, the product name on /check, the verdict sentence. **Never below 20dp** (lint).
-- **Geist** (clean grotesk, tabular figures): every control, label, section head, reason, body line and number.
-
-Rejected: Newsreader + Commissioner (Clay & Ink), Inter-only and Playfair + Inter (taste bans), Bodoni Moda / Gilda / Prata / Kalnia / Italiana (no ₹).
+Two faces, both from `@expo-google-fonts`, both containing **₹ (U+20B9)**. Since 2.1 (showcase) **Geist carries every line you read**, headings included; **Noto Serif Display appears only as the outlined `Wordmark` paths** (so it never falls back). The serif stays in `fontAssets`; no type style uses it.
 
 | Token | Face | Size / line (dp) | Tracking | Use |
 |---|---|---|---|---|
-| `type.display` | Noto Serif Display 400 | 34 / 40 | −0.6 | Home greeting, welcome, empty-state headline |
-| `type.title` | Noto Serif Display 400 | 26 / 32 | −0.3 | Screen titles, product title, medicine line |
-| `type.verdictLine` | Noto Serif Display 400 | 20 / 27 | 0 | Verdict sentence |
-| `type.figure` | Noto Serif Display 400, tabular | 26 / 32 | −0.3 | Catalogue count, QR countdown |
-| `type.headline` | Geist 600 | 20 / 26 | −0.2 | Card heads, sheet titles |
-| `type.section` | Geist 600 | 17 / 24 | −0.1 | Sentence-case section heads |
+| `type.display` | Geist 600 | 26 / 32 | −0.5 | Home greeting, empty-state headline |
+| `type.title` | Geist 600 | 22 / 28 | −0.4 | Product title on /check, in-body page heads, medicine line |
+| `type.appBarTitle` | Geist 600 | 18 / 24 | −0.2 | Centred app-bar title (new) |
+| `type.value` | Geist 600 | 24 / 30 | −0.4 | "Combination" in the skin-type card (new) |
+| `type.headline` | Geist 600 | 20 / 26 | −0.2 | Card heads, sheet titles, matches banner |
+| `type.verdictLine` | Geist 600 | 18 / 26 | −0.1 | Verdict sentence |
+| `type.figure` | Geist 600, tabular | 24 / 30 | −0.3 | Catalogue count, QR countdown |
+| `type.section` | Geist 600 | 18 / 24 | −0.2 | "Check a product", "Key readings", "Better matches" |
 | `type.reason` | Geist 500 | 18 / 26 | −0.1 | Reason reading line (> verdict label) |
 | `type.verdictLabel` | Geist 600 caps | 15 / 20 | +1.2 | FITS / CAUTION / UNKNOWN (the only caps line) |
-| `type.body` / `bodyStrong` | Geist 400 / 600 | 16 / 24 | 0 | Body, product fact, band value |
-| `type.bodySm` | Geist 400 | 14 / 20 | +0.1 | Ledger values, supporting lines |
-| `type.label` | Geist 600 | 14 / 20 | +0.1 | Chips, field labels |
-| `type.labelSm` / `labelSmRegular` | Geist 600 / 400 | 13 / 16 | +0.2 | Tab labels (selected / not) |
+| `type.body` / `bodyStrong` | Geist 400 / 600 | 16 / 24 · 16 / 22 | 0 | Body; list-row and product-card titles |
+| `type.bodySm` | Geist 400 | 14 / 20 | +0.1 | Supporting lines, skin-type label |
+| `type.label` | Geist 600 | 14 / 20 | +0.1 | Chips, field labels, focus-tile labels |
+| `type.labelSm` / `labelSmRegular` | Geist 600 / 500 | 13 / 16 | +0.2 | Tab labels (selected / not) |
 | `type.button` | Geist 600 | 16 / 20 | +0.1 | All buttons |
-| `type.overline` | Geist 600 | 13 / 18 | +0.1 | Ledger keys, **sentence case** (no tracked caps, no eyebrows) |
-| `type.caption` | Geist 400 | 13 / 18 | +0.1 | Destination lines, timestamps, meter labels |
+| `type.overline` | Geist 600 | 13 / 18 | +0.1 | Ledger keys, **sentence case** |
+| `type.caption` | Geist 400 | 13 / 18 | +0.1 | Destination lines, timestamps |
 | `type.fine` | Geist 400 | 12 / 16 | +0.2 | Data credits only (the 12dp floor) |
 
-Rules: sp scaling on, `maxFontSizeMultiplier` 2.0; buttons stack at 1.3×, ledger keys stack and the dock goes inline at 1.5×. No kicker or eyebrow above any heading. Prices, dates, SPF and counts use tabular figures. Product names from listings are title-cased before display.
+Rules: sp scaling on, `maxFontSizeMultiplier` 2.0; buttons stack at 1.3×. No kicker or eyebrow above any heading. A screen shows at most five sizes. Prices, dates, SPF and counts use tabular figures. The welcome tagline is Geist 400 16/22 muted.
 
 ---
 
 ## 5. Space, radius, elevation
 
-- **Spacing:** 4dp base (`space.1`…`space.20`). Gutter 20. Card inset 20. Sheet inset 24. Section gap 32. More space above a heading than below it.
-- **Radius:** xs 2 (meter segments) · sm 8 (tags) · md 14 (focus tiles, thumbnails, snackbar) · **lg 20 (cards, verdict head, ledger, reading card, checklist)** · xl 24 (camera and face frames) · sheet 28 · **full (every button, chip, field, tab indicator)**.
-- **Elevation, light:** tone stack bg-sunken < bg < surface < white, plus one soft slate-tinted offset shadow (`0 8px 24px -10px rgba(42,45,64,0.14)` + 1px contact). Hairline **or** shadow carries the edge, never both heavy. Level 2 casts upward (dock, tab bar). Level 3 for sheets.
-- **Elevation, dark:** no shadows. Surfaces step lighter (#121319 → #1A1B23 → #20212A), with a hairline and the 1dp `sheen-edge` on the top edge of raised cards, sheets and the tab bar. That top highlight is the "silver sheen" that keeps dark from reading flat.
-- **Glass:** only on the tab bar's backdrop if the platform supports it cheaply; never on content, never over text.
+- **Spacing:** 4dp base. Gutter 20. Card inset 20. Sheet inset 24. **Section gap 28**. More space above a heading than below it.
+- **Radius:** xs 2 · sm 8 · **md 16** (thumb tiles, snackbar, band tiles) · **lg 24 (every card: skin-type, product, reason, ledger, checklist, verdict head, settings groups)** · **tile 20** (focus tiles) · **xl 28** (face and camera frames) · sheet 28 · full (every button, chip, field).
+- **Elevation, light (level 1):** white card + 1dp `color.border` hairline + one soft **violet** offset shadow. RN: `shadowColor #3A3360`, opacity 0.10, radius 18, offsetY 6, Android elevation 3. CSS: `0 1px 2px rgba(58,51,96,0.05), 0 8px 22px -8px rgba(58,51,96,0.16)`. Level 2 (tab bar, dock) is **flat**: a 1dp top hairline only. Level 3 for sheets.
+- **Elevation, dark:** no shadows. Tone steps (#121319 → #1A1B23 → #20212A) with a hairline and the 1dp `sheen-edge` on the top edge of raised cards, sheets and the tab bar.
+- **Glass:** only the welcome's translucent pill over the drawn backdrop; never on content.
 
 ---
 
@@ -158,63 +159,72 @@ Reduce motion: every transition becomes a 120ms crossfade; brackets jump to thei
 
 ## 7. Iconography
 
-- **Custom SVG line icons** (react-native-svg), 24dp grid, **1.5 stroke**, round caps and joins, no fills (except the CAUTION half-circle and the selected-tab stroke at 2.0). Sizes 16 / 20 / 24 / 32.
-- One icon system across the app: merge `features/check/ui/Icon.tsx` and `features/scan/ui/Icon.tsx` into one set with one name scheme (kebab-case).
-- Set: chevron-left (the only back affordance), chevron-right, arrow-right, arrow-up-right (leaves the app), arrow-down-left (shared from), share, paste, search, check, check-circle, minus-circle, circle, circle-dot, circle-dashed-dot, seal-check, circle-half, pharmacist-counter, droplet, face-frame, tag-check, phone-lock, trash, info, close, camera, flip, torch, cloud-off, gear, more-horizontal.
+- **Custom SVG line icons** (react-native-svg), 24dp grid, **1.5 stroke**, round caps and joins. Sizes 16 / 20 / 24 / 32.
+- One icon system across the app (`components/Icon.tsx`), kebab-case names.
+- Set: **arrow-left (the back affordance, 2.1)**, chevron-left, chevron-right, arrow-right, arrow-up-right (leaves the app), arrow-down-left (shared from), share, paste, search, check, check-circle, minus-circle, circle, circle-dot, circle-dashed-dot, seal-check, circle-half, pharmacist-counter, droplet, face-frame, tag-check, phone-lock, trash, info, close, camera, flip, torch, cloud-off, gear, more-horizontal, plus product glyphs (bottle, tube, jar) and facet glyphs (waves, sun, leaf, spray-off).
+- **Filled variants** (`<Icon filled />`, selected tab only): droplet = solid drop with a knocked-out highlight; tag-check = solid tag, check knocked out in the bar colour; face-frame = heavier brackets around a solid oval (the solid-square version read as a key cap).
 - Tabs: **tag-check** (Check), **face-frame** (Scan), **droplet** (Reading).
-- Icon in a disc (`component.iconDisc`): 40dp lavender disc, 20dp icon; 56dp / 24dp for empty states. One per card. Decorative icons are hidden from TalkBack; icon-only controls carry a label.
+- Icon in a disc (`component.iconDisc`): **48dp** lavender disc with a 24dp iris icon; 56dp (`large` / `size="lg"`); 72dp with a 28dp icon (`size="xl"`, hero skin-type card). One per card. Decorative icons are hidden from TalkBack; icon-only controls carry a label. Plain icon buttons (gear) stay 48dp with no disc, as the showcase bell.
 - Banned: shield, warning triangle, exclamation mark, medical cross/plus, pill, mortar and pestle, eye, sparkles, magic wand, store logos, unicode ✓ / ⋯ as icons.
 
 ---
 
 ## 8. Components
 
-Token paths in `theme.components.*` (RN) and `--sk-<component>-*` (web). Anatomy, states and TalkBack rules carry over from `design/system/components.md`; this section is what changes.
+Token paths in `theme.components.*` (RN) and `--sk-<component>-*` (web). Every change in 2.1 is additive: existing exports and props still work.
 
 ### 8.1 Buttons (`component.button`)
 | Variant | Look | Rules |
 |---|---|---|
-| `primary` | Slate pill (pearl in dark), 52dp, label + optional trailing arrow | **At most one per screen state.** Pressed = accent-pressed + 0.98. Disabled = disabled-bg with a ≥4.5:1 label. |
-| `secondary` | Tonal pill (`secondary-bg`), 48dp, no outline | Second choice ("Try a sample share", "Use the Demo reading"). |
-| `tertiary` | Text + chevron, 48dp box | Dismiss, "See all", "Got it". |
-| `destructiveNeutral` | Text-style pill with leading trash icon, no box, no red | Always followed by a confirmation sheet. |
-| `consentPair` | Two identical tonal pills with a 1dp strong edge | **Equal visual weight** (spec §2) for Start scan / Not now. |
-Every button is a pill. Outlined boxes are gone.
+| `primary` | Slate pill (pearl in dark), **56dp**, label + trailing `arrow-right` when it moves forward | **At most one per screen state.** Pressed = accent-pressed + 0.98. |
+| `secondary` | Tonal mist pill, **52dp**, no outline | Second choice ("Use the Demo reading", "Try a sample share"). |
+| `translucent` (new) | White-glass pill + 1dp light edge (sheen edge in dark), 52dp | Welcome only, over `LiquidBackdrop`. |
+| `tertiary` | Text + optional chevron, 48dp box | Dismiss, "See all", "Got it" (`SectionHeader action.chevron: false`). |
+| `destructiveNeutral` | Text pill with leading trash icon, no red | Always followed by a confirmation sheet. |
+| `consentPair` | Two identical tonal pills with a 1dp strong edge, 52dp | **Equal visual weight** (spec §2). |
 
-### 8.2 Fields and chips
-- **Paste field** (`component.field`): white pill (graphite-850 in dark), 56dp, 1dp `border-strong` edge (≥3:1), placeholder in text-subtle, an inline trailing **Check** pill inside the field (48dp target). Focus = 2dp focus-ring edge. Error = 2dp text-colour edge + info icon + message below. Label above.
-- **Chip** (`component.chip`): 36dp visual pill in a 48dp target. Selected = slate fill + check icon + weight. Reading chips are static and read with their card.
-- **Segmented** (`component.segmented`): sunken track, the selected segment is a white raised pill with a check. Used for the Flipkart / Amazon / Nykaa share-path switch.
+### 8.2 Fields, chips, segmented
+- **Paste field** (`component.field`): white pill, 56dp, 1dp `border-strong`, inline trailing **Check** pill. Unchanged.
+- **Chip** (`component.chip`): light grey pill (`secondary-bg`: mist.150 / graphite.750), 36dp visual in a 48dp target, label 14/20 600. Selected = slate fill + check + weight. `ChipRail` = one horizontally scrolling row with the gutter as content inset (showcase 06_discover). Static reading chips ("Oiliness · High") read as "Oiliness, High".
+- **Segmented** (`components/Segmented.tsx`, `component.segmented`): lavender-grey 48dp track (`segment-track`), 4dp inset; the selected segment is a white pill with its own soft violet shadow (graphite-700 + sheen edge in dark), a 16dp check and a 600 label; unselected labels 500 muted. tablist / tab + selected. `components/home/Segmented.tsx` becomes a re-export (P1).
 
 ### 8.3 Cards
-- **Reading card** (`component.readingCard`): icon disc (droplet) · "Your reading" (section) · "Skin-type reading: Combination" (headline) · "Scan 2 Nov · photo deleted" (caption) · chevron; up to three band chips below. One target, one label in visual order ("Your reading, combination, scanned 2 November. Open"). Empty: "No reading yet" · "Scan once, about a minute" · slate pill **Start scan** · tonal **Use the Demo reading**.
-- **Product card** (`component.productMatchCard`): white, soft shadow, 56dp sunken thumbnail tile (category glyph when there is no image), name in bodyStrong, one reason line where commerce puts stars, verdict tag (icon + label), arrow-up-right link-out mark. In Better matches every card looks the same (no featured first card) and the store is named once above the list (§9.5); TalkBack still hears it on each card. No ratings, review counts, ribbons or logos.
-- **Focus tile** (`component.focusTile`): square greige tile, 24dp line icon, label. Three across. From the published facet map only.
-- **Checklist card** (`component.checklistCard` + `processingStepper`): rows of 48–56dp; done = drawn circle-check, current = ring + centre dot, pending = empty ring; never a spinner; the delete step gets a stamp.
-- No nested cards. No row of same-size icon + heading + text cards as page structure.
+- **Card** (`Card.tsx`): `raised` (default) = white, radius 24, hairline + violet shadow (graphite-850 + sheen edge in dark). `gradient` (new) = the skin gradient via react-native-svg, light edge, no shadow (skin-type card, matches banner only). `surface`, `sunken`, `hero` unchanged in API. No nested cards.
+- **Skin-type card** (`SkinTypeCard.tsx`, `component.readingCard`): `size="compact"` (Home): raised, padding 20, ≥96dp, 56dp disc, "Your skin type" (bodySm muted) over the value (`type.value`), caption, trailing 24dp arrow-right; one target, one label in visual order. Empty: `icon="face-frame"`, `label="No reading yet"`, `quiet` value "Scan once, about a minute", children = the actions (card stops being one target). `size="hero"` (Reading / Result): gradient, padding 24, 72dp disc on white glass, label, value, one cosmetic `line`, no arrow. Strings come in as props.
+- **List rows with a thumb** (`ListRow thumb={{ icon | mark | glyph }}`): 56dp soft square tile (`thumb-tile`, radius 16) with an iris icon, the chrome S or a product glyph; title bodyStrong 16/22, supporting bodySm muted; row ≥72dp. `ListGroup thumbs` insets dividers to the text column (gutter + 56 + 16) and is a raised white card. `ThumbTile` is exported for custom rows.
+- **Product card** (`component.productMatchCard`): raised white, radius 24, padding 16, 64dp thumb tile (radius 16), name bodyStrong (2 lines), one reason line where commerce puts stars, verdict tag, trailing arrow-up-right. All cards alike; store named once above the list. **No hearts, stars, ratings or review counts.**
+- **Focus tile** (`component.focusTile`, showcase "Recommended Focus"): white tiles three across, 12dp gaps, radius 20, hairline + shadow (graphite-850 + sheen edge in dark), a 48dp lavender disc with a 24dp iris icon at the top, label 14/20 600 centred, two lines max. Fewer than three keep the one-third width and sit left. Facet words only (Lighter textures · Hydration · Fragrance-free).
+- **Checklist card** (`component.checklistCard`): raised card radius 24, rows ≥52dp with dividers; leading state icon (check-circle / circle-dot / circle), label (current 600), **trailing mark**: done = 20dp check in `verdict.fits.icon`, current = muted three dots, pending = nothing. Never a spinner; the delete row keeps its stamp.
+- No row of same-size icon + heading + text cards as page structure.
 
 ### 8.4 Verdict head (`component.verdictCard.head`)
-Radius 20, padding 20. A 40dp white disc (`iconDisc`) holds the 24dp verdict icon; next to it the caps label in the verdict fg; below, the verdict sentence in `type.verdictLine` (serif) in full text colour. 1dp edge (dashed for UNKNOWN and name-only). No leading stripe (the old 3px left border is a craft-floor refusal). A small greige **Demo reading** badge (`demoBadge`) sits in the head when the Demo reading is in use. MEDICINE: no box, no label, the 32dp pharmacist icon over one serif title line, about a third down the content.
+Radius **24**, padding 20. A 40dp white disc holds the 24dp verdict icon; next to it the caps label in the verdict fg; below, the verdict sentence in `type.verdictLine` (**Geist 600 18/26**) in full text colour. 1dp edge (dashed for UNKNOWN and name-only). No leading stripe. Greige **Demo reading** badge when the Demo reading is in use. MEDICINE: no box, no label, the 32dp pharmacist icon over one `type.title` line.
 
 ### 8.5 Reasons (`component.reasonRow`)
-Section head "Why · 2 reasons" (sans). Each reason is a quiet surface row: reading line (`type.reason`, 18/500) → product fact (`type.body`) → rule tag (caption, muted) and the band chip. No decorative 01/02 numerals.
+Section head "Why · 2 reasons" (sans). Each reason is a quiet surface row: reading line (`type.reason`, 18/500) → product fact (`type.body`) → rule tag and band chip. No decorative numerals.
 
 ### 8.6 Provenance ledger (`component.provenanceLedger`)
-"Where this comes from" as a receipt card: rounded surface card, hairline dividers, keys **Reading · Product · Rules · Limits** in sentence case, key column 96dp (sized to the longest key, never breaks mid-word), values in bodySm; task ids in a short muted form ("Published rules (version b7cbc69)"). Below 360dp or at 1.5× the key stacks above the value. Links are sibling nodes after the row text.
+"Where this comes from" as a receipt card (radius 24): keys **Reading · Product · Rules · Limits** in sentence case, key column 96dp, values in bodySm. Below 360dp or at 1.5× the key stacks.
 
 ### 8.7 Sheets, dock, snackbar
-- **Bottom sheet:** radius 28 top corners, 36×4 handle in a 48dp target, a Close button always, sheen-edge on top in dark, scrim `color.overlay`. Focus to the title on open, back to the trigger on close.
-- **Action dock** (`component.actionBar`): ONE primary pill naming its destination ("Back to Nykaa listing") + a 48dp round tonal **More** button opening the store-search sheet. A secondary "Better matches" pill shows only while that section is off screen. Border and elevation 2 only while content scrolls under it.
-- **Snackbar:** inverse surface, radius 14, action in inverse-link.
+- **Bottom sheet:** radius 28 top corners, handle in a 48dp target, a Close button always, sheen-edge on top in dark.
+- **Action dock** (`component.actionBar`): ONE primary pill naming its destination + a 48dp round tonal **More** button. Flat with a top hairline.
+- **Snackbar:** inverse surface, radius 16.
 
 ### 8.8 Tab bar (`component.bottomNav`)
-Three tabs: **Check · Scan · Reading**. 72dp bar on `surface-raised` with a hairline (and sheen-edge in dark), never the stock white bar. Active = 56×32 slate pill (pearl in dark) behind a 2.0-stroke icon in on-accent, label Geist 600; inactive = 1.5-stroke muted icon, label Geist 400. `role="tablist"`, each tab `role="tab"` with `selected` state. Hidden on pushed details (/check result, better matches, try-on). Settings is a 48dp gear icon button in the Home top bar. Theme the Android navigation bar to `color.bg` (edge-to-edge).
+Three tabs: **Check · Scan · Reading** (testIDs `tab-check` / `tab-scan` / `tab-reading`, labels "Check, tab 1 of 3" etc.). **White 64dp bar** (graphite-850 in dark) with a 1dp top hairline (sheen-edge in dark), **no shadow, no pill**. Inactive = 24dp outline glyph (1.5) in `tab-inactive`, label Geist 500 in `tab-inactive-label`. Active = the **filled glyph** in `tab-active`, label Geist 600 in `tab-active`. Selection = fill + weight + colour + `selected` state (lint). Borderless ripple radius 28. Hidden on pushed details. Settings is the gear on Home.
 
-### 8.9 Face frame (`component.faceFrame`, `brand/FaceFrame.tsx`)
-Rounded 24dp plate on the sheen, four corner brackets in `color.bracket` (2dp, 24dp long), a faint oval, an optional sparse dot grid at 30%. **No face, no photo, no mesh over a person.** Over the live camera the same brackets use `on-overlay` white (`captureGuide.bracket*`).
+### 8.9 App bar (`AppBar` in `Screen.tsx`, `component.appBar`)
+56dp. Leading 48dp `arrow-left` icon button labelled "Back"; title **centred** in `type.appBarTitle`, one line; a 48dp spacer mirrors the missing side so the title is optically centred (also in tab scenes with no back). New `center` prop (and `Screen appBarCenter`) puts a node in the title slot (the /check source chip). No hairline at rest.
 
-### 8.10 States
-Empty and error states: a face-frame or mark plate on the sheen, one serif display line, one muted line, **one** pill action (optional tonal second). Left-aligned text. Neutral, never red. Offline actions are disabled, not hidden. Errors name the problem and the recovery.
+### 8.10 Face frame (`component.faceFrame`, `brand/FaceFrame.tsx`)
+Rounded **28dp** plate on the sheen, four corner brackets in `color.bracket`, a faint oval, optional sparse dot grid. **No face, no photo, no mesh over a person.**
+
+### 8.11 Welcome backdrop (`brand/LiquidBackdrop.tsx`)
+Full-bleed sheen, two wide liquid ribbons (top-right, bottom-left) with a bright crest, a large and two small droplets with a white rim; drawn in a 390×844 box and scaled to cover. Static, decorative, hidden from TalkBack; graphite/lavender-800 in dark. With `SilverMark` (`brand.heroMark` 72, no tile), `Wordmark` (`brand.wordmarkHero` 32 cap), the tagline (`COPY.welcome.tagline`), a primary **Get started** and a translucent **Use the Demo reading**.
+
+### 8.12 States
+Empty and error states: a face-frame or mark plate on the sheen, one `type.display` line (sans), one muted line, **one** pill action (optional tonal second). Left-aligned. Neutral, never red.
 
 ---
 
@@ -299,17 +309,26 @@ Unchanged on purpose: `android.package app.skinkey`, the slug and URL scheme, th
 
 ---
 
-## 11. Moodboard vs product law (resolved)
+## 11. Moodboard and showcase vs product law (resolved)
 
-| Moodboard | Decision | Why |
+The showcase (`design/reference/silver-mirror-showcase.png`) wins over the moodboard and the taste rules on look (soft card shadows, three focus tiles, the lavender gradient, discs, pills, hairlines); product law wins over the showcase.
+
+| Showcase / moodboard | Decision | Why |
 |---|---|---|
-| UNKNOWN = cool slate | Neutral pearl/graphite fill, dashed slate edge, slate icon | The slate fill is the primary pill; UNKNOWN must never read as a button (lint). |
-| "Barrier repair" focus tile | Lighter textures · Hydration · Fragrance-free | "repair" is banned (brief §4.4). |
-| Greige accent | Fill only | 1.6:1 on pearl. |
-| 5-tab bar | 3 tabs: Check · Scan · Reading | We have no routine, products or community tab to fill. |
-| Analyze face photo with mesh | Live camera with brackets; illustration elsewhere | No real face in shipped art; no mesh over a person. |
-| Numeric skin score, before/after, AM/PM routine, community feed, sparkles | Not adopted | Do-NOT-adopt list and brief §4.4. |
-| Slate primary + soft secondary for every pair | Consent keeps equal-weight pills | Spec §2: Start scan and Not now at equal visual weight. |
+| "Good morning, Aman ✨" | "Good afternoon", no name, no sparkle | No fake user; no sparkle (taste + brief) |
+| Bell with a dot | Gear (Settings) | We have no notifications |
+| Serif headings (moodboard) | Geist 600 everywhere; serif only as the outlined wordmark | Showcase 2.1 |
+| UNKNOWN = cool slate | Neutral fill, dashed slate edge, slate icon | UNKNOWN must never read as a button (lint) |
+| "Barrier repair" focus tile | Lighter textures · Hydration · Fragrance-free | "repair" is banned (brief §4.4) |
+| Greige focus tiles (moodboard) | White tiles with lavender discs; greige = Demo badge only | Showcase 2.1 |
+| 5-tab bar, Routines / Community / Profile / Progress | 3 tabs: Check · Scan · Reading | Not built |
+| Today's Routine, AM/PM, numbered steps | Share steps as thumb-tile rows, store segmented control, no numerals | No routines; no index numerals |
+| Analyze face photo with mesh | Drawn face frame; live camera only on capture, no mesh | No real face in shipped art |
+| "Key Concerns: Mild acne…" | "Key readings": band chips ("Oiliness · High") | Cosmetic words only |
+| Stars, review counts, hearts, "Dermatologist-approved & community loved" | Reason line, verdict tag, honesty line | No ratings of any kind |
+| Numeric skin score, before/after, progress charts | Not adopted | Bands, never numbers |
+| "I already have an account" | "Use the Demo reading" | No accounts |
+| Slate primary + soft secondary for every pair | Consent keeps equal-weight pills | Spec §2 |
 
 ---
 

@@ -97,12 +97,11 @@ add('color.on-overlay', 'color.overlay-halo', 'ui', 'Try-on divider and overlay 
 add('component.skinMap.hatch', 'component.skinMap.bg', 'ui', 'Skin-map hatch strokes (band encoding) on the map frame');
 add('component.skinMap.zoneStroke', 'component.skinMap.bg', 'ui', 'Skin-map zone outline');
 add('component.skinMap.faceOutline', 'component.skinMap.bg', 'ui', 'Skin-map face outline');
-add('component.bottomNav.iconInactive', 'color.surface-raised', 'ui', 'Unselected nav icon on the bar');
-add('component.bottomNav.iconActive', 'component.bottomNav.indicator.bg', 'ui', 'Selected nav icon on its pill');
+add('component.bottomNav.iconInactive', 'color.surface-raised', 'ui', 'Unselected nav icon (outline) on the bar');
+add('component.bottomNav.iconActive', 'color.surface-raised', 'ui', 'Selected nav icon (filled glyph, no pill) on the bar');
 add('component.bottomNav.labelActiveColor', 'color.surface-raised', 'text', 'Selected nav label');
 add('component.bottomNav.labelInactiveColor', 'color.surface-raised', 'text', 'Unselected nav label');
-add('component.bottomNav.indicator.bg', 'color.surface-raised', 'info', 'Nav pill against the bar (not the only cue: weight + stroke carry selection)');
-add('component.bottomNav.labelActiveColor', 'component.bottomNav.labelInactiveColor', 'info', 'Selected vs unselected nav label colour (weight 600 vs 400 carries it)');
+add('component.bottomNav.labelActiveColor', 'component.bottomNav.labelInactiveColor', 'info', 'Selected vs unselected nav label colour (filled glyph + weight 600 vs 500 carry it)');
 add('component.segmented.selectedFg', 'component.segmented.selectedBg', 'text', 'Selected segment label (skin-map selector, try-on switcher)');
 add('component.processingStepper.done.check', 'component.processingStepper.done.fill', 'ui', 'Done-step check on its ink disc');
 // Silver Mirror roles.
@@ -110,7 +109,23 @@ add('color.on-secondary', 'color.secondary-bg', 'text', 'Secondary (tonal) pill 
 add('color.on-secondary', 'color.secondary-bg-pressed', 'text', 'Secondary pill label, pressed');
 add('color.on-icon-disc', 'color.icon-disc', 'ui', 'Line icon inside the lavender disc');
 add('color.on-icon-disc', 'color.icon-disc', 'text', 'Text or numeral inside the disc');
-add('color.on-accent-warm', 'color.accent-warm', 'text', 'Demo-reading badge and focus-tile labels on greige');
+add('color.on-accent-warm', 'color.accent-warm', 'text', 'Demo-reading badge on greige');
+// Showcase 2.1 roles.
+add('component.focusTile.fg', 'component.focusTile.bg', 'text', 'Focus-tile label on the white tile');
+add('component.focusTile.iconColor', 'component.focusTile.discBg', 'ui', 'Focus-tile line icon in its lavender disc');
+add('color.on-icon-disc', 'color.thumb-tile', 'ui', 'Line icon in the soft square thumb tile (list rows, product cards)');
+add('color.text-muted', 'color.thumb-tile', 'text', 'Product glyph / caption in the thumb tile');
+add('component.segmented.fg', 'component.segmented.track', 'text', 'Unselected segment label on the lavender-grey track');
+add('component.segmented.selectedFg', 'component.segmented.track', 'text', 'Selected segment label (thumb edge case)');
+add('color.text', 'color.secondary-translucent', 'text', 'Translucent welcome pill label over the backdrop (lavender stop)', { on: 'color.sheen.lavender' });
+add('color.text', 'color.secondary-translucent', 'text', 'Translucent welcome pill label over the backdrop (silver stop)', { on: 'color.sheen.silver' });
+add('component.checklistCard.doneTrailingColor', 'color.surface-raised', 'ui', 'Trailing done tick on the checklist card');
+add('component.checklistCard.currentTrailingColor', 'color.surface-raised', 'ui', 'Trailing current dots on the checklist card');
+for (const st of ['start', 'mid', 'end']) {
+  add('color.text', `color.skin-gradient.${st}`, 'text', `Skin-type value on the gradient card (${st} stop)`);
+  add('color.text-muted', `color.skin-gradient.${st}`, 'text', `Skin-type label and line on the gradient card (${st} stop)`);
+}
+add('color.on-icon-disc', 'color.skin-gradient.disc', 'ui', 'Droplet in the hero disc on the gradient card', { on: 'color.skin-gradient.start' });
 add('color.on-accent', 'color.accent', 'text', 'Selected chip label (slate fill)');
 add('color.link', 'color.secondary-bg', 'text', 'Link inside a tonal pill row');
 for (const s of SURFACES) add('color.bracket', s, 'ui', 'Face-frame corner brackets on the illustration plate');
@@ -236,7 +251,8 @@ lint(`Touch targets >= ${tokens.touch.min}dp (${targetCount} target tokens + shu
 {
   const n = tokens.component.bottomNav;
   const wa = T[n.labelActive.slice(6, -1)].weight, wi = T[n.labelInactive.slice(6, -1)].weight;
-  lint('Bottom nav: selected and unselected labels differ by weight and stroke', wa - wi >= 200 && n.iconActiveStrokeWidth > n.iconInactiveStrokeWidth, `label ${wa} vs ${wi}, stroke ${n.iconActiveStrokeWidth} vs ${n.iconInactiveStrokeWidth}`);
+  // 2.1 (showcase): the pill is gone; the active tab is a filled glyph, so selection = fill + weight + colour + state.
+  lint('Bottom nav: selection is a filled glyph plus a heavier label, never colour alone', n.iconActiveFilled === true && wa - wi >= 100 && n.labelActiveColor !== n.labelInactiveColor, `filled ${n.iconActiveFilled}, label ${wa} vs ${wi}`);
 }
 
 // The stepper and other neutral parts never use the accent.

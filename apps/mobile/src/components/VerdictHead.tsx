@@ -13,7 +13,7 @@ export interface VerdictHeadProps {
   tone: Verdict;
   /** Caps label; defaults to FITS / CAUTION / UNKNOWN. Ignored for medicine (no label). */
   label?: string | null;
-  /** The verdict sentence, set in the serif verdictLine (medicine: the one serif title line). */
+  /** The verdict sentence, set in type.verdictLine, Geist 600 18/26 (medicine: the one title line). */
   line: string;
   /** Checked from the product name only: dashed edge + the qualifier line. */
   nameOnly?: boolean;
@@ -29,10 +29,10 @@ export interface VerdictHeadProps {
 }
 
 /**
- * The only block that carries the verdict tint (component.verdictCard.head): radius 20, padding 20, a 40dp white disc
- * holding the 24dp verdict icon, the caps label in the verdict fg, the serif sentence in full text colour, 1dp edge
+ * The only block that carries the verdict tint (component.verdictCard.head): radius 24, padding 20, a 40dp white disc
+ * holding the 24dp verdict icon, the caps label in the verdict fg, the sans sentence in full text colour, 1dp edge
  * (dashed for UNKNOWN and name-only). No leading stripe. MEDICINE: no box and no label, the 32dp pharmacist icon
- * over one serif line.
+ * over one title line.
  */
 export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = 'based on product name only', demo = false, accessibilityLabel, revealStyle, testID = 'verdict-head' }: VerdictHeadProps) {
   const t = useTheme();
@@ -42,7 +42,7 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
 
   if (tone === 'medicine') {
     const g = t.components.verdictCard.medicineGate;
-    // The serif title is only the first sentence ("This looks like a medicine (contains adapalene)."); the rest of the
+    // The title line is only the first sentence ("This looks like a medicine (contains adapalene)."); the rest of the
     // fixed string follows as body, word for word, so the gate doesn't read as a five-line headline.
     const cut = line.indexOf('. ');
     const lead = cut > 0 ? line.slice(0, cut + 1) : line;

@@ -9,7 +9,7 @@ import { Txt } from './Text';
 export type EmptyPlate = 'face' | 'mark' | 'none' | { icon: IconName };
 
 interface EmptyStateProps {
-  /** Serif display line, e.g. "No reading yet", "Nothing to check yet". */
+  /** Display line (Geist 600 26/32), e.g. "No reading yet", "Nothing to check yet". */
   title: string;
   /** One muted line naming the next step (or the problem and the recovery). */
   body?: string;
@@ -21,7 +21,7 @@ interface EmptyStateProps {
 }
 
 /**
- * Empty / error state (DESIGN.md §8.10, component.stateView): a plate on the sheen, one serif line, one muted line,
+ * Empty / error state (DESIGN.md §8.10, component.stateView): a plate on the sheen, one sans display line, one muted line,
  * one pill action. Left-aligned text. Neutral, never red.
  */
 export function EmptyState({ title, body, plate = 'face', children, testID }: EmptyStateProps) {

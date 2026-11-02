@@ -40,10 +40,10 @@ function useKeyboardOpen(): boolean {
 }
 
 /**
- * Custom bottom tab bar (component.bottomNav): 72dp on surface-raised with a hairline (sheen edge in dark), three
- * items with custom 1.5-stroke icons; the active one sits on a 56×32 slate pill (pearl in dark) at 2.0 stroke with a
- * semibold label. role tablist / tab + selected state. Owns the bottom safe-area inset. Hidden while the Android
- * keyboard is open.
+ * Custom bottom tab bar (component.bottomNav, showcase 02_home): a white 64dp bar (graphite-850 in dark) with a 1dp
+ * top hairline (sheen edge in dark), no shadow and no pill. Inactive = 24dp outline glyph in tab-inactive with a 500
+ * label; active = the filled glyph in tab-active with a 600 label. Selection is fill + weight + colour + the selected
+ * state, never colour alone. role tablist / tab. Owns the bottom safe-area inset. Hidden while the Android keyboard is open.
  */
 export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: BottomTabBarProps) {
   const t = useTheme();
@@ -58,8 +58,6 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
   return (
     <View
       style={{
-        ...(t.dark ? null : t.elevation['2'].style),
-        borderWidth: 0,
         backgroundColor: n.bg,
         borderTopWidth: 1,
         borderTopColor: t.dark ? n.sheenEdge : n.border,
@@ -96,30 +94,17 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
               accessibilityState={{ selected: focused }}
               accessibilityLabel={options?.tabBarAccessibilityLabel ?? `${label}, tab ${i + 1} of ${items.length}`}
               accessibilityHint={it.accessibilityHint}
-              android_ripple={{ color: t.colors.state.ripple, borderless: true, radius: n.itemMinWidth / 2 }}
+              android_ripple={{ color: t.colors.state.ripple, borderless: true, radius: n.rippleRadius }}
               style={{ flex: 1, minWidth: n.itemMinWidth, minHeight: Math.max(n.itemTarget, n.minHeight), alignItems: 'center', justifyContent: 'center', gap: t.space[1] }}
             >
-              {/* Keyed on focus so the pill mounts with its fill: on Android (Fabric) a radius set while the view was
-                  transparent was dropped when the fill arrived later, leaving a square indicator on the Reading tab. */}
-              <View
-                key={focused ? 'on' : 'off'}
-                style={{
-                  width: n.indicator.width,
-                  height: n.indicator.height,
-                  borderRadius: n.indicator.radius,
-                  overflow: 'hidden',
-                  backgroundColor: focused ? n.indicator.bg : undefined,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Icon
-                  name={it.icon}
-                  size={t.icon.lg}
-                  color={focused ? n.iconActive : n.iconInactive}
-                  strokeWidth={focused ? n.iconActiveStrokeWidth : n.iconInactiveStrokeWidth}
-                />
-              </View>
+              <Icon
+                name={it.icon}
+                size={t.icon.lg}
+                filled={focused && n.iconActiveFilled}
+                knockout={n.bg}
+                color={focused ? n.iconActive : n.iconInactive}
+                strokeWidth={n.iconInactiveStrokeWidth}
+              />
               <Text
                 {...t.textProps[focused ? 'labelSm' : 'labelSmRegular']}
                 numberOfLines={1}

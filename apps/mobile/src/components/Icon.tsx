@@ -9,6 +9,7 @@ import { useTheme } from '@/theme/ThemeProvider';
  * TalkBack, so an icon-only control must carry its own accessibilityLabel (see IconButton).
  */
 export type IconName =
+  | 'arrow-left'
   | 'chevron-left'
   | 'chevron-right'
   | 'chevron-down'
@@ -62,7 +63,7 @@ const LEGACY: Record<LegacyIconName, IconName> = {
 };
 
 export const ICON_NAMES: readonly IconName[] = [
-  'chevron-left', 'chevron-right', 'chevron-down', 'arrow-right', 'arrow-up-right', 'arrow-down-left', 'share', 'paste',
+  'arrow-left', 'chevron-left', 'chevron-right', 'chevron-down', 'arrow-right', 'arrow-up-right', 'arrow-down-left', 'share', 'paste',
   'search', 'check', 'check-circle', 'minus-circle', 'circle', 'circle-dot', 'circle-dashed-dot', 'seal-check',
   'circle-half', 'pharmacist-counter', 'droplet', 'face-frame', 'tag-check', 'phone-lock', 'trash', 'info', 'close',
   'camera', 'flip', 'torch', 'cloud-off', 'gear', 'more-horizontal', 'plus', 'waves', 'sun', 'leaf', 'spray-off',
@@ -75,14 +76,65 @@ export interface IconProps {
   size?: number;
   /** Defaults to colors.text. */
   color?: string;
-  /** Defaults to icon.stroke (1.5); the selected tab uses 2.0. */
+  /** Defaults to icon.stroke (1.5). */
   strokeWidth?: number;
+  /**
+   * Solid variant for the selected tab (showcase: the active tab is a filled dark glyph, no pill). Drawn for
+   * droplet (solid drop, highlight knocked out), tag-check (solid tag, check knocked out) and face-frame (heavier
+   * brackets around a solid oval); other names ignore it. Inner details are knocked out in `knockout`.
+   */
+  filled?: boolean;
+  /** Colour of the knocked-out details on a filled glyph; defaults to colors.surfaceRaised (the tab bar). */
+  knockout?: string;
+}
+
+/** Names that have a filled (selected-tab) variant. */
+export const FILLED_ICONS: readonly IconName[] = ['droplet', 'tag-check', 'face-frame'];
+
+function filledGlyph(name: IconName, color: string, knockout: string): ReactNode | null {
+  const solid = { fill: color, stroke: color, strokeWidth: 1.5, strokeLinejoin: 'round' as const };
+  const cut = { stroke: knockout, strokeWidth: 1.75, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, fill: 'none' };
+  switch (name) {
+    case 'droplet':
+      return (
+        <>
+          <Path d="M12 3.2c3.3 4 6.2 7.3 6.2 10.8a6.2 6.2 0 0 1-12.4 0c0-3.5 2.9-6.8 6.2-10.8z" {...solid} />
+          <Path d="M9.2 14.6a2.9 2.9 0 0 0 2.4 2.6" {...cut} />
+        </>
+      );
+    case 'tag-check':
+      return (
+        <>
+          <Path d="M3.5 11.6V5a1.5 1.5 0 0 1 1.5-1.5h6.6l8.9 8.9a1.5 1.5 0 0 1 0 2.1l-6.1 6.1a1.5 1.5 0 0 1-2.1 0z" {...solid} />
+          <Path d="m8.6 12.4 2.1 2.1 3.9-4" {...cut} />
+          <Circle cx={7.6} cy={7.6} r={1.2} fill={knockout} stroke="none" />
+        </>
+      );
+    case 'face-frame':
+      return (
+        <>
+          <Path
+            d="M3.5 8V6a2.5 2.5 0 0 1 2.5-2.5h2M16 3.5h2A2.5 2.5 0 0 1 20.5 6v2M20.5 16v2a2.5 2.5 0 0 1-2.5 2.5h-2M8 20.5H6A2.5 2.5 0 0 1 3.5 18v-2"
+            stroke={color}
+            strokeWidth={2.25}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          />
+          <Ellipse cx={12} cy={12} rx={4.5} ry={5.5} fill={color} stroke="none" />
+        </>
+      );
+    default:
+      return null;
+  }
 }
 
 function glyph(name: IconName, color: string, sw: number): ReactNode {
   const s = { stroke: color, strokeWidth: sw, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, fill: 'none' };
   const dot = { fill: color, stroke: 'none' };
   switch (name) {
+    case 'arrow-left':
+      return <Path d="M19 12H5M11 6l-6 6 6 6" {...s} />;
     case 'chevron-left':
       return <Path d="M15 18l-6-6 6-6" {...s} />;
     case 'chevron-right':
@@ -292,12 +344,15 @@ export function resolveIconName(name: IconName | LegacyIconName): IconName {
   return (LEGACY as Record<string, IconName>)[name] ?? (name as IconName);
 }
 
-export function Icon({ name, size, color, strokeWidth }: IconProps) {
+export function Icon({ name, size, color, strokeWidth, filled = false, knockout }: IconProps) {
   const t = useTheme();
   const px = size ?? t.icon.md;
+  const resolved = resolveIconName(name);
+  const ink = color ?? t.colors.text;
+  const solid = filled ? filledGlyph(resolved, ink, knockout ?? t.colors.surfaceRaised) : null;
   return (
     <Svg width={px} height={px} viewBox="0 0 24 24" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-      {glyph(resolveIconName(name), color ?? t.colors.text, strokeWidth ?? t.icon.stroke)}
+      {solid ?? glyph(resolved, ink, strokeWidth ?? t.icon.stroke)}
     </Svg>
   );
 }

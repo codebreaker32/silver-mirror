@@ -49,18 +49,35 @@ export function IconButton({ icon, accessibilityLabel, onPress, variant = 'plain
   );
 }
 
-/** Lavender disc holding one line icon (component.iconDisc): 40dp / 20dp, or 56dp / 24dp with `large`. Decorative. */
-export function IconDisc({ icon, large = false, bg, color }: { icon: IconName | LegacyIconName; large?: boolean; bg?: string; color?: string }) {
+/**
+ * Lavender disc holding one line icon (component.iconDisc, showcase droplet circle): 48dp with a 24dp icon by default,
+ * 56dp with `large` or size="lg", 72dp with a 28dp icon at size="xl" (the hero skin-type card). Decorative.
+ */
+export function IconDisc({
+  icon,
+  large = false,
+  size,
+  bg,
+  color,
+}: {
+  icon: IconName | LegacyIconName;
+  large?: boolean;
+  size?: 'md' | 'lg' | 'xl';
+  bg?: string;
+  color?: string;
+}) {
   const t = useTheme();
   const d = t.components.iconDisc;
-  const size = large ? d.sizeLg : d.size;
+  const key = size ?? (large ? 'lg' : 'md');
+  const px = key === 'xl' ? d.sizeXl : key === 'lg' ? d.sizeLg : d.size;
+  const icon_ = key === 'xl' ? d.iconSizeXl : key === 'lg' ? d.iconSizeLg : d.iconSize;
   return (
     <View
       importantForAccessibility="no-hide-descendants"
       accessibilityElementsHidden
-      style={{ width: size, height: size, borderRadius: d.radius, backgroundColor: bg ?? d.bg, alignItems: 'center', justifyContent: 'center' }}
+      style={{ width: px, height: px, borderRadius: d.radius, backgroundColor: bg ?? d.bg, alignItems: 'center', justifyContent: 'center' }}
     >
-      <Icon name={icon} size={large ? d.iconSizeLg : d.iconSize} color={color ?? d.fg} />
+      <Icon name={icon} size={icon_} color={color ?? d.fg} />
     </View>
   );
 }

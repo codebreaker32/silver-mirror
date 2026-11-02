@@ -15,7 +15,7 @@ function useToneColor(tone: TextTone) {
 }
 
 interface TxtProps extends TextProps {
-  /** A `typography` style name. Serif styles (display, title, verdictLine, figure) are for 20dp+ only. */
+  /** A `typography` style name. Every style is Geist since 2.1; the serif lives only in the outlined Wordmark. */
   variant?: TypeStyleName;
   tone?: TextTone;
   children?: ReactNode;

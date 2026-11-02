@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import { darkTheme, lightTheme, type ColorScheme } from '@skinkey/design';
 import { ThemeProvider } from '@/theme/ThemeProvider';
-import { BandChip, Card, Chip, Ledger, PillButton, StepChecklist, TabBar, VerdictHead } from '@/components';
+import { AppBar, BandChip, Card, Chip, Ledger, PillButton, Segmented, SkinTypeCard, StepChecklist, TabBar, VerdictHead } from '@/components';
 
 const mockPush = jest.fn();
 jest.mock('expo-router', () => ({ useRouter: () => ({ push: mockPush, back: jest.fn(), replace: jest.fn(), canGoBack: () => true }) }));
@@ -98,5 +98,35 @@ describe('kit', () => {
     expect(screen.getByLabelText('Step 1 of 2: Uploaded, done.')).toBeTruthy();
     expect(screen.getByLabelText('Step 2 of 2: Deleting from YouCam, in progress.')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Fragrance-free' }).props.accessibilityState).toEqual({ selected: true, disabled: false });
+  });
+
+  it('skin-type card is one target read in visual order; the empty card keeps its actions separate', async () => {
+    const open = jest.fn();
+    await wrap(
+      <>
+        <SkinTypeCard value="Combination" caption="Scan 1 Nov · photo deleted" onPress={open} />
+        <SkinTypeCard value="Scan once, about a minute" label="No reading yet" icon="face-frame" quiet>
+          <PillButton label="Start scan" onPress={() => undefined} />
+        </SkinTypeCard>
+      </>,
+    );
+    await fireEvent.press(screen.getByRole('button', { name: 'Your skin type, Combination, Scan 1 Nov · photo deleted' }));
+    expect(open).toHaveBeenCalled();
+    expect(screen.getByLabelText('No reading yet, Scan once, about a minute')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Start scan' })).toBeTruthy();
+  });
+
+  it('segmented marks the selected store with state and a tab role', async () => {
+    const change = jest.fn();
+    await wrap(<Segmented options={['Flipkart', 'Amazon', 'Nykaa'] as const} value="Amazon" onChange={change} accessibilityLabel="Store app" testID="store" />);
+    expect(screen.getByTestId('store-amazon').props.accessibilityState).toEqual({ selected: true });
+    await fireEvent.press(screen.getByTestId('store-nykaa'));
+    expect(change).toHaveBeenCalledWith('Nykaa');
+  });
+
+  it('app bar keeps the Back label and centres the title', async () => {
+    await wrap(<AppBar title="Before your scan" />);
+    expect(screen.getByRole('button', { name: 'Back' })).toBeTruthy();
+    expect(flat(screen.getByRole('header').props.style).textAlign).toBe('center');
   });
 });
