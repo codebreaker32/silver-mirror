@@ -1,122 +1,103 @@
+import { COPY } from '@skinkey/contracts';
 import { useRef } from 'react';
 import { Link } from 'react-router';
 import { useReveal } from '../components/hooks';
-import { LabelSlot } from '../components/LabelSlot';
+import { Icon } from '../components/Icon';
+import { AuditProof } from '../components/landing/AuditProof';
 import { BuiltOn } from '../components/landing/BuiltOn';
 import { Compare } from '../components/landing/Compare';
 import { GetTheApp } from '../components/landing/GetTheApp';
 import { Honesty } from '../components/landing/Honesty';
 import { IngredientLookup } from '../components/landing/IngredientLookup';
+import { MirrorPanel, StageFragment, useActiveStage, type StageId } from '../components/landing/Mirror';
 import { Plants } from '../components/landing/Plants';
 
-function HeroTitle() {
-  const lines = (
-    <>
-      <span className="line">The tag says</span>
-      <span className="line">
-        oily skin.
-        <LabelSlot />
-      </span>
-    </>
-  );
-  return (
-    <div className="hero-title">
-      <h1 id="hero-title" className="copy copy-top">
-        {lines}
-      </h1>
-      <div className="copy copy-bottom" aria-hidden="true">
-        <span className="line" data-text="The tag says" />
-        <span className="line" data-text="oily skin.">
-          <LabelSlot />
-        </span>
-      </div>
-    </div>
-  );
-}
-
-const STEPS = [
+const STAGES: { id: StageId; title: string; body: string; note?: string }[] = [
   {
+    id: 'share',
     title: 'First, share the listing.',
-    body: 'In the Flipkart or Amazon.in app, tap Share, then SkinKey. On the web, paste the link or the product title.',
+    body: `In the Flipkart, Amazon or Nykaa app, tap Share, then ${COPY.appName}. On Amazon it sits under More. On the web, paste the link or the product title.`,
   },
   {
+    id: 'confirm',
     title: 'Then confirm the product.',
-    body: 'We think this is brand · name · size. Yes, or Not this. No verdict appears before you say yes.',
+    body: 'We think this is brand · name · size. Pick it, or choose none of these and get a weaker check by name only. No verdict appears before you pick.',
   },
   {
+    id: 'verdict',
     title: 'Then read the reason.',
-    body: 'Your reading, the named ingredient and the rule behind it, under FITS, CAUTION or UNKNOWN. Tinted? YouCam shows two shades on the same photo.',
+    body: 'Each reason names your reading, the ingredient and the published rule behind it, under FITS, CAUTION or UNKNOWN. Tinted? YouCam shows two shades on the same photo.',
+    note: 'The example is a sample ingredient list and the Demo reading, run by the published rules in your browser.',
   },
 ];
 
 export function Landing() {
   const root = useRef<HTMLDivElement>(null);
+  const stageRoot = useRef<HTMLDivElement>(null);
   useReveal(root);
+  const active = useActiveStage(stageRoot);
 
   return (
-    <div ref={root}>
-      <section className="hero" data-tone="paper" aria-labelledby="hero-title">
-        <HeroTitle />
-        <div className="hero-foot" data-reveal>
-          <p>
-            Your scan and the ingredients get a vote. SkinKey checks that claim against the product's own ingredient list and
-            your YouCam Skin Analysis readings, from the Flipkart or Amazon.in app you're already in.
-          </p>
-          <div className="hero-actions">
-            <Link to="/check?sample=1" className="btn btn-paper">
-              Try a sample share
-            </Link>
-            <a href="#get" className="btn btn-secondary">
-              Get the Android app
-            </a>
-          </div>
-        </div>
-      </section>
+    <div ref={root} className="landing">
+      <div className="stage" ref={stageRoot}>
+        <div className="stage-copy">
+          <section className="hero" data-stage="verdict" aria-labelledby="hero-title">
+            <div className="hero-inner" data-reveal>
+              <h1 id="hero-title">Hold the listing up to your reading.</h1>
+              <p className="hero-lead">
+                Share a product from the Flipkart, Amazon or Nykaa app. {COPY.appName} checks its ingredient list against your
+                YouCam skin reading, and shows the rule behind every reason.
+              </p>
+              <div className="hero-actions">
+                <Link to="/check?sample=1" className="btn btn-primary">
+                  Try a sample share
+                  <Icon name="arrow-right" />
+                </Link>
+                <a href="#get" className="btn btn-secondary">
+                  Get the Android app
+                </a>
+              </div>
+              <p className="caption">
+                {COPY.footer} {COPY.notAffiliated}
+              </p>
+            </div>
+            <div className="stage-inline" aria-hidden="true">
+              <StageFragment stage="verdict" />
+            </div>
+          </section>
 
-      <section className="field-ink steps" data-tone="ink" aria-labelledby="steps-title">
-        <div className="hero-after" />
-        <div className="wrap">
-          <h2 id="steps-title" className="visually-hidden">
-            How it works
-          </h2>
-          <ol>
-            {STEPS.map((s) => (
-              <li key={s.title} data-reveal>
-                <h3>{s.title}</h3>
-                <p>{s.body}</p>
-              </li>
-            ))}
-          </ol>
+          <section className="stages" aria-labelledby="steps-title">
+            <h2 id="steps-title" className="visually-hidden">
+              How it works
+            </h2>
+            <ol>
+              {STAGES.map((s) => (
+                <li key={s.id} className="stage-step" data-stage={s.id}>
+                  <div data-reveal>
+                    <h3>{s.title}</h3>
+                    <p>{s.body}</p>
+                    {s.note && <p className="caption">{s.note}</p>}
+                  </div>
+                  <div className="stage-inline" aria-hidden="true">
+                    <StageFragment stage={s.id} />
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
         </div>
-      </section>
+        <div className="stage-side">
+          <MirrorPanel active={active} />
+        </div>
+      </div>
 
       <IngredientLookup />
       <Plants />
+      <AuditProof />
       <Honesty />
       <Compare />
       <BuiltOn />
-
-      <section className="field-ink close" data-tone="ink" id="get" aria-labelledby="close-title">
-        <div className="wrap" data-reveal>
-          <h2 id="close-title">
-            Give the label
-            <br />a vote.
-          </h2>
-        </div>
-        <div className="wrap close-foot">
-          <div data-reveal>
-            <p>
-              No phone yet? The web check replays a sample share with a labelled Demo Key. No scan, no sign-up.
-            </p>
-            <GetTheApp />
-          </div>
-          <div data-reveal>
-            <Link to="/check?sample=1" className="btn btn-paper" style={{ minHeight: 56 }}>
-              Try a sample share
-            </Link>
-          </div>
-        </div>
-      </section>
+      <GetTheApp />
     </div>
   );
 }

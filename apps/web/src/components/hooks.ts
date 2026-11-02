@@ -1,4 +1,4 @@
-import { useEffect, useState, type RefObject } from 'react';
+import { useEffect, type RefObject } from 'react';
 
 /** Adds `is-in` to every [data-reveal] block once it enters the viewport and numbers its children for the stagger. */
 export function useReveal(root: RefObject<HTMLElement | null>, deps: readonly unknown[] = []) {
@@ -26,31 +26,3 @@ export function useReveal(root: RefObject<HTMLElement | null>, deps: readonly un
   }, deps);
 }
 
-/** The tone of the [data-tone] chapter currently under the header line. */
-export function useChapterTone(headerHeight = 72, key?: string) {
-  const [tone, setTone] = useState('paper');
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      let current = 'paper';
-      for (const el of document.querySelectorAll<HTMLElement>('[data-tone]')) {
-        const r = el.getBoundingClientRect();
-        if (r.top <= headerHeight - 1 && r.bottom > headerHeight - 1) current = el.dataset.tone ?? 'paper';
-      }
-      setTone(current);
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      cancelAnimationFrame(frame);
-    };
-  }, [headerHeight, key]);
-  return tone;
-}

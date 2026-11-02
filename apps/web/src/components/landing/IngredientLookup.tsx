@@ -3,6 +3,7 @@ import { useDeferredValue, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { lookupIngredient } from '../../lib/rules';
 import { describeTriggers, GRADE_LABEL, KIND_LABEL } from '../../lib/rulesText';
+import { Icon, VerdictIcon } from '../Icon';
 
 const EXAMPLES = ['Isopropyl Myristate', 'Parfum', 'Alcohol Denat.', 'Benzyl Alcohol', 'Niacinamide', 'Adapalene'];
 
@@ -12,39 +13,43 @@ export function IngredientLookup() {
   const result = useMemo(() => lookupIngredient(query), [query]);
 
   return (
-    <section className="field-paper lookup" data-tone="paper" aria-labelledby="lookup-title">
-      <div className="wrap">
+    <section className="lookup" aria-labelledby="lookup-title">
+      <div className="lookup-output">
+        <div className="lookup-answer" aria-live="polite">
+          <LookupAnswer value={query} result={result} />
+        </div>
+      </div>
+      <div className="lookup-controls">
         <div data-reveal>
-          <h2 id="lookup-title" className="lookup-intro">
-            Type an ingredient.
-          </h2>
-          <p style={{ marginTop: 8, maxWidth: '52ch' }}>
+          <h2 id="lookup-title">Type an ingredient.</h2>
+          <p>
             See which published rule reads it, and for which reading profile. The rules run here in your browser, the same
             package the app uses.
           </p>
         </div>
-        <div className="lookup-field" data-ui>
-          <label htmlFor="lookup-input" className="visually-hidden">
+        <div className="lookup-field">
+          <label htmlFor="lookup-input" className="field-label">
             Ingredient name (INCI)
           </label>
-          <input
-            id="lookup-input"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            spellCheck={false}
-            autoComplete="off"
-            autoCapitalize="words"
-          />
+          <div className="paste-field">
+            <Icon name="search" />
+            <input
+              id="lookup-input"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              spellCheck={false}
+              autoComplete="off"
+              autoCapitalize="words"
+            />
+          </div>
         </div>
         <div className="lookup-examples" role="group" aria-label="Example ingredients">
           {EXAMPLES.map((ex) => (
-            <button key={ex} type="button" aria-pressed={value === ex} onClick={() => setValue(ex)}>
+            <button key={ex} type="button" className="chip" aria-pressed={value === ex} onClick={() => setValue(ex)}>
+              {value === ex && <Icon name="check" size={16} />}
               {ex}
             </button>
           ))}
-        </div>
-        <div className="lookup-answer" aria-live="polite">
-          <LookupAnswer value={query} result={result} />
         </div>
       </div>
     </section>
@@ -52,12 +57,12 @@ export function IngredientLookup() {
 }
 
 function LookupAnswer({ value, result }: { value: string; result: ReturnType<typeof lookupIngredient> }) {
-  if (!value.trim()) return <p className="muted">Type an ingredient name as it appears on a label.</p>;
+  if (!value.trim()) return <p className="lookup-empty">Type an ingredient name as it appears on a label.</p>;
   if (!result)
     return (
-      <div className="ui ui-pad" data-ui>
-        <p className="ui-title">The rules engine isn't in this build yet.</p>
-        <p className="ui-small" style={{ marginTop: 8 }}>
+      <div className="ui-card" data-ui>
+        <p className="ui-card-title">The rules engine isn't in this build yet.</p>
+        <p className="ui-caption">
           This lookup runs the real rules package in your browser. It switches on when the package ships its rule set. The
           draft rules are listed on <Link to="/rules">the rules page</Link>.
         </p>
@@ -65,31 +70,31 @@ function LookupAnswer({ value, result }: { value: string; result: ReturnType<typ
     );
   if (result.medicine)
     return (
-      <div className="ui ui-pad" data-ui>
-        <span className="verdict-tag" data-label="MEDICINE">
-          Medicine gate
-        </span>
-        <p className="ui-title" style={{ marginTop: 12 }}>
-          {COPY.medicine(result.medicine)}
-        </p>
-        <p className="ui-small" style={{ marginTop: 8 }}>
+      <div className="ui-card" data-ui>
+        <div className="medicine-gate">
+          <VerdictIcon label="MEDICINE" size={32} />
+          <p className="medicine-line">{COPY.medicine(result.medicine)}</p>
+        </div>
+        <p className="ui-caption">
           No verdict and no better matches are shown for gated ingredients.
         </p>
       </div>
     );
   if (!result.hits.length)
     return (
-      <div className="ui ui-pad" data-ui>
-        <p className="ui-title">No published rule reads “{result.token}”.</p>
-        <p className="ui-small" style={{ marginTop: 8 }}>
+      <div className="ui-card" data-ui>
+        <p className="ui-card-title">No published rule reads “{result.token}”.</p>
+        <ProfileGrid result={result} />
+        <p className="ui-caption">
           {COPY.fitsNoFlags} Spelling matters: rules match CosIng names and a few documented families.
         </p>
       </div>
     );
   return (
-    <div className="ui ui-pad" data-ui>
-      <p className="ui-small">Rules that read “{result.token}”</p>
-      <ul style={{ marginTop: 6 }}>
+    <div className="ui-card" data-ui>
+      <p className="ui-card-title">Rules that read “{result.token}”</p>
+      <ProfileGrid result={result} />
+      <ul className="lookup-hits">
         {result.hits.map((h) => (
           <li key={h.ruleId} className="ui-row">
             <span className="rule-id">{h.ruleId}</span>
@@ -100,7 +105,7 @@ function LookupAnswer({ value, result }: { value: string; result: ReturnType<typ
               {h.rule?.contested ? ' · contested definition' : ''}
             </span>
             <span />
-            <span className="ui-small">
+            <span className="ui-caption">
               {h.viaClaim
                 ? `${h.rule ? describeTriggers(h.rule) : 'Label claim'}. Shown as an extra reason; it never changes the label alone.`
                 : `Fires for: ${[...new Set(h.profiles)].join(', ') || 'none of the six profiles'}.`}
@@ -108,9 +113,24 @@ function LookupAnswer({ value, result }: { value: string; result: ReturnType<typ
           </li>
         ))}
       </ul>
-      <p className="ui-small" style={{ marginTop: 10 }}>
+      <p className="ui-caption">
         Computed in your browser by the same rules package the app uses. <Link to="/rules">See every rule</Link>.
       </p>
     </div>
+  );
+}
+
+/** The same ingredient, one verdict per reading profile: label and icon, never colour alone. */
+function ProfileGrid({ result }: { result: NonNullable<ReturnType<typeof lookupIngredient>> }) {
+  return (
+    <ul className="profile-grid" aria-label="Verdict for each reading profile">
+      {result.byProfile.map(({ profile, label }) => (
+        <li key={profile.id} className="verdict-tag" data-label={label}>
+          <VerdictIcon label={label} size={20} />
+          <span className="profile-name">{profile.label}</span>
+          <span className="profile-label">{label}</span>
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -6,7 +6,7 @@ type BoxProps = { x: number; y: number; w: number; h: number; title: string; lin
 function Box({ x, y, w, h, title, lines = [], kind = 'box' }: BoxProps) {
   return (
     <g>
-      <rect className={kind} x={x} y={y} width={w} height={h} rx={8} />
+      <rect className={kind} x={x} y={y} width={w} height={h} rx={14} />
       <text x={x + 14} y={y + 26} fontSize={15} fontWeight={600}>
         {title}
       </text>
@@ -45,7 +45,7 @@ function Defs() {
 function Architecture() {
   return (
     <svg className="diagram" viewBox="0 0 1000 470" role="img" aria-labelledby="arch-title arch-desc">
-      <title id="arch-title">SkinKey architecture</title>
+      <title id="arch-title">Silver Mirror architecture</title>
       <desc id="arch-desc">
         The Android app talks to a Cloudflare Worker that holds the keys. The Worker calls the YouCam API and Claude. The phone
         uploads the photo straight to a YouCam upload URL. The rules package runs on the phone and on this website.
@@ -57,8 +57,8 @@ function Architecture() {
         w={270}
         h={190}
         kind="box-accent"
-        title="SkinKey app (Android)"
-        lines={['Share sheet in, from store apps', 'Capture guide, 1080p short side', 'Key on the phone: bands, zones, date', 'Rules package: verdict + rank', 'Photo cache deleted after upload']}
+        title="Silver Mirror app (Android)"
+        lines={['Share sheet in, from store apps', 'Capture guide, 1080p short side', 'Reading on phone: bands, zones, date', 'Rules package: verdict + rank', 'Photo cache deleted after upload']}
       />
       <Box
         x={20}
@@ -66,7 +66,7 @@ function Architecture() {
         w={270}
         h={150}
         title="This website"
-        lines={['Web check with a Demo Key', 'Same rules package, in the browser', '/rules and /audit from build files']}
+        lines={['Web check with the Demo reading', 'Same rules package, in the browser', '/rules and /audit from build files']}
       />
       <Box
         x={370}
@@ -129,18 +129,18 @@ function Chain() {
   );
   return (
     <svg className="diagram" viewBox="0 0 1000 520" role="img" aria-labelledby="chain-title">
-      <title id="chain-title">YouCam call chain for the Key scan and the tint try-on</title>
+      <title id="chain-title">YouCam call chain for the reading scan and the tint try-on</title>
       <Defs />
       {col(
         20,
-        'Key scan (once, at onboarding)',
+        'Reading scan (once, at onboarding)',
         [
           { t: 'P1  POST /s2s/v2.0/file, then PUT', l: ['JPG, short side at least 1080 px. 0 units.', 'Phone deletes the capture right after the PUT.'] },
           { t: 'P2  POST /s2s/v2.1/task/skin-analysis', l: ['hd_skin_type, hd_oiliness, hd_moisture, hd_redness, hd_pore', 'enable_mask_overlay: true · format: "json" · 16 units'] },
           { t: 'P3  GET …/task/skin-analysis/{task_id}', l: ['Poll until terminal, at least one GET.', 'raw_score kept; ui_score dropped at the Worker.'] },
           { t: 'P4  POST /s2s/v2.0/task/delete', l: ['After the result is read. Removes the task,', 'its outputs and the uploaded input file.'], kind: 'box-delete' },
         ],
-        '16 units per Key',
+        '16 units per reading',
       )}
       {col(
         540,
@@ -211,7 +211,7 @@ export function How() {
   return (
     <div className="page">
       <div className="page-head">
-        <h1>How SkinKey is built.</h1>
+        <h1>How Silver Mirror is built</h1>
         <p>
           Three YouCam features chained across onboarding and the share moment, a Worker that keeps the keys and deletes every
           task, Claude for reading only, and a rules package that makes every call the same way on the phone and here.

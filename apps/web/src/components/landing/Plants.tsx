@@ -40,7 +40,7 @@ const ROWS = [
 
 export function Plants() {
   return (
-    <section className="field-sunken plants" data-tone="sunken" aria-labelledby="plants-title">
+    <section className="plants" aria-labelledby="plants-title">
       <div className="wrap">
         <div className="plants-head" data-reveal>
           <h2 id="plants-title">Label Check reads the Latin.</h2>
@@ -61,7 +61,7 @@ export function Plants() {
               </p>
             </div>
             <figure>
-              <img src={r.img.file} alt={r.alt} width={r.w} height={r.h} loading="lazy" style={{ width: r.w, height: r.h }} />
+              <img src={r.img.file} alt={r.alt} width={r.w} height={r.h} loading="lazy" />
               <figcaption>
                 {r.img.title}, {r.img.creator}, {r.img.date}. {r.img.license}.
               </figcaption>

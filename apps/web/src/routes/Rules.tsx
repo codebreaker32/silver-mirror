@@ -36,9 +36,9 @@ export function Rules() {
   return (
     <div className="page">
       <div className="page-head">
-        <h1>The rules that make every call.</h1>
+        <h1>The rules that make every call</h1>
         <p>
-          Every verdict in SkinKey comes from these rules, applied the same way to every product. Claude reads labels and
+          Every verdict in Silver Mirror comes from these rules, applied the same way to every product. Claude reads labels and
           titles; it never decides. Reasons are set templates filled with a rule, a reading band and an ingredient name.
         </p>
         <p className="banner">
@@ -158,7 +158,7 @@ function RulesBody({ data }: { data: RulesData }) {
       <section className="page-section" aria-labelledby="medicine-title">
         <h2 id="medicine-title">Medicine gate</h2>
         <p>
-          If an ingredient list or a title contains one of these, SkinKey shows no verdict and no better matches: “
+          If an ingredient list or a title contains one of these, Silver Mirror shows no verdict and no better matches: “
           {COPY.medicine('[token]')}”
         </p>
         <p className="small" style={{ marginTop: 12 }}>
@@ -242,7 +242,7 @@ function RulesBody({ data }: { data: RulesData }) {
       <section className="page-section" aria-labelledby="facet-title">
         <h2 id="facet-title">YouCam class to Flipkart filter</h2>
         <p>
-          Used only for the secondary link to Flipkart's own filter, which is seller-tagged and not checked by SkinKey. Our own
+          Used only for the secondary link to Flipkart's own filter, which is seller-tagged and not checked by Silver Mirror. Our own
           ranked list always comes first.
         </p>
         <div className="table-scroll">

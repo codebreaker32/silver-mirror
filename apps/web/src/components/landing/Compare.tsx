@@ -28,11 +28,11 @@ const ROWS: { name: string; ours?: boolean; cells: string[] }[] = [
     cells: ['Unverified', 'Inside Nykaa', 'Unverified', 'Unverified', 'Unverified', 'Unverified'],
   },
   {
-    name: 'SkinKey',
+    name: 'Silver Mirror',
     ours: true,
     cells: [
       'YouCam Skin Analysis HD readings, shown as bands',
-      'Share sheet of the Flipkart and Amazon.in Android apps, and this website',
+      'Share sheet of the Flipkart, Amazon.in and Nykaa Android apps, and this website',
       'Yes, after you confirm the product. UNKNOWN when we lack its ingredient list',
       'Fragrance-free, alcohol-free and oil-free claims against the listing’s own ingredients',
       'Every rule, source and cutoff on the rules page',
@@ -43,18 +43,18 @@ const ROWS: { name: string; ours?: boolean; cells: string[] }[] = [
 
 export function Compare() {
   return (
-    <section className="field-paper compare" data-tone="paper" aria-labelledby="compare-title">
+    <section className="compare" aria-labelledby="compare-title">
       <div className="wrap">
-        <div data-reveal>
+        <div className="compare-head" data-reveal>
           <h2 id="compare-title">Store tools recommend from their own shelf.</h2>
           <p>
-            That is how a store-owned tool is built, not a fault. SkinKey works the other way round: it starts from the
+            That is how a store-owned tool is built, not a fault. Silver Mirror works the other way round: it starts from the
             product you are already looking at and checks it against your readings.
           </p>
         </div>
         <div className="table-scroll" data-reveal>
           <table className="data">
-            <caption className="visually-hidden">SkinKey compared with store skin tools</caption>
+            <caption className="visually-hidden">Silver Mirror compared with store skin tools</caption>
             <thead>
               <tr>
                 <th scope="col">Tool</th>

@@ -13,7 +13,9 @@ import { facetFor, rank, READING_PROFILES } from '@skinkey/rules';
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { SAMPLE_SHARE } from '../../../../packages/contracts/src/proposals/web';
-import { VerdictCard } from '../components/VerdictCard';
+import { BandList } from '../components/BandList';
+import { Icon } from '../components/Icon';
+import { limitsRow, rulesRow, VerdictCard, type LedgerRow } from '../components/VerdictCard';
 import { config } from '../config';
 import { call, WORKER_URL, WorkerError } from '../lib/api';
 import { fileToJpegBase64 } from '../lib/image';
@@ -31,7 +33,7 @@ type Stage =
   | { at: 'result'; res: ResolveResponse | null; product: CatalogProduct | null }
   | { at: 'error'; message: string };
 
-const KEY_OPTIONS = [{ id: 'demo', label: 'Demo Key' }, ...READING_PROFILES.map((p) => ({ id: p.id, label: p.label }))];
+const KEY_OPTIONS = [{ id: 'demo', label: COPY.reading.demo }, ...READING_PROFILES.map((p) => ({ id: p.id, label: p.label }))];
 
 const keyFor = (id: string): KeyProfile => {
   const p = READING_PROFILES.find((x) => x.id === id);
@@ -41,7 +43,7 @@ const keyFor = (id: string): KeyProfile => {
 const errorText = (e: unknown) =>
   e instanceof WorkerError
     ? e.status === 0
-      ? `The SkinKey Worker isn't reachable from this page (${WORKER_URL}).`
+      ? `The Silver Mirror Worker isn't reachable from this page (${WORKER_URL}).`
       : e.message
     : 'Something went wrong. Try again.';
 
@@ -103,94 +105,111 @@ export function Check() {
     }
   };
 
+  const busy = stage.at === 'resolving';
   return (
-    <div className="page">
-      <div className="page-head">
-        <h1>Check a listing.</h1>
+    <div className="page page-check">
+      <header className="page-head">
+        <h1>Check a listing</h1>
         <p>
           Paste a Flipkart, Amazon.in or Nykaa link, or the product title. The web check uses labelled sample readings, so you
           can see the whole flow without a phone or a scan.
         </p>
-      </div>
+      </header>
 
-      <div className="two-col page-section" style={{ marginTop: 40, alignItems: 'start' }}>
-        <form className="stack" onSubmit={onSubmit}>
-          <label className="field-label" htmlFor="listing">
-            Link or product title
-          </label>
-          <textarea
-            id="listing"
-            className="textarea"
-            value={text}
-            placeholder="https://www.flipkart.com/… or a product name"
-            onChange={(e) => {
-              setText(e.target.value);
-              setSource('paste');
-            }}
-          />
-          <div className="row">
-            <button className="btn btn-primary" type="submit" disabled={!text.trim() || stage.at === 'resolving'}>
-              {stage.at === 'resolving' ? 'Checking…' : 'Check this listing'}
-            </button>
-            <button className="btn btn-secondary" type="button" onClick={runSample} disabled={stage.at === 'resolving'}>
-              Try a sample share
-            </button>
+      <div className="check-grid">
+        <div className="check-main">
+          <form className="paste" onSubmit={onSubmit}>
+            <label className="field-label" htmlFor="listing">
+              Link or product title
+            </label>
+            <div className="paste-field">
+              <input
+                id="listing"
+                value={text}
+                placeholder="https://www.flipkart.com/… or a product name"
+                autoComplete="off"
+                spellCheck={false}
+                onChange={(e) => {
+                  setText(e.target.value);
+                  setSource('paste');
+                }}
+              />
+              <button className="btn btn-primary btn-inline" type="submit" disabled={!text.trim() || busy} aria-label={busy ? 'Checking' : 'Check this listing'}>
+                {busy ? 'Checking…' : 'Check'}
+              </button>
+            </div>
+            <div className="paste-after">
+              <button className="btn btn-secondary" type="button" onClick={runSample} disabled={busy}>
+                Try a sample share
+              </button>
+              {source === 'sample' && <p className="caption">{SAMPLE_SHARE.label}</p>}
+            </div>
+          </form>
+
+          <div className="check-flow">
+            {stage.at === 'resolving' && <StatusLine text="Reading the listing…" />}
+            {stage.at === 'error' && <p className="error-line">{stage.message}</p>}
+            {stage.at === 'confirm' && <Confirm res={stage.res} onYes={(c) => void confirm(stage.res, c)} onNo={() => setStage({ at: 'result', res: stage.res, product: null })} />}
+            {stage.at === 'loading_product' && <StatusLine text="Loading the product…" />}
+            {stage.at === 'result' && (
+              <Result
+                res={stage.res}
+                product={stage.product}
+                keyId={keyId}
+                keyProfile={key}
+                chips={chips}
+                setChips={setChips}
+                onLedger={(l) => setLedgers((xs) => [...xs, l])}
+              />
+            )}
+            {ledgers.length > 0 && <HowMade ledgers={ledgers} />}
           </div>
-          {source === 'sample' && <p className="small muted">{SAMPLE_SHARE.label}</p>}
-        </form>
+        </div>
 
         <KeyPanel keyId={keyId} setKeyId={setKeyId} keyProfile={key} />
-      </div>
-
-      <div className="page-section" style={{ maxWidth: 760 }}>
-        {stage.at === 'resolving' && <p className="muted">Reading the listing…</p>}
-        {stage.at === 'error' && <p className="error-line">{stage.message}</p>}
-        {stage.at === 'confirm' && <Confirm res={stage.res} onYes={(c) => void confirm(stage.res, c)} onNo={() => setStage({ at: 'result', res: stage.res, product: null })} />}
-        {stage.at === 'loading_product' && <p className="muted">Loading the product…</p>}
-        {stage.at === 'result' && (
-          <Result
-            res={stage.res}
-            product={stage.product}
-            keyProfile={key}
-            chips={chips}
-            setChips={setChips}
-            onLedger={(l) => setLedgers((xs) => [...xs, l])}
-          />
-        )}
-        {ledgers.length > 0 && <HowMade ledgers={ledgers} />}
       </div>
     </div>
   );
 }
 
+function StatusLine({ text }: { text: string }) {
+  return (
+    <p className="status-line" role="status">
+      <Icon name="circle-dot" />
+      {text}
+    </p>
+  );
+}
+
 function KeyPanel({ keyId, setKeyId, keyProfile }: { keyId: string; setKeyId: (id: string) => void; keyProfile: KeyProfile }) {
   return (
-    <div className="panel">
+    <aside className="card reading-panel" aria-labelledby="reading-panel-title">
+      <div className="reading-panel-head">
+        <span className="icon-disc">
+          <Icon name="droplet" />
+        </span>
+        <div>
+          <h2 id="reading-panel-title" className="section-head">
+            {COPY.reading.yours}
+          </h2>
+          <p className="caption">Sample readings, labelled. Not a scan of anyone.</p>
+        </div>
+      </div>
       <label className="field-label" htmlFor="key-select">
         Readings used for this check
       </label>
-      <select id="key-select" className="input" value={keyId} onChange={(e) => setKeyId(e.target.value)}>
-        {KEY_OPTIONS.map((o) => (
-          <option key={o.id} value={o.id}>
-            {o.id === 'demo' ? 'Demo Key (sample readings)' : `Reading profile: ${o.label}`}
-          </option>
-        ))}
-      </select>
-      <p className="small muted" style={{ marginTop: 10 }}>
-        Sample readings, labelled. Not a scan of anyone. Your own Key is made in the Android app and stays on your phone.
-      </p>
-      <ul style={{ marginTop: 8 }}>
-        {(['oiliness', 'moisture', 'redness', 'pore'] as const).map((c) => (
-          <li key={c} className="ui-row">
-            <span>{c[0]!.toUpperCase() + c.slice(1)} reading</span>
-            <strong>{keyProfile.bands[c].level}</strong>
-          </li>
-        ))}
-      </ul>
-      <p className="small muted" style={{ marginTop: 8 }}>
-        {COPY.accuracyNote}
-      </p>
-    </div>
+      <div className="select-wrap">
+        <select id="key-select" className="select" value={keyId} onChange={(e) => setKeyId(e.target.value)}>
+          {KEY_OPTIONS.map((o) => (
+            <option key={o.id} value={o.id}>
+              {o.id === 'demo' ? `${COPY.reading.demo} (sample readings)` : `Reading profile: ${o.label}`}
+            </option>
+          ))}
+        </select>
+      </div>
+      <BandList bands={keyProfile.bands} />
+      <p className="caption">Your own reading is made in the Android app and stays on your phone. {COPY.accuracyNote}</p>
+    </aside>
   );
 }
 
@@ -199,11 +218,14 @@ function Confirm({ res, onYes, onNo }: { res: ResolveResponse; onYes: (c: Resolv
   if (!top) return null;
   if (res.outcome === 'match')
     return (
-      <div className="panel">
-        <p className="verdict-sub">
+      <section className="card confirm" aria-labelledby="confirm-title">
+        <h2 id="confirm-title" className="section-head">
+          {COPY.productKicker}
+        </h2>
+        <p className="confirm-name">
           We think this is <strong>{productLine(top.product)}</strong>.
         </p>
-        <div className="row" style={{ marginTop: 16 }}>
+        <div className="btn-pair">
           <button className="btn btn-primary" type="button" onClick={() => onYes(top)}>
             Yes
           </button>
@@ -211,34 +233,60 @@ function Confirm({ res, onYes, onNo }: { res: ResolveResponse; onYes: (c: Resolv
             Not this
           </button>
         </div>
-        <p className="small muted" style={{ marginTop: 12 }}>
-          No verdict appears before you confirm the product.
-        </p>
-      </div>
+        <p className="caption">No verdict appears before you confirm the product.</p>
+      </section>
     );
   return (
-    <div className="panel">
-      <p className="verdict-sub">Which product is it?</p>
-      <ul style={{ marginTop: 8 }}>
+    <section className="card confirm" aria-labelledby="confirm-title">
+      <h2 id="confirm-title" className="section-head">
+        {COPY.skuChoose}
+      </h2>
+      <ul className="candidates">
         {[top, ...rest].map((c) => (
-          <li key={c.catalogId} className="candidate">
-            <span>{productLine(c.product)}</span>
-            <button className="btn btn-secondary btn-sm" type="button" onClick={() => onYes(c)}>
-              This one
+          <li key={c.catalogId}>
+            <button className="candidate" type="button" onClick={() => onYes(c)}>
+              <span className="thumb">
+                <Icon name="droplet" size={24} />
+              </span>
+              <span className="candidate-name">{productLine(c.product)}</span>
+              <Icon name="chevron-right" />
             </button>
           </li>
         ))}
       </ul>
-      <button className="btn btn-secondary btn-sm" type="button" onClick={onNo} style={{ marginTop: 12 }}>
+      <button className="btn btn-secondary btn-block" type="button" onClick={onNo}>
         None of these
       </button>
-    </div>
+      <p className="caption">We check nothing until you pick.</p>
+    </section>
   );
+}
+
+function readingRow(keyId: string): LedgerRow {
+  const profile = READING_PROFILES.find((p) => p.id === keyId);
+  return profile
+    ? { key: 'Reading', value: `Reading profile: ${profile.label}, a set band combination, not a scan`, sub: 'No photo taken' }
+    : { key: 'Reading', value: `${COPY.reading.demo}: labelled sample readings, not a scan`, sub: 'No photo taken' };
+}
+
+function productRow(inciSource: string | null, product: CatalogProduct | null, labelCount: number, catalogCount: number | null): LedgerRow {
+  if (inciSource === 'catalog_verified') {
+    const by = product?.verified_by;
+    return {
+      key: 'Product',
+      value: COPY.catalogSource,
+      sub: by === 'human' ? COPY.catalogHumanChecked : by === 'brand_page_check' ? COPY.catalogBrandPageChecked : 'Copied from the brand page',
+      links: product?.source_url ? [{ label: 'Ingredient list source', href: product.source_url }] : [],
+    };
+  }
+  if (inciSource === 'label_photo_confirmed') return { key: 'Product', value: COPY.labelPhotoProvenance, sub: `${labelCount} ingredients` };
+  return { key: 'Product', value: 'Product name only', sub: catalogCount != null ? COPY.catalogCount(catalogCount) : null };
 }
 
 function Result({
   res,
   product,
+  keyId,
   keyProfile,
   chips,
   setChips,
@@ -246,6 +294,7 @@ function Result({
 }: {
   res: ResolveResponse | null;
   product: CatalogProduct | null;
+  keyId: string;
   keyProfile: KeyProfile;
   chips: Chip[] | null;
   setChips: (c: Chip[] | null) => void;
@@ -268,10 +317,10 @@ function Result({
 
   if (res?.outcome === 'not_skincare' && !product)
     return (
-      <div className="panel">
-        <p className="verdict-sub">This doesn't look like a skincare listing.</p>
-        <p style={{ marginTop: 8 }}>SkinKey checks face skincare: moisturisers, sunscreens, cleansers, serums and tints.</p>
-      </div>
+      <section className="card">
+        <h2 className="section-head">This doesn't look like a skincare listing.</h2>
+        <p>{COPY.appName} checks face skincare: moisturisers, sunscreens, cleansers, serums and tints.</p>
+      </section>
     );
   if (!v) return <p className="error-line">The rules package couldn't run in this build.</p>;
 
@@ -286,21 +335,33 @@ function Result({
           rulesetHash: v.provenance.rulesetHash,
         })
       : null;
+  const ledger: LedgerRow[] = [
+    readingRow(keyId),
+    productRow(inciSource, product, confirmed?.length ?? 0, res?.catalogCount ?? null),
+    rulesRow(v),
+    limitsRow,
+  ];
+  const title = product ? `${product.brand} ${product.name}` : (res?.extractedTitle ?? null);
 
   return (
-    <div className="stack" style={{ display: 'grid', gap: 24 }}>
-      {product && <p className="small muted">{productLine(product)}</p>}
-      <VerdictCard verdict={v} note={'note' in v ? v.note : undefined} provenanceOverride={confirmed ? `${v.provenance.line} · ${COPY.labelPhotoProvenance}` : undefined} />
+    <div className="result">
+      {title && (
+        <header className="product-header">
+          <h2 className="product-title">{title}</h2>
+          {product?.size && <p className="caption">{product.size}</p>}
+        </header>
+      )}
+      <VerdictCard verdict={v} note={'note' in v ? v.note : undefined} ledger={ledger} demo={keyId === 'demo'} />
       {v.label === 'UNKNOWN' && !confirmed && (
         <LabelPhoto catalogCount={res?.catalogCount ?? null} chips={chips} setChips={setChips} onLedger={onLedger} onConfirm={setConfirmed} />
       )}
       {v.label !== 'MEDICINE' && <BetterMatches product={product} keyProfile={keyProfile} />}
       {shareToken && (
-        <p className="small">
+        <p className="share-line">
           <Link className="text-link" to={`/r/${shareToken}`}>
             Open a shareable result page
           </Link>{' '}
-          <span className="muted">(product, label, rule ids and ruleset hash only; no readings, no photo)</span>
+          <span className="caption">(product, label, rule ids and ruleset hash only; no readings, no photo)</span>
         </p>
       )}
     </div>
@@ -346,32 +407,36 @@ function LabelPhoto({
   const remove = (id: number) => setChips((chips ?? []).filter((c) => c.id !== id));
 
   return (
-    <div className="panel">
-      {catalogCount != null && <p className="small muted">{COPY.catalogCount(catalogCount)}</p>}
+    <section className="card label-photo" aria-labelledby="label-photo-title">
+      <h2 id="label-photo-title" className="section-head">
+        Next step
+      </h2>
+      {catalogCount != null && <p className="caption">{COPY.catalogCount(catalogCount)}</p>}
       {!chips ? (
         <>
-          <label className="btn btn-primary" style={{ marginTop: 12 }}>
+          <label className="btn btn-primary btn-file">
+            <Icon name="camera" />
             {busy ? 'Reading the label…' : COPY.snapLabel.replace(/\.$/, '')}
             <input type="file" accept="image/*" capture="environment" className="visually-hidden" disabled={busy} onChange={(e) => void onFile(e.target.files?.[0])} />
           </label>
-          <p className="small muted" style={{ marginTop: 10 }}>
+          <p className="caption">
             A photo of the ingredient list only. Claude reads it into ingredient names; you check them before any rule runs.
             The photo is not stored.
           </p>
         </>
       ) : (
         <>
-          <p className="ui-title">Check the ingredient names</p>
-          <p className="small muted" style={{ marginTop: 4 }}>
+          <p className="body-strong">Check the ingredient names</p>
+          <p className="caption">
             Dashed names were hard to read. Edit or remove any name, then run the rules.
             {unreadable > 0 && ` ${unreadable} part${unreadable === 1 ? '' : 's'} of the photo couldn't be read.`}
           </p>
-          <div className="chips" style={{ marginTop: 12 }}>
+          <div className="chips">
             {chips.map((c) => (
               <span key={c.id} className="chip-edit" data-uncertain={c.uncertain}>
                 <input aria-label="Ingredient name" value={c.value} size={Math.max(4, c.value.length)} onChange={(e) => update(c.id, e.target.value)} />
                 <button type="button" aria-label={`Remove ${c.value}`} onClick={() => remove(c.id)}>
-                  ×
+                  <Icon name="close" size={16} />
                 </button>
               </span>
             ))}
@@ -383,7 +448,7 @@ function LabelPhoto({
               Add a name
             </button>
           </div>
-          <div className="row" style={{ marginTop: 16 }}>
+          <div className="btn-pair">
             <button
               type="button"
               className="btn btn-primary"
@@ -406,7 +471,7 @@ function LabelPhoto({
         </>
       )}
       {error && <p className="error-line">{error}</p>}
-    </div>
+    </section>
   );
 }
 
@@ -433,36 +498,39 @@ function BetterMatches({ product, keyProfile }: { product: CatalogProduct | null
   const facet = facetFor(keyProfile);
   if (!category) return null;
   return (
-    <section className="panel" aria-labelledby="matches-title">
-      <h2 id="matches-title" className="ui-title">
+    <section className="matches" aria-labelledby="matches-title">
+      <h2 id="matches-title" className="section-head">
         Better matches
       </h2>
-      <p className="small muted">{COPY.betterMatchesHeader}</p>
-      {matches === null && <p className="small muted" style={{ marginTop: 12 }}>Ranking the catalogue…</p>}
-      {matches?.length === 0 && <p style={{ marginTop: 12 }}>No verified product in this category fits these readings yet.</p>}
-      <ul style={{ marginTop: 8 }}>
-        {matches?.map(({ m, p }) => (
-          <li key={m.productId} className="candidate">
-            <span>
-              <strong>{productLine(p)}</strong>
-              <span className="small muted" style={{ display: 'block' }}>
-                {m.reasonLine}
-              </span>
+      <p className="honesty-line">{COPY.betterMatchesHeader}</p>
+      {matches === null && <StatusLine text="Ranking the catalogue…" />}
+      {matches?.length === 0 && <p>{COPY.noMatches}. No verified product in this category fits these readings yet.</p>}
+      <ul className="match-list">
+        {matches?.map(({ m, p }, i) => (
+          <li key={m.productId} className={i === 0 ? 'match match-hero' : 'match'}>
+            <span className="thumb">
+              <Icon name="droplet" size={24} />
             </span>
-            <a className="btn btn-secondary btn-sm" href={m.searchUrl}>
+            <span className="match-text">
+              <span className="match-name">{productLine(p)}</span>
+              <span className="match-reason">{m.reasonLine}</span>
+              <span className="caption">{COPY.linkOutMatch}</span>
+            </span>
+            <a className="btn btn-secondary btn-sm" href={m.searchUrl} aria-label={`Flipkart search for ${p.brand} ${p.name}`}>
               Flipkart search
+              <Icon name="arrow-up-right" size={16} />
             </a>
           </li>
         ))}
       </ul>
       {facet && (
-        <p className="small" style={{ marginTop: 12 }}>
+        <p className="facet-line">
           <a className="text-link" href={flipkartFacetSearch(category.replace(/_/g, ' '), facet)}>
             {COPY.flipkartFacetLink(facet)}
           </a>
         </p>
       )}
-      {!config.affiliate.flipkart.live && <p className="small muted" style={{ marginTop: 8 }}>Links are plain keyword searches with no tracking tag.</p>}
+      {!config.affiliate.flipkart.live && <p className="caption">Links are plain keyword searches with no tracking tag.</p>}
     </section>
   );
 }
@@ -471,32 +539,38 @@ function HowMade({ ledgers }: { ledgers: HowThisWasMade[] }) {
   const entries = ledgers.flatMap((l) => l.entries);
   const mock = ledgers.some((l) => l.mock);
   return (
-    <details className="panel-sunken" style={{ marginTop: 24 }}>
-      <summary style={{ cursor: 'pointer', fontWeight: 600 }}>How this was made</summary>
-      {mock && <p className="small muted" style={{ marginTop: 8 }}>Mock mode: these calls were replayed from recorded fixtures.</p>}
-      <table className="data" style={{ marginTop: 8 }}>
-        <thead>
-          <tr>
-            <th scope="col">Call</th>
-            <th scope="col">Status</th>
-            <th scope="col">Latency</th>
-            <th scope="col">Units</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((e, i) => (
-            <tr key={i}>
-              <th scope="row">
-                {e.feature.replace(/_/g, ' ')}
-                {e.model && <div className="small muted">{e.model}</div>}
-              </th>
-              <td>{e.status}</td>
-              <td>{e.latencyMs} ms</td>
-              <td>{e.units}</td>
+    <details className="how-made">
+      <summary>
+        How this was made
+        <Icon name="chevron-right" className="summary-chevron" />
+      </summary>
+      <p className="how-made-lead">{COPY.howMadeBoundary}</p>
+      {mock && <p className="caption">Mock mode: these calls were replayed from recorded fixtures.</p>}
+      <div className="table-scroll">
+        <table className="data">
+          <thead>
+            <tr>
+              <th scope="col">Call</th>
+              <th scope="col">Status</th>
+              <th scope="col">Latency</th>
+              <th scope="col">Units</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {entries.map((e, i) => (
+              <tr key={i}>
+                <th scope="row">
+                  {e.feature.replace(/_/g, ' ')}
+                  {e.model && <div className="caption">{e.model}</div>}
+                </th>
+                <td>{e.status}</td>
+                <td>{e.latencyMs} ms</td>
+                <td>{e.units}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </details>
   );
 }

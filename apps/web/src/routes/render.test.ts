@@ -22,7 +22,7 @@ const text = (html: string) => html.replace(/<[^>]+>/g, ' ').replace(/&#x27;|&#3
 
 describe('web routes render', () => {
   const pages: [string, ComponentType, RegExp][] = [
-    ['/', Landing, /SkinKey/],
+    ['/', Landing, /Silver Mirror/],
     ['/check', Check, /./],
     ['/rules', Rules, /./],
     ['/how', How, /Claude/],

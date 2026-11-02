@@ -1,15 +1,12 @@
 import { COPY, DEMO_KEY } from '@skinkey/contracts';
+import { BandList } from '../BandList';
+import { Icon } from '../Icon';
 
-const KEEP = (['oiliness', 'moisture', 'redness', 'pore'] as const).map((c) => ({
-  concern: c[0]!.toUpperCase() + c.slice(1),
-  level: DEMO_KEY.bands[c].level,
-}));
-
-const STEPS = [COPY.scanSteps.upload, COPY.scanSteps.analyse, COPY.scanSteps.read, COPY.scanSteps.delete];
+const STEPS = [COPY.scanStepsDone.upload, COPY.scanStepsDone.analyse, COPY.scanStepsDone.read, COPY.scanStepsDone.delete];
 
 export function Honesty() {
   return (
-    <section className="field-ink honesty on-ink" data-tone="ink" aria-labelledby="honesty-title">
+    <section className="honesty" aria-labelledby="honesty-title">
       <div className="wrap">
         <div className="honesty-grid">
           <div data-reveal>
@@ -39,8 +36,8 @@ export function Honesty() {
             <div>
               <dt>Medicines are not checked.</dt>
               <dd>
-                If a listing contains adapalene, benzoyl peroxide or another gated ingredient, there is no verdict. SkinKey
-                says to ask a pharmacist or doctor.
+                If a listing contains adapalene, benzoyl peroxide or another gated ingredient, there is no verdict. Silver
+                Mirror says to ask a pharmacist or doctor.
               </dd>
             </div>
             <div>
@@ -60,38 +57,28 @@ export function Honesty() {
           </dl>
         </div>
         <div className="honesty-frags">
-          <div className="ui ui-pad" data-ui data-reveal>
-            <div>
-              <p className="ui-title">Making your Key</p>
-              <p className="ui-small">Example of the processing screen</p>
-              <ol className="status-steps" style={{ marginTop: 14 }}>
-                {STEPS.map((s) => (
-                  <li key={s} data-state="done">
-                    {s}
-                  </li>
-                ))}
-              </ol>
-              <p className="ui-small" style={{ marginTop: 14 }}>
-                Measured by YouCam Skin Analysis HD, 1 Nov · photo deleted
-              </p>
-            </div>
+          <div className="ui-card" data-ui data-reveal>
+            <p className="ui-card-title">{COPY.reading.making}</p>
+            <p className="ui-caption">Example of the processing screen</p>
+            <ol className="checklist">
+              {STEPS.map((step, i) => (
+                <li key={step}>
+                  <Icon name="check-circle" size={24} />
+                  <span>{step}</span>
+                  {i === STEPS.length - 1 && <span className="stamp">{COPY.reading.photoDeletedStamp}</span>}
+                </li>
+              ))}
+            </ol>
+            <p className="ui-caption">Measured by YouCam Skin Analysis HD, 1 Nov · photo deleted</p>
           </div>
-          <div className="ui ui-pad" data-ui data-reveal>
-            <div>
-              <p className="ui-title">Demo Key</p>
-              <p className="ui-small">Sample readings, labelled. Not a scan of anyone.</p>
-              <ul style={{ marginTop: 10 }}>
-                {KEEP.map((k) => (
-                  <li key={k.concern} className="ui-row">
-                    <span>{k.concern} reading</span>
-                    <strong>{k.level}</strong>
-                  </li>
-                ))}
-              </ul>
-              <p className="ui-small" style={{ marginTop: 8 }}>
-                {COPY.accuracyNote}
-              </p>
-            </div>
+          <div className="ui-card" data-ui data-reveal>
+            <p className="ui-card-title">
+              {COPY.reading.demo}
+              <span className="demo-badge">Sample</span>
+            </p>
+            <p className="ui-caption">Sample readings, labelled. Not a scan of anyone.</p>
+            <BandList bands={DEMO_KEY.bands} />
+            <p className="ui-caption">{COPY.accuracyNote}</p>
           </div>
         </div>
       </div>

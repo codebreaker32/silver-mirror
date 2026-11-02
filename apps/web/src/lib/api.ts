@@ -13,7 +13,7 @@ export class WorkerError extends Error {
     readonly status: number,
     readonly body: ApiError | null,
   ) {
-    super(body?.error.message ?? (status === 0 ? 'The SkinKey Worker could not be reached.' : `Worker returned ${status}`));
+    super(body?.error.message ?? (status === 0 ? 'The Silver Mirror Worker could not be reached.' : `Worker returned ${status}`));
   }
 }
 

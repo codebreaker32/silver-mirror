@@ -1,35 +1,31 @@
-import { useEffect, useState } from 'react';
+import { COPY } from '@skinkey/contracts';
 
-const NAMES = [
-  'YouCam Skin Analysis HD',
-  'YouCam Facial Color Tones',
-  'YouCam Makeup VTO',
-  'YouCam task delete',
-  'Claude Opus 5.5',
-  'Cloudflare Workers',
-  'Expo',
+/** Plain names in columns: what the app is built on, grouped by job. No logos. */
+const GROUPS: { kind: string; names: string[] }[] = [
+  { kind: 'YouCam API, Perfect Corp', names: ['Skin Analysis HD', 'Facial Color Tones', 'Makeup VTO', 'Task delete'] },
+  { kind: 'Reading labels and titles', names: ['Claude Opus 5.5', 'Structured outputs', 'You confirm every name'] },
+  { kind: 'Making every call', names: ['Published rules package', 'Same code on the phone and here', 'Frozen before the audit'] },
+  { kind: 'Running it', names: ['Cloudflare Workers', 'Expo and React Native', 'This site: Vite and React'] },
 ];
 
 export function BuiltOn() {
-  const [lit, setLit] = useState(0);
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const id = window.setInterval(() => setLit((i) => (i + 1) % NAMES.length), 2000);
-    return () => window.clearInterval(id);
-  }, []);
   return (
-    <section className="field-sunken built" data-tone="sunken" aria-label="What SkinKey is built on">
-      <div className="wrap" data-reveal>
-        <p>
-          Built on{' '}
-          {NAMES.map((n, i) => (
-            <span key={n}>
-              <span className={`name${i === lit ? ' lit' : ''}`}>{n}</span>
-              {i < NAMES.length - 1 ? ', ' : ''}
-            </span>
+    <section className="built" aria-labelledby="built-title">
+      <div className="wrap built-grid">
+        <h2 id="built-title" data-reveal>
+          Built on
+        </h2>
+        <div className="built-cols" data-reveal>
+          {GROUPS.map((g) => (
+            <ul key={g.kind} aria-label={g.kind}>
+              <li className="built-kind">{g.kind}</li>
+              {g.names.map((n) => (
+                <li key={n}>{n}</li>
+              ))}
+            </ul>
           ))}
-          , and a set of published rules that make every call.
-        </p>
+        </div>
+        <p className="caption built-note">{COPY.howMadeBoundary} Claude never picks the verdict.</p>
       </div>
     </section>
   );

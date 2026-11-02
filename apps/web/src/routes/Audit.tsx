@@ -44,7 +44,7 @@ export function Audit() {
   return (
     <div className="page">
       <div className="page-head">
-        <h1>What the brand page says, checked against its own ingredients.</h1>
+        <h1>What the brand page says, checked against its own ingredients</h1>
         <p>
           Brands write “for oily skin”, “non-comedogenic” or “fragrance-free” on their own product pages. This audit takes
           those claims and the ingredient list on the same page, and runs them through our published rules. It reads only
