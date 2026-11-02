@@ -1,6 +1,6 @@
 // Claim linter (spec §9, brief §4.4). Scans user-facing copy for banned words with the
 // rules package's lintCopy(): string literals + JSX text in apps/mobile/src, apps/web/src,
-// packages/contracts/src (COPY), plus README.md and any .srt/.vtt subtitles.
+// packages/contracts/src (COPY), plus README.md, docs/DEVPOST.md, docs/DEMO_SCRIPT.md and any .srt/.vtt subtitles.
 // Run: npm run lint:claims  (bundled with esbuild; typescript is external; no network)
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -9,7 +9,7 @@ import { lintCopy, type LintViolation } from '@skinkey/rules';
 
 const root = process.env.SKINKEY_ROOT ?? process.cwd();
 const CODE_DIRS = ['apps/mobile/src', 'apps/web/src', 'packages/contracts/src'];
-const DOC_FILES = ['README.md'];
+const DOC_FILES = ['README.md', 'docs/DEVPOST.md', 'docs/DEMO_SCRIPT.md'];
 const SKIP_DIR = new Set(['node_modules', 'dist', 'android', 'ios', '__tests__', 'generated', '.expo']);
 const isTest = (f: string) => /\.(test|spec)\.tsx?$/.test(f) || /jest\.setup/.test(f);
 
