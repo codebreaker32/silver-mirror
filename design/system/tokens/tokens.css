@@ -979,6 +979,7 @@
   --sk-consent-sheet-checkbox-checked: var(--sk-color-accent);
   --sk-consent-sheet-checkbox-check: var(--sk-color-on-accent);
   --sk-consent-sheet-checkbox-row-bg: transparent;
+  --sk-capture-guide-surround: var(--sk-graphite-950);
   --sk-capture-guide-overlay: var(--sk-color-overlay-camera);
   --sk-capture-guide-oval: var(--sk-color-on-overlay);
   --sk-capture-guide-oval-stroke-width: 1.5px;

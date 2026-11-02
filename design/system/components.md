@@ -85,7 +85,7 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 | `color.secondary-bg` | #E7E5EC (`pearl.150`) | #30313C (`graphite.750`) |
 | `color.secondary-bg-pressed` | #DCDAE3 (`pearl.200`) | #3A3B47 (`graphite.700`) |
 | `color.on-secondary` | #1A1B23 (`graphite.900`) | #EFEEF3 (`pearl.100`) |
-| `color.accent-warm` | #CFC4BB (`greige.300`) | #4A4038 (`greige.800`) |
+| `color.accent-warm` | #CFC4BB (`greige.300`) | #3D3936 (`greige.850`) |
 | `color.on-accent-warm` | #4A4038 (`greige.800`) | #E4DCD5 (`greige.200`) |
 | `color.icon-disc` | #ECE9F5 (`lavender.100`) | #34304F (`lavender.800`) |
 | `color.on-icon-disc` | #3B3F52 (`slate.700`) | #DDD8EE (`lavender.200`) |
@@ -118,11 +118,11 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 | `color.mark.tile-bottom` | #E7E5EC (`pearl.150`) | #1A1B23 (`graphite.900`) |
 | `color.mark.tile-edge` | #DCDAE3 (`pearl.200`) | #3A3B47 (`graphite.700`) |
 | `color.mark.chrome-hi` | #EEEDF3 (`chrome.100`) | #FBFBFD (`chrome.50`) |
-| `color.mark.chrome-1` | #BDBBC9 (`chrome.300`) | #D9D8E1 (`chrome.200`) |
-| `color.mark.chrome-2` | #838194 (`chrome.500`) | #9F9DAE (`chrome.400`) |
+| `color.mark.chrome-1` | #9F9DAE (`chrome.400`) | #D9D8E1 (`chrome.200`) |
+| `color.mark.chrome-2` | #686678 (`chrome.600`) | #9F9DAE (`chrome.400`) |
 | `color.mark.chrome-3` | #CBC5E0 (`chrome.lav`) | #CBC5E0 (`chrome.lav`) |
-| `color.mark.chrome-4` | #686678 (`chrome.600`) | #838194 (`chrome.500`) |
-| `color.mark.chrome-lo` | #4F4D5E (`chrome.700`) | #686678 (`chrome.600`) |
+| `color.mark.chrome-4` | #4F4D5E (`chrome.700`) | #838194 (`chrome.500`) |
+| `color.mark.chrome-lo` | #2F3243 (`slate.800`) | #686678 (`chrome.600`) |
 | `color.mark.glint` | #FFFFFF (`white`) | #FFFFFF (`white`) |
 | `color.mark.shade` | #2A2D40 (`slate.shadow`) | #0E0F14 (`graphite.975`) |
 | `verdict.fits.bg` | #E2EEE8 (`sage.100`) | #1A2A25 (`sage.900`) |
@@ -682,7 +682,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.nameOnly.borderStyle` | — | dashed | same |
 | `verdictCard.nameOnly.qualifier` | `type.label` | Geist 600 14/20 | same |
 | `verdictCard.nameOnly.qualifierColor` | `color.text-muted` | #4B4958 | #C6C3CF |
-| `verdictCard.demoBadge.bg` | `color.accent-warm` | #CFC4BB | #4A4038 |
+| `verdictCard.demoBadge.bg` | `color.accent-warm` | #CFC4BB | #3D3936 |
 | `verdictCard.demoBadge.fg` | `color.on-accent-warm` | #4A4038 | #E4DCD5 |
 | `verdictCard.demoBadge.type` | `type.labelSm` | Geist 600 13/16 | same |
 | `verdictCard.demoBadge.radius` | `radius.full` | 9999 | same |
@@ -1166,6 +1166,7 @@ No screen-level overline ("Before the camera opens" is gone).
 <!-- tokens:captureGuide -->
 | Token | References | Light | Dark |
 |---|---|---|---|
+| `captureGuide.surround` | `graphite.950` | #121319 | same |
 | `captureGuide.overlay` | `color.overlay-camera` | rgba(14, 15, 20, 0.62) | same |
 | `captureGuide.oval` | `color.on-overlay` | #FFFFFF | same |
 | `captureGuide.ovalStrokeWidth` | — | 1.5 | same |

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Linking, Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import { CameraView, useCameraPermissions, type CameraType } from 'expo-camera';
+import { StatusBar } from 'expo-status-bar';
 import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Ellipse, Path } from 'react-native-svg';
@@ -27,7 +28,8 @@ interface Props {
 /**
  * Camera overlay in dp: dims outside the 72% oval, draws the faint oval and the four white corner brackets
  * (captureGuide.bracket*), and masks the frame corners to frameRadius so the live preview reads as a rounded frame
- * even where the native preview ignores overflow clipping.
+ * even where the native preview ignores overflow clipping. The surround is captureGuide.surround (dark in both themes):
+ * inverse-surface is near-white in dark mode and hid the white Back chevron and shutter ring.
  */
 function FrameOverlay({ width, height }: { width: number; height: number }) {
   const theme = useTheme();
@@ -55,7 +57,7 @@ function FrameOverlay({ width, height }: { width: number; height: number }) {
       {brackets.map((d) => (
         <Path key={d} d={d} stroke={g.bracket} strokeWidth={g.bracketWidth} strokeLinecap="round" strokeLinejoin="round" fill="none" />
       ))}
-      <Path d={corners} fill={theme.colors.inverseSurface} fillRule="evenodd" />
+      <Path d={corners} fill={g.surround} fillRule="evenodd" />
     </Svg>
   );
 }
@@ -173,7 +175,9 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
   const message = tip !== null ? TIPS[tip]! : (hint ?? CAPTURE_TIPS[0]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.inverseSurface }}>
+    <View style={{ flex: 1, backgroundColor: g.surround }}>
+      {/* Light status-bar icons on the dark surround in both themes; the root SystemChrome style returns on unmount. */}
+      <StatusBar style="light" />
       <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom', 'left', 'right']}>
         <View style={{ minHeight: theme.components.appBar.minHeight, flexDirection: 'row', alignItems: 'center', paddingHorizontal: theme.space[1], gap: theme.space[2] }}>
           <IconButton icon="chevron-left" accessibilityLabel="Back" onPress={onCancel} color={media} />
@@ -183,7 +187,7 @@ export function CaptureGuide({ variant, hint, onCaptured, onCancel }: Props) {
         </View>
         <View
           onLayout={onLayout}
-          style={{ flex: 1, marginHorizontal: theme.space[3], borderRadius: g.frameRadius, overflow: 'hidden', backgroundColor: theme.colors.inverseSurface }}
+          style={{ flex: 1, marginHorizontal: theme.space[3], borderRadius: g.frameRadius, overflow: 'hidden', backgroundColor: g.surround }}
         >
           <CameraView
             ref={camera}

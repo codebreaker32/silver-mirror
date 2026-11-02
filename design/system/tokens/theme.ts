@@ -1431,6 +1431,7 @@ export interface ThemeComponents {
     };
   };
   captureGuide: {
+    surround: string;
     overlay: string;
     oval: string;
     ovalStrokeWidth: number;
@@ -3065,6 +3066,7 @@ export const lightTheme: SkinKeyTheme = {
         }
       },
       "captureGuide": {
+        "surround": "#121319",
         "overlay": "rgba(14, 15, 20, 0.62)",
         "oval": "#FFFFFF",
         "ovalStrokeWidth": 1.5,
@@ -4691,6 +4693,7 @@ export const darkTheme: SkinKeyTheme = {
         }
       },
       "captureGuide": {
+        "surround": "#121319",
         "overlay": "rgba(14, 15, 20, 0.62)",
         "oval": "#FFFFFF",
         "ovalStrokeWidth": 1.5,

@@ -88,6 +88,8 @@ add('color.inverse-link', 'color.inverse-surface', 'text', 'Snackbar action');
 add('color.disabled-fg', 'color.disabled-bg', 'text', 'Disabled primary button label (stricter than WCAG on purpose)');
 add('color.on-overlay', 'color.overlay-camera', 'text', 'Capture hints, try-on badges over live camera', { camera: true });
 add('color.on-overlay', 'color.overlay-camera', 'ui', 'Capture oval, barcode corners, shutter ring over live camera', { camera: true });
+add('color.on-overlay', 'component.captureGuide.surround', 'ui', 'Back chevron, shutter ring, tip and flip icons on the camera screen surround');
+add('color.on-overlay', 'component.captureGuide.surround', 'text', 'Text on the camera screen surround');
 add('color.qr.module', 'color.qr.field', 'ui', 'QR modules (scanner)');
 add('color.focus-ring-inverse', 'color.inverse-surface', 'ui', 'Focus ring on the snackbar action (inverse surface)');
 add('color.focus-ring-overlay', 'color.overlay-camera', 'ui', 'Focus ring on shutter, flip, Tips, torch, Type the barcode, try-on handle', { camera: true });

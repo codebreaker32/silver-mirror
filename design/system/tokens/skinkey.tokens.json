@@ -1393,6 +1393,8 @@
     },
     "captureGuide": {
       "$rule": "Live camera in a rounded frame with four thin corner brackets and a faint oval. No face detection, no dotted mesh on a real face, no model photo. One hint pill at a time at the top. Volume keys fire the shutter.",
+      "surround": "{graphite.950}",
+      "$surround": "The camera screen's own background (app bar, frame corners, shutter row). Dark in BOTH modes, like a viewfinder, so on-overlay white controls read on it; never inverse-surface, which is near-white in dark mode.",
       "overlay": "{color.overlay-camera}",
       "oval": "{color.on-overlay}",
       "ovalStrokeWidth": 1.5,
