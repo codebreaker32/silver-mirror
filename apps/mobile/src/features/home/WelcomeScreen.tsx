@@ -1,15 +1,20 @@
 import { useCallback, useEffect } from 'react';
-import { BackHandler, View } from 'react-native';
+import { BackHandler, Image, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { useKey } from '@/features/key';
-import { LiquidBackdrop, PillButton, SilverMark, Txt, Wordmark } from '@/components';
+import { PillButton, Txt, Wordmark } from '@/components';
 import { markWelcomeSeen } from './welcomeStore';
 
+// Liquid-silver backdrop and the swash S, both taken from Aman's showcase (design/reference/showcase/01_welcome.png):
+// the backdrop with the text and buttons removed, the S redrawn at full resolution (silver-s.png, 360x520).
+const BACKDROP = require('../../../assets/images/welcome-backdrop.jpg');
+const SWASH_S = require('../../../assets/images/silver-s.png');
+
 /**
- * First-run welcome (DESIGN.md §9.1, showcase 01_welcome): the drawn liquid-silver backdrop, the chrome S, the serif
+ * First-run welcome (DESIGN.md §9.1, showcase 01_welcome): the liquid-silver backdrop, the swash S, the serif
  * wordmark and the brand line in one centred block, then slate "Get started" and a translucent "Use the Demo reading"
  * at the bottom. No carousel, no account step. Both actions land on Home; Android back counts as Get started.
  */
@@ -42,10 +47,10 @@ export default function WelcomeScreen() {
 
   return (
     <View testID="welcome" style={{ flex: 1, backgroundColor: t.colors.bg }}>
-      <LiquidBackdrop />
+      <Image source={BACKDROP} resizeMode="cover" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }} />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: t.space[8], paddingTop: insets.top + t.space[6], paddingBottom: t.space[12] }}>
         <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-          <SilverMark size={b.heroMark} tile={false} />
+          <Image source={SWASH_S} resizeMode="contain" style={{ width: 72, height: 104 }} />
         </View>
         <View style={{ marginTop: t.space[6] }}>
           <Wordmark capHeight={b.wordmarkHero} header />
