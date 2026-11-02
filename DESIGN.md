@@ -50,6 +50,9 @@ Tokens `2.2.0` re-map light to `design/reference/colors-reference.png`. The app 
 | `color.icon-disc` / `on-icon-disc` | `#F3DDEC` / `#6A4673` | Pinker lilac disc |
 | `color.border-strong` / `tab-inactive` | mauve.500 `#85768D` | ≥3:1 on every page stop |
 | Verdicts | FITS sage, CAUTION amber (unchanged); UNKNOWN blush neutral `#F3ECF5` with a plum fg; MEDICINE on the page bg | All AA |
+| `color.sheen.start / lavender / silver / end` | `#FDF8FD` `#F3E6F5` `#F6DDEB` `#EEDFF2` | Face-frame, empty-state and try-on plates (`SheenBackdrop`). No grey stop: the `silver` role is blush pink since 2.2.1. The mist ramp is retired |
+| `color.secondary-translucent` / `-edge` | `rgba(252,240,248,0.70)` / `rgba(255,255,255,0.70)` | Blush glass: welcome Demo pill, consent pair, Home sample pill |
+| `color.welcome-wash` | `rgba(246,221,235,0.30)` | Pink-lavender wash over the cool welcome photo |
 
 `check-contrast.mjs` (2.2) gates 462 pairs + 31 lints, 0 failures, including the page stops, glass, the plum button and the three tiles.
 

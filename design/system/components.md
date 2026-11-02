@@ -96,8 +96,9 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 | `color.secondary-bg` | #EEE0F2 | #30313C (`graphite.750`) |
 | `color.secondary-bg-pressed` | #E0CDE8 (`blush.300`) | #3A3B47 (`graphite.700`) |
 | `color.on-secondary` | #241B29 (`mauve.900`) | #EFEEF3 (`pearl.100`) |
-| `color.secondary-translucent` | rgba(255, 255, 255, 0.55) | rgba(239, 238, 243, 0.10) |
+| `color.secondary-translucent` | rgba(252, 240, 248, 0.70) | rgba(239, 238, 243, 0.10) |
 | `color.secondary-translucent-edge` | rgba(255, 255, 255, 0.70) | rgba(239, 238, 243, 0.07) (`color.sheen-edge`) |
+| `color.welcome-wash` | rgba(246, 221, 235, 0.30) | rgba(18, 19, 25, 0.00) |
 | `color.thumb-tile` | #EADEEA (`petal.lilac`) | #272832 (`graphite.800`) |
 | `color.segment-track` | #E8D8EE (`blush.250`) | #272832 (`graphite.800`) |
 | `color.segment-thumb` | #FFFFFF (`white`) | #3A3B47 (`graphite.700`) |
@@ -135,10 +136,10 @@ Ratios for every pair are in `tokens/contrast-report.md` (260 gated pairs, 0 fai
 | `color.state.hover` | rgba(36, 27, 41, 0.05) | rgba(239, 238, 243, 0.06) |
 | `color.state.ripple` | rgba(36, 27, 41, 0.12) | rgba(239, 238, 243, 0.14) |
 | `color.state.ripple-on-accent` | rgba(255, 255, 255, 0.18) | rgba(47, 50, 67, 0.16) |
-| `color.sheen.start` | #FDFCFE | #262733 |
-| `color.sheen.lavender` | #ECE8F4 | #24222F |
-| `color.sheen.silver` | #E4E3EA | #1C1D25 |
-| `color.sheen.end` | #EFECF2 (`mist.100`) | #121319 (`graphite.950`) |
+| `color.sheen.start` | #FDF8FD | #262733 |
+| `color.sheen.lavender` | #F3E6F5 | #24222F |
+| `color.sheen.silver` | #F6DDEB | #1C1D25 |
+| `color.sheen.end` | #EEDFF2 | #121319 (`graphite.950`) |
 | `color.mark.tile-top` | #FFFFFF (`white`) | #30313C (`graphite.750`) |
 | `color.mark.tile-bottom` | #E7E5EC (`pearl.150`) | #1A1B23 (`graphite.900`) |
 | `color.mark.tile-edge` | #DCDAE3 (`pearl.200`) | #3A3B47 (`graphite.700`) |
@@ -420,7 +421,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.destructiveNeutral.leadingIcon` | — | trash | same |
 | `button.destructiveNeutral.fgDisabled` | `color.disabled-fg` | #67596E | #A8A5B3 |
 | `button.destructiveNeutral.borderDisabled` | `color.border` | #EBDDEF | #30313C |
-| `button.consentPair.bg` | `color.secondary-translucent` | rgba(255, 255, 255, 0.55) | rgba(239, 238, 243, 0.10) |
+| `button.consentPair.bg` | `color.secondary-translucent` | rgba(252, 240, 248, 0.70) | rgba(239, 238, 243, 0.10) |
 | `button.consentPair.fg` | `color.text` | #241B29 | #EFEEF3 |
 | `button.consentPair.border` | `color.secondary-translucent-edge` | rgba(255, 255, 255, 0.70) | rgba(239, 238, 243, 0.07) |
 | `button.consentPair.borderWidth` | — | 1 | same |
@@ -432,7 +433,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.consentPair.fgDisabled` | `color.disabled-fg` | #67596E | #A8A5B3 |
 | `button.consentPair.borderDisabled` | `color.border` | #EBDDEF | #30313C |
 | `button.stackAtFontScale` | — | 1.3 | same |
-| `button.translucent.bg` | `color.secondary-translucent` | rgba(255, 255, 255, 0.55) | rgba(239, 238, 243, 0.10) |
+| `button.translucent.bg` | `color.secondary-translucent` | rgba(252, 240, 248, 0.70) | rgba(239, 238, 243, 0.10) |
 | `button.translucent.fg` | `color.text` | #241B29 | #EFEEF3 |
 | `button.translucent.border` | `color.secondary-translucent-edge` | rgba(255, 255, 255, 0.70) | rgba(239, 238, 243, 0.07) |
 | `button.translucent.borderWidth` | — | 1 | same |
@@ -1910,7 +1911,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `stateView.titleColor` | `color.text` | #241B29 | #EFEEF3 |
 | `stateView.body` | `type.body` | Geist 400 15/22 | same |
 | `stateView.bodyColor` | `color.text-muted` | #54475B | #C6C3CF |
-| `stateView.plateBg` | `color.sheen.lavender` | #ECE8F4 | #24222F |
+| `stateView.plateBg` | `color.sheen.lavender` | #F3E6F5 | #24222F |
 | `stateView.plateRadius` | `radius.lg` | 24 | same |
 | `stateView.gap` | `space.2` | 8 | same |
 | `stateView.offlineBanner.bg` | — | transparent | same |

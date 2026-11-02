@@ -68,13 +68,6 @@ export const palette = {
     "200": "#DCDAE3",
     "300": "#C6C3CF"
   },
-  "mist": {
-    "50": "#F5F3F8",
-    "100": "#EFECF2",
-    "150": "#E7E3EC",
-    "200": "#DDD9E3",
-    "250": "#E3DFE9"
-  },
   "silver": {
     "400": "#A8A5B3",
     "450": "#9895A4",
@@ -656,6 +649,7 @@ export interface ThemeColors {
   onSecondary: string;
   secondaryTranslucent: string;
   secondaryTranslucentEdge: string;
+  welcomeWash: string;
   thumbTile: string;
   segmentTrack: string;
   segmentThumb: string;
@@ -2329,8 +2323,9 @@ export const lightTheme: SkinKeyTheme = {
       "secondaryBg": "#EEE0F2",
       "secondaryBgPressed": "#E0CDE8",
       "onSecondary": "#241B29",
-      "secondaryTranslucent": "rgba(255, 255, 255, 0.55)",
+      "secondaryTranslucent": "rgba(252, 240, 248, 0.70)",
       "secondaryTranslucentEdge": "rgba(255, 255, 255, 0.70)",
+      "welcomeWash": "rgba(246, 221, 235, 0.30)",
       "thumbTile": "#EADEEA",
       "segmentTrack": "#E8D8EE",
       "segmentThumb": "#FFFFFF",
@@ -2373,10 +2368,10 @@ export const lightTheme: SkinKeyTheme = {
         "rippleOnAccent": "rgba(255, 255, 255, 0.18)"
       },
       "sheen": {
-        "start": "#FDFCFE",
-        "lavender": "#ECE8F4",
-        "silver": "#E4E3EA",
-        "end": "#EFECF2"
+        "start": "#FDF8FD",
+        "lavender": "#F3E6F5",
+        "silver": "#F6DDEB",
+        "end": "#EEDFF2"
       },
       "mark": {
         "tileTop": "#FFFFFF",
@@ -2660,7 +2655,7 @@ export const lightTheme: SkinKeyTheme = {
           "borderDisabled": "#EBDDEF"
         },
         "consentPair": {
-          "bg": "rgba(255, 255, 255, 0.55)",
+          "bg": "rgba(252, 240, 248, 0.70)",
           "fg": "#241B29",
           "border": "rgba(255, 255, 255, 0.70)",
           "borderWidth": 1,
@@ -2680,7 +2675,7 @@ export const lightTheme: SkinKeyTheme = {
         },
         "stackAtFontScale": 1.3,
         "translucent": {
-          "bg": "rgba(255, 255, 255, 0.55)",
+          "bg": "rgba(252, 240, 248, 0.70)",
           "fg": "#241B29",
           "border": "rgba(255, 255, 255, 0.70)",
           "borderWidth": 1,
@@ -3885,7 +3880,7 @@ export const lightTheme: SkinKeyTheme = {
           "includeFontPadding": false
         },
         "bodyColor": "#54475B",
-        "plateBg": "#ECE8F4",
+        "plateBg": "#F3E6F5",
         "plateRadius": 24,
         "gap": 8,
         "offlineBanner": {
@@ -4063,6 +4058,7 @@ export const darkTheme: SkinKeyTheme = {
       "onSecondary": "#EFEEF3",
       "secondaryTranslucent": "rgba(239, 238, 243, 0.10)",
       "secondaryTranslucentEdge": "rgba(239, 238, 243, 0.07)",
+      "welcomeWash": "rgba(18, 19, 25, 0.00)",
       "thumbTile": "#272832",
       "segmentTrack": "#272832",
       "segmentThumb": "#3A3B47",

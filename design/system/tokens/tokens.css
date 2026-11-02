@@ -14,11 +14,6 @@
   --sk-pearl-150: #E7E5EC;
   --sk-pearl-200: #DCDAE3;
   --sk-pearl-300: #C6C3CF;
-  --sk-mist-50: #F5F3F8;
-  --sk-mist-100: #EFECF2;
-  --sk-mist-150: #E7E3EC;
-  --sk-mist-200: #DDD9E3;
-  --sk-mist-250: #E3DFE9;
   --sk-silver-400: #A8A5B3;
   --sk-silver-450: #9895A4;
   --sk-silver-500: #7E7B8B;
@@ -359,8 +354,9 @@
   --sk-color-secondary-bg: #EEE0F2;
   --sk-color-secondary-bg-pressed: var(--sk-blush-300);
   --sk-color-on-secondary: var(--sk-mauve-900);
-  --sk-color-secondary-translucent: rgba(255, 255, 255, 0.55);
+  --sk-color-secondary-translucent: rgba(252, 240, 248, 0.70);
   --sk-color-secondary-translucent-edge: rgba(255, 255, 255, 0.70);
+  --sk-color-welcome-wash: rgba(246, 221, 235, 0.30);
   --sk-color-thumb-tile: var(--sk-petal-lilac);
   --sk-color-segment-track: var(--sk-blush-250);
   --sk-color-segment-thumb: var(--sk-white);
@@ -398,10 +394,10 @@
   --sk-color-state-hover: rgba(36, 27, 41, 0.05);
   --sk-color-state-ripple: rgba(36, 27, 41, 0.12);
   --sk-color-state-ripple-on-accent: rgba(255, 255, 255, 0.18);
-  --sk-color-sheen-start: #FDFCFE;
-  --sk-color-sheen-lavender: #ECE8F4;
-  --sk-color-sheen-silver: #E4E3EA;
-  --sk-color-sheen-end: var(--sk-mist-100);
+  --sk-color-sheen-start: #FDF8FD;
+  --sk-color-sheen-lavender: #F3E6F5;
+  --sk-color-sheen-silver: #F6DDEB;
+  --sk-color-sheen-end: #EEDFF2;
   --sk-color-mark-tile-top: var(--sk-white);
   --sk-color-mark-tile-bottom: var(--sk-pearl-150);
   --sk-color-mark-tile-edge: var(--sk-pearl-200);
@@ -488,6 +484,7 @@
   --sk-color-on-secondary: var(--sk-pearl-100);
   --sk-color-secondary-translucent: rgba(239, 238, 243, 0.10);
   --sk-color-secondary-translucent-edge: {color.sheen-edge};
+  --sk-color-welcome-wash: rgba(18, 19, 25, 0.00);
   --sk-color-thumb-tile: var(--sk-graphite-800);
   --sk-color-segment-track: var(--sk-graphite-800);
   --sk-color-segment-thumb: var(--sk-graphite-700);
@@ -615,6 +612,7 @@
     --sk-color-on-secondary: var(--sk-pearl-100);
     --sk-color-secondary-translucent: rgba(239, 238, 243, 0.10);
     --sk-color-secondary-translucent-edge: {color.sheen-edge};
+    --sk-color-welcome-wash: rgba(18, 19, 25, 0.00);
     --sk-color-thumb-tile: var(--sk-graphite-800);
     --sk-color-segment-track: var(--sk-graphite-800);
     --sk-color-segment-thumb: var(--sk-graphite-700);
