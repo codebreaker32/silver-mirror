@@ -2797,7 +2797,7 @@ export const lightTheme: SkinKeyTheme = {
       "bandChip": {
         "bg": "#EFEEF3",
         "fg": "#1A1B23",
-        "radius": 9999,
+        "radius": 14,
         "paddingX": 12,
         "visualMinHeight": 32,
         "type": {
@@ -4423,7 +4423,7 @@ export const darkTheme: SkinKeyTheme = {
       "bandChip": {
         "bg": "#0E0F14",
         "fg": "#EFEEF3",
-        "radius": 9999,
+        "radius": 14,
         "paddingX": 12,
         "visualMinHeight": 32,
         "type": {

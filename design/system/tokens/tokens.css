@@ -844,7 +844,7 @@
   --sk-reason-row-divider: var(--sk-color-border);
   --sk-band-chip-bg: var(--sk-color-bg-sunken);
   --sk-band-chip-fg: var(--sk-color-text);
-  --sk-band-chip-radius: var(--sk-radius-full);
+  --sk-band-chip-radius: var(--sk-radius-md);
   --sk-band-chip-padding-x: var(--sk-space-3);
   --sk-band-chip-visual-min-height: 32px;
   --sk-band-chip-type: var(--sk-type-label);

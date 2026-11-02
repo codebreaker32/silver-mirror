@@ -840,7 +840,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 |---|---|---|---|
 | `bandChip.bg` | `color.bg-sunken` | #EFEEF3 | #0E0F14 |
 | `bandChip.fg` | `color.text` | #1A1B23 | #EFEEF3 |
-| `bandChip.radius` | `radius.full` | 9999 | same |
+| `bandChip.radius` | `radius.md` | 14 | same |
 | `bandChip.paddingX` | `space.3` | 12 | same |
 | `bandChip.visualMinHeight` | — | 32 | same |
 | `bandChip.type` | `type.label` | Geist 600 14/20 | same |

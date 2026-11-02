@@ -1236,7 +1236,7 @@
       "$rule": "Compact pill inside a reason row or reading card: text first, the meter only repeats it. Non-interactive by default; the interactive variant is a Pressable with a 48dp box around the 32dp visual.",
       "bg": "{color.bg-sunken}",
       "fg": "{color.text}",
-      "radius": "{radius.full}",
+      "radius": "{radius.md}",
       "paddingX": "{space.3}",
       "visualMinHeight": 32,
       "type": "{type.label}",
