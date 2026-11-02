@@ -63,4 +63,4 @@ Checked, no change:
 Still open (not in this batch):
 - Item 7 (Flipkart short links on the live Worker) and item 8 (INSTALL_HMAC_SECRET) above.
 - secrets:grep on the VM checks patterns only (no .env there): run it locally or with the key values before submission.
-- Dark-mode UNKNOWN icon disc, greige focus tiles in dark, light-mode chrome S contrast, landing scrollytelling spacing on desktop, nested cards on the landing fold, reason-card hierarchy, kit-2 MEDICINE state.
+- FIXED 2 Nov pm: greige focus tiles in dark (greige.850, less saturated), light-mode chrome S contrast (stops one step deeper). Still open, minor: dark-mode UNKNOWN icon disc, landing scrollytelling spacing on desktop, nested cards on the landing fold, reason-card hierarchy, kit-2 MEDICINE state.

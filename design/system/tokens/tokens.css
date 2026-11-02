@@ -55,6 +55,7 @@
   --sk-greige-600: #7A6C60;
   --sk-greige-700: #5E5248;
   --sk-greige-800: #4A4038;
+  --sk-greige-850: #3D3936;
   --sk-greige-900: #2E2823;
   --sk-chrome-50: #FBFBFD;
   --sk-chrome-100: #EEEDF3;
@@ -326,11 +327,11 @@
   --sk-color-mark-tile-bottom: var(--sk-pearl-150);
   --sk-color-mark-tile-edge: var(--sk-pearl-200);
   --sk-color-mark-chrome-hi: var(--sk-chrome-100);
-  --sk-color-mark-chrome-1: var(--sk-chrome-300);
-  --sk-color-mark-chrome-2: var(--sk-chrome-500);
+  --sk-color-mark-chrome-1: var(--sk-chrome-400);
+  --sk-color-mark-chrome-2: var(--sk-chrome-600);
   --sk-color-mark-chrome-3: var(--sk-chrome-lav);
-  --sk-color-mark-chrome-4: var(--sk-chrome-600);
-  --sk-color-mark-chrome-lo: var(--sk-chrome-700);
+  --sk-color-mark-chrome-4: var(--sk-chrome-700);
+  --sk-color-mark-chrome-lo: var(--sk-slate-800);
   --sk-color-mark-glint: var(--sk-white);
   --sk-color-mark-shade: var(--sk-slate-shadow);
   --sk-verdict-fits-bg: var(--sk-sage-100);
@@ -388,7 +389,7 @@
   --sk-color-secondary-bg: var(--sk-graphite-750);
   --sk-color-secondary-bg-pressed: var(--sk-graphite-700);
   --sk-color-on-secondary: var(--sk-pearl-100);
-  --sk-color-accent-warm: var(--sk-greige-800);
+  --sk-color-accent-warm: var(--sk-greige-850);
   --sk-color-on-accent-warm: var(--sk-greige-200);
   --sk-color-icon-disc: var(--sk-lavender-800);
   --sk-color-on-icon-disc: var(--sk-lavender-200);
@@ -483,7 +484,7 @@
     --sk-color-secondary-bg: var(--sk-graphite-750);
     --sk-color-secondary-bg-pressed: var(--sk-graphite-700);
     --sk-color-on-secondary: var(--sk-pearl-100);
-    --sk-color-accent-warm: var(--sk-greige-800);
+    --sk-color-accent-warm: var(--sk-greige-850);
     --sk-color-on-accent-warm: var(--sk-greige-200);
     --sk-color-icon-disc: var(--sk-lavender-800);
     --sk-color-on-icon-disc: var(--sk-lavender-200);

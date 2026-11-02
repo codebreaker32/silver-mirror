@@ -118,6 +118,7 @@ export const palette = {
     "600": "#7A6C60",
     "700": "#5E5248",
     "800": "#4A4038",
+    "850": "#3D3936",
     "900": "#2E2823"
   },
   "chrome": {
@@ -2165,11 +2166,11 @@ export const lightTheme: SkinKeyTheme = {
         "tileBottom": "#E7E5EC",
         "tileEdge": "#DCDAE3",
         "chromeHi": "#EEEDF3",
-        "chrome1": "#BDBBC9",
-        "chrome2": "#838194",
+        "chrome1": "#9F9DAE",
+        "chrome2": "#686678",
         "chrome3": "#CBC5E0",
-        "chrome4": "#686678",
-        "chromeLo": "#4F4D5E",
+        "chrome4": "#4F4D5E",
+        "chromeLo": "#2F3243",
         "glint": "#FFFFFF",
         "shade": "#2A2D40"
       },
@@ -3753,7 +3754,7 @@ export const darkTheme: SkinKeyTheme = {
       "secondaryBg": "#30313C",
       "secondaryBgPressed": "#3A3B47",
       "onSecondary": "#EFEEF3",
-      "accentWarm": "#4A4038",
+      "accentWarm": "#3D3936",
       "onAccentWarm": "#E4DCD5",
       "iconDisc": "#34304F",
       "onIconDisc": "#DDD8EE",
@@ -4357,7 +4358,7 @@ export const darkTheme: SkinKeyTheme = {
           "qualifierColor": "#C6C3CF"
         },
         "demoBadge": {
-          "bg": "#4A4038",
+          "bg": "#3D3936",
           "fg": "#E4DCD5",
           "type": {
             "fontFamily": "Geist_600SemiBold",
@@ -4901,7 +4902,7 @@ export const darkTheme: SkinKeyTheme = {
         "chipGap": 8
       },
       "focusTile": {
-        "bg": "#4A4038",
+        "bg": "#3D3936",
         "fg": "#E4DCD5",
         "radius": 14,
         "padding": 12,

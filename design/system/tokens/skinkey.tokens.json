@@ -92,6 +92,7 @@
         "600": "#7A6C60",
         "700": "#5E5248",
         "800": "#4A4038",
+        "850": "#3D3936",
         "900": "#2E2823"
       },
       "chrome": {
@@ -194,11 +195,11 @@
           "tile-bottom": "{pearl.150}",
           "tile-edge": "{pearl.200}",
           "chrome-hi": "{chrome.100}",
-          "chrome-1": "{chrome.300}",
-          "chrome-2": "{chrome.500}",
+          "chrome-1": "{chrome.400}",
+          "chrome-2": "{chrome.600}",
           "chrome-3": "{chrome.lav}",
-          "chrome-4": "{chrome.600}",
-          "chrome-lo": "{chrome.700}",
+          "chrome-4": "{chrome.700}",
+          "chrome-lo": "{slate.800}",
           "glint": "{white}",
           "shade": "{slate.shadow}"
         },
@@ -255,7 +256,7 @@
         "secondary-bg": "{graphite.750}",
         "secondary-bg-pressed": "{graphite.700}",
         "on-secondary": "{pearl.100}",
-        "accent-warm": "{greige.800}",
+        "accent-warm": "{greige.850}",
         "on-accent-warm": "{greige.200}",
         "icon-disc": "{lavender.800}",
         "on-icon-disc": "{lavender.200}",
