@@ -130,6 +130,25 @@ add('color.on-icon-disc', 'color.skin-gradient.disc', 'ui', 'Droplet in the hero
 add('color.on-accent', 'color.accent', 'text', 'Selected chip label (slate fill)');
 add('color.link', 'color.secondary-bg', 'text', 'Link inside a tonal pill row');
 for (const s of SURFACES) add('color.bracket', s, 'ui', 'Face-frame corner brackets on the illustration plate');
+// Colors-reference 2.2 roles: the page gradient stops, glass cards, the plum Scan button and pastel tiles.
+for (const s of ['color.page-top', 'color.page-bottom', 'color.glass']) {
+  add('color.text', s, 'text', `Body text on ${s}`);
+  add('color.text-muted', s, 'text', `Secondary text on ${s}`);
+  add('color.text-subtle', s, 'text', `Third-level text on ${s}`);
+  add('color.link', s, 'text', `Link on ${s}`);
+  add('color.accent', s, 'ui', `Plum pill / Scan button edge on ${s}`);
+  add('color.border-strong', s, 'ui', `Meaningful edge on ${s}`);
+  add('color.focus-ring', s, 'ui', `Focus ring on ${s}`);
+  add('color.tab-inactive', s, 'ui', `Inactive tab glyph over ${s} (glass tab bar)`);
+  add('color.tab-active', s, 'ui', `Active tab glyph over ${s} (glass tab bar)`);
+}
+add('color.on-accent', 'color.plum', 'text', 'Label on the plum pill / round Scan button');
+add('color.on-accent', 'color.plum-pressed', 'text', 'Label on the pressed plum pill');
+for (const s of ['color.tile-pink', 'color.tile-lilac', 'color.tile-lavender']) {
+  add('color.on-icon-disc', s, 'ui', `Product glyph on the pastel ${s}`);
+  add('color.text', s, 'text', `Text on the pastel ${s}`);
+  add('color.text-muted', s, 'text', `Caption on the pastel ${s}`);
+}
 for (const st of ['start', 'lavender', 'silver', 'end']) {
   add('color.text', `color.sheen.${st}`, 'text', `Display and body text on the sheen hero (${st} stop)`);
   add('color.text-muted', `color.sheen.${st}`, 'text', `Tagline / secondary text on the sheen hero (${st} stop)`);
@@ -330,9 +349,9 @@ lint('CAUTION tint confined to the verdict head', tokens.component.verdictCard.b
 for (const mode of MODES) {
   const sem = resolve(tokens, tokens.semantic.color[mode], mode);
   const acc = sem.accent.toUpperCase();
-  // Neutral = drawn from the pearl / silver / graphite ramps (by alias, not by guessing from the hex) and never equal to the accent.
+  // Neutral = drawn from the pearl / silver / graphite / mauve (2.2 plum-grey) ramps (by alias, not by guessing from the hex) and never equal to the accent.
   const raw = tokens.semantic.color[mode].meter;
-  const bad = Object.entries(raw).filter(([k, v]) => !/^\{(pearl|silver|graphite)\./.test(v) || sem.meter[k].toUpperCase() === acc);
+  const bad = Object.entries(raw).filter(([k, v]) => !/^\{(pearl|silver|graphite|mauve)\./.test(v) || sem.meter[k].toUpperCase() === acc);
   lint(`Band meter is neutral ink, not accent (${mode})`, bad.length === 0, Object.entries(raw).map(([k, v]) => `${k} ${v} ${sem.meter[k]}`).join(', ') + `; accent ${acc}`);
   const vcols = Object.values(sem.verdict).flatMap((o) => Object.values(o).map((x) => x.toUpperCase()));
   lint(`No verdict colour equals the accent (${mode})`, !vcols.includes(acc), `accent ${acc}`);
