@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
 import { COPY } from '@skinkey/contracts';
 import { rulesetHash } from '@skinkey/rules';
-import { Body, Card, Heading, ListGroup, ListRow, Screen, Txt, haptic } from '@/components';
+import { Body, Card, Icon, ListGroup, Screen, Txt, haptic, type IconName } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
 import { clearLedger } from '../scan/ledgerStore';
 import { ConfirmSheet, type ConfirmKind } from './ConfirmSheet';
@@ -15,6 +15,73 @@ const CREDITS = [
   'Fonts: Noto Serif Display and Geist (SIL Open Font License)',
 ];
 
+/** 40dp lavender disc (showcase 00_brand_panel feature list); local to Settings, the kit's IconDisc starts at 48. */
+const DISC = 40;
+
+interface RowProps {
+  title: string;
+  supporting?: string;
+  icon: IconName;
+  /** Opens a screen (trailing chevron) or a confirmation sheet (no chevron). Static when absent. */
+  onPress?: () => void;
+  chevron?: boolean;
+  testID?: string;
+}
+
+/**
+ * Settings row: 40dp lavender disc with a 20dp iris line icon, title (bodyStrong) over supporting (bodySm muted),
+ * trailing chevron when it opens a screen. ≥64dp, one TalkBack node. Tokens from component.listRow / iconDisc.
+ */
+function SettingsRow({ title, supporting, icon, onPress, chevron = true, testID }: RowProps) {
+  const t = useTheme();
+  const r = t.components.listRow;
+  const d = t.components.iconDisc;
+  const label = [title, supporting].filter(Boolean).join('. ');
+  const body = (
+    <>
+      <View
+        importantForAccessibility="no-hide-descendants"
+        accessibilityElementsHidden
+        style={{ width: DISC, height: DISC, borderRadius: DISC / 2, backgroundColor: d.bg, alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Icon name={icon} size={t.icon.md} color={d.fg} />
+      </View>
+      <View style={{ flex: 1, gap: 2 }}>
+        <Txt variant="bodyStrong" style={[r.title, { color: r.titleColor }]}>
+          {title}
+        </Txt>
+        {supporting ? (
+          <Txt variant="bodySm" style={[r.supporting, { color: r.supportingColor }]}>
+            {supporting}
+          </Txt>
+        ) : null}
+      </View>
+      {onPress && chevron ? <Icon name="chevron-right" size={r.trailingIcon} color={r.trailingColor} /> : null}
+    </>
+  );
+  const box = { minHeight: 64, paddingHorizontal: r.paddingX, paddingVertical: r.paddingY, gap: r.gap, flexDirection: 'row' as const, alignItems: 'center' as const };
+  if (!onPress) {
+    return (
+      <View testID={testID} accessible accessibilityLabel={label} style={box}>
+        {body}
+      </View>
+    );
+  }
+  return (
+    <Pressable
+      testID={testID}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      android_ripple={{ color: t.colors.state.ripple }}
+      style={({ pressed }) => [box, { minHeight: box.minHeight, backgroundColor: pressed ? r.bgPressed : 'transparent' }]}
+    >
+      {body}
+    </Pressable>
+  );
+}
+
+/** Settings (DESIGN.md §9.12, showcase 00_brand_panel rows): centred title, white r24 groups, disc rows. */
 export function SettingsScreen() {
   const theme = useTheme();
   const router = useRouter();
@@ -24,24 +91,23 @@ export function SettingsScreen() {
   const go = (href: Href) => () => router.push(href);
 
   return (
-    <Screen>
-      <Heading>Settings</Heading>
+    <Screen title="Settings">
 
       <View style={{ gap: theme.space[3] }}>
         <ListGroup title="Your data">
-          <ListRow
+          <SettingsRow
             title={COPY.reading.yours}
             supporting={key ? (isDemo ? `${COPY.reading.demo} in use` : 'Stored on this phone only') : COPY.reading.none}
-            leadingIcon="droplet"
+            icon="droplet"
             onPress={go('/key')}
           />
-          <ListRow title="What stays on this phone" supporting="Bands, zone labels and scan date. No photo." leadingIcon="phone-lock" onPress={go('/how')} />
-          {key ? <ListRow title={COPY.reading.delete} leadingIcon="trash" trailing="none" onPress={() => setConfirm('delete')} /> : null}
-          <ListRow
+          <SettingsRow title="What stays on this phone" supporting="Bands, zone labels and scan date. No photo." icon="phone-lock" onPress={go('/how')} />
+          {key ? <SettingsRow title={COPY.reading.delete} supporting="Asks before it deletes" icon="trash" chevron={false} onPress={() => setConfirm('delete')} /> : null}
+          <SettingsRow
             title="Withdraw consent"
             supporting="Deletes your reading and consent from this phone"
-            leadingIcon="minus-circle"
-            trailing="none"
+            icon="trash"
+            chevron={false}
             onPress={() => setConfirm('withdraw')}
           />
         </ListGroup>
@@ -53,15 +119,15 @@ export function SettingsScreen() {
       </View>
 
       <ListGroup title="About">
-        <ListRow title="How this was made" supporting="Task ids, units, time and delete status" leadingIcon="document" onPress={go('/how')} />
-        <ListRow title="Published rules" supporting={`Version ${rulesetHash().slice(0, 7)}, the same one each verdict names. ${COPY.howMadeBoundary}`} leadingIcon="info" trailing="none" />
+        <SettingsRow title="How this was made" supporting="Task ids, units, time and delete status" icon="document" onPress={go('/how')} />
+        <SettingsRow title="Published rules" supporting={`Version ${rulesetHash().slice(0, 7)}, the same one each verdict names. ${COPY.howMadeBoundary}`} icon="info" />
       </ListGroup>
 
       <View style={{ gap: theme.space[2] }}>
         <Txt accessibilityRole="header" variant="section">
           Credits
         </Txt>
-        <Card variant="surface" gap={theme.space[2]}>
+        <Card variant="raised" gap={theme.space[2]}>
           {CREDITS.map((c) => (
             <Body key={c} small>
               {c}
