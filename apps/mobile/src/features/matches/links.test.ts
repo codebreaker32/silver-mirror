@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { COPY, DEMO_KEY, type FacetMapping, type KeyProfile, type RankedMatch } from '@skinkey/contracts';
 import { PRODUCT, TINTED } from '../check/fixtures';
-import { amazonSearchUrl, facetFor, flipkartFacetUrl, flipkartSearchUrl, guessCategory, nykaaSearchUrl, opensInCustomTab, storeKeywords, storeLinks } from './links';
+import { amazonSearchUrl, buyLinks, facetFor, flipkartFacetUrl, flipkartSearchUrl, guessCategory, hasAffiliate, nykaaSearchUrl, opensInCustomTab, storeKeywords, storeLinks, withAffiliate } from './links';
 import { selectMatches } from './select';
 
 const MAP: FacetMapping[] = [
@@ -88,5 +88,39 @@ describe('selectMatches', () => {
     expect(amazon[0]!.url).toBe(amazonSearchUrl(`${PRODUCT.brand} ${PRODUCT.name}`));
     expect(amazon[0]!.destination).toBe('Opens an Amazon search for this product');
     expect(opensInCustomTab(nykaa[0]!.url)).toBe(true);
+  });
+});
+
+describe('buy links', () => {
+  const P = { brand: 'Minimalist', name: 'Sepicalm 3% Moisturizer' };
+  const q = encodeURIComponent('Minimalist Sepicalm 3% Moisturizer');
+
+  it('builds brand + name searches on Amazon, Flipkart and Nykaa with no params when none are set', () => {
+    const empty = buyLinks(P, { amazonTag: '', flipkartAffid: '', nykaaQuery: '' });
+    expect(empty).toEqual(buyLinks(P));
+    expect(empty.map((l) => l.store)).toEqual(['Amazon', 'Flipkart', 'Nykaa']);
+    expect(empty[0]!.url).toBe(`https://www.amazon.in/s?k=${q}`);
+    expect(empty[1]!.url).toBe(flipkartSearchUrl('Minimalist Sepicalm 3% Moisturizer'));
+    expect(empty[2]!.url).toBe(`https://www.nykaa.com/search/result/?q=${q}`);
+    expect(empty.some((l) => /tag=|affid=/.test(l.url))).toBe(false);
+    expect(hasAffiliate({ amazonTag: '', flipkartAffid: ' ', nykaaQuery: '' })).toBe(false);
+  });
+
+  it('appends each store param only to its own store when set', () => {
+    const aff = { amazonTag: 'silvermirror-21', flipkartAffid: 'smaff', nykaaQuery: '?utm_source=sm&utm_medium=app' };
+    const [amazon, flipkart, nykaa] = buyLinks(P, aff);
+    expect(amazon!.url).toBe(`https://www.amazon.in/s?k=${q}&tag=silvermirror-21`);
+    expect(flipkart!.url).toBe(`${flipkartSearchUrl('Minimalist Sepicalm 3% Moisturizer')}&affid=smaff`);
+    expect(nykaa!.url).toBe(`https://www.nykaa.com/search/result/?q=${q}&utm_source=sm&utm_medium=app`);
+    expect(hasAffiliate(aff)).toBe(true);
+    // Only Amazon set: the others stay untouched.
+    const only = buyLinks(P, { amazonTag: 'x-21' });
+    expect(only[1]!.url).not.toContain('affid=');
+    expect(only[2]!.url).toBe(`https://www.nykaa.com/search/result/?q=${q}`);
+  });
+
+  it('tags a match search URL by host and leaves other URLs alone', () => {
+    expect(withAffiliate(amazonSearchUrl('a b'), { amazonTag: 't-21' })).toBe('https://www.amazon.in/s?k=a%20b&tag=t-21');
+    expect(withAffiliate('https://example.com/p', { amazonTag: 't-21', flipkartAffid: 'f', nykaaQuery: 'a=1' })).toBe('https://example.com/p');
   });
 });

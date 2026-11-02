@@ -100,3 +100,53 @@ export const opensInCustomTab = (url: string): boolean => {
     return false;
   }
 };
+
+/** Optional affiliate params (app.json expo.extra.affiliate). Empty strings mean "not set". */
+export interface AffiliateParams {
+  amazonTag?: string;
+  flipkartAffid?: string;
+  nykaaQuery?: string;
+}
+
+const hostOf = (url: string): string => {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch {
+    return '';
+  }
+};
+const onHost = (host: string, domain: string) => host === domain || host.endsWith(`.${domain}`);
+const join = (url: string, qs: string) => `${url}${url.includes('?') ? '&' : '?'}${qs}`;
+
+export const hasAffiliate = (aff: AffiliateParams): boolean =>
+  !!(aff.amazonTag?.trim() || aff.flipkartAffid?.trim() || aff.nykaaQuery?.trim().replace(/^[?&]+/, ''));
+
+/**
+ * Appends the store's affiliate param to a store URL, only when that param is set. Applied to links built after
+ * ranking, so it never changes which products are shown or their order.
+ */
+export function withAffiliate(url: string, aff: AffiliateParams): string {
+  const host = hostOf(url);
+  const amazon = aff.amazonTag?.trim();
+  const flipkart = aff.flipkartAffid?.trim();
+  const nykaa = aff.nykaaQuery?.trim().replace(/^[?&]+/, '');
+  if (amazon && onHost(host, 'amazon.in')) return join(url, `tag=${encodeURIComponent(amazon)}`);
+  if (flipkart && onHost(host, 'flipkart.com')) return join(url, `affid=${encodeURIComponent(flipkart)}`);
+  if (nykaa && onHost(host, 'nykaa.com')) return join(url, nykaa);
+  return url;
+}
+
+export interface BuyLink {
+  store: 'Amazon' | 'Flipkart' | 'Nykaa';
+  url: string;
+}
+
+/** Where to buy a catalogue product: a '<brand> <name>' search on each store, affiliate params added when set. */
+export function buyLinks(product: { brand: string; name: string }, aff: AffiliateParams = {}): BuyLink[] {
+  const q = `${product.brand} ${product.name}`.trim();
+  return [
+    { store: 'Amazon', url: withAffiliate(amazonSearchUrl(q), aff) },
+    { store: 'Flipkart', url: withAffiliate(flipkartSearchUrl(q), aff) },
+    { store: 'Nykaa', url: withAffiliate(nykaaSearchUrl(q), aff) },
+  ];
+}

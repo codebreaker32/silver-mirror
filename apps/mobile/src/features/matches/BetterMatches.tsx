@@ -4,7 +4,8 @@ import { COPY, type FacetMapping, type KeyProfile, type ProductCategory } from '
 import { useTheme } from '@/theme/ThemeProvider';
 import { Body, Caption, Card, Chip, ChipRail, Icon, ProductCard, SectionHeader, Txt } from '@/components';
 import { applyReadingFilter, readingFilters } from './filters';
-import { keyClass, storeKeywords, storeLinks } from './links';
+import { AFFILIATE } from './affiliate';
+import { keyClass, storeKeywords, storeLinks, withAffiliate } from './links';
 import { openStoreUrl } from './openStoreUrl';
 import { StoreSearchChips } from './StoreSearches';
 import type { MatchesState } from './useBetterMatches';
@@ -161,7 +162,7 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
               verdict={{ tone: 'fits', label: 'Fits' }}
               linkOut
               accessibilityLabel={m.a11y}
-              onPress={() => open(m.url)}
+              onPress={() => open(withAffiliate(m.url, AFFILIATE))}
             />
           ))}
           </Card>

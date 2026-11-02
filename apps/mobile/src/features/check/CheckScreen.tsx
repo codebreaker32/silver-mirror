@@ -7,7 +7,7 @@ import { FACET_MAP, medicineGate, rank, verdict } from '@skinkey/rules';
 import { useTheme } from '@/theme/ThemeProvider';
 import { AppBar, Body, Card, EmptyState, FooterFade, Icon, IconButton, PageBackdrop, PillButton, Tag, Txt } from '@/components';
 import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
-import { BetterMatches, guessCategory, storeLinks, StoreSearchSheet, useBetterMatches } from '@/features/matches';
+import { AFFILIATE, BetterMatches, BuySheet, buyLinks, guessCategory, hasAffiliate, storeLinks, StoreSearchSheet, useBetterMatches } from '@/features/matches';
 import { openStoreUrl } from '@/features/matches/openStoreUrl';
 import { CropStep, inputFromPaste, sampleInput, takeShare, type CheckInput } from '@/features/share';
 import { demo } from '@/demo';
@@ -107,6 +107,7 @@ export default function CheckScreen() {
   const [listingUrl, setListingUrl] = useState<string | null>(null);
   const [howOpen, setHowOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [buyOpen, setBuyOpen] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
   const key = storedKey ?? (origin === 'sample' ? DEMO_KEY : null);
   const usingDemo = isDemo || (!storedKey && origin === 'sample');
@@ -257,6 +258,14 @@ export default function CheckScreen() {
   const toListing = !!(listingUrl && storeName);
   const backLabel = toListing ? `Back to ${storeName} listing` : origin === 'sample' ? 'Back to home' : 'Back to product';
   const backDestination = toListing ? `Returns to the ${storeName} listing` : undefined;
+  // A catalogue product (Shop, Home picks, Routine) sends the shopper out to buy: Amazon first, the rest in the More
+  // sheet. Links are built after ranking and never change it. A shared listing keeps its way back; medicine gets none.
+  const buyProduct = origin === 'catalog' && !toListing && view?.label !== 'MEDICINE' ? (result?.product ?? null) : null;
+  const buy = buyProduct ? buyLinks(buyProduct, AFFILIATE) : null;
+  const brandUrl = buyProduct?.source_kind === 'brand_official' ? buyProduct.source_url : null;
+  const buyAmazon = () => {
+    if (buy) void openStoreUrl(buy[0]!.url).catch(() => undefined);
+  };
 
   const snap = async () => {
     if (!documentScannerAvailable()) {
@@ -315,6 +324,16 @@ export default function CheckScreen() {
       {showPill ? <MatchesPill onPress={toMatches} /> : null}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.components.actionBar.gap }}>
         <View style={{ flex: 1 }}>
+          {buy ? (
+            <PillButton
+              label="Buy on Amazon"
+              variant="primary"
+              onPress={buyAmazon}
+              trailingIcon="arrow-up-right"
+              accessibilityHint={`Opens an Amazon search for this product. Leaves ${COPY.appName}.`}
+              testID="buy-amazon"
+            />
+          ) : (
           <PillButton
             label={backLabel}
             variant="primary"
@@ -323,18 +342,24 @@ export default function CheckScreen() {
             accessibilityHint={backDestination}
             testID="back-to-product"
           />
+          )}
         </View>
-        {showMore ? (
+        {showMore || buy ? (
           <IconButton
             icon="more-horizontal"
-            accessibilityLabel="More: search the stores"
-            onPress={() => setMoreOpen(true)}
+            accessibilityLabel={buy ? 'More: buy on Flipkart or Nykaa' : 'More: search the stores'}
+            onPress={() => (buy ? setBuyOpen(true) : setMoreOpen(true))}
             testID="dock-more"
             color={t.colors.text}
             style={t.dark ? { backgroundColor: t.colors.surface, borderWidth: 1, borderColor: t.colors.border } : { backgroundColor: t.colors.bgSunken }}
           />
         ) : null}
       </View>
+      {buy && hasAffiliate(AFFILIATE) ? (
+        <Txt variant="caption" tone="muted" style={{ textAlign: 'center' }} testID="affiliate-note">
+          We may earn a commission. It never changes what we recommend.
+        </Txt>
+      ) : null}
       </View>
     ) : null;
 
@@ -525,6 +550,8 @@ export default function CheckScreen() {
           rulesetHash={result.verdict.provenance.rulesetHash}
         />
       ) : null}
+
+      {buy ? <BuySheet visible={buyOpen} onClose={() => setBuyOpen(false)} links={buy.slice(1)} brandUrl={brandUrl} /> : null}
 
       {showMore ? <StoreSearchSheet visible={moreOpen} onClose={() => setMoreOpen(false)} links={links} /> : null}
 

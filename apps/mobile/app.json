@@ -76,7 +76,12 @@
       "reactCompiler": true
     },
     "extra": {
-      "workerUrl": "https://skinkey-worker.skinkey-worker.workers.dev"
+      "workerUrl": "https://skinkey-worker.skinkey-worker.workers.dev",
+      "affiliate": {
+        "amazonTag": "",
+        "flipkartAffid": "",
+        "nykaaQuery": ""
+      }
     }
   }
 }
