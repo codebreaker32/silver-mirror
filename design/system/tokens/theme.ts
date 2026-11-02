@@ -233,17 +233,17 @@ export interface TypeStyle extends TextStyle {
 /** Type scale (dp). Minimum size is 12. */
 export const typography: Record<TypeStyleName, TypeStyle> = {
   "display": {
-    "fontFamily": "Geist_600SemiBold",
-    "fontSize": 28,
-    "lineHeight": 34,
-    "letterSpacing": -0.4,
+    "fontFamily": "NotoSerifDisplay_400Regular",
+    "fontSize": 32,
+    "lineHeight": 38,
+    "letterSpacing": -0.3,
     "includeFontPadding": false
   },
   "title": {
-    "fontFamily": "Geist_600SemiBold",
-    "fontSize": 22,
-    "lineHeight": 28,
-    "letterSpacing": -0.4,
+    "fontFamily": "NotoSerifDisplay_400Regular",
+    "fontSize": 26,
+    "lineHeight": 32,
+    "letterSpacing": -0.2,
     "includeFontPadding": false
   },
   "appBarTitle": {
@@ -2770,10 +2770,10 @@ export const lightTheme: SkinKeyTheme = {
         },
         "kickerColor": "#575566",
         "title": {
-          "fontFamily": "Geist_600SemiBold",
-          "fontSize": 22,
-          "lineHeight": 28,
-          "letterSpacing": -0.4,
+          "fontFamily": "NotoSerifDisplay_400Regular",
+          "fontSize": 26,
+          "lineHeight": 32,
+          "letterSpacing": -0.2,
           "includeFontPadding": false
         },
         "titleColor": "#1B1A22",
@@ -2969,10 +2969,10 @@ export const lightTheme: SkinKeyTheme = {
             "borderStyle": "solid",
             "showLabel": false,
             "subtitle": {
-              "fontFamily": "Geist_600SemiBold",
-              "fontSize": 22,
-              "lineHeight": 28,
-              "letterSpacing": -0.4,
+              "fontFamily": "NotoSerifDisplay_400Regular",
+              "fontSize": 26,
+              "lineHeight": 32,
+              "letterSpacing": -0.2,
               "includeFontPadding": false
             },
             "iconSize": 32
@@ -2982,10 +2982,10 @@ export const lightTheme: SkinKeyTheme = {
           "offsetTopPct": 28,
           "iconGap": 16,
           "line": {
-            "fontFamily": "Geist_600SemiBold",
-            "fontSize": 22,
-            "lineHeight": 28,
-            "letterSpacing": -0.4,
+            "fontFamily": "NotoSerifDisplay_400Regular",
+            "fontSize": 26,
+            "lineHeight": 32,
+            "letterSpacing": -0.2,
             "includeFontPadding": false
           },
           "lineColor": "#1B1A22"
@@ -3883,10 +3883,10 @@ export const lightTheme: SkinKeyTheme = {
       "stateView": {
         "align": "start",
         "title": {
-          "fontFamily": "Geist_600SemiBold",
-          "fontSize": 22,
-          "lineHeight": 28,
-          "letterSpacing": -0.4,
+          "fontFamily": "NotoSerifDisplay_400Regular",
+          "fontSize": 26,
+          "lineHeight": 32,
+          "letterSpacing": -0.2,
           "includeFontPadding": false
         },
         "titleColor": "#1B1A22",
@@ -4502,10 +4502,10 @@ export const darkTheme: SkinKeyTheme = {
         },
         "kickerColor": "#C6C3CF",
         "title": {
-          "fontFamily": "Geist_600SemiBold",
-          "fontSize": 22,
-          "lineHeight": 28,
-          "letterSpacing": -0.4,
+          "fontFamily": "NotoSerifDisplay_400Regular",
+          "fontSize": 26,
+          "lineHeight": 32,
+          "letterSpacing": -0.2,
           "includeFontPadding": false
         },
         "titleColor": "#EFEEF3",
@@ -4701,10 +4701,10 @@ export const darkTheme: SkinKeyTheme = {
             "borderStyle": "solid",
             "showLabel": false,
             "subtitle": {
-              "fontFamily": "Geist_600SemiBold",
-              "fontSize": 22,
-              "lineHeight": 28,
-              "letterSpacing": -0.4,
+              "fontFamily": "NotoSerifDisplay_400Regular",
+              "fontSize": 26,
+              "lineHeight": 32,
+              "letterSpacing": -0.2,
               "includeFontPadding": false
             },
             "iconSize": 32
@@ -4714,10 +4714,10 @@ export const darkTheme: SkinKeyTheme = {
           "offsetTopPct": 28,
           "iconGap": 16,
           "line": {
-            "fontFamily": "Geist_600SemiBold",
-            "fontSize": 22,
-            "lineHeight": 28,
-            "letterSpacing": -0.4,
+            "fontFamily": "NotoSerifDisplay_400Regular",
+            "fontSize": 26,
+            "lineHeight": 32,
+            "letterSpacing": -0.2,
             "includeFontPadding": false
           },
           "lineColor": "#EFEEF3"
@@ -5615,10 +5615,10 @@ export const darkTheme: SkinKeyTheme = {
       "stateView": {
         "align": "start",
         "title": {
-          "fontFamily": "Geist_600SemiBold",
-          "fontSize": 22,
-          "lineHeight": 28,
-          "letterSpacing": -0.4,
+          "fontFamily": "NotoSerifDisplay_400Regular",
+          "fontSize": 26,
+          "lineHeight": 32,
+          "letterSpacing": -0.2,
           "includeFontPadding": false
         },
         "titleColor": "#EFEEF3",

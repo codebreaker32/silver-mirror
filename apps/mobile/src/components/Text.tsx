@@ -15,7 +15,7 @@ function useToneColor(tone: TextTone) {
 }
 
 interface TxtProps extends TextProps {
-  /** A `typography` style name. Every style is Geist since 2.1; the serif lives only in the outlined Wordmark. */
+  /** A `typography` style name. 2.4: display and title are Noto Serif Display (screen titles, product names); the rest is Geist. */
   variant?: TypeStyleName;
   tone?: TextTone;
   children?: ReactNode;

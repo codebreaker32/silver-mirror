@@ -88,7 +88,7 @@ export function SettingsScreen() {
   const ROW_INSET = theme.components.listRow.paddingX + TILE + theme.components.listRow.gap;
 
   return (
-    <Screen title="Settings">
+    <Screen largeTitle title="Settings">
 
       <View style={{ gap: theme.space[3] }}>
         <ListGroup title="Your data" inset={ROW_INSET}>

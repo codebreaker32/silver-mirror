@@ -21,7 +21,7 @@ export function useInTabScene(): boolean {
 }
 
 /**
- * The page (tokens 2.3 Silver & graphite): one flat tone, colors.bg (#ECEDF0). No gradient, no glow. Kept as a
+ * The page (tokens 2.4 Lavender-grey & charcoal): one flat tone, colors.bg (#EDECF2). No gradient, no glow. Kept as a
  * component so every full-page root that used to paint the gradient keeps compiling; it paints the flat page.
  */
 export function PageBackdrop() {
@@ -93,6 +93,11 @@ interface ScreenProps {
   /** Sticky footer (the action dock / consent pair) floating on the page; a hairline only while content sits under it. */
   footer?: ReactNode;
   scroll?: boolean;
+  /**
+   * Tokens 2.4 (experience reference, "Your Reading"): the title leaves the app bar and opens the body as a
+   * left-aligned Noto Serif Display heading (type.display), with the back arrow alone above it.
+   */
+  largeTitle?: boolean;
   testID?: string;
 }
 
@@ -100,7 +105,7 @@ interface ScreenProps {
  * Screen scaffold: the flat page tone (PageBackdrop), top safe area, app bar, scrolling body with the 20dp gutter, optional sticky footer
  * that owns the bottom inset. Inside a TabScene the bottom inset belongs to the tab bar.
  */
-export function Screen({ title, appBar = true, onBack, actions, appBarCenter, children, footer, scroll = true, testID }: ScreenProps) {
+export function Screen({ title, appBar = true, onBack, actions, appBarCenter, children, footer, scroll = true, largeTitle = false, testID }: ScreenProps) {
   const t = useTheme();
   const insets = useSafeAreaInsets();
   const inTab = useInTabScene();
@@ -123,11 +128,21 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
   // scene the scroll also clears the docked bar (tabScrollTail): content scrolls under the flat bar, no fade.
   const base = footer && scroll ? t.spacing.section + FADE + t.space[4] : t.spacing.section;
   const tail = scroll && inTab ? Math.max(base + barSpace, tabScrollTail(insets.bottom)) : base;
-  const body = <View style={{ paddingHorizontal: t.spacing.gutter, paddingBottom: tail, gap: t.spacing.stackLg }}>{children}</View>;
+  const big = largeTitle && title && !appBarCenter;
+  const body = (
+    <View style={{ paddingHorizontal: t.spacing.gutter, paddingBottom: tail, gap: t.spacing.stackLg }}>
+      {big ? (
+        <Txt accessibilityRole="header" variant="display" style={{ marginTop: appBar ? 0 : t.space[4] }}>
+          {title}
+        </Txt>
+      ) : null}
+      {children}
+    </View>
+  );
   return (
     <SafeAreaView testID={testID} edges={['top', 'left', 'right']} style={{ flex: 1, backgroundColor: t.colors.bg }}>
       <PageBackdrop />
-      {appBar ? <AppBar title={title} onBack={onBack} trailing={actions} center={appBarCenter} /> : null}
+      {appBar ? <AppBar title={big ? undefined : title} onBack={onBack} trailing={actions} center={appBarCenter} /> : null}
       {scroll ? (
         <View style={{ flex: 1 }}>
           <ScrollView

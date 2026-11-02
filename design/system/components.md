@@ -187,8 +187,8 @@ Android: `includeFontPadding: false`; never set `fontWeight` on a custom family 
 <!-- tokens:@type -->
 | Token | RN fontFamily | Family / weight | Size / line (dp) | Tracking | Use |
 |---|---|---|---|---|---|
-| `type.display` | Geist_600SemiBold | Geist 600 | 28 / 34 | -0.4 | Home greeting, empty-state headline (showcase: semibold sans, never serif) |
-| `type.title` | Geist_600SemiBold | Geist 600 | 22 / 28 | -0.4 | Product title on /check, in-body page heads, medicine line |
+| `type.display` | NotoSerifDisplay_400Regular | Noto Serif Display 400 | 32 / 38 | -0.3 | Home greeting, screen titles ('Your Reading', 'Serums'), empty-state headline. Noto Serif Display, the reference's serif voice. |
+| `type.title` | NotoSerifDisplay_400Regular | Noto Serif Display 400 | 26 / 32 | -0.2 | Product name on /check and product detail, in-body page heads, medicine line. Serif, never below 20dp. |
 | `type.appBarTitle` | Geist_600SemiBold | Geist 600 | 17 / 24 | -0.2 | Centred app-bar title |
 | `type.value` | Geist_600SemiBold | Geist 600 | 28 / 34 | -0.4 | Skin-type value ('Combination') in the compact Home skin-type card |
 | `type.valueHero` | Geist_600SemiBold | Geist 600 | 28 / 34 | -0.4 | Skin-type value in the hero skin-type card (Reading, Result; showcase 04_report 'Combination') |
@@ -580,7 +580,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 |---|---|---|---|
 | `productHeader.kicker` | `type.bodySm` | Geist 400 13/18 | same |
 | `productHeader.kickerColor` | `color.text-muted` | #575566 | #C6C3CF |
-| `productHeader.title` | `type.title` | Geist 600 22/28 | same |
+| `productHeader.title` | `type.title` | Noto Serif Display 400 26/32 | same |
 | `productHeader.titleColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `productHeader.meta` | `type.caption` | Geist 400 13/18 | same |
 | `productHeader.metaColor` | `color.text-muted` | #575566 | #C6C3CF |
@@ -723,11 +723,11 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.head.medicine.borderWidth` | — | 0 | same |
 | `verdictCard.head.medicine.borderStyle` | — | solid | same |
 | `verdictCard.head.medicine.showLabel` | — | false | same |
-| `verdictCard.head.medicine.subtitle` | `type.title` | Geist 600 22/28 | same |
+| `verdictCard.head.medicine.subtitle` | `type.title` | Noto Serif Display 400 26/32 | same |
 | `verdictCard.head.medicine.iconSize` | `icon.verdict.medicineSize` | 32 | same |
 | `verdictCard.medicineGate.offsetTopPct` | — | 28 | same |
 | `verdictCard.medicineGate.iconGap` | `space.4` | 16 | same |
-| `verdictCard.medicineGate.line` | `type.title` | Geist 600 22/28 | same |
+| `verdictCard.medicineGate.line` | `type.title` | Noto Serif Display 400 26/32 | same |
 | `verdictCard.medicineGate.lineColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `verdictCard.nameOnly.borderStyle` | — | solid | same |
 | `verdictCard.nameOnly.qualifier` | `type.label` | Geist 600 13/18 | same |
@@ -1909,7 +1909,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | Token | References | Light | Dark |
 |---|---|---|---|
 | `stateView.align` | — | start | same |
-| `stateView.title` | `type.title` | Geist 600 22/28 | same |
+| `stateView.title` | `type.title` | Noto Serif Display 400 26/32 | same |
 | `stateView.titleColor` | `color.text` | #1B1A22 | #EFEEF3 |
 | `stateView.body` | `type.body` | Geist 400 15/22 | same |
 | `stateView.bodyColor` | `color.text-muted` | #575566 | #C6C3CF |

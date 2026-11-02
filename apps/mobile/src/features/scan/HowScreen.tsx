@@ -128,9 +128,9 @@ export function HowScreen() {
   const noPhotos = images !== null && images.length === 0;
 
   return (
-    <Screen title="How this was made">
+    <Screen largeTitle title="How this was made">
       <View style={{ gap: theme.space[3] }}>
-        <Heading>{COPY.howMadeBoundary}</Heading>
+        <Heading level="headline">{COPY.howMadeBoundary}</Heading>
         <Body muted>
           {`Task ids, units, time and delete status for each YouCam and Claude call, as recorded by the ${COPY.appName} Worker. Claude reads labels and listings. Our published rules decide the verdict.`}
         </Body>

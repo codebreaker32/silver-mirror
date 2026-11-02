@@ -62,7 +62,7 @@ export default function WelcomeScreen() {
       </View>
       <View style={{ paddingHorizontal: t.space[6], paddingBottom: insets.bottom + t.space[6], gap: t.space[3] }}>
         <PillButton label={COPY.welcome.start} trailingIcon="arrow-right" onPress={start} testID="welcome-start" />
-        <PillButton label={COPY.reading.useDemo} variant="translucent" onPress={demo} testID="welcome-demo" />
+        <PillButton label={COPY.reading.useDemo} variant="secondary" onPress={demo} testID="welcome-demo" />
       </View>
     </View>
   );

@@ -544,22 +544,22 @@
     },
     "scale": {
       "display": {
-        "font": "sans-semibold",
-        "family": "sans",
-        "weight": 600,
-        "size": 28,
-        "lineHeight": 34,
-        "letterSpacing": -0.4,
-        "use": "Home greeting, empty-state headline (showcase: semibold sans, never serif)"
+        "font": "serif-display",
+        "family": "serif",
+        "weight": 400,
+        "size": 32,
+        "lineHeight": 38,
+        "letterSpacing": -0.3,
+        "use": "Home greeting, screen titles ('Your Reading', 'Serums'), empty-state headline. Noto Serif Display, the reference's serif voice."
       },
       "title": {
-        "font": "sans-semibold",
-        "family": "sans",
-        "weight": 600,
-        "size": 22,
-        "lineHeight": 28,
-        "letterSpacing": -0.4,
-        "use": "Product title on /check, in-body page heads, medicine line"
+        "font": "serif-display",
+        "family": "serif",
+        "weight": 400,
+        "size": 26,
+        "lineHeight": 32,
+        "letterSpacing": -0.2,
+        "use": "Product name on /check and product detail, in-body page heads, medicine line. Serif, never below 20dp."
       },
       "appBarTitle": {
         "font": "sans-semibold",

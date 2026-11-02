@@ -146,16 +146,16 @@
      or use the .sk-type-* classes below. */
   --sk-font-serif: "Noto Serif Display", "Didot", "Bodoni 72", Georgia, serif;
   --sk-font-sans: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --sk-type-display: 600 1.75rem/1.2143 var(--sk-font-sans);
-  --sk-type-display-size: 1.75rem;
-  --sk-type-display-line: 1.2143;
-  --sk-type-display-weight: 600;
-  --sk-type-display-tracking: -0.0143em;
-  --sk-type-title: 600 1.375rem/1.2727 var(--sk-font-sans);
-  --sk-type-title-size: 1.375rem;
-  --sk-type-title-line: 1.2727;
-  --sk-type-title-weight: 600;
-  --sk-type-title-tracking: -0.0182em;
+  --sk-type-display: 400 2rem/1.1875 var(--sk-font-serif);
+  --sk-type-display-size: 2rem;
+  --sk-type-display-line: 1.1875;
+  --sk-type-display-weight: 400;
+  --sk-type-display-tracking: -0.0094em;
+  --sk-type-title: 400 1.625rem/1.2308 var(--sk-font-serif);
+  --sk-type-title-size: 1.625rem;
+  --sk-type-title-line: 1.2308;
+  --sk-type-title-weight: 400;
+  --sk-type-title-tracking: -0.0077em;
   --sk-type-app-bar-title: 600 1.0625rem/1.4118 var(--sk-font-sans);
   --sk-type-app-bar-title-size: 1.0625rem;
   --sk-type-app-bar-title-line: 1.4118;

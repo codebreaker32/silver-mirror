@@ -33,6 +33,7 @@ export function ConsentScreen() {
 
   return (
     <Screen
+      largeTitle
       title="Before your scan"
       footer={
         <>

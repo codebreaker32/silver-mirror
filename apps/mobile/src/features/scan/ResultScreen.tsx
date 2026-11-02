@@ -21,7 +21,7 @@ export function ResultScreen() {
     void coachSeen().then((seen) => setShowCoach(!seen));
   }, []);
 
-  if (loading) return <Screen title={COPY.reading.ready} onBack={home}>{null}</Screen>;
+  if (loading) return <Screen largeTitle title={COPY.reading.ready} onBack={home}>{null}</Screen>;
   if (!key) {
     return (
       <Screen onBack={home}>
@@ -33,7 +33,7 @@ export function ResultScreen() {
   }
 
   return (
-    <Screen title={COPY.reading.ready} onBack={home} footer={<Button label="Check a product" trailingIcon="arrow-right" onPress={home} />}>
+    <Screen largeTitle title={COPY.reading.ready} onBack={home} footer={<Button label="Check a product" trailingIcon="arrow-right" onPress={home} />}>
       <KeyPanel
         keyProfile={key}
         isDemo={isDemo}
