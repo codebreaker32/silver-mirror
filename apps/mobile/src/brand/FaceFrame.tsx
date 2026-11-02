@@ -27,8 +27,10 @@ export function FaceFrame({ width, progress = 0, dots = true, tile = true }: Fac
   const w = 100;
   const h = Math.round(100 / f.aspect);
   const inset = 10 + Math.min(1, Math.max(0, progress)) * 4;
-  const L = (f.bracketLength / width) * w;
-  const stroke = (f.bracketWidth / width) * w;
+  // Brackets scale with the frame: the large processing plate gets showcase-weight corners (03_analyze), small frames keep 24dp / 2dp.
+  const lenDp = Math.max(f.bracketLength, Math.round(width * 0.13));
+  const L = (lenDp / width) * w;
+  const stroke = ((width >= 200 ? 2.5 : f.bracketWidth) / width) * w;
   const corners = [
     `M${inset} ${inset + L}V${inset + 6}a6 6 0 0 1 6 -6H${inset + L}`,
     `M${w - inset - L} ${inset}H${w - inset - 6}a6 6 0 0 1 6 6V${inset + L}`,
@@ -37,9 +39,9 @@ export function FaceFrame({ width, progress = 0, dots = true, tile = true }: Fac
   ];
   const grid: { x: number; y: number }[] = [];
   if (dots) {
-    for (let y = 30; y <= h - 30; y += 7) for (let x = 32; x <= 68; x += 7) {
-      const dx = (x - 50) / 22;
-      const dy = (y - h / 2) / (h * 0.32);
+    for (let y = 30; y <= h - 30; y += 7) for (let x = 26; x <= 74; x += 7) {
+      const dx = (x - 50) / 27;
+      const dy = (y - h / 2) / (h * 0.34);
       if (dx * dx + dy * dy <= 1) grid.push({ x, y });
     }
   }
@@ -52,7 +54,7 @@ export function FaceFrame({ width, progress = 0, dots = true, tile = true }: Fac
       {tile ? <SheenBackdrop radius={f.radius} /> : null}
       {/* Positioned after the sheen so it paints above it on web too (an absolute sibling otherwise covers static SVG). */}
       <Svg width={width} height={height} viewBox={`0 0 ${w} ${h}`} style={{ position: 'absolute', top: 0, left: 0 }}>
-        <Ellipse cx={50} cy={h / 2} rx={24} ry={h * 0.34} stroke={f.oval} strokeWidth={(f.ovalWidth / width) * w} fill="none" />
+        <Ellipse cx={50} cy={h / 2} rx={29} ry={h * 0.36} stroke={f.oval} strokeWidth={(f.ovalWidth / width) * w} fill="none" />
         {grid.map((p) => (
           <Circle key={`${p.x}-${p.y}`} cx={p.x} cy={p.y} r={0.6} fill={f.dots} opacity={f.dotsOpacity} />
         ))}

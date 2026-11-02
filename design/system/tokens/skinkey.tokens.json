@@ -1609,7 +1609,7 @@
       "doneIcon": "check-circle",
       "currentIcon": "circle-dot",
       "pendingIcon": "circle",
-      "iconColor": "{color.text}",
+      "iconColor": "{color.text-subtle}",
       "pendingColor": "{color.text-muted}",
       "label": "{type.body}",
       "labelCurrent": "{type.bodyStrong}",

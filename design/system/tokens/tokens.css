@@ -1163,7 +1163,7 @@
   --sk-checklist-card-radius: var(--sk-radius-lg);
   --sk-checklist-card-padding: var(--sk-space-5);
   --sk-checklist-card-row-min-height: 52px;
-  --sk-checklist-card-icon-color: var(--sk-color-text);
+  --sk-checklist-card-icon-color: var(--sk-color-text-subtle);
   --sk-checklist-card-pending-color: var(--sk-color-text-muted);
   --sk-checklist-card-label: var(--sk-type-body);
   --sk-checklist-card-label-tracking: var(--sk-type-body-tracking);

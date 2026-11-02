@@ -3413,7 +3413,7 @@ export const lightTheme: SkinKeyTheme = {
         "doneIcon": "check-circle",
         "currentIcon": "circle-dot",
         "pendingIcon": "circle",
-        "iconColor": "#1A1B23",
+        "iconColor": "#5E5B6B",
         "pendingColor": "#4B4958",
         "label": {
           "fontFamily": "Geist_400Regular",
@@ -5133,7 +5133,7 @@ export const darkTheme: SkinKeyTheme = {
         "doneIcon": "check-circle",
         "currentIcon": "circle-dot",
         "pendingIcon": "circle",
-        "iconColor": "#EFEEF3",
+        "iconColor": "#A8A5B3",
         "pendingColor": "#C6C3CF",
         "label": {
           "fontFamily": "Geist_400Regular",

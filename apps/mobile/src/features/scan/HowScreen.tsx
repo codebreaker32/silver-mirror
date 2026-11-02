@@ -131,7 +131,7 @@ export function HowScreen() {
     <Screen title="How this was made">
       <View style={{ gap: theme.space[3] }}>
         <Heading>{COPY.howMadeBoundary}</Heading>
-        <Body>
+        <Body muted>
           {`Task ids, units, time and delete status for each YouCam and Claude call, as recorded by the ${COPY.appName} Worker. Claude reads labels and listings. Our published rules decide the verdict.`}
         </Body>
       </View>
@@ -146,14 +146,17 @@ export function HowScreen() {
             </Body>
           </View>
         </View>
+        {/* Paths and the tonal pill hang from the title's text column, not the disc's left edge. */}
         {images && images.length > 0
           ? images.map((p) => (
-              <Caption key={p} selectable>
-                {p}
-              </Caption>
+              <View key={p} style={{ marginLeft: theme.components.iconDisc.size + theme.space[3] }}>
+                <Caption selectable>{p}</Caption>
+              </View>
             ))
           : null}
-        <Button label="Check again" variant="secondary" fullWidth={false} onPress={check} />
+        <View style={{ marginLeft: theme.components.iconDisc.size + theme.space[3], alignSelf: 'flex-start' }}>
+          <Button label="Check again" variant="secondary" fullWidth={false} onPress={check} />
+        </View>
       </Card>
 
       <View style={{ gap: theme.space[3] }}>

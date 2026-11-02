@@ -89,7 +89,7 @@ export function ProcessingScreen() {
   // Showcase 03_analyze: the frame runs the full content width, close to square, so the checklist and the line under
   // it still sit above the fold on a 6.1" phone. The FaceFrame (aspect 0.8) sits centred on its own sheen plate.
   const plateW = Math.max(0, width - theme.spacing.gutter * 2);
-  const plateH = Math.round(Math.min(plateW / theme.components.faceFrame.aspect, Math.max(240, winHeight * 0.44)));
+  const plateH = Math.round(Math.min(plateW / theme.components.faceFrame.aspect, Math.max(240, winHeight * 0.5)));
   const frameW = Math.round((plateH - theme.space[2] * 2) * theme.components.faceFrame.aspect);
 
   return (
