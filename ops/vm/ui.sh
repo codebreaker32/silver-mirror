@@ -6,6 +6,8 @@
 #   ui.sh has <regex>          exit 0 if a node matches
 #   ui.sh wait <regex> [s]     wait up to s seconds (default 20) for a matching node
 #   ui.sh scroll [up|down]     swipe the screen
+#   ui.sh where <regex>        print the centre "x y" of the first matching node (exit 1 if none)
+#   ui.sh nudge                short swipe up (~600px): lifts a node out from under the sticky bottom bar
 #   ui.sh back                 press Back
 set -euo pipefail
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/android-sdk}"
@@ -55,6 +57,10 @@ case "$cmd" in
     until dump | py find "$1" >/dev/null; do
       sleep 1; t=$((t + 1)); ((t < lim)) || { echo "[ui] timeout waiting for: $1" >&2; exit 1; }
     done ;;
+  where)
+    hit="$(dump | py find "$1")" || exit 1
+    read -r x y rest <<<"$hit"; echo "$x $y" ;;
+  nudge) adb shell input swipe 540 1500 540 900 400 ;;
   scroll)
     if [[ "${1:-down}" == up ]]; then adb shell input swipe 540 700 540 1900 400; else adb shell input swipe 540 1900 540 700 400; fi ;;
   back) adb shell input keyevent KEYCODE_BACK ;;

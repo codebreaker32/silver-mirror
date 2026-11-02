@@ -1,4 +1,4 @@
-# Silver Mirror: status handoff (updated 2026-11-02 ~15:30 IST)
+# Silver Mirror: status handoff (updated 2026-11-02 ~18:05 IST)
 
 Deadline: **2026-11-02 22:15 IST** (11:45 ET). Internal submit target: **19:30 IST**.
 Formerly SkinKey; user-facing name is Silver Mirror (code ids, `app.skinkey` and the Worker URL keep the old name).
@@ -12,6 +12,8 @@ Formerly SkinKey; user-facing name is Silver Mirror (code ids, `app.skinkey` and
 - **Try-on reachable on real shares (`0361cb3`):** 7 of the 11 tinted SPF rows carry brand-sourced shade colours (Foxtale 9, Earth Rhythm 5; Pilgrim, Re'equil, The Derma Co, Dot & Key, Aqualogica one each; source per shade in `hex_source`). Emulator QA ran Foxtale (two shades) and Re'equil (one shade) end to end on the mock Worker (`c89d60a`).
 - **Final hardening (pm):** dark-mode camera screen readable again, honest single-shade try-on label, try-on under the reasons, better-match cards search the shopper's own store, docs updated for try-on (BUGS.md "Final hardening (2 Nov pm)"). Both APKs rebuilt.
 - **Submission package (this pass):** `README.md` rewritten (story, YouCam chain with measured numbers, privacy, honesty, audit headline, mermaid diagrams, screenshots in `docs/screens/`), `docs/DEVPOST.md` (every Devpost field + judging mapping), `docs/DEMO_SCRIPT.md` (2:30 script, shot list, real vs cached). The copy linter now also checks `docs/DEVPOST.md` and `docs/DEMO_SCRIPT.md`.
+
+- **Showcase match (2 Nov pm):** every screen restyled to the showcase image (P1–P4 + round 1): lavender-grey page, white cards, sans headings, slate pills, centred titles, flat tab bar, gradient skin-type hero, focus tiles, corner-bracket frames, liquid-silver welcome; graphite dark. Gates green; **both APKs rebuilt at 17:34 / 17:39 IST**; emulator QA (full + try-on, light + dark) 0 failures; `docs/screens/` refreshed. Details in BUGS.md "Showcase match (2 Nov pm)".
 
 ## Current state
 - **APKs:** `dist-apk/silver-mirror-release.apk` (live Worker) and `dist-apk/silver-mirror-release-localworker.apk` (localhost:8787 via `adb reverse`).

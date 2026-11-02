@@ -9,7 +9,7 @@
 Cosmetic guidance, not medical advice. Not affiliated with Flipkart, Amazon or Nykaa.
 
 <p>
-  <img src="docs/screens/01-home-light.png" width="200" alt="Home, light theme: Demo reading card with oiliness, moisture and redness bands, paste field and share tip">
+  <img src="docs/screens/01-home-light.png" width="200" alt="Home, light theme: skin-type card for the Demo reading, paste field and the share-from-a-store-app steps">
   <img src="docs/screens/07-verdict-fits-dark.png" width="200" alt="Verdict, dark theme: FITS for a Minimalist SPF 50 shared from Nykaa, with one reason naming niacinamide and rule SUP-2">
   <img src="docs/screens/09-better-matches-light.png" width="200" alt="Better matches: three FITS products with one reason line each, ranked by fit, no paid placements">
   <img src="docs/screens/10-medicine-gate-dark.png" width="200" alt="Medicine gate, dark theme: an adapalene gel stops the flow and points to a pharmacist">

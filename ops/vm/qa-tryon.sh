@@ -76,6 +76,11 @@ tryon_row() {
   if ! scroll_to "$entry" 6; then
     fail "$tag: no try-on entry matching /$entry/ on the verdict"; shot "${tag}_2_verdict_no_entry"; return
   fi
+  # The verdict keeps a sticky bar (Better matches pill + Back to listing) over the bottom ~450px; a node found there
+  # is in the tree but a tap lands on the bar. Lift it into the open part of the screen first.
+  local ey
+  ey=$($U where "$entry" | awk '{print $2}')
+  if [[ -n "$ey" ]] && ((ey > 1750)); then $U nudge; sleep 1; fi
   shot "${tag}_3_entry"
   $U tap "$entry" || { fail "$tag: could not tap the try-on entry"; return; }
   $U wait "^This needs a second photo$" 10 || fail "$tag: try-on consent did not open"

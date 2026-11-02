@@ -85,3 +85,14 @@ Still open:
 - No front camera on the AVD: the guide opens on the front lens and shows black until flipped; the app doesn't switch lenses on its own (real phones have a front camera).
 - Better matches still repeat the destination line per card (DESIGN §9.5 asks for one shared line), and the first card's lavender tint can read as featured.
 - Judge-panel suggestions not taken in this batch: getTask 400 → "gone" before any delete, scan job with no error message when a task expires, delete-after-shared-file confirmation GET, `image/jpg` upload content type, two filled primaries on UNKNOWN, Reading-tab status-bar scrim, medicine-gate title length, try-on consent duplicate line.
+
+## Showcase match (2 Nov pm)
+
+Screens restyled to Aman's showcase (`design/reference/silver-mirror-showcase.png`, crops in `design/reference/showcase/`) in packages P1–P4 plus round 1 (`cb855c6`, `f1834e9`, `8baeea6`, `c91f744`, `5eca0a7`). The changes: pale lavender-grey page, white radius-24 cards with hairline and soft shadow, sans headings (serif only on the wordmark), lavender icon discs, slate pill CTAs with arrow (pearl in dark), centred screen titles with a back arrow, a flat white tab bar with a filled active glyph, a segmented store picker, square thumb tiles, a gradient skin-type hero, "What this means for products" focus tiles, corner-bracket frames with checklist cards, and the liquid-silver welcome. Dark is a designed graphite version.
+
+- Gates on the VM (17:30 IST): typecheck, Vitest 551 passed / 1 skipped, Jest `test:rn` 26 passed, lint:claims 0 violations, check-contrast 0 failures.
+- Both APKs rebuilt: `silver-mirror-release.apk` at 17:34 IST (workerUrl = live Worker) and `silver-mirror-release-localworker.apk` at 17:39 IST (workerUrl = `http://localhost:8787`). Both bundles contain the new strings ("Your skin type", "Share from a store app", "What this means for products").
+- Emulator, localworker APK, mock Worker restarted on the current tree: `qa-full.sh light fresh` 0 failures, `qa-full.sh dark` 0 failures, `qa-tryon.sh light all` and `dark all` 0 failures after the script fix below (Foxtale two shades and Re'equil one shade rendered; Flipkart settled in 4 s).
+- **QA script fix:** the restyled verdict's taller reason card left "Try two shades on me" in the UI tree but under the sticky bottom bar (Better matches pill + Back to listing), so the tap hit the bar and consent never opened. `ui.sh` gains `where` and `nudge`. `qa-tryon.sh` lifts the entry above the bar before it takes the shot and taps. The checks themselves are unchanged.
+- `docs/screens/` 01–10 and 16 refreshed from these shots (04 from the web shot). `11-verdict-states-light.png` still shows the old serif kit strip, because the kit route can't be captured full height without the shot script's seeding.
+- Still open from the critiques: Demo reading shows a single focus tile, the welcome backdrop is flatter than the reference, and the face-frame oval is narrow.
