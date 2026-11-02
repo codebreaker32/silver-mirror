@@ -14,24 +14,35 @@ interface ChipProps {
   disabled?: boolean;
   accessibilityLabel?: string;
   testID?: string;
+  /**
+   * Fill: 'tonal' (default) is the secondary-bg pill; 'glass' is the frosted card fill with its 1dp white hairline, for
+   * action chips that sit straight on the page gradient (the /check store searches), where the tonal pill nearly vanishes.
+   */
+  fill?: 'tonal' | 'glass';
 }
 
 /**
  * Pill chip (component.chip): light mist pill, 36dp visual in a 48dp target, label 14/20 600. Selected = slate fill +
  * check + weight, so the state never rests on colour alone. Static chips are read with their card.
  */
-export function Chip({ label, onPress, selected = false, icon, disabled = false, accessibilityLabel, testID }: ChipProps) {
+export function Chip({ label, onPress, selected = false, icon, disabled = false, accessibilityLabel, testID, fill = 'tonal' }: ChipProps) {
   const t = useTheme();
   const c = t.components.chip;
   const fg = disabled ? t.colors.disabledFg : selected ? c.selectedFg : c.fg;
   const lead: IconName | LegacyIconName | undefined = selected ? (c.selectedIcon as IconName) : icon;
+  const glass = fill === 'glass' && !selected;
+  const rest = glass ? t.colors.glass : c.bg;
+  const down = glass ? t.colors.secondaryBgPressed : t.colors.state.pressed;
   const pill = (pressed: boolean) => (
     <View
+      testID={testID ? `${testID}-pill` : undefined}
       style={{
         minHeight: c.visualMinHeight,
         paddingHorizontal: c.paddingX,
         borderRadius: c.radius,
-        backgroundColor: selected ? c.selectedBg : pressed ? t.colors.state.pressed : c.bg,
+        backgroundColor: selected ? c.selectedBg : pressed ? down : rest,
+        borderWidth: glass ? 1 : 0,
+        borderColor: t.colors.glassEdge,
         flexDirection: 'row',
         alignItems: 'center',
         gap: t.space[1] + 2,

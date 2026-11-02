@@ -101,6 +101,18 @@ describe('kit', () => {
     expect(screen.getByRole('button', { name: 'Fragrance-free' }).props.accessibilityState).toEqual({ selected: true, disabled: false });
   });
 
+  it('glass chip: card fill and white hairline so it stands off the page; tonal chip keeps secondary-bg', async () => {
+    await wrap(
+      <>
+        <Chip testID="glass" label="Nykaa" icon="arrow-up-right" fill="glass" onPress={() => undefined} />
+        <Chip testID="tonal" label="All" onPress={() => undefined} />
+      </>,
+    );
+    const pillOf = (id: string) => flat(screen.getByTestId(`${id}-pill`).props.style);
+    expect(pillOf('glass')).toMatchObject({ backgroundColor: lightTheme.colors.glass, borderWidth: 1, borderColor: lightTheme.colors.glassEdge });
+    expect(pillOf('tonal')).toMatchObject({ backgroundColor: lightTheme.components.chip.bg, borderWidth: 0 });
+  });
+
   it('skin-type card is one target read in visual order; the empty card keeps its actions separate', async () => {
     const open = jest.fn();
     await wrap(

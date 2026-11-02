@@ -40,7 +40,8 @@ interface ReadingCardProps {
 /**
  * Home reading card (dashboard reference "Skin Health" card, without its number): a frosted glass card, radius 28.
  * Left, "Your skin type" over the skin-type word set large and one muted line (scan stamp or the Demo reading line);
- * right, the decorative ring with the droplet in a pastel disc (hidden from TalkBack, no figure). One target, one
+ * right, the oiliness band ring (one, two or three of three arcs for Low / Medium / High) with the droplet in a pastel
+ * disc and "Oiliness · High" under it (the ring is hidden from TalkBack; the card label carries the band; no figure). One target, one
  * label in visual order, opens the Reading tab. Empty: the same card says "No reading yet" over "Scan once, about a
  * minute" with the face-frame in the ring, then Start scan and the text action Use the Demo reading.
  */
@@ -77,10 +78,20 @@ export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardP
       ) : null}
     </View>
   );
+  // The ring shows the oiliness band (one, two or three arcs); the word under it says the same, so it is never a
+  // shape without a reading.
+  const oil = keyProfile?.bands.oiliness.level;
   const row = (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[4] }}>
       {text}
-      <ReadingRing icon={keyProfile ? 'droplet' : 'face-frame'} />
+      <View style={{ alignItems: 'center', gap: t.space[1] }}>
+        <ReadingRing icon={keyProfile ? 'droplet' : 'face-frame'} level={oil} />
+        {oil ? (
+          <Text {...t.textProps.caption} numberOfLines={1} style={[t.typography.caption, { color: t.colors.textMuted }]}>
+            {`Oiliness · ${oil}`}
+          </Text>
+        ) : null}
+      </View>
     </View>
   );
 
@@ -104,7 +115,7 @@ export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardP
       testID="key-chip"
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={[`${title}, ${value}`, sub, selfReported ? `Some readings ${COPY.selfReported}` : null, 'Open your reading'].filter(Boolean).join('. ')}
+      accessibilityLabel={[`${title}, ${value}`, sub, oil ? `Oiliness reading: ${oil}` : null, selfReported ? `Some readings ${COPY.selfReported}` : null, 'Open your reading'].filter(Boolean).join('. ')}
       accessibilityHint="Opens the Reading tab"
       android_ripple={{ color: t.colors.state.ripple }}
       style={({ pressed }) => [glass, { minHeight: t.touch.min, padding: pad, overflow: 'hidden', transform: [{ scale: pressed ? 0.99 : 1 }] }]}

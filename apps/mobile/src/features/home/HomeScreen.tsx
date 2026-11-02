@@ -8,7 +8,7 @@ import { useKey } from '@/features/key';
 import { Caption, Icon, IconButton } from '@/components';
 import { useGlass } from '@/components/glass';
 import { PageBackdrop } from '@/components/Screen';
-import { useTabBarSpace } from '@/components/TabBar';
+import { useTabScrollTail } from '@/components/TabBar';
 import { KeyChip } from './KeyChip';
 import { PasteLinkField, type PasteInputRef } from './PasteLinkField';
 import { Picks } from './Picks';
@@ -114,7 +114,8 @@ export default function HomeScreen() {
   const t = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const barSpace = useTabBarSpace();
+  // The floating bar, its page fade and 36dp more: the footer captions rest fully above the fade.
+  const tail = useTabScrollTail();
   const { key, isDemo, loading, useDemo } = useKey();
   const picks = usePicks(key);
   const [tip, setTip] = useState(false);
@@ -140,7 +141,7 @@ export default function HomeScreen() {
       <PageBackdrop />
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingTop: insets.top + t.space[2], paddingHorizontal: gutter, paddingBottom: barSpace + t.space[6] }}
+        contentContainerStyle={{ paddingTop: insets.top + t.space[2], paddingHorizontal: gutter, paddingBottom: tail }}
         keyboardShouldPersistTaps="handled"
         scrollEventThrottle={32}
         onScroll={(e) => {

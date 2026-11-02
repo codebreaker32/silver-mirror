@@ -48,6 +48,8 @@ export default function WelcomeScreen() {
   return (
     <View testID="welcome" style={{ flex: 1, backgroundColor: t.colors.bg }}>
       <Image source={BACKDROP} resizeMode="cover" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }} />
+      {/* Palette 2.2: a pink-lavender wash warms the cool silver photo; the Demo pill is blush glass (secondary-translucent). */}
+      <View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: t.colors.welcomeWash }} />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: t.space[8], paddingTop: insets.top + t.space[6], paddingBottom: t.space[12] }}>
         <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
           <Image source={SWASH_S} resizeMode="contain" style={{ width: 72, height: 104 }} />

@@ -50,7 +50,10 @@ describe('Home skin-type card', () => {
     const onPress = jest.fn();
     await wrap(<KeyChip keyProfile={scanned} isDemo={false} onPress={onPress} />);
     const card = screen.getByTestId('key-chip');
-    expect(card.props.accessibilityLabel).toMatch(/^Your skin type, \w+\. Scan 2 Nov · photo deleted\. Open your reading$/);
+    expect(card.props.accessibilityLabel).toMatch(/^Your skin type, \w+\. Scan 2 Nov · photo deleted\. Oiliness reading: (Low|Medium|High)\. Open your reading$/);
+    // The ring's band is printed as a word beside it, never a figure.
+    expect(screen.getByText(`Oiliness · ${scanned.bands.oiliness.level}`)).toBeTruthy();
+    expect(screen.queryByText(/\d+\s*%/)).toBeNull();
     await fireEvent.press(card);
     expect(onPress).toHaveBeenCalled();
   });

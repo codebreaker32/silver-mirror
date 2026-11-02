@@ -1,25 +1,33 @@
 import { useId } from 'react';
 import { View } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
+import type { Band } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from '@/components';
 
-/** The arc's sweep. Fixed and decorative: it never encodes a reading, a score or a share of anything. */
-const SWEEP = 0.74;
+/** Segments lit per band: the ring shows the band word as one, two or three of three arcs. Never a figure. */
+export const BAND_SEGMENTS: Record<Band, 1 | 2 | 3> = { Low: 1, Medium: 2, High: 3 };
 
 /**
- * Decorative ring on the Home reading card (dashboard reference "Skin Health" ring, without its number): a pale lilac
- * track, a plum-to-pink arc with round caps, and a pastel disc holding the glyph. No figure, no percentage, and the
- * whole thing is hidden from TalkBack; the card's own label says the skin type.
+ * Ring on the Home reading card (dashboard reference "Skin Health" ring, without its number). With a `level` it is a
+ * three-arc band ring: Low lights one arc, Medium two, High three, plum-to-pink with round caps, the rest in the pale
+ * lilac track. The card prints the same band as a word beside it, so the ring never carries meaning alone. Without a
+ * level (no reading yet) it is the plain pale track around the glyph. A pastel disc holds the glyph. Hidden from
+ * TalkBack; the card's own label says the skin type and the band.
  */
-export function ReadingRing({ icon = 'droplet', size = 104 }: { icon?: IconName; size?: number }) {
+export function ReadingRing({ icon = 'droplet', level, size = 96 }: { icon?: IconName; level?: Band; size?: number }) {
   const t = useTheme();
   const c = t.colors;
   const stroke = 9;
   const r = (size - stroke) / 2;
   const len = 2 * Math.PI * r;
-  const disc = size - stroke * 2 - 20;
+  const disc = size - stroke * 2 - 18;
   const id = `ring${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+  const centre = size / 2;
+  // Round caps reach stroke/2 past each end, so the visible gap between arcs is `gap - stroke`.
+  const gap = stroke + 7;
+  const seg = len / 3 - gap;
+  const lit = level ? BAND_SEGMENTS[level] : 0;
   return (
     <View
       pointerEvents="none"
@@ -34,19 +42,25 @@ export function ReadingRing({ icon = 'droplet', size = 104 }: { icon?: IconName;
             <Stop offset={1} stopColor={c.accentPink} />
           </LinearGradient>
         </Defs>
-        <Circle cx={size / 2} cy={size / 2} r={r} stroke={c.tileLilac} strokeWidth={stroke} fill="none" />
-        <Circle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          stroke={`url(#${id})`}
-          strokeWidth={stroke}
-          strokeLinecap="round"
-          fill="none"
-          strokeDasharray={`${len * SWEEP} ${len}`}
-          // Start at twelve o'clock and run clockwise.
-          transform={`rotate(-90 ${size / 2} ${size / 2})`}
-        />
+        {level ? (
+          [0, 1, 2].map((i) => (
+            <Circle
+              key={i}
+              cx={centre}
+              cy={centre}
+              r={r}
+              stroke={i < lit ? `url(#${id})` : c.tileLilac}
+              strokeWidth={stroke}
+              strokeLinecap="round"
+              fill="none"
+              strokeDasharray={`${seg} ${len}`}
+              // Arc i starts just past twelve o'clock plus i thirds, clockwise; half a gap either side.
+              transform={`rotate(${-90 + i * 120 + ((gap / 2) / len) * 360} ${centre} ${centre})`}
+            />
+          ))
+        ) : (
+          <Circle cx={centre} cy={centre} r={r} stroke={c.tileLilac} strokeWidth={stroke} fill="none" />
+        )}
       </Svg>
       <View style={{ width: disc, height: disc, borderRadius: disc / 2, backgroundColor: c.tilePink, alignItems: 'center', justifyContent: 'center' }}>
         <Icon name={icon} size={t.icon.lg} color={c.plum} />

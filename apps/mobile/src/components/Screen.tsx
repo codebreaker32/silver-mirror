@@ -5,7 +5,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import Svg, { Defs, LinearGradient, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import { IconButton } from './IconButton';
-import { tabBarSpace } from './TabBar';
+import { tabBarSpace, tabScrollTail } from './TabBar';
 import type { IconName } from './Icon';
 import { Txt } from './Text';
 
@@ -137,7 +137,10 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
     if (next !== under) setUnder(next);
   };
   // With a footer the last line clears the dock by the fade height plus 16dp, so it can always scroll into full view.
-  const tail = (footer && scroll ? t.spacing.section + FADE + t.space[4] : t.spacing.section) + (scroll ? barSpace : 0);
+  // In a tab scene the scroll also clears the floating bar and its 48dp page fade (tabScrollTail), so the last card rests
+  // in full view above them.
+  const base = footer && scroll ? t.spacing.section + FADE + t.space[4] : t.spacing.section;
+  const tail = scroll && inTab ? Math.max(base + barSpace, tabScrollTail(insets.bottom)) : base;
   const body = <View style={{ paddingHorizontal: t.spacing.gutter, paddingBottom: tail, gap: t.spacing.stackLg }}>{children}</View>;
   return (
     <SafeAreaView testID={testID} edges={['top', 'left', 'right']} style={{ flex: 1, backgroundColor: t.colors.bg }}>

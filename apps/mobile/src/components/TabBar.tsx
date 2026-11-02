@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { Keyboard, Platform, Pressable, Text, View } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from 'expo-router/tabs';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from './Icon';
 import { useGlass } from './glass';
@@ -41,8 +42,12 @@ function useKeyboardOpen(): boolean {
   return open;
 }
 
-/** Floating bar geometry (dashboard reference): a 68dp glass pill, the 56dp Scan disc raised 20dp above its top edge. */
-export const TAB_BAR = { height: 68, raise: 20, scan: 56, radius: 28, inset: 16, gapBelow: 12 } as const;
+/**
+ * Floating bar geometry (dashboard reference): a 68dp glass pill, the 56dp Scan disc raised 20dp above its top edge, and
+ * a 48dp page fade (transparent -> page-bottom) that ends at the pill's top edge, so content scrolling under the bar
+ * dissolves into the page instead of being cut by it.
+ */
+export const TAB_BAR = { height: 68, raise: 20, scan: 56, radius: 28, inset: 16, gapBelow: 12, fade: 48 } as const;
 
 /**
  * Space a tab scene leaves at its bottom so the floating bar never covers its last line: the bar, the raised Scan disc
@@ -57,12 +62,51 @@ export function useTabBarSpace(): number {
 }
 
 /**
+ * Bottom padding for a tab scene's scroll content: the bar's space plus enough to lift the last line out of the fade
+ * above the pill (at least 24dp past the raised Scan disc), so the final card or caption rests in full view.
+ */
+export function tabScrollTail(bottomInset: number): number {
+  return tabBarSpace(bottomInset) + Math.max(24, TAB_BAR.fade - TAB_BAR.raise + 8);
+}
+
+export function useTabScrollTail(): number {
+  return tabScrollTail(useSafeAreaInsets().bottom);
+}
+
+/** The page fade behind the floating bar: transparent at the top, page-bottom from the pill's top edge down. */
+function BarFade({ bottom }: { bottom: number }) {
+  const t = useTheme();
+  const id = `barFade${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+  const height = bottom + TAB_BAR.height + TAB_BAR.fade;
+  return (
+    <View
+      pointerEvents="none"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height }}
+    >
+      <Svg width="100%" height="100%" preserveAspectRatio="none">
+        <Defs>
+          <LinearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+            <Stop offset={0} stopColor={t.colors.pageBottom} stopOpacity={0} />
+            <Stop offset={TAB_BAR.fade / height} stopColor={t.colors.pageBottom} stopOpacity={1} />
+            <Stop offset={1} stopColor={t.colors.pageBottom} stopOpacity={1} />
+          </LinearGradient>
+        </Defs>
+        <Rect x="0" y="0" width="100%" height="100%" fill={`url(#${id})`} />
+      </Svg>
+    </View>
+  );
+}
+
+/**
  * Custom bottom tab bar (dashboard reference, colors reference): a floating frosted glass pill inset from the screen
  * edges (radius 28, white hairline, soft plum shadow), drawn over the scene. Check at left and Reading at right: outline
  * glyph + 500 label when idle, the filled plum glyph + 600 plum label when selected (fill + weight + colour + the
  * selected state, never colour alone). Scan in the middle is a raised 56dp plum disc with the white scan glyph and
  * "Scan" under it. role tablist / tab; the labels and testIDs are what QA taps. Hidden while the Android keyboard is
- * open. Scenes pad their bottom by tabBarSpace() so nothing hides under it.
+ * open. A 48dp page fade sits behind the pill (BarFade), and scenes end their scroll with tabScrollTail() so the last
+ * line rests above it.
  */
 export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: BottomTabBarProps) {
   const t = useTheme();
@@ -71,6 +115,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
   const keyboard = useKeyboardOpen();
   const glass = useGlass(TAB_BAR.radius, 'bar');
   if (keyboard) return null;
+  const below = Math.max(insets.bottom, TAB_BAR.gapBelow);
 
   const focusedName = state.routes[state.index]?.name;
   const items = TAB_ITEMS.filter((it) => !it.route || state.routes.some((r) => r.name === it.route));
@@ -85,11 +130,12 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
         left: 0,
         right: 0,
         bottom: 0,
-        paddingBottom: Math.max(insets.bottom, TAB_BAR.gapBelow),
+        paddingBottom: below,
         paddingLeft: insets.left + TAB_BAR.inset,
         paddingRight: insets.right + TAB_BAR.inset,
       }}
     >
+      <BarFade bottom={below} />
       <View pointerEvents="box-none" style={{ height: TAB_BAR.height + TAB_BAR.raise }}>
         <View pointerEvents="none" style={[glass, { position: 'absolute', left: 0, right: 0, bottom: 0, height: TAB_BAR.height }]} />
         <View testID="tab-bar" accessibilityRole="tablist" pointerEvents="box-none" style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
