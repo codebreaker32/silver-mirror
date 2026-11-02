@@ -41,7 +41,7 @@ CLAUDE_MODEL = "claude-opus-5-5"
 SCAN_CAP = "3"
 TRYON_CAP = "3"
 UNIT_BALANCE_START = "1022"
-UNIT_FLOOR = "150"
+UNIT_FLOOR = "0"
 AFFILIATE_NYKAA = "off"
 [[env.production.kv_namespaces]]
 binding = "KV"
