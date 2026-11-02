@@ -60,7 +60,7 @@ export function SaveHeart({ productId, size = 20, productName, style }: SaveHear
       accessibilityRole="button"
       accessibilityState={{ selected: on }}
       accessibilityLabel={`${on ? 'Remove' : 'Save'}${productName ? ` ${productName}` : ''}${on ? ' from saved' : ' on this phone'}`}
-      style={[{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }, style]}
+      style={[{ minWidth: t.touch.min, minHeight: t.touch.min, alignItems: 'center', justifyContent: 'center' }, style]}
     >
       <Animated.View style={[{ width: size, height: size }, glyph]}>
         <Svg width={size} height={size} viewBox="0 0 24 24" style={{ position: 'absolute' }}>

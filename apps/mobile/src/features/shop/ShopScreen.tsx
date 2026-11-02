@@ -125,7 +125,7 @@ export function ShopScreen() {
               accessibilityRole="button"
               accessibilityLabel="Clear search"
               hitSlop={4}
-              style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}
+              style={{ minWidth: t.touch.min, minHeight: t.touch.min, alignItems: 'center', justifyContent: 'center' }}
             >
               <Icon name="close" size={16} color={t.colors.textMuted} />
             </Pressable>
@@ -153,7 +153,7 @@ export function ShopScreen() {
             {firstLoad ? ' ' : countLine(shop.items.length, shop.catalogCount, category, query)}
           </Text>
           {showError ? (
-            <Pressable onPress={shop.retry} accessibilityRole="button" hitSlop={12}>
+            <Pressable onPress={shop.retry} accessibilityRole="button" hitSlop={12} style={{ minHeight: t.touch.min, justifyContent: 'center' }}>
               <Text style={[homeType.smallStrong, { color: t.colors.text }]}>Could not refresh · Try again</Text>
             </Pressable>
           ) : null}

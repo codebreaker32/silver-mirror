@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { Text, View } from 'react-native';
 import { COPY, type Band, type KeyProfile } from '@skinkey/contracts';
 import { deriveSkinType } from '@skinkey/rules';
 import { Body, Button, Caption, Divider, FocusTiles, Icon, Note, SectionHeader, Txt } from '@/components';
@@ -74,7 +75,7 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
         style={{ gap: theme.space[4] }}
       >
         <View style={{ height: 168, borderRadius: 16, overflow: 'hidden', backgroundColor: theme.colors.bgSunken }}>
-          <Image source={BACKDROP} resizeMode="cover" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
+          <Image source={BACKDROP} contentFit="cover" cachePolicy="none" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
           <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(247,246,250,0.35)' }} />
           {demo ? (
             <View style={{ position: 'absolute', left: theme.space[3], top: theme.space[3] }}>

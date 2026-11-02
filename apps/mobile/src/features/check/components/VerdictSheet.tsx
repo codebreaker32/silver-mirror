@@ -40,7 +40,7 @@ export function VerdictSheet({ view, afterHead, unknown, tryon, matches, glyph, 
     <View testID={`verdict-${view.tone}`} style={{ gap: t.spacing.section }}>
       <View style={{ gap: t.space[4] }}>
         {onHeadPress && view.showReasons ? (
-          <Pressable onPress={onHeadPress} accessibilityRole="button" accessibilityLabel={view.headA11y} accessibilityHint="Scrolls to the reasons." style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}>
+          <Pressable onPress={onHeadPress} accessibilityRole="button" accessibilityLabel={view.headA11y} accessibilityHint="Scrolls to the reasons." style={({ pressed }) => ({ minHeight: t.touch.min, opacity: pressed ? 0.85 : 1 })}>
             <VerdictHead view={view} demo={demo} />
           </Pressable>
         ) : (
