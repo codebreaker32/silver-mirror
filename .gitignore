@@ -33,3 +33,6 @@ npm-debug.*
 # loop runner log
 ops/ralph.log
 design/web-shots/
+
+# release APKs built on the VM (ops/vm/build-release-apk.sh)
+dist-apk/

@@ -90,6 +90,52 @@ npm run dev:mobile          # expo start (needs a dev client; expo-share-intent 
   - This is a **dev-client** build: it carries no JS bundle and loads JS from Metro (`npm run dev:mobile` + `adb reverse tcp:8081 tcp:8081 && adb reverse tcp:8787 tcp:8787`). Standalone demo APK (verified): `cd apps/mobile/android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a` → `app/build/outputs/apk/release/app-release.apk` (~45 MB, embeds `index.android.bundle`, debug-signed, ~5 min). The bundle points at `http://localhost:8787`, so the phone still needs `adb reverse tcp:8787 tcp:8787` to a running Worker.
 - **Verified:** `expo export -p android` bundles cleanly, including `@skinkey/design` → `design/system/tokens/theme.ts`. `expo-doctor` passes 20/20.
 
+### Release APK + emulator QA on the build VM (Silver Mirror)
+
+Never build or run the emulator on the WSL machine. Everything goes through `scripts/remote.sh`. The VM has the Android SDK at `~/android-sdk`, the AVD `sm35` (API 35, google_apis_playstore x86_64, Pixel 7 1080×2400), and KVM.
+
+- **Worker URL override:** `apps/mobile/app.config.js` sits on top of `app.json`. If `WORKER_URL` is unset, the build uses the production default from `app.json` (the live https Worker). If `WORKER_URL=http://…` is set, `extra.workerUrl` uses that value, and `android:usesCleartextTraffic="true"` is set, because release builds block plain http. The plugin also removes the cleartext flag again when the URL is https, so a non-clean prebuild can't keep a stale QA setting. `WORKER_URL` must be set for both prebuild and gradle, because gradle re-evaluates the config it embeds. The build script handles this.
+- **Build:** `ops/vm/build-release-apk.sh [out-name]` runs `CI=1 expo prebuild --platform android --no-install`, writes `sdk.dir` to `local.properties`, runs `./gradlew assembleRelease -PreactNativeArchitectures=x86_64,arm64-v8a` (one APK works on the emulator and on phones), and copies the result to `dist-apk/<out-name>`.
+
+  ```
+  scripts/remote.sh --pull dist-apk -- 'ops/vm/build-release-apk.sh'            # dist-apk/silver-mirror-release.apk (live Worker)
+  scripts/remote.sh --pull dist-apk -- 'WORKER_URL=http://localhost:8787 ops/vm/build-release-apk.sh silver-mirror-release-localworker.apk'
+  ```
+
+- **Emulator driver:** `ops/vm/emu.sh <cmd>`. `npm run emu -- <cmd>` does the same thing. Run it on the VM only.
+
+  | Command | What it does |
+  |---|---|
+  | `start [dark\|light]` | Boots `sm35` headless and detached, so it survives the ssh session. Flags: `-no-window -no-audio -no-snapshot-save -gpu swiftshader_indirect -no-boot-anim`. Waits for `sys.boot_completed`, turns animations and screen-off off, then sets night mode. |
+  | `theme dark\|light` | Runs `cmd uimode night yes\|no`. The app follows the phone setting. |
+  | `install <apk>` | Runs `adb install -r -g`. |
+  | `launch` | Opens the app's launcher activity. |
+  | `kill` | Force-stops the app, so the next share is a cold start. |
+  | `shot <name>` | Saves a screenshot to `design/emulator-shots/<name>.png`. |
+  | `share-text <text>` | Runs `am start -a android.intent.action.SEND -t text/plain -n app.skinkey/.MainActivity --es android.intent.extra.TEXT <text>`. The text is quoted for the device shell, so newlines, `&` and `\|` survive. |
+  | `open <deeplink>` | Sends ACTION_VIEW to `app.skinkey`, for example `skinkey://check`. |
+  | `worker-start` / `worker-stop` | Starts or stops the local **mock** Worker on `127.0.0.1:8787` (`YOUCAM_MODE:mock`, `CLAUDE_MODE:mock`, `MOCK_YOUCAM:1`; no units, no Anthropic calls). Starting it also runs `adb reverse tcp:8787 tcp:8787`. |
+  | `qa [dark\|light]` | Sends the three real S1 payloads from `spikes/FINDINGS.md` (Flipkart short link, Amazon text, Nykaa text). Each goes once as a cold start (app killed) and once as a warm start (app on Home), then Amazon is sent again on top of the Nykaa check. Shots are named `<theme>_<store>_{cold,warm}.png`. |
+  | `status`, `stop` | `status` shows the emulator, boot and Worker state. `stop` kills the mock Worker and the emulator. |
+
+  Logs on the VM are `/tmp/sm-emu/emulator.log` and `/tmp/sm-emu/worker.log`. Env knobs: `AVD`, `EMU_MEMORY` (MB, default 4096) and `SHOT_WAIT` (seconds to wait after an intent before the shot, default 10).
+
+- **Full QA loop** (mock Worker, so it spends nothing):
+
+  ```
+  scripts/remote.sh --pull design/emulator-shots -- 'ops/vm/emu.sh start dark && ops/vm/emu.sh worker-start \
+    && ops/vm/emu.sh install dist-apk/silver-mirror-release-localworker.apk && ops/vm/emu.sh qa dark && ops/vm/emu.sh qa light'
+  ```
+
+  `dist-apk/` isn't rsynced up (remote.sh excludes it), so install from the APK that is already on the VM. Build it there first. The emulator and the Worker keep running between `remote.sh` calls until `ops/vm/emu.sh stop`.
+- **Verified (2026-11-02, VM):**
+  - Both APKs build: the localworker build takes 9m57s clean, and the production build takes 4m36s after it. Each is ~78 MB and contains `lib/x86_64` + `lib/arm64-v8a`. `aapt2` shows `usesCleartextTraffic` only in the localworker APK.
+  - `sm35` boots in ~21 s.
+  - The mock Worker reports `/health` mode `mock` with 180 rows / 125 verified.
+  - All three payloads resolve on both cold and warm start, in dark and light (14× `POST /v1/resolve`, all 200). The Amazon newline survives the shell quoting, and the title is extracted without the "Check this out at Amazon" prefix. Flipkart resolves to "Vaseline Gluta Hya Dewy Radiance" (mock redirect fixture). Nykaa opens the "Which product is this?" sheet.
+  - A second share while a check is open replaces it. BUGS.md #1 (warm share ignored) no longer reproduces on this build.
+  - Shots are in `design/emulator-shots/`.
+
 ## Worker
 
 - **`wrangler.toml`:**
