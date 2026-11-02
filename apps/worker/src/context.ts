@@ -14,6 +14,9 @@ import { DEMO_HEADER } from './proposals';
 import { realRules, type RulesPort } from './rulesPort';
 import { YouCamClient, type FetchLike } from './youcam/client';
 
+/** Honest client id for the Flipkart short-link fallback (the phone normally follows the link itself, BUGS.md item 7). */
+const SHARE_FETCH_UA = 'SilverMirror/1.0 (share-link title lookup; one redirect header, page never read)';
+
 export interface AppDeps {
   clock?: Clock;
   /** Overrides the network for live mode (tests only; never the real API from tests). */
@@ -103,7 +106,13 @@ export const makeContextFactory = (deps: AppDeps) => {
         if (!deps.shareFetch && mode === 'mock') return shortUrl === SHARE_FIXTURES.flipkartShortLink ? SHARE_FIXTURES.flipkartLocation : null;
         const doFetch = deps.shareFetch ?? ((input, init) => fetch(input, init));
         try {
-          const res = await doFetch(shortUrl, { method: 'GET', redirect: 'manual', signal: AbortSignal.timeout(4000) });
+          // Fallback only: the phone normally follows the link and sends the listing URL.
+          const res = await doFetch(shortUrl, {
+            method: 'GET',
+            redirect: 'manual',
+            headers: { 'user-agent': SHARE_FETCH_UA, accept: 'text/html' },
+            signal: AbortSignal.timeout(8000),
+          });
           await res.body?.cancel().catch(() => undefined);
           return res.status >= 300 && res.status < 400 ? res.headers.get('location') : null;
         } catch {

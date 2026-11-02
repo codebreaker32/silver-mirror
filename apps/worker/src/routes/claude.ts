@@ -46,7 +46,13 @@ export const resolve = async (ctx: AppCtx, req: ResolveRequest, ip: string, limi
   const parsed = parseSharePayload(req.text ?? '', req.url);
   const store = parsed.store !== 'other' ? parsed.store : detectStore(req.text, req.url);
   // Flipkart shares carry only dl.flipkart.com/s/<code>: one redirect header gives slug + pid (spikes/FINDINGS.md S1).
-  const redirected = parsed.needsRedirect && parsed.url ? parseFlipkartLocation(await ctx.flipkartLocation(parsed.url)) : null;
+  // The phone follows the short link itself and sends the listing URL; that is parsed here with no network call.
+  const redirected =
+    parsed.needsRedirect && parsed.url
+      ? parseFlipkartLocation(await ctx.flipkartLocation(parsed.url))
+      : parsed.store === 'flipkart'
+        ? parseFlipkartLocation(parsed.url)
+        : null;
   const title = parsed.title ?? redirected?.title ?? extractTitle(req.text, req.url);
   const base = { store, catalogCount: catalog.verifiedCount };
   const entries: LedgerEntry[] = [];

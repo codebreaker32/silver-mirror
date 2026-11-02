@@ -20,7 +20,7 @@
 Screens: 01–19 *.png in this folder; contact sheets sheet.png, sheet2.png, sheet3.png, sheet4.png.
 
 ## Production (live Worker) findings — 2026-11-02 ~10:00 IST
-7. **CRITICAL: Flipkart short links don't resolve on the live Worker.** POST /v1/resolve with `https://dl.flipkart.com/s/qPYPSuNNNN` gives `outcome: unknown, extractedTitle: null`. The same lookup works from a residential IP. The Worker's `flipkartLocation` sends a GET with no User-Agent and a 4 s timeout from Cloudflare IPs, which Flipkart probably blocks or stalls. Fix:
+7. **FIXED in code (needs a Worker redeploy + APK on a phone to confirm live): the phone follows the short link itself (XHR, aborted once headers arrive) and sends the listing URL; the Worker parses slug + pid with no network call; the server fallback keeps one redirect header with an honest client id and an 8 s timeout. Tests: apps/mobile/src/features/share/flipkartFollow.test.ts, apps/worker/test/claude.test.ts.** ~~CRITICAL: Flipkart short links don't resolve on the live Worker.~~ POST /v1/resolve with `https://dl.flipkart.com/s/qPYPSuNNNN` gives `outcome: unknown, extractedTitle: null`. The same lookup works from a residential IP. The Worker's `flipkartLocation` sends a GET with no User-Agent and a 4 s timeout from Cloudflare IPs, which Flipkart probably blocks or stalls. Fix:
    - (a) **Resolve on the phone first:** `fetch(shortUrl)` → read `response.url` (the final link address only), cancel the body, and send that URL in `ResolveRequest.url`. The Worker parses the slug and pid from a `flipkart.com/.../p/...` URL without any network call.
    - (b) Server fallback: send a mobile browser User-Agent and allow a longer timeout (8 s).
    - (c) Test both paths.

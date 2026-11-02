@@ -152,6 +152,29 @@ describe('/v1/resolve', () => {
     expect(calls).toHaveLength(0);
   });
 
+  it('identifies itself on the short-link fallback', async () => {
+    const seen: Array<RequestInit | undefined> = [];
+    const s = setup({ shareFetch: async (_url, init) => (seen.push(init), new Response(null, { status: 404 })) });
+    await s.req('POST', '/v1/resolve', { source: 'share_text', text: 'https://dl.flipkart.com/s/qPYPSuNNNN' });
+    expect(seen).toHaveLength(1);
+    expect(new Headers(seen[0]!.headers).get('user-agent')).toMatch(/^SilverMirror\//);
+  });
+
+  it('uses the listing URL the phone followed: no Worker fetch, title from the slug', async () => {
+    const { caller, calls } = fakeCaller(() => msg({ text: '{}' }));
+    const seen: string[] = [];
+    const s = setup({ claude: caller, shareFetch: async (url) => (seen.push(url), new Response(null, { status: 404 })) });
+    const r = await s.req('POST', '/v1/resolve', {
+      source: 'share_text',
+      text: 'https://dl.flipkart.com/s/qPYPSuNNNN',
+      url: 'https://www.flipkart.com/cerave-moisturising-cream-for-dry-to-very-dry-skin-50-ml/p/itm123?pid=MSCABC&lid=L1',
+    });
+    const body = ResolveResponse.parse(r.json);
+    expect(body).toMatchObject({ outcome: 'match', store: 'flipkart', extractedTitle: 'Cerave Moisturising Cream for Dry to Very Dry Skin 50 ml' });
+    expect(seen).toEqual([]);
+    expect(calls).toHaveLength(0);
+  });
+
   it('never fetches anything that is not a dl.flipkart.com/s/ short link', async () => {
     const seen: string[] = [];
     const s = setup({ shareFetch: async (url) => (seen.push(url), new Response(null, { status: 404 })) });

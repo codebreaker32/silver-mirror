@@ -7,6 +7,7 @@ import type {
   ResolveResponse,
 } from '@skinkey/contracts';
 import { call } from '@/lib/api';
+import { followFlipkartShortLink } from '@/features/share/flipkartFollow';
 
 /** The Worker calls the check flow needs. Injected so the flow can be tested without a network. */
 export interface CheckApi {
@@ -17,7 +18,11 @@ export interface CheckApi {
 }
 
 export const workerCheckApi: CheckApi = {
-  resolve: (body, signal) => call('resolve', { body, signal }),
+  resolve: async (body, signal) => {
+    // Flipkart short links: the phone follows the redirect so the Worker gets the listing URL (BUGS.md item 7).
+    const listing = await followFlipkartShortLink(body.url);
+    return call('resolve', { body: listing ? { ...body, url: listing } : body, signal });
+  },
   product: (id, signal) => call('catalogProduct', { params: { id }, signal }),
   search: ({ q, category, limit }, signal) => {
     const query: Record<string, string> = {};
