@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Image, Pressable, ScrollView, Text, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Image, ScrollView, Text, View } from 'react-native';
+import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { useKey } from '@/features/key';
-import { Caption, Icon, IconButton } from '@/components';
+import { Caption, IconButton } from '@/components';
+import { FadeRise } from '@/components/home/FadeRise';
 import { HomeHeading } from '@/components/home/HomeHeading';
 import { homeType } from '@/components/home/homeType';
 import { useTabScrollTail } from '@/components/TabBar';
+import { CategoryRow, HomeBanner } from './HomeBanner';
 import { KeyChip } from './KeyChip';
 import { PasteLinkField } from './PasteLinkField';
 import { Picks } from './Picks';
@@ -16,7 +18,7 @@ import { ShareTipCard } from './ShareTipCard';
 import { dismissShareTip, shareTipDismissed } from './tipStore';
 import { usePicks } from './usePicks';
 
-/** The Silver Mirror swash S (the welcome's mark), small in a plain well-tone circle at the top left. */
+/** The Silver Mirror swash S (the welcome's mark), small beside the serif wordmark at the top left. */
 const SWASH_S = require('../../../assets/images/silver-s.png');
 
 /** Greeting by the phone's local time. No name field: we never ask for one. */
@@ -31,45 +33,10 @@ export function greeting(now: Date = new Date()): string {
 export const HOME_LINE = 'Check a product before you buy it.';
 
 /**
- * Quiet secondary action for "Try a sample share": a flat well-tone pill, one fill, no line, 44dp visual in a 48dp
- * target, centred at its own width. Same label, testID and hint as before (QA taps by label).
- */
-function SamplePill({ onPress, hint }: { onPress: () => void; hint: string }) {
-  const t = useTheme();
-  return (
-    <Pressable
-      testID="sample-share"
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel="Try a sample share"
-      accessibilityHint={hint}
-      style={{ alignSelf: 'center', minHeight: t.touch.min, justifyContent: 'center' }}
-    >
-      {({ pressed }) => (
-        <View
-          style={{
-            minHeight: 44,
-            paddingHorizontal: t.space[5],
-            borderRadius: t.radius.full,
-            backgroundColor: pressed ? t.colors.secondaryBgPressed : t.colors.secondaryBg,
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: t.space[2],
-          }}
-        >
-          <Icon name="arrow-down-left" size={18} color={t.colors.text} />
-          <Text style={[homeType.bodyStrong, { color: t.colors.text }]}>Try a sample share</Text>
-        </View>
-      )}
-    </Pressable>
-  );
-}
-
-/**
- * Home = Check tab (Silver & graphite), keeping the dashboard reference's order (design/reference/dashboard-reference.png,
- * middle phone): the swash S and the Settings gear, the serif greeting over one muted line, the reading surface (skin
- * type word and three band rows, no figures), "Check a product" with the paste field inline, "Picks for you", then the
- * share-from-a-store-app steps, the sample share and the footer captions, quieter. The page is one flat tone;
+ * Home tab (experience reference, first phone): the swash S + serif wordmark with search (opens Shop) and the Settings
+ * gear, the serif greeting over one muted line, the reading surface, "Check a product" with the paste field inline, the
+ * "Check before you buy" banner with the sample share, the category circles (open Shop filtered), "Chosen for you",
+ * then the share-from-a-store-app tip and the footer captions, quieter. Sections fade and rise 8dp once, 40ms apart. The page is one flat tone;
  * surfaces sit one tone step up, wells one step down; no lines, no shadows. The docked tab bar sits over the bottom,
  * so the scroll leaves its height free.
  */
@@ -106,15 +73,20 @@ export default function HomeScreen() {
           if (past !== scrolled) setScrolled(past);
         }}
       >
-        <View testID="home-hero">
-          <View style={{ minHeight: t.touch.min, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <FadeRise index={0} testID="home-hero">
+          <View style={{ minHeight: t.touch.min, flexDirection: 'row', alignItems: 'center' }}>
             <View
-              accessibilityElementsHidden
-              importantForAccessibility="no-hide-descendants"
-              style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: t.colors.bgSunken, alignItems: 'center', justifyContent: 'center' }}
+              accessible
+              accessibilityRole="header"
+              accessibilityLabel="Silver Mirror"
+              style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: t.space[2] }}
             >
-              <Image source={SWASH_S} resizeMode="contain" style={{ width: 20, height: 29 }} />
+              <Image source={SWASH_S} resizeMode="contain" style={{ width: 16, height: 24 }} />
+              <Text numberOfLines={1} style={[homeType.wordmark, { color: t.colors.text }]}>
+                Silver Mirror
+              </Text>
             </View>
+            <IconButton icon="search" accessibilityLabel="Search in Shop" onPress={() => router.navigate('/shop' as Href)} testID="home-search" />
             <IconButton icon="gear" accessibilityLabel="Settings" onPress={() => router.push('/settings')} testID="home-settings" style={{ marginRight: -gearPull }} />
           </View>
 
@@ -146,17 +118,35 @@ export default function HomeScreen() {
               />
             )}
           </View>
-        </View>
+        </FadeRise>
 
-        <View testID="home-check" style={{ marginTop: section, gap: t.space[3] }}>
+        <FadeRise index={1} testID="home-check" style={{ marginTop: section, gap: t.space[3] }}>
           <HomeHeading title="Check a product" />
           <PasteLinkField hideLabel emphasis={key ? 'primary' : 'secondary'} onSubmit={(q) => router.push({ pathname: '/check', params: { q } })} />
-        </View>
+        </FadeRise>
+
+        <FadeRise index={2} style={{ marginTop: section, gap: t.space[2] }}>
+          <HomeBanner
+            onSample={() => router.push({ pathname: '/check', params: { sample: '1' } })}
+            hint={`Checks a labelled sample listing. Uses the ${COPY.reading.demo} if you haven't scanned.`}
+          />
+          <Caption>
+            A labelled sample listing{key && !isDemo ? '' : `, checked against the ${COPY.reading.demo}`}. No store app needed.
+          </Caption>
+        </FadeRise>
+
+        <FadeRise index={3} style={{ marginTop: section }}>
+          <CategoryRow onOpen={(category) => router.navigate({ pathname: '/shop', params: { category } } as unknown as Href)} />
+        </FadeRise>
 
         {picks.length ? (
-          <View style={{ marginTop: section }}>
-            <Picks picks={picks} onOpen={(q) => router.push({ pathname: '/check', params: { q } })} />
-          </View>
+          <FadeRise index={4} style={{ marginTop: section }}>
+            <Picks
+              picks={picks}
+              onOpen={(q) => router.push({ pathname: '/check', params: { q } })}
+              onViewAll={() => router.navigate('/shop' as Href)}
+            />
+          </FadeRise>
         ) : null}
 
         <View style={{ marginTop: section, gap: section }}>
@@ -168,16 +158,6 @@ export default function HomeScreen() {
               }}
             />
           ) : null}
-
-          <View style={{ gap: t.space[2] }}>
-            <SamplePill
-              onPress={() => router.push({ pathname: '/check', params: { sample: '1' } })}
-              hint={`Checks a labelled sample listing. Uses the ${COPY.reading.demo} if you haven't scanned.`}
-            />
-            <Caption style={{ textAlign: 'center' }}>
-              A labelled sample listing{key && !isDemo ? '' : `, checked against the ${COPY.reading.demo}`}. No store app needed.
-            </Caption>
-          </View>
 
           <View style={{ gap: t.space[1] }}>
             <Caption>{COPY.footer}</Caption>

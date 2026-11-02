@@ -3,8 +3,12 @@ import { Keyboard, Platform, Pressable, Text, View } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from 'expo-router/tabs';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Svg, { Path } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from './Icon';
+import { haptic } from './haptics';
+import { useReduceMotion } from './useReduceMotion';
 
 /**
  * One item of the bottom bar. Tabs with `route` are real tab scenes in app/(tabs); a tab with `href` opens a
@@ -13,18 +17,67 @@ import { Icon, type IconName } from './Icon';
 export interface TabItem {
   key: string;
   label: string;
-  icon: IconName;
+  icon: IconName | TabGlyphName;
   route?: string;
   href?: Href;
   accessibilityHint?: string;
 }
 
-/** Check · Scan · Reading (component.bottomNav.labels). Settings is the gear in the Home top bar, not a tab. */
+/**
+ * Home · Shop · Scan · Reading · You (experience reference). Scan is the raised centre disc. A tab whose route file is
+ * not in app/(tabs) is left out, so the bar never shows a dead slot.
+ */
 export const TAB_ITEMS: readonly TabItem[] = [
-  { key: 'check', label: 'Check', icon: 'tag-check', route: 'index' },
+  { key: 'home', label: 'Home', icon: 'house', route: 'index' },
+  { key: 'shop', label: 'Shop', icon: 'bag', route: 'shop' },
   { key: 'scan', label: 'Scan', icon: 'face-frame', href: '/scan', accessibilityHint: 'Opens the skin scan' },
   { key: 'reading', label: 'Reading', icon: 'droplet', route: 'reading' },
+  { key: 'you', label: 'You', icon: 'person', route: 'you' },
 ];
+
+/** Tab-only line glyphs (24dp grid, round caps, the Icon set's stroke). Filled when selected. */
+type TabGlyphName = 'house' | 'bag' | 'person';
+const TAB_GLYPHS: Record<TabGlyphName, string> = {
+  house: 'M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z',
+  bag: 'M5.5 8h13l-1 11.2a1 1 0 0 1-1 .8H7.5a1 1 0 0 1-1-.8zM9 8V7a3 3 0 0 1 6 0v1',
+  person: 'M12 12a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5zM4.75 20c.6-3.6 3.6-5.75 7.25-5.75S18.65 16.4 19.25 20z',
+};
+const isTabGlyph = (n: string): n is TabGlyphName => n in TAB_GLYPHS;
+
+function TabGlyph({ name, size, color, filled, strokeWidth }: { name: TabGlyphName; size: number; color: string; filled: boolean; strokeWidth: number }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <Path
+        d={TAB_GLYPHS[name]}
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill={filled && name !== 'bag' ? color : 'none'}
+      />
+    </Svg>
+  );
+}
+
+/**
+ * The selected tab's mark: a 20x3 ink rule on the bar's top edge that grows from the centre in 200ms (ease-out) and
+ * fades out the same way. Reduced motion: it simply appears.
+ */
+function TabIndicator({ active, color }: { active: boolean; color: string }) {
+  const reduced = useReduceMotion();
+  const v = useSharedValue(active ? 1 : 0);
+  useEffect(() => {
+    const to = active ? 1 : 0;
+    v.value = reduced ? to : withTiming(to, { duration: 200, easing: Easing.out(Easing.cubic) });
+  }, [active, reduced, v]);
+  const style = useAnimatedStyle(() => ({ opacity: v.value, transform: [{ scaleX: 0.3 + 0.7 * v.value }] }));
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={[{ position: 'absolute', top: 0, alignSelf: 'center', width: 20, height: 3, borderBottomLeftRadius: 2, borderBottomRightRadius: 2, backgroundColor: color }, style]}
+    />
+  );
+}
 
 function useKeyboardOpen(): boolean {
   const [open, setOpen] = useState(false);
@@ -70,8 +123,8 @@ export function useTabScrollTail(): number {
 
 /**
  * Custom bottom tab bar (dashboard reference idea, Silver & graphite surfaces): a flat docked full-width bar in the
- * surface tone, drawn over the bottom of the scene and padded by the system navigation inset. Check at left and
- * Reading at right: outline glyph + 500 label in muted when idle; the filled ink glyph + 600 steel-blue label when
+ * surface tone, drawn over the bottom of the scene and padded by the system navigation inset. Home, Shop, Reading and You
+ * around the centre: outline glyph + 500 label in muted when idle; the filled ink glyph + 600 steel-blue label when
  * selected (fill + weight + colour + the selected state, never colour alone). Scan in the middle is a raised 56dp
  * graphite disc with the white scan glyph and "Scan" under it. role tablist / tab; the labels and testIDs are what QA
  * taps. Hidden while the Android keyboard is open. Scenes end their scroll with tabScrollTail() so the last line clears it.
@@ -116,6 +169,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
           const options = route ? descriptors[route.key]?.options : undefined;
           const raised = !it.route;
           const onPress = () => {
+            haptic('contextClick');
             if (it.href) {
               router.push(it.href);
               return;
@@ -170,21 +224,32 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
                         transform: [{ scale: pressed ? 0.96 : 1 }],
                       }}
                     >
-                      <Icon name={it.icon} size={t.icon.lg} color={t.colors.onAccent} strokeWidth={1.75} />
+                      <Icon name={it.icon as IconName} size={t.icon.lg} color={t.colors.onAccent} strokeWidth={1.75} />
                     </View>
                     {text}
                   </>
                 )
               ) : (
                 <>
-                  <Icon
-                    name={it.icon}
-                    size={t.icon.lg}
-                    filled={focused && n.iconActiveFilled}
-                    knockout={barBg}
-                    color={focused ? t.colors.text : t.colors.textMuted}
-                    strokeWidth={n.iconInactiveStrokeWidth}
-                  />
+                  <TabIndicator active={focused} color={t.colors.text} />
+                  {isTabGlyph(it.icon) ? (
+                    <TabGlyph
+                      name={it.icon}
+                      size={t.icon.lg}
+                      filled={focused && n.iconActiveFilled}
+                      color={focused ? t.colors.text : t.colors.textMuted}
+                      strokeWidth={n.iconInactiveStrokeWidth}
+                    />
+                  ) : (
+                    <Icon
+                      name={it.icon}
+                      size={t.icon.lg}
+                      filled={focused && n.iconActiveFilled}
+                      knockout={barBg}
+                      color={focused ? t.colors.text : t.colors.textMuted}
+                      strokeWidth={n.iconInactiveStrokeWidth}
+                    />
+                  )}
                   {text}
                 </>
               )}

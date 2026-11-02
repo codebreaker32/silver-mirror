@@ -5,16 +5,18 @@ import { homeType } from './homeType';
 interface HomeHeadingProps {
   /** Sentence case, no eyebrow above it. */
   title: string;
+  /** Set the heading in the serif display face (the reference's section heads, e.g. "Chosen for you"). */
+  serif?: boolean;
   /** Optional trailing text action ("Got it", "See all") in the link colour, 48dp target. */
   action?: { label: string; onPress: () => void; testID?: string; accessibilityLabel?: string };
 }
 
 /** Home section heading: Geist 600 17/22 in ink, header role, an optional text action at the right. */
-export function HomeHeading({ title, action }: HomeHeadingProps) {
+export function HomeHeading({ title, serif, action }: HomeHeadingProps) {
   const t = useTheme();
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[2] }}>
-      <Text accessibilityRole="header" style={[homeType.title, { flex: 1, color: t.colors.text }]}>
+      <Text accessibilityRole="header" style={[serif ? homeType.section : homeType.title, { flex: 1, color: t.colors.text }]}>
         {title}
       </Text>
       {action ? (

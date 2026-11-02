@@ -21,23 +21,25 @@ describe('Home picks', () => {
     expect(spreadByCategory(items, 10)).toHaveLength(5);
   });
 
-  it('shows category, name and brand, no per-item badge, never a number, and opens the check by name', async () => {
+  it('shows name and brand with a fit line, never the bare verdict word or a number, and opens the check by name', async () => {
     const onOpen = jest.fn();
+    const onViewAll = jest.fn();
     await render(
       <ThemeProvider scheme="light">
-        <Picks picks={[pick(1, 'serum'), pick(2, 'sunscreen')]} onOpen={onOpen} />
+        <Picks picks={[pick(1, 'serum'), pick(2, 'sunscreen')]} onOpen={onOpen} onViewAll={onViewAll} />
       </ThemeProvider>,
     );
-    expect(screen.getByText('Picks for you')).toBeTruthy();
-    expect(screen.getByText('Face serum')).toBeTruthy();
-    expect(screen.getByText('Sunscreen')).toBeTruthy();
+    expect(screen.getByText('Chosen for you')).toBeTruthy();
+    expect(screen.getAllByText('Fits your reading')).toHaveLength(2);
     expect(screen.getByText('Product 2')).toBeTruthy();
     expect(screen.getByText('Brand 2')).toBeTruthy();
-    // No per-item verdict word: QA waits for ^FITS$ (case-insensitive) after a share, so Home must never show it.
+    // Never the bare verdict word: QA waits for ^FITS$ (case-insensitive) after a share, so Home must never show it.
     expect(screen.queryByText(/^fits$/i)).toBeNull();
     expect(screen.queryByText(/%|₹|\d+\s*\/\s*\d+/)).toBeNull();
     await fireEvent.press(screen.getByTestId('home-pick-1'));
     expect(onOpen).toHaveBeenCalledWith('Brand 2 Product 2');
+    await fireEvent.press(screen.getByTestId('home-picks-all'));
+    expect(onViewAll).toHaveBeenCalled();
   });
 
   it('band meter shows the band word, never a figure', async () => {

@@ -25,7 +25,7 @@ FAIL=(); NOTE=()
 fail() { echo "[qa-tryon] FAIL: $*" >&2; FAIL+=("$*"); }
 note() { echo "[qa-tryon] note: $*" >&2; NOTE+=("$*"); }
 shot() { $E shot "${M}_$1" 2>/dev/null; }
-home() { $E kill >/dev/null 2>&1; sleep 1; $E launch >/dev/null 2>&1; $U wait "Check, tab 1 of 3" 25 || fail "$1: home did not load"; sleep 2; }
+home() { $E kill >/dev/null 2>&1; sleep 1; $E launch >/dev/null 2>&1; $U wait "Home, tab 1 of 5" 25 || fail "$1: home did not load"; sleep 2; }
 # A force-stop while the camera permission dialog is up leaves a task whose root is the permission controller; a
 # "cold" share then starts MainActivity on top of that task and lands on Home instead of the check (see report).
 # Clear it so every cold share here starts from no task.

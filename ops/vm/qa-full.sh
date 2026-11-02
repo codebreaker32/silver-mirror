@@ -13,7 +13,7 @@ W="${SHOT_WAIT:-9}"
 FAIL=()
 fail() { echo "[qa] FAIL: $*" >&2; FAIL+=("$*"); }
 shot() { $E shot "${M}_$1" 2>/dev/null; }
-home() { $E kill >/dev/null 2>&1; sleep 1; $E launch >/dev/null 2>&1; $U wait "Check, tab 1 of 3" 25 || fail "$1: home did not load"; sleep 2; }
+home() { $E kill >/dev/null 2>&1; sleep 1; $E launch >/dev/null 2>&1; $U wait "Home, tab 1 of 5" 25 || fail "$1: home did not load"; sleep 2; }
 
 $E theme "$M"
 adb reverse tcp:8787 tcp:8787 >/dev/null
@@ -24,7 +24,7 @@ if [[ "$FRESH" == fresh ]]; then
   $U wait "^Get started$" 25 || fail "first run: no welcome"
   sleep 2; shot 00_welcome
   $U tap "^Get started$" || fail "first run: no 'Get started' button"
-  $U wait "Check, tab 1 of 3" 25 || fail "first run: home did not load after the welcome"; sleep 2
+  $U wait "Home, tab 1 of 5" 25 || fail "first run: home did not load after the welcome"; sleep 2
   shot 01_home_first_run
   $U scroll; sleep 1; shot 01_home_first_run_2
   $U scroll up; sleep 1
@@ -37,13 +37,13 @@ $U has "No reading yet" && fail "home: still shows 'No reading yet' after enabli
 $U scroll; sleep 1; shot 02_home_2
 
 # Reading tab
-$U tap "Reading, tab 3 of 3" || fail "reading tab not found"; sleep 3; shot 10_reading
+$U tap "Reading, tab 4 of 5" || fail "reading tab not found"; sleep 3; shot 10_reading
 $U scroll; sleep 1; shot 10_reading_2
 $U scroll; sleep 1; shot 10_reading_3
 
 # Scan consent (tab-bar Scan opens the flow)
 home scan
-$U tap "Scan, tab 2 of 3" || fail "scan tab not found"; sleep 3; shot 11_scan_consent
+$U tap "Scan, tab 3 of 5" || fail "scan tab not found"; sleep 3; shot 11_scan_consent
 $U scroll; sleep 1; shot 11_scan_consent_2
 $U back; sleep 1
 
