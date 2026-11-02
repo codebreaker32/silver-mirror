@@ -8,7 +8,7 @@ const ctx = { key: SCANNED_KEY, product: PRODUCT, catalogCount: 42 };
 describe('presentVerdict', () => {
   it('CAUTION: fixed subtitle, strict label check first, info label check last', () => {
     const v = presentVerdict(CAUTION_VERDICT, ctx);
-    expect(v.labelText).toBe('CAUTION');
+    expect(v.labelText).toBe('Caution');
     expect(v.subtitle).toBe(COPY.subtitle.CAUTION);
     expect(v.headA11y).toBe(`Caution. ${COPY.subtitle.CAUTION}`);
     expect(v.reasons.map((r) => [r.index, r.kindNote])).toEqual([

@@ -3,7 +3,8 @@ import { Image } from 'expo-image';
 import Svg, { Ellipse } from 'react-native-svg';
 import { FaceFrame } from '@/brand';
 import { COPY, type TryonStatusResponse } from '@skinkey/contracts';
-import { Body, Chip, StepChecklist, Txt } from '@/components';
+import { fonts } from '@skinkey/design';
+import { Body, StepChecklist, Txt } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
 import type { DisplayStep } from '../scan/steps';
 
@@ -67,9 +68,10 @@ export function TryonResult({ status, steps }: { status: TryonStatusResponse; st
                 />
               )}
             </View>
-            <View style={{ alignItems: 'flex-start' }}>
-              <Chip label={r.shadeName} accessibilityLabel={`Shade: ${r.shadeName}`} />
-            </View>
+            {/* The shade name as plain text, not a chip: it is a caption, not a filter you can tap. */}
+            <Txt variant="bodyStrong" accessibilityLabel={`Shade: ${r.shadeName}`} style={{ fontFamily: fonts.sansSemibold, fontSize: 15, lineHeight: 22, color: theme.colors.text }}>
+              {r.shadeName}
+            </Txt>
           </View>
         ))}
       </View>

@@ -22,8 +22,6 @@ import {
   PillButton,
   ProductCard,
   SectionHeader,
-  Segmented,
-  SilverMark,
   SkinTypeCard,
   StepChecklist,
   Tag,
@@ -32,9 +30,12 @@ import {
   Wordmark,
 } from '@/components';
 import { demo } from '@/demo';
+import { ShareSteps } from '@/components/home/ShareSteps';
 import { useTheme } from '@/theme/ThemeProvider';
 
 const WELCOME_PHOTO = require('../../assets/images/welcome-backdrop.jpg');
+/** The one product mark: the swash S, as on Welcome and the Home header. */
+const SWASH_S = require('../../assets/images/silver-s.png');
 
 const noop = () => undefined;
 
@@ -47,7 +48,6 @@ export default function KitGallery() {
   const insets = useSafeAreaInsets();
   const { part } = useLocalSearchParams<{ part?: string }>();
   const [filter, setFilter] = useState('oil');
-  const [store, setStore] = useState<'Flipkart' | 'Amazon' | 'Nykaa'>('Flipkart');
   if (!demo) return <Redirect href="/" />;
   const p = part ?? '1';
 
@@ -55,7 +55,7 @@ export default function KitGallery() {
     <ScrollView style={{ flex: 1, backgroundColor: t.colors.bg }} contentContainerStyle={{ paddingTop: insets.top + t.space[2], paddingBottom: t.space[10], paddingHorizontal: t.spacing.gutter, gap: t.space[5] }}>
       {p === '1' ? (
         <>
-          {/* Home (showcase 02_home): greeting row, skin-type card, share steps as thumb rows, pills. */}
+          {/* Home (showcase 02_home): greeting row, skin-type card, share steps with bare glyphs, pills. */}
           <View style={{ gap: t.space[2] }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
               <Heading level="display">Good afternoon</Heading>
@@ -64,15 +64,8 @@ export default function KitGallery() {
             <Txt tone="muted">{COPY.welcome.tagline}</Txt>
           </View>
           <SkinTypeCard value="Combination" caption="Scan 1 Nov · photo deleted" onPress={noop} />
-          <View style={{ gap: t.space[3] }}>
-            <SectionHeader title="Share from a store app" action={{ label: 'Got it', onPress: noop, chevron: false }} />
-            <Segmented options={['Flipkart', 'Amazon', 'Nykaa'] as const} value={store} onChange={setStore} accessibilityLabel="Store app" />
-            <ListGroup thumbs accessibilityLabel={COPY.sharePaths.join('. ')}>
-              {COPY.shareSteps(store).map((step, i) => (
-                <ListRow key={step.title} title={step.title} supporting={step.supporting} trailing="none" thumb={i === 0 ? { icon: 'share' } : i === 1 ? { mark: true } : { icon: 'seal-check' }} />
-              ))}
-            </ListGroup>
-          </View>
+          {/* The real Home section: bare 24dp leading glyphs (share, the swash S, the seal), no icon tiles. */}
+          <ShareSteps onDismiss={noop} />
           <PillButton label="Start scan" trailingIcon="arrow-right" onPress={noop} />
           <PillButton label={COPY.reading.useDemo} variant="secondary" onPress={noop} />
           <SkinTypeCard value="Scan once, about a minute" label={COPY.reading.none} icon="face-frame" quiet>
@@ -127,7 +120,7 @@ export default function KitGallery() {
             </Txt>
           </View>
           <Card variant="raised" gap={t.space[5]}>
-            <ProductCard name="Minimalist Oil-Free Gel Moisturiser" reason="Light gel, no fragrance" verdict={{ tone: 'fits', label: 'FITS' }} linkOut onPress={noop} />
+            <ProductCard name="Minimalist Oil-Free Gel Moisturiser" reason="Light gel, no fragrance" verdict={{ tone: 'fits', label: 'Fits' }} linkOut onPress={noop} />
             <ProductCard name="Sunscreen SPF 50 Matte Fluid" reason="Contains fragrance (parfum)" verdict={{ tone: 'caution', label: 'CAUTION' }} linkOut onPress={noop} />
           </Card>
         </>
@@ -135,11 +128,11 @@ export default function KitGallery() {
 
       {p === '3' ? (
         <>
-          {/* Welcome panel: the neutral liquid-silver photo (as on Welcome), chrome S, serif wordmark, pills. */}
+          {/* Welcome panel: the neutral liquid-silver photo (as on Welcome), swash S, serif wordmark, pills. */}
           <View style={{ minHeight: 420, borderRadius: t.radius.lg, overflow: 'hidden', padding: t.space[5], justifyContent: 'flex-end', gap: t.space[3] }}>
             <Image source={WELCOME_PHOTO} resizeMode="cover" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }} />
             <View style={{ alignItems: 'center', gap: t.space[3], marginBottom: t.space[8] }}>
-              <SilverMark size={t.components.brand.heroMark} tile={false} />
+              <Image source={SWASH_S} resizeMode="contain" style={{ width: 72, height: 104 }} accessibilityIgnoresInvertColors />
               <Wordmark capHeight={t.components.brand.wordmarkWelcome} header />
               <Txt tone="muted" style={{ textAlign: 'center' }}>
                 {COPY.welcome.tagline}
@@ -171,7 +164,7 @@ export default function KitGallery() {
             ]}
           />
           <ChipRow>
-            <Tag label="FITS" variant={{ verdict: 'fits' }} />
+            <Tag label="Fits" variant={{ verdict: 'fits' }} />
             <Tag label="CAUTION" variant={{ verdict: 'caution' }} />
             <Tag label="UNKNOWN" variant={{ verdict: 'unknown' }} />
             <Tag label={COPY.reading.demo} variant="demo" />

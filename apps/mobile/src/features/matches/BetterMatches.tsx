@@ -158,7 +158,7 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
               testID={`match-${i}`}
               name={m.name}
               reason={m.shortReason}
-              verdict={{ tone: 'fits', label: 'FITS' }}
+              verdict={{ tone: 'fits', label: 'Fits' }}
               linkOut
               accessibilityLabel={m.a11y}
               onPress={() => open(m.url)}

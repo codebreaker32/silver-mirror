@@ -179,7 +179,7 @@ export function presentVerdict(v: Verdict, ctx: PresentContext): VerdictView {
   const tone = v.label.toLowerCase() as Tone;
   const subtitle = subtitleFor(v);
   const medicine = v.label === 'MEDICINE';
-  const labelText = medicine ? null : v.label;
+  const labelText = medicine ? null : TITLE_CASE[v.label];
   const headA11y = medicine ? subtitle : `${TITLE_CASE[v.label]}. ${subtitle}`;
   const fixedLines = [COPY.footer, COPY.notAffiliated];
 

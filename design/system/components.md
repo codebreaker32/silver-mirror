@@ -38,7 +38,7 @@ Components reference **semantic, type, space, radius, elevation, motion and comp
 | `touch.min`, `icon.lg` | `touch`, `icon` | `touch.min`, `icon.lg` | `var(--sk-touch-min)`, `var(--sk-icon-lg)` |
 | `<component>.<path>` e.g. `verdictCard.head.caution.bg` | `component.*` | `theme.components.verdictCard.head.caution.bg` | `var(--sk-verdict-card-head-caution-bg)` (camelCase → kebab, dots → dashes) |
 
-A component var that aliases a type style also emits `-tracking`, and `-transform` / `-numeric` when the style sets them, e.g. `--sk-verdict-card-head-label-tracking` and `--sk-verdict-card-head-label-transform`. Keys starting with `$` (rules, copy, component cross-references such as `consentSheet.$actions`) are documentation only and are stripped from `theme.ts`.
+A component var that aliases a type style also emits `-tracking`, and `-transform` / `-numeric` when the style sets them, e.g. `--sk-verdict-card-head-label-tracking`. Keys starting with `$` (rules, copy, component cross-references such as `consentSheet.$actions`) are documentation only and are stripped from `theme.ts`.
 
 ### 1.2 Global rules
 
@@ -198,7 +198,7 @@ Android: `includeFontPadding: false`; never set `fontWeight` on a custom family 
 | `type.reason` | Geist_500Medium | Geist 500 | 18 / 26 | -0.1 | Reason reading line. Out-sizes the 15dp verdict label (P1: reasons before verdicts). |
 | `type.reasonIndex` | Geist_500Medium | Geist 500, tabular | 15 / 22 | 0 | Step numbers where order matters (share steps). Not decoration on candidates or matches. |
 | `type.figure` | Geist_600SemiBold | Geist 600, tabular | 28 / 34 | -0.3 | QR countdown, catalogue count on /how |
-| `type.verdictLabel` | Geist_600SemiBold | Geist 600, caps | 15 / 20 | 0 | FITS / CAUTION / UNKNOWN, with a 24dp icon in a disc. Never truncates; wraps at max font scale. |
+| `type.verdictLabel` | Geist_600SemiBold | Geist 600 | 13 / 18 | 0 | Fits / Caution / Unknown in title case (sentence-case rule, no caps labels), 13 semibold beside a bare 20dp seal glyph. Never truncates; wraps at max font scale. |
 | `type.body` | Geist_400Regular | Geist 400 | 15 / 22 | 0 | Body copy, the product fact in each reason (full text colour), consent body |
 | `type.bodyStrong` | Geist_600SemiBold | Geist 600 | 15 / 20 | 0 | Band value (High), emphasised step, list row title |
 | `type.bodySm` | Geist_400Regular | Geist 400 | 13 / 18 | 0 | Ledger values, supporting lines, card secondary text |
@@ -421,17 +421,17 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.destructiveNeutral.leadingIcon` | — | trash | same |
 | `button.destructiveNeutral.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
 | `button.destructiveNeutral.borderDisabled` | `color.border` | #E1E3E8 | #30313C |
-| `button.consentPair.bg` | `color.secondary-translucent` | rgba(248, 248, 250, 0.72) | rgba(239, 238, 243, 0.10) |
+| `button.consentPair.bg` | `color.secondary-bg` | #E1E3E8 | #30313C |
 | `button.consentPair.fg` | `color.text` | #15161A | #EFEEF3 |
-| `button.consentPair.border` | `color.secondary-translucent-edge` | rgba(248, 248, 250, 0.00) | rgba(239, 238, 243, 0.07) |
-| `button.consentPair.borderWidth` | — | 1 | same |
-| `button.consentPair.bgPressed` | `color.secondary-bg` | #E1E3E8 | #30313C |
+| `button.consentPair.border` | — | transparent | same |
+| `button.consentPair.borderWidth` | — | 0 | same |
+| `button.consentPair.bgPressed` | `color.secondary-bg-pressed` | #DADDE3 | #3A3B47 |
 | `button.consentPair.minHeight` | — | 52 | same |
 | `button.consentPair.paddingX` | `space.4` | 16 | same |
 | `button.consentPair.radius` | `radius.full` | 9999 | same |
 | `button.consentPair.type` | `type.button` | Geist 600 15/20 | same |
 | `button.consentPair.fgDisabled` | `color.disabled-fg` | #565964 | #A8A5B3 |
-| `button.consentPair.borderDisabled` | `color.border` | #E1E3E8 | #30313C |
+| `button.consentPair.borderDisabled` | — | transparent | same |
 | `button.stackAtFontScale` | — | 1.3 | same |
 | `button.translucent.bg` | `color.secondary-translucent` | rgba(248, 248, 250, 0.72) | rgba(239, 238, 243, 0.10) |
 | `button.translucent.fg` | `color.text` | #15161A | #EFEEF3 |
@@ -676,7 +676,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.head.radius` | `radius.lg` | 16 | same |
 | `verdictCard.head.padding` | `space.5` | 20 | same |
 | `verdictCard.head.gap` | `space.2` | 8 | same |
-| `verdictCard.head.label` | `type.verdictLabel` | Geist 600 15/20 caps | same |
+| `verdictCard.head.label` | `type.verdictLabel` | Geist 600 13/18 | same |
 | `verdictCard.head.iconGap` | `space.3` | 12 | same |
 | `verdictCard.head.subtitleColor` | `color.text` | #15161A | #EFEEF3 |
 | `verdictCard.head.fits.bg` | `color.surface` | #F8F8FA | #1A1B23 |

@@ -28,7 +28,7 @@ describe('VerdictSheet', () => {
 
     const head = screen.getByTestId('verdict-head');
     expect(head.props.accessibilityLabel).toBe(`Caution. ${COPY.subtitle.CAUTION}`);
-    expect(within(head).getByText('CAUTION')).toBeTruthy();
+    expect(within(head).getByText('Caution')).toBeTruthy();
     expect(within(head).getByText(COPY.subtitle.CAUTION)).toBeTruthy();
 
     expect(screen.getByText('Why · 3 reasons')).toBeTruthy();
@@ -66,7 +66,7 @@ describe('VerdictSheet', () => {
 
   it('FITS with no flags uses the fixed strings', async () => {
     await wrap(<VerdictSheet view={presentVerdict(FITS_VERDICT, ctx)} />);
-    expect(screen.getByText('FITS')).toBeTruthy();
+    expect(screen.getByText('Fits')).toBeTruthy();
     expect(screen.getByText(COPY.subtitle.FITS)).toBeTruthy();
     expect(screen.getByText(COPY.fitsNoFlags)).toBeTruthy();
   });

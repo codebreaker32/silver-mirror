@@ -21,7 +21,7 @@ describe('Home picks', () => {
     expect(spreadByCategory(items, 10)).toHaveLength(5);
   });
 
-  it('shows brand, name and the Fits seal, never a number, and opens the check by name', async () => {
+  it('shows category, name and brand, no per-item badge, never a number, and opens the check by name', async () => {
     const onOpen = jest.fn();
     await render(
       <ThemeProvider scheme="light">
@@ -29,9 +29,12 @@ describe('Home picks', () => {
       </ThemeProvider>,
     );
     expect(screen.getByText('Picks for you')).toBeTruthy();
-    expect(screen.getAllByText('Fits')).toHaveLength(2);
-    // Not the verdict screen's caps label: QA waits for ^FITS$ after a share, so Home must never show it.
-    expect(screen.queryByText('FITS')).toBeNull();
+    expect(screen.getByText('Face serum')).toBeTruthy();
+    expect(screen.getByText('Sunscreen')).toBeTruthy();
+    expect(screen.getByText('Product 2')).toBeTruthy();
+    expect(screen.getByText('Brand 2')).toBeTruthy();
+    // No per-item verdict word: QA waits for ^FITS$ (case-insensitive) after a share, so Home must never show it.
+    expect(screen.queryByText(/^fits$/i)).toBeNull();
     expect(screen.queryByText(/%|₹|\d+\s*\/\s*\d+/)).toBeNull();
     await fireEvent.press(screen.getByTestId('home-pick-1'));
     expect(onOpen).toHaveBeenCalledWith('Brand 2 Product 2');

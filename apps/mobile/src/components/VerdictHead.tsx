@@ -7,7 +7,7 @@ import { Tag } from './Chip';
 import { VerdictIcon } from './Icon';
 import { textStyle, Txt } from './Text';
 
-const LABEL: Record<Exclude<Verdict, 'medicine'>, string> = { fits: 'FITS', caution: 'CAUTION', unknown: 'UNKNOWN' };
+const LABEL: Record<Exclude<Verdict, 'medicine'>, string> = { fits: 'Fits', caution: 'Caution', unknown: 'Unknown' };
 const SPOKEN: Record<Verdict, string> = { fits: 'Fits', caution: 'Caution', unknown: 'Unknown', medicine: 'Medicine' };
 
 // Silver & graphite (2.3): the head is a surface-tone card (radius 16, no hairline, no shadow). The verdict carries by
@@ -20,7 +20,7 @@ const LINE_TYPE = { fontFamily: 'Geist_500Medium', fontSize: 17, lineHeight: 24,
 
 export interface VerdictHeadProps {
   tone: Verdict;
-  /** Caps label; defaults to FITS / CAUTION / UNKNOWN. Ignored for medicine (no label). */
+  /** Title-case label; defaults to Fits / Caution / Unknown. Ignored for medicine (no label). */
   label?: string | null;
   /** The verdict sentence, set in type.verdictLine, Geist 600 18/26 (medicine: the one title line). */
   line: string;

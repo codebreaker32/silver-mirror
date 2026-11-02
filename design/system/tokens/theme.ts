@@ -317,11 +317,10 @@ export const typography: Record<TypeStyleName, TypeStyle> = {
   },
   "verdictLabel": {
     "fontFamily": "Geist_600SemiBold",
-    "fontSize": 15,
-    "lineHeight": 20,
+    "fontSize": 13,
+    "lineHeight": 18,
     "letterSpacing": 0,
-    "includeFontPadding": false,
-    "textTransform": "uppercase"
+    "includeFontPadding": false
   },
   "body": {
     "fontFamily": "Geist_400Regular",
@@ -1164,7 +1163,6 @@ export interface ThemeComponents {
         lineHeight: number;
         letterSpacing: number;
         includeFontPadding: boolean;
-        textTransform: string;
       };
       iconGap: number;
       subtitleColor: string;
@@ -2674,11 +2672,11 @@ export const lightTheme: SkinKeyTheme = {
           "borderDisabled": "#E1E3E8"
         },
         "consentPair": {
-          "bg": "rgba(248, 248, 250, 0.72)",
+          "bg": "#E1E3E8",
           "fg": "#15161A",
-          "border": "rgba(248, 248, 250, 0.00)",
-          "borderWidth": 1,
-          "bgPressed": "#E1E3E8",
+          "border": "transparent",
+          "borderWidth": 0,
+          "bgPressed": "#DADDE3",
           "minHeight": 52,
           "paddingX": 16,
           "radius": 9999,
@@ -2690,7 +2688,7 @@ export const lightTheme: SkinKeyTheme = {
             "includeFontPadding": false
           },
           "fgDisabled": "#565964",
-          "borderDisabled": "#E1E3E8"
+          "borderDisabled": "transparent"
         },
         "stackAtFontScale": 1.3,
         "translucent": {
@@ -2894,11 +2892,10 @@ export const lightTheme: SkinKeyTheme = {
           "gap": 8,
           "label": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 15,
-            "lineHeight": 20,
+            "fontSize": 13,
+            "lineHeight": 18,
             "letterSpacing": 0,
-            "includeFontPadding": false,
-            "textTransform": "uppercase"
+            "includeFontPadding": false
           },
           "iconGap": 12,
           "subtitleColor": "#15161A",
@@ -4407,11 +4404,11 @@ export const darkTheme: SkinKeyTheme = {
           "borderDisabled": "#30313C"
         },
         "consentPair": {
-          "bg": "rgba(239, 238, 243, 0.10)",
+          "bg": "#30313C",
           "fg": "#EFEEF3",
-          "border": "rgba(239, 238, 243, 0.07)",
-          "borderWidth": 1,
-          "bgPressed": "#30313C",
+          "border": "transparent",
+          "borderWidth": 0,
+          "bgPressed": "#3A3B47",
           "minHeight": 52,
           "paddingX": 16,
           "radius": 9999,
@@ -4423,7 +4420,7 @@ export const darkTheme: SkinKeyTheme = {
             "includeFontPadding": false
           },
           "fgDisabled": "#A8A5B3",
-          "borderDisabled": "#30313C"
+          "borderDisabled": "transparent"
         },
         "stackAtFontScale": 1.3,
         "translucent": {
@@ -4627,11 +4624,10 @@ export const darkTheme: SkinKeyTheme = {
           "gap": 8,
           "label": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 15,
-            "lineHeight": 20,
+            "fontSize": 13,
+            "lineHeight": 18,
             "letterSpacing": 0,
-            "includeFontPadding": false,
-            "textTransform": "uppercase"
+            "includeFontPadding": false
           },
           "iconGap": 12,
           "subtitleColor": "#EFEEF3",

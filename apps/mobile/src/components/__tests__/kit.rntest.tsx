@@ -65,7 +65,7 @@ describe('kit', () => {
     expect(head.borderWidth).toBe(0);
     expect(head.backgroundColor).toBe(lightTheme.colors.surface);
     expect(head.backgroundColor).not.toBe(lightTheme.colors.accent);
-    expect(screen.getByText('UNKNOWN')).toBeTruthy();
+    expect(screen.getByText('Unknown')).toBeTruthy();
     await screen.unmount();
     await wrap(<VerdictHead tone="medicine" line="This looks like a medicine." />);
     expect(screen.queryByText('MEDICINE')).toBeNull();

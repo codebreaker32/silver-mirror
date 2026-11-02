@@ -647,11 +647,10 @@
         "font": "sans-semibold",
         "family": "sans",
         "weight": 600,
-        "size": 15,
-        "lineHeight": 20,
+        "size": 13,
+        "lineHeight": 18,
         "letterSpacing": 0,
-        "transform": "uppercase",
-        "use": "FITS / CAUTION / UNKNOWN, with a 24dp icon in a disc. Never truncates; wraps at max font scale."
+        "use": "Fits / Caution / Unknown in title case (sentence-case rule, no caps labels), 13 semibold beside a bare 20dp seal glyph. Never truncates; wraps at max font scale."
       },
       "body": {
         "font": "sans-regular",
@@ -1183,18 +1182,18 @@
         "borderDisabled": "{color.border}"
       },
       "consentPair": {
-        "$rule": "Start scan / Not now on every consent screen: identical translucent pill, size and type (spec §2: equal visual weight), so declining is never the weaker-looking choice. 2.1 round 1: the same white-glass fill as the welcome secondary, so the app has one secondary-pill idiom; no strong outline.",
-        "bg": "{color.secondary-translucent}",
+        "$rule": "Start scan / Not now on every consent screen: identical flat pill, size and type (spec §2: equal visual weight), so declining is never the weaker-looking choice. 2.3 Silver & graphite: the well tone (secondary-bg) on the three-tone system, one fill, no outline, no glass; pressed steps one tone deeper.",
+        "bg": "{color.secondary-bg}",
         "fg": "{color.text}",
-        "border": "{color.secondary-translucent-edge}",
-        "borderWidth": 1,
-        "bgPressed": "{color.secondary-bg}",
+        "border": "transparent",
+        "borderWidth": 0,
+        "bgPressed": "{color.secondary-bg-pressed}",
         "minHeight": 52,
         "paddingX": "{space.4}",
         "radius": "{radius.full}",
         "type": "{type.button}",
         "fgDisabled": "{color.disabled-fg}",
-        "borderDisabled": "{color.border}"
+        "borderDisabled": "transparent"
       },
       "stackAtFontScale": 1.3,
       "translucent": {

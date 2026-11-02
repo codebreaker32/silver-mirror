@@ -119,7 +119,7 @@ add('component.segmented.fg', 'component.segmented.track', 'text', 'Unselected s
 add('component.segmented.selectedFg', 'component.segmented.track', 'text', 'Selected segment label (thumb edge case)');
 add('color.text', 'color.secondary-translucent', 'text', 'Translucent welcome pill label over the backdrop (lavender stop)', { on: 'color.sheen.lavender' });
 add('color.text', 'color.secondary-translucent', 'text', 'Translucent welcome pill label over the backdrop (silver stop)', { on: 'color.sheen.silver' });
-add('component.button.consentPair.fg', 'component.button.consentPair.bg', 'text', 'Consent pair label (Start scan / Not now) on the translucent pill over the page', { on: 'color.bg' });
+add('component.button.consentPair.fg', 'component.button.consentPair.bg', 'text', 'Consent pair label (Start scan / Not now) on the flat well-tone pill', { on: 'color.bg' });
 add('component.checklistCard.doneTrailingColor', 'color.surface-raised', 'ui', 'Trailing done tick on the checklist card');
 add('component.checklistCard.currentTrailingColor', 'color.surface-raised', 'ui', 'Trailing current dots on the checklist card');
 for (const st of ['start', 'mid', 'end']) {
@@ -223,7 +223,7 @@ const small = Object.entries(T).filter(([, s]) => s.size < tokens.typography.rul
 lint('Type floor: no style below 12dp', small.length === 0, small.length ? small.map(([k, s]) => `${k}=${s.size}`).join(', ') : `smallest: ${Math.min(...Object.values(T).map((s) => s.size))}dp (${Object.entries(T).filter(([, s]) => s.size === 12).map(([k]) => k).join(', ') || 'none at 12'})`);
 const tight = Object.entries(T).filter(([, s]) => s.lineHeight < s.size * 1.15);
 lint('Line height >= 1.15 x size on every style', tight.length === 0, tight.map(([k]) => k).join(', ') || 'ok');
-lint('Verdict label >= 14dp and weight >= 600', T.verdictLabel.size >= 14 && T.verdictLabel.weight >= 600, `${T.verdictLabel.size}dp / ${T.verdictLabel.weight}`);
+lint('Verdict label >= 13dp, weight >= 600, no caps transform', T.verdictLabel.size >= 13 && T.verdictLabel.weight >= 600 && !T.verdictLabel.transform, `${T.verdictLabel.size}dp / ${T.verdictLabel.weight}${T.verdictLabel.transform ? ' / ' + T.verdictLabel.transform : ''}`);
 const vIcon = tokens.icon.verdict.size;
 lint('Verdict icon 22-24dp', vIcon >= 22 && vIcon <= 24, `${vIcon}dp`);
 lint('Reasons larger than the verdict label (P1), reason 18-19dp', T.reason.size > T.verdictLabel.size && T.reason.size >= 18 && T.reason.size <= 19, `reason ${T.reason.size}dp vs label ${T.verdictLabel.size}dp`);
