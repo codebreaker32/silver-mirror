@@ -206,7 +206,7 @@ function RulesBody({ data }: { data: RulesData }) {
 
       <section className="page-section" aria-labelledby="profiles-title">
         <h2 id="profiles-title">The six reading profiles</h2>
-        <p>Set band vectors used by the audit's “one tag, six readings” count. Zone labels apply only when gate G1 passes.</p>
+        <p>Set band vectors used by the audit's “six readings” count and its claim-to-profile mapping. Zone labels apply only when gate G1 passes.</p>
         <div className="table-scroll">
           <table className="data">
             <thead>

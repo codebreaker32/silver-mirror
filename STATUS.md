@@ -35,8 +35,13 @@ Deadline: **2026-11-02 22:15 IST** (11:45 ET). Internal submit target: **19:30 I
 2. Optional, for the local emulator: `! sudo usermod -aG kvm $USER && sudo chmod 666 /dev/kvm`
 3. Optional, for Firebase Test Lab on real cloud phones: add Firebase to project `skinkey-hackathon-2611` (console.firebase.google.com → Add project → choose the existing GCP project, Spark plan).
 4. Take one consented selfie for band calibration and save it as `test-assets/selfie.jpg` (about 16 units).
-5. Flipkart audit frame (about 45 min):
-   - search "moisturiser" with the Oily Skin filter and screenshot the first ~40 results in page order
-   - search "sunscreen" with the same filter and screenshot the first ~20 results
+5. ~~Flipkart audit frame~~ Dropped on 2 Nov (approved): store automation would breach Flipkart's terms. The audit now uses brand-page rows only; see "Audit (2 Nov)" below.
 6. Run 3+ quick hallway tests (questionnaire).
 7. Record the demo video in daylight, roughly 14:00–17:00 IST.
+
+## Audit (2 Nov): method brand-claims-1
+- Method: `audit/METHOD.md` (tag `audit-method-frozen`). It replaces spec §6's Flipkart frame. Population: brand-page rows in `data/catalog/brands/`, claims from `marketed_for` + name, checked against the same page's INCI.
+- Rules frozen: tag `rules-frozen`, ruleset `440f555a8845`, record in `audit/rules-frozen.json`.
+- Run: tag `audit-run` → `audit/results.csv`, `audit/summary.json`, `audit/review.md`. N=140, a=136, checked 136, Label Check c=0 / d=0, claim vs reading profile e=70 of b=136. Six readings (CAUTION): Oily 13, Combination 12, Oily & Redness 72, Combination & Redness 67, Normal 0, Dry 12.
+- To do (human): review the 86 flagged rows in `audit/review.md` against the brand pages; tick reviewed ids in `data/catalog/verified.json` and re-run as `audit-run-2` if anything is corrected.
+- `/audit` on the web renders only from `audit/summary.json` (schema 2).

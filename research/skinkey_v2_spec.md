@@ -354,6 +354,8 @@ Package: `rules/` (pure TypeScript, shared by app, Worker and web).
 
 ## 6) Measurable headline result
 
+> **Amended 2 Nov 2026 (approved by Aman):** the Flipkart frame below is replaced by method `brand-claims-1` in [`audit/METHOD.md`](../audit/METHOD.md): brand-page claims checked against the same page's ingredient list, with no store access. The text below is kept as the original pre-registration; where they differ, `audit/METHOD.md` wins.
+
 **Pre-registered method.** Each step is committed and tagged in git *before* the next step runs.
 1. **Frame (human, H0–H3):**
    - Aman opens Flipkart (app or web) and searches "moisturiser" with the "Oily Skin" filter on, then "sunscreen" with the same filter.

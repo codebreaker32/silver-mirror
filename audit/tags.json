@@ -1,0 +1,6 @@
+{
+  "note": "Commits of the audit git tags, recorded after tagging so builds without .git can show them. git rev-parse <tag> is the source of truth.",
+  "audit-method-frozen": "561344deafd1a486ddbed0867b15f84aa2983b2f",
+  "rules-frozen": "2122b55c036793cd37e70f651fc8036ee0faf7b9",
+  "audit-run": "19ef9a2898cdffa38f7f20c3049c80663e726ce2"
+}

@@ -63,9 +63,22 @@ What we claim about the scan: it is a consistent, dated reading from YouCam. It 
 | Dated, banded YouCam readings (Low / Medium / High, zone labels) | Numeric skin scores or an age estimate. YouCam returns them; we discard them |
 | Two-shade try-on on a tinted product with a known shade colour | Try-on for tinted products without a shade colour on file. The app hides it rather than guess |
 | Deleting the photo from YouCam right after the result, confirmed by retry | Instant deletion. YouCam deletes with about a 2 s lag, so we confirm before showing the tick |
-| An auditable sample of a Flipkart filter (`npm run audit`, `/audit`) | Statements about the whole market. It is our sample, not the market |
+| A pre-registered audit of brand-page claims against the same page's ingredient list (`npm run audit`, `/audit`) | Statements about the whole market. It is our sample of 30 brands, not the market |
 | Medical actives detected and gated | Medical advice of any kind |
 | Android APK | iOS (roadmap) |
+
+## Audit: brand claims checked against their own ingredient lists
+
+Method `brand-claims-1`, pre-registered in [`audit/METHOD.md`](audit/METHOD.md). It replaces the Flipkart-filter frame in spec §6: collecting that frame would need automated store access, which Flipkart's terms don't allow. It uses only brand-page rows already in `data/catalog/brands/`. Git tags, in order: `audit-method-frozen` → `rules-frozen` (ruleset `440f555a8845`, file hashes in `audit/rules-frozen.json`) → `audit-run`.
+
+Result of the tagged run, copied from `audit/summary.json` (136 products checked, so not a pilot):
+- 140 products make a skin-type or free-from claim on their own brand page; 136 have a complete ingredient list there.
+- Label Check: **0 of 136** make a claim their own ingredient list doesn't match (strict LC-1a / LC-2 / LC-3), and 0 more under LC-1b. Only 16 free-from claims were testable (fragrance-free 4, alcohol-free 1, oil-free 11).
+- Claim vs reading profile: **70 of 136** are flagged CAUTION by our rules for a reading profile their own claim points to. 62 of them list a fragrance ingredient (rule FRG-1) and are flagged for the high-visible-redness profiles; by claim: "for oily skin" 33 of 60, "for sensitive skin" 30 of 52, "for all skin types" 30 of 52, "non-comedogenic" 11 of 24, "for combination skin" 10 of 24, "for dry skin" 0 of 28.
+- Six readings, CAUTION counts: Oily 13, Combination 12, Oily & Redness 72, Combination & Redness 67, Normal 0, Dry 12.
+- Every flagged row (86 on 70 products) is on the review list `audit/review.md` with claim quote, ingredient, rule id and brand page URL. 0 reviewed by a person so far.
+
+Flagged by our published rules, not a measured effect on skin. Our sample, not the market.
 
 ## Run it
 
@@ -81,7 +94,7 @@ npm run dev:worker         # Worker on :8787 (mock YouCam by default)
 npm run dev:web            # web on :5173
 npm run build -w @skinkey/web
 npm run secrets:grep       # greps built web bundle + APKs for keys
-npm run audit              # recompute audit/summary.json from the catalogue and frame
+npm run audit              # brand-page claims vs own INCI → audit/results.csv, summary.json, review.md
 npm run catalog:merge      # rebuild data/catalog/catalog.json + AUDIT.md
 ```
 

@@ -14,7 +14,7 @@ interface ImportMetaEnv {
 declare module 'virtual:skinkey-audit' {
   export const summaryJson: unknown;
   export const resultsCsv: string | null;
-  export const frameShots: string[];
-  export const imageUrls: Record<string, string>;
+  /** Served paths of audit files present in this build, keyed by file name (results.csv, review.md, METHOD.md). */
+  export const auditFiles: Record<string, string>;
   export const gitTags: Record<string, string | null>;
 }

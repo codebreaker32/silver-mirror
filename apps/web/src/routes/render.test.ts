@@ -26,7 +26,7 @@ describe('web routes render', () => {
     ['/check', Check, /./],
     ['/rules', Rules, /./],
     ['/how', How, /Claude/],
-    ['/audit', Audit, /One tag, six readings/],
+    ['/audit', Audit, /checked against its own ingredients/],
   ];
   for (const [path, Page, expected] of pages) {
     it(path, () => {
@@ -37,15 +37,17 @@ describe('web routes render', () => {
     });
   }
 
-  it('/audit is honest when nothing has been checked: no heatmap, no "0 hits" finding', () => {
+  it('/audit is honest: no tables when nothing was checked, every count section when something was', () => {
     const checked = (summaryJson as { population?: { checked?: number } } | null)?.population?.checked ?? 0;
     const t = text(render('/audit', Audit));
     if (checked === 0) {
-      expect(t).toMatch(/Nothing checked yet|The audit hasn't run yet/);
-      expect(t).not.toMatch(/No label-claim hits in this run/);
+      expect(t).toMatch(/Nothing checked yet|The audit hasn't run yet|couldn't be read/);
       expect(t).not.toMatch(/Top grade R/);
     } else {
       expect(t).toMatch(/Top grade R/);
+      expect(t).toMatch(/Label Check/);
+      expect(t).toMatch(/The claim, and the reading it points to/);
+      expect(t).toMatch(/Every flagged row, for review/);
     }
   });
 });
