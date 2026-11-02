@@ -72,7 +72,7 @@
       "reactCompiler": true
     },
     "extra": {
-      "workerUrl": "http://localhost:8787"
+      "workerUrl": "https://skinkey-worker.skinkey-worker.workers.dev"
     }
   }
 }
