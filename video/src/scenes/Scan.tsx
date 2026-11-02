@@ -1,0 +1,86 @@
+import React from "react";
+import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { COLORS } from "../constants";
+import { SANS } from "../fonts";
+import { Ground, Kinetic, Label, Phone, PhotoCard, Pill, Stamp, clamp, usePop } from "../components";
+import { cue, meta } from "../timing";
+
+const ID = "scan";
+const METRICS = ["Oiliness", "Pores", "Moisture", "Redness"];
+const LEVELS = [
+  { l: "Low", n: 1 },
+  { l: "Medium", n: 2 },
+  { l: "High", n: 3 },
+];
+
+const Bars: React.FC<{ n: number }> = ({ n }) => (
+  <div style={{ display: "flex", gap: 6 }}>
+    {[0, 1, 2].map((i) => (
+      <div key={i} style={{ width: 22, height: 12, borderRadius: 6, background: i < n ? COLORS.accent : COLORS.hairline }} />
+    ))}
+  </div>
+);
+
+export const Scan: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const m = meta(ID);
+  const scanAt = cue(ID, "scan", fps, 1, 60);
+  const readsAt = cue(ID, "youcams", fps, 1, 110);
+  const delAt = cue(ID, "deleted", fps, 1, 300);
+  const onlyAt = cue(ID, "only", fps, 1, 360);
+  const phone = usePop(4);
+  const portrait = usePop(scanAt - 6);
+  const sweep = interpolate((frame - scanAt) % 50, [0, 50], [0, 100]);
+  const scanning = frame >= scanAt && frame < delAt;
+  const gone = interpolate(frame, [delAt, delAt + 18], [1, 0.12], clamp);
+  const readsLabel = usePop(readsAt);
+  const onlyLabel = usePop(onlyAt);
+  return (
+    <Ground>
+      <div style={{ position: "absolute", left: 150, top: 80, opacity: phone.opacity, transform: `translateY(${phone.y}px)` }}>
+        <Phone clip={m.clip} still="stills/scan.png" height={920} />
+      </div>
+      <div style={{ position: "absolute", left: 720, top: 90, width: 1080 }}>
+        <Kinetic scene={ID} text="One consented scan." size={92} after={scanAt - 30} />
+      </div>
+      {/* portrait under analysis */}
+      <div style={{ position: "absolute", left: 720, top: 260, opacity: portrait.opacity, transform: `scale(${portrait.scale})` }}>
+        <div style={{ position: "relative", opacity: gone, filter: frame >= delAt ? "grayscale(1) blur(2px)" : "none" }}>
+          <PhotoCard src="photos/portrait.jpg" w={232} h={290} radius={20} />
+          {scanning ? (
+            <div style={{ position: "absolute", left: 0, top: `${sweep}%`, width: 232, height: 4, background: COLORS.accent, boxShadow: `0 0 18px 4px rgba(58,53,70,0.35)` }} />
+          ) : null}
+        </div>
+      </div>
+      <div style={{ position: "absolute", left: 1000, top: 262 }}>
+        <Label style={{ opacity: readsLabel.opacity, marginBottom: 22 }}>YouCam HD Skin Analysis reads</Label>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, auto)", gap: 18, justifyContent: "start" }}>
+          {METRICS.map((x) => (
+            <Stamp key={x} at={cue(ID, x, fps, 1, 150)} tilt={0}>
+              <Pill size={34} bg={COLORS.panel}>{x}</Pill>
+            </Stamp>
+          ))}
+        </div>
+      </div>
+      <Stamp at={delAt + 2} tilt={-3} style={{ position: "absolute", left: 1000, top: 545 }}>
+        <Pill size={34} bg={COLORS.accent} color={COLORS.panel}>Photo deleted from YouCam</Pill>
+      </Stamp>
+      <div style={{ position: "absolute", left: 720, top: 720, width: 1100 }}>
+        <Label style={{ opacity: onlyLabel.opacity, transform: `translateY(${onlyLabel.y}px)`, marginBottom: 24, fontSize: 30 }}>
+          Only this stays on your phone
+        </Label>
+        <div style={{ display: "flex", gap: 24 }}>
+          {LEVELS.map((x) => (
+            <Stamp key={x.l} at={cue(ID, x.l, fps, 1, 400)}>
+              <div style={{ display: "flex", alignItems: "center", gap: 18, background: COLORS.panel, borderRadius: 999, padding: "20px 34px", fontFamily: SANS, fontWeight: 600, fontSize: 40, color: COLORS.text }}>
+                {x.l}
+                <Bars n={x.n} />
+              </div>
+            </Stamp>
+          ))}
+        </div>
+      </div>
+    </Ground>
+  );
+};
