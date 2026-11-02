@@ -28,9 +28,9 @@ export interface ProductCardProps {
 }
 
 /**
- * Better-matches product card (component.productMatchCard, showcase 06_discover): white, radius 24, hairline + the
- * soft violet shadow (graphite-850 + sheen edge in dark), a 64dp soft square thumb tile (radius 16),
- * name in bodyStrong, one reason line, verdict tag, destination caption. No ratings, review counts, ribbons or logos.
+ * Better-matches product row (component.productMatchCard, showcase 02_home / 06_discover): white, radius 24, hairline +
+ * the soft violet shadow (graphite-850 + sheen edge in dark), a 56dp soft square thumb tile (radius 16), the name on
+ * one line in bodyStrong, then one reason line with the grey verdict chip inline after it, destination caption. No ratings, review counts, ribbons or logos.
  * One target with one label in visual order.
  */
 export function ProductCard({ name, reason, verdict, destination, linkOut = !!destination, image, glyph = 'bottle', hero = false, onPress, accessibilityLabel, accessibilityHint, testID }: ProductCardProps) {
@@ -49,18 +49,22 @@ export function ProductCard({ name, reason, verdict, destination, linkOut = !!de
         accessibilityElementsHidden
         style={{ width: m.thumbSize, height: m.thumbSize, borderRadius: m.thumbRadius, backgroundColor: m.thumbBg, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
       >
-        {image ? <Image source={image} style={{ width: m.thumbSize, height: m.thumbSize }} resizeMode="cover" /> : <Icon name={glyph} size={t.icon.lg + 4} color={t.colors.textMuted} />}
+        {image ? <Image source={image} style={{ width: m.thumbSize, height: m.thumbSize }} resizeMode="cover" /> : <Icon name={glyph} size={t.icon.lg} color={t.colors.textMuted} />}
       </View>
       <View style={{ flex: 1, gap: t.space[1] }}>
-        <Txt variant="bodyStrong" numberOfLines={2} style={[m.name, { color: m.nameColor }]}>
+        <Txt variant="bodyStrong" numberOfLines={1} style={[m.name, { color: m.nameColor }]}>
           {name}
         </Txt>
-        {reason ? (
-          <Txt variant="bodySm" numberOfLines={2} style={[m.fit, { color: m.fitColor }]}>
-            {reason}
-          </Txt>
+        {reason || verdict ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[2] }}>
+            {reason ? (
+              <Txt variant="bodySm" numberOfLines={1} style={[m.fit, { color: m.fitColor, flexShrink: 1 }]}>
+                {reason}
+              </Txt>
+            ) : null}
+            {verdict ? <Tag label={verdict.label} variant={{ verdict: verdict.tone }} /> : null}
+          </View>
         ) : null}
-        {verdict ? <Tag label={verdict.label} variant={{ verdict: verdict.tone }} /> : null}
         {destination ? (
           <Txt variant="caption" style={[m.meta, { color: m.metaColor }]}>
             {destination}

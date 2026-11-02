@@ -2,6 +2,7 @@ import { Animated, Text, View, type StyleProp, type ViewStyle } from 'react-nati
 import { COPY } from '@skinkey/contracts';
 import type { Verdict } from '@skinkey/design';
 import { useTheme } from '@/theme/ThemeProvider';
+import { useCardStyle } from './Card';
 import { Tag } from './Chip';
 import { VerdictIcon } from './Icon';
 import { textStyle, Txt } from './Text';
@@ -29,16 +30,18 @@ export interface VerdictHeadProps {
 }
 
 /**
- * The only block that carries the verdict tint (component.verdictCard.head): radius 24, padding 20, a 40dp white disc
- * holding the 24dp verdict icon, the caps label in the verdict fg, the sans sentence in full text colour, 1dp edge
- * (dashed for UNKNOWN and name-only). No leading stripe. MEDICINE: no box and no label, the 32dp pharmacist icon
- * over one title line.
+ * Verdict head (component.verdictCard.head, 2.1 round 1): a white raised card like every other card (hairline + the
+ * soft violet shadow; graphite + sheen edge in dark), radius 24, padding 20. The verdict lives in a 40dp tinted disc
+ * holding the 24dp verdict icon and the caps label in the verdict fg; the sans sentence is in full text colour.
+ * UNKNOWN and name-only get a dashed meaningful edge. No leading stripe. MEDICINE: no box and no label, the 32dp
+ * pharmacist icon over one title line.
  */
 export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = 'based on product name only', demo = false, accessibilityLabel, revealStyle, testID = 'verdict-head' }: VerdictHeadProps) {
   const t = useTheme();
   const head = t.components.verdictCard.head;
   const c = head[tone];
   const a11y = accessibilityLabel ?? `${SPOKEN[tone]}. ${nameOnly ? `${qualifier}. ` : ''}${line}`;
+  const raised = useCardStyle('raised', head.radius);
 
   if (tone === 'medicine') {
     const g = t.components.verdictCard.medicineGate;
@@ -60,6 +63,8 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
     );
   }
 
+  const dashed = nameOnly || c.borderStyle === 'dashed';
+  const dashEdge = c.borderStyle === 'dashed' ? c.border : t.colors.borderStrong;
   const shownLabel = label === null ? null : (label ?? LABEL[tone]);
   return (
     <Animated.View
@@ -68,20 +73,21 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
       accessibilityRole="header"
       accessibilityLabel={a11y}
       style={[
+        raised,
         {
           backgroundColor: c.bg,
-          borderColor: c.border,
           borderWidth: c.borderWidth,
-          borderStyle: (nameOnly ? t.components.verdictCard.nameOnly.borderStyle : c.borderStyle) as 'solid' | 'dashed',
           borderRadius: head.radius,
           padding: head.padding,
           gap: t.space[3],
         },
+        // A dashed edge carries meaning (UNKNOWN, checked by name only), so it is drawn in a visible ink, all round.
+        dashed ? { borderStyle: 'dashed' as const, borderColor: dashEdge, borderTopColor: dashEdge } : { borderColor: c.border },
         revealStyle,
       ]}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: head.iconGap }}>
-        <View style={{ width: c.iconDiscSize, height: c.iconDiscSize, borderRadius: t.radius.full, backgroundColor: c.iconDisc, alignItems: 'center', justifyContent: 'center' }}>
+        <View testID={`${testID}-disc`} style={{ width: c.iconDiscSize, height: c.iconDiscSize, borderRadius: t.radius.full, backgroundColor: c.iconDisc, alignItems: 'center', justifyContent: 'center' }}>
           <VerdictIcon tone={tone} size={c.iconSize} color={c.icon} />
         </View>
         <View style={{ flex: 1, gap: 2 }}>

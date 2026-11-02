@@ -17,7 +17,7 @@ interface PasteLinkFieldProps {
 }
 
 /**
- * Paste field (component.field, DESIGN.md §8.2): label above, a 56dp pill with a 1dp strong edge, the card shadow in light, and the inline
+ * Paste field (component.field, DESIGN.md §8.2): label above, a 56dp white pill with the card hairline and the card shadow in light, and the inline
  * trailing Check pill (48dp target) inside it. Focus = 2dp focus-ring edge; error = 2dp text-colour edge, an info
  * icon and the message below.
  */
@@ -50,7 +50,7 @@ export function PasteLinkField({ onSubmit, ref, emphasis = 'primary', hideLabel 
           minHeight: f.minHeight,
           flexDirection: 'row',
           alignItems: 'center',
-          // Card family (DESIGN.md §9.2): the card shadow in light, none in dark; the 1dp strong edge stays for 3:1.
+          // Card family (DESIGN.md §9.2): the card hairline + shadow in light, hairline only in dark; focus and error draw 2dp.
           ...(t.dark ? null : t.elevation['1'].style),
           backgroundColor: f.bg,
           borderRadius: f.radius,

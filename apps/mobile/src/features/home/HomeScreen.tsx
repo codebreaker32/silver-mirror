@@ -61,10 +61,10 @@ export default function HomeScreen() {
             </Heading>
             <IconButton icon="gear" accessibilityLabel="Settings" onPress={() => router.push('/settings')} testID="home-settings" style={{ marginRight: -gearPull }} />
           </View>
-          <Txt variant="body" tone="muted">
+          <Txt variant="bodySm" tone="muted">
             {COPY.welcome.tagline}
           </Txt>
-          <View style={{ marginTop: t.space[5] }}>
+          <View style={{ marginTop: t.space[4] }}>
             {loading ? (
               <View style={{ minHeight: t.components.readingCard.minHeight }} />
             ) : (

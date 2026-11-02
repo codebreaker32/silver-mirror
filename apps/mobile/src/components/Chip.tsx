@@ -104,7 +104,9 @@ export function Tag({ label, variant = 'neutral', icon, accessibilityLabel }: { 
   const tone = typeof variant === 'object' ? variant.verdict : null;
   const v = tone ? t.colors.verdict[tone] : null;
   const demo = variant === 'demo' ? t.components.verdictCard.demoBadge : null;
-  const fg = v ? v.fg : demo ? demo.fg : tag.fg;
+  // Verdict tags are the same light grey pill as every other chip (2.1 round 1); the verdict glyph in its own ink
+  // carries the state, the label stays in text colour.
+  const fg = demo ? demo.fg : tag.fg;
   return (
     <View
       accessible={accessibilityLabel ? true : undefined}
@@ -117,10 +119,9 @@ export function Tag({ label, variant = 'neutral', icon, accessibilityLabel }: { 
         flexDirection: 'row',
         alignItems: 'center',
         gap: t.space[1],
-        backgroundColor: v ? v.bg : demo ? demo.bg : variant === 'outline' ? 'transparent' : tag.bg,
-        borderWidth: variant === 'outline' || (tone && tone !== 'medicine') ? 1 : 0,
-        borderStyle: tone === 'unknown' ? 'dashed' : 'solid',
-        borderColor: v ? v.border : tag.outlineBorder,
+        backgroundColor: demo ? demo.bg : variant === 'outline' ? 'transparent' : tone ? t.components.chip.bg : tag.bg,
+        borderWidth: variant === 'outline' ? 1 : 0,
+        borderColor: tag.outlineBorder,
       }}
     >
       {tone ? <VerdictIcon tone={tone} size={tag.iconSize} color={v?.icon} /> : icon ? <Icon name={icon} size={tag.iconSize} color={fg} /> : null}

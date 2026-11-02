@@ -4,12 +4,12 @@ import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName, type LegacyIconName } from './Icon';
 
 /**
- * primary: the one slate pill per screen state (pearl in dark), 56dp (showcase); pass trailingIcon="arrow-right"
+ * primary: the one slate pill per screen state (pearl in dark), 52dp with a 15dp label (showcase); pass trailingIcon="arrow-right"
  * when it moves forward ("Get started", "Start scan", "Check a product").
  * secondary: tonal mist pill, 52dp, no outline. tertiary: text + optional chevron in a 48dp box.
  * translucent: welcome only, a borderless frosted pill over the liquid backdrop (light); sheen edge in dark.
  * destructiveNeutral: text pill with a leading trash icon, never red; always followed by a confirm sheet.
- * consentPair: two identical tonal pills with a 1dp strong edge (Start scan / Not now at equal weight).
+ * consentPair: two identical white-glass pills, the welcome secondary's fill (Start scan / Not now at equal weight).
  */
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'destructiveNeutral' | 'consentPair' | 'translucent';
 

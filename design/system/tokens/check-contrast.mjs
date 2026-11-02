@@ -119,6 +119,7 @@ add('component.segmented.fg', 'component.segmented.track', 'text', 'Unselected s
 add('component.segmented.selectedFg', 'component.segmented.track', 'text', 'Selected segment label (thumb edge case)');
 add('color.text', 'color.secondary-translucent', 'text', 'Translucent welcome pill label over the backdrop (lavender stop)', { on: 'color.sheen.lavender' });
 add('color.text', 'color.secondary-translucent', 'text', 'Translucent welcome pill label over the backdrop (silver stop)', { on: 'color.sheen.silver' });
+add('component.button.consentPair.fg', 'component.button.consentPair.bg', 'text', 'Consent pair label (Start scan / Not now) on the translucent pill over the page', { on: 'color.bg' });
 add('component.checklistCard.doneTrailingColor', 'color.surface-raised', 'ui', 'Trailing done tick on the checklist card');
 add('component.checklistCard.currentTrailingColor', 'color.surface-raised', 'ui', 'Trailing current dots on the checklist card');
 for (const st of ['start', 'mid', 'end']) {
@@ -139,10 +140,13 @@ add('component.chip.selectedFg', 'component.chip.selectedBg', 'text', 'Selected 
 add('component.chip.fg', 'component.chip.bg', 'text', 'Unselected chip / reading chip');
 add('component.productHeader.sourceChipFg', 'component.productHeader.sourceChipBg', 'text', 'Store source chip on /check');
 add('component.field.placeholder', 'component.field.bg', 'text', 'Paste-field placeholder');
-add('component.field.border', 'color.bg', 'ui', 'Paste-field edge against the screen');
+add('component.field.border', 'color.bg', 'info', 'Paste-field hairline against the screen (card family; the field is identified by its white fill + shadow, placeholder and the inline slate Check pill)');
+add('component.field.focusBorder', 'color.bg', 'ui', 'Paste-field focus edge (2dp) against the screen');
+add('color.accent', 'component.field.bg', 'ui', 'Inline Check pill inside the paste field');
 add('component.verdictCard.demoBadge.fg', 'component.verdictCard.demoBadge.bg', 'text', 'Demo reading badge');
 for (const v of ['fits', 'caution', 'unknown']) add(`verdict.${v}.icon`, `component.verdictCard.head.${v}.iconDisc`, 'ui', `${v.toUpperCase()} icon in its disc on the head`);
 add('component.rankingDisclosure.color', 'color.bg', 'text', 'Ranking disclosure text (14dp, full text colour)');
+for (const v of ['fits', 'caution', 'unknown']) { add(`verdict.${v}.icon`, 'component.chip.bg', 'ui', `${v.toUpperCase()} 16dp icon in the grey verdict chip (match rows)`); add('component.tag.fg', 'component.chip.bg', 'text', `${v.toUpperCase()} verdict chip label`); }
 add('component.rankingDisclosure.rule', 'color.bg', 'ui', 'Ranking disclosure leading rule');
 
 for (const v of VERDICTS) {
@@ -205,7 +209,7 @@ const vIcon = tokens.icon.verdict.size;
 lint('Verdict icon 22-24dp', vIcon >= 22 && vIcon <= 24, `${vIcon}dp`);
 lint('Reasons larger than the verdict label (P1), reason 18-19dp', T.reason.size > T.verdictLabel.size && T.reason.size >= 18 && T.reason.size <= 19, `reason ${T.reason.size}dp vs label ${T.verdictLabel.size}dp`);
 const rr = tokens.component.reasonRow;
-lint('Product fact in reasons: 16dp in full text colour', rr.fact === '{type.body}' && T.body.size === 16 && rr.factColor === '{color.text}', `${rr.fact} (${T.body.size}dp), ${rr.factColor}`);
+lint('Product fact in reasons: body (15-16dp) in full text colour', rr.fact === '{type.body}' && T.body.size >= 15 && T.body.size <= 16 && rr.factColor === '{color.text}', `${rr.fact} (${T.body.size}dp), ${rr.factColor}`);
 
 // Touch targets: every key that names a tap target must be >= touch.min.
 const TARGET_KEY = /^(minHeight|target|minTarget|iconButton|torch|handle|rowMinHeight)$|Target$/;
@@ -358,7 +362,7 @@ for (const mode of MODES) {
   const b = tokens.component.button;
   const notPill = ['primary', 'secondary', 'tertiary', 'destructiveNeutral', 'consentPair'].filter((k) => b[k].radius !== '{radius.full}');
   lint('Every button variant is a pill (radius.full)', notPill.length === 0, notPill.join(', ') || 'primary, secondary, tertiary, destructiveNeutral, consentPair');
-  lint('Consent pair keeps equal visual weight (spec §2)', b.consentPair.bg === b.secondary.bg && b.consentPair.minHeight >= 48, `${b.consentPair.bg}, ${b.consentPair.minHeight}dp`);
+  lint('Consent pair keeps equal visual weight (spec §2): one variant for both pills, a secondary fill, no strong edge', [b.secondary.bg, b.translucent.bg].includes(b.consentPair.bg) && b.consentPair.border !== '{color.border-strong}' && b.consentPair.minHeight >= 48, `${b.consentPair.bg}, ${b.consentPair.minHeight}dp`);
 }
 
 // Serif floor: the display face never drops under 20dp.

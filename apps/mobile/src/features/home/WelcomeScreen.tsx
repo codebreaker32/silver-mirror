@@ -47,7 +47,7 @@ export default function WelcomeScreen() {
         <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
           <SilverMark size={b.heroMark} tile={false} />
         </View>
-        <View style={{ marginTop: t.space[5] }}>
+        <View style={{ marginTop: t.space[6] }}>
           <Wordmark capHeight={b.wordmarkHero} header />
         </View>
         <Txt variant="body" textBreakStrategy="balanced" style={{ marginTop: t.space[3], lineHeight: 22, textAlign: 'center', maxWidth: 320 }}>

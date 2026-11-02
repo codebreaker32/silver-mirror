@@ -174,25 +174,25 @@ Android: `includeFontPadding: false`; never set `fontWeight` on a custom family 
 <!-- tokens:@type -->
 | Token | RN fontFamily | Family / weight | Size / line (dp) | Tracking | Use |
 |---|---|---|---|---|---|
-| `type.display` | Geist_600SemiBold | Geist 600 | 26 / 32 | -0.5 | Home greeting, empty-state headline (showcase: semibold sans, never serif) |
+| `type.display` | Geist_600SemiBold | Geist 600 | 24 / 30 | -0.4 | Home greeting, empty-state headline (showcase: semibold sans, never serif) |
 | `type.title` | Geist_600SemiBold | Geist 600 | 22 / 28 | -0.4 | Product title on /check, in-body page heads, medicine line |
 | `type.appBarTitle` | Geist_600SemiBold | Geist 600 | 18 / 24 | -0.2 | Centred app-bar title |
 | `type.value` | Geist_600SemiBold | Geist 600 | 24 / 30 | -0.4 | Skin-type value ('Combination') in the compact Home skin-type card |
-| `type.valueHero` | Geist_600SemiBold | Geist 600 | 28 / 34 | -0.5 | Skin-type value in the hero skin-type card (Reading, Result; showcase 04_report 'Combination') |
+| `type.valueHero` | Geist_600SemiBold | Geist 600 | 26 / 32 | -0.4 | Skin-type value in the hero skin-type card (Reading, Result; showcase 04_report 'Combination') |
 | `type.headline` | Geist_600SemiBold | Geist 600 | 20 / 26 | -0.2 | Card heads, sheet titles, 'Where this comes from', empty-state sentence |
 | `type.verdictLine` | Geist_600SemiBold | Geist 600 | 18 / 26 | -0.1 | Verdict sentence (reasons stay 18/500; the caps label stays 15/600) |
-| `type.section` | Geist_600SemiBold | Geist 600 | 18 / 24 | -0.2 | Sentence-case section heads: 'Why · 2 reasons', 'What stays on this phone', 'Better matches' |
+| `type.section` | Geist_600SemiBold | Geist 600 | 16 / 22 | -0.1 | Sentence-case section heads: 'Why · 2 reasons', 'What stays on this phone', 'Better matches' |
 | `type.reason` | Geist_500Medium | Geist 500 | 18 / 26 | -0.1 | Reason reading line. Out-sizes the 15dp verdict label (P1: reasons before verdicts). |
 | `type.reasonIndex` | Geist_500Medium | Geist 500, tabular | 15 / 22 | 0 | Step numbers where order matters (share steps). Not decoration on candidates or matches. |
 | `type.figure` | Geist_600SemiBold | Geist 600, tabular | 24 / 30 | -0.3 | QR countdown, catalogue count on /how |
 | `type.verdictLabel` | Geist_600SemiBold | Geist 600, caps | 15 / 20 | 1.2 | FITS / CAUTION / UNKNOWN, with a 24dp icon in a disc. Never truncates; wraps at max font scale. |
-| `type.body` | Geist_400Regular | Geist 400 | 16 / 24 | 0 | Body copy, the product fact in each reason (full text colour), consent body |
-| `type.bodyStrong` | Geist_600SemiBold | Geist 600 | 16 / 22 | 0 | Band value (High), emphasised step, list row title |
-| `type.bodySm` | Geist_400Regular | Geist 400 | 14 / 20 | 0.1 | Ledger values, supporting lines, card secondary text |
-| `type.label` | Geist_600SemiBold | Geist 600 | 14 / 20 | 0.1 | Chip and band names, field labels, snackbar action |
+| `type.body` | Geist_400Regular | Geist 400 | 15 / 22 | 0 | Body copy, the product fact in each reason (full text colour), consent body |
+| `type.bodyStrong` | Geist_600SemiBold | Geist 600 | 15 / 20 | 0 | Band value (High), emphasised step, list row title |
+| `type.bodySm` | Geist_400Regular | Geist 400 | 13 / 18 | 0.1 | Ledger values, supporting lines, card secondary text |
+| `type.label` | Geist_600SemiBold | Geist 600 | 13 / 18 | 0.1 | Chip and band names, field labels, snackbar action |
 | `type.labelSm` | Geist_600SemiBold | Geist 600 | 13 / 16 | 0.2 | Selected tab label, tags |
 | `type.labelSmRegular` | Geist_500Medium | Geist 500 | 13 / 16 | 0.2 | Unselected tab label (selection = filled glyph + 600 weight + colour, never colour alone) |
-| `type.button` | Geist_600SemiBold | Geist 600 | 16 / 20 | 0.1 | All buttons |
+| `type.button` | Geist_600SemiBold | Geist 600 | 15 / 20 | 0.1 | All buttons |
 | `type.overline` | Geist_600SemiBold | Geist 600 | 13 / 18 | 0.1 | Ledger keys only (Reading / Product / Rules / Limits), sentence case. The name is historical: no tracked caps, no eyebrows. |
 | `type.caption` | Geist_400Regular | Geist 400 | 13 / 18 | 0.1 | Destination lines, disclosures, meter labels (Low / Medium / High), timestamps |
 | `type.fine` | Geist_400Regular | Geist 400 | 12 / 16 | 0.2 | Data credits only (Open-Meteo CC BY 4.0, Open Beauty Facts ODbL). The floor: nothing is smaller than 12. |
@@ -367,10 +367,10 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.primary.fg` | `color.on-accent` | #F6F5F8 | #2F3243 |
 | `button.primary.bgPressed` | `color.accent-pressed` | #50576F | #C6C3CF |
 | `button.primary.ripple` | `color.state.ripple-on-accent` | rgba(246, 245, 248, 0.18) | rgba(47, 50, 67, 0.16) |
-| `button.primary.minHeight` | — | 56 | same |
+| `button.primary.minHeight` | — | 52 | same |
 | `button.primary.paddingX` | `space.6` | 24 | same |
 | `button.primary.radius` | `radius.full` | 9999 | same |
-| `button.primary.type` | `type.button` | Geist 600 16/20 | same |
+| `button.primary.type` | `type.button` | Geist 600 15/20 | same |
 | `button.primary.gap` | `space.2` | 8 | same |
 | `button.primary.trailingIcon` | — | arrow-right | same |
 | `button.primary.bgDisabled` | `color.disabled-bg` | #E7E5EC | #30313C |
@@ -383,7 +383,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.secondary.minHeight` | — | 52 | same |
 | `button.secondary.paddingX` | `space.5` | 20 | same |
 | `button.secondary.radius` | `radius.full` | 9999 | same |
-| `button.secondary.type` | `type.button` | Geist 600 16/20 | same |
+| `button.secondary.type` | `type.button` | Geist 600 15/20 | same |
 | `button.secondary.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
 | `button.secondary.borderDisabled` | `color.disabled-bg` | #E7E5EC | #30313C |
 | `button.tertiary.bg` | — | transparent | same |
@@ -393,7 +393,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.tertiary.minHeight` | — | 48 | same |
 | `button.tertiary.paddingX` | `space.3` | 12 | same |
 | `button.tertiary.radius` | `radius.full` | 9999 | same |
-| `button.tertiary.type` | `type.button` | Geist 600 16/20 | same |
+| `button.tertiary.type` | `type.button` | Geist 600 15/20 | same |
 | `button.tertiary.trailingIcon` | — | chevron-right | same |
 | `button.tertiary.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
 | `button.destructiveNeutral.bg` | — | transparent | same |
@@ -404,19 +404,19 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.destructiveNeutral.minHeight` | — | 52 | same |
 | `button.destructiveNeutral.paddingX` | `space.4` | 16 | same |
 | `button.destructiveNeutral.radius` | `radius.full` | 9999 | same |
-| `button.destructiveNeutral.type` | `type.button` | Geist 600 16/20 | same |
+| `button.destructiveNeutral.type` | `type.button` | Geist 600 15/20 | same |
 | `button.destructiveNeutral.leadingIcon` | — | trash | same |
 | `button.destructiveNeutral.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
 | `button.destructiveNeutral.borderDisabled` | `color.border` | #E3DFE9 | #30313C |
-| `button.consentPair.bg` | `color.secondary-bg` | #E7E3EC | #30313C |
-| `button.consentPair.fg` | `color.on-secondary` | #1A1B23 | #EFEEF3 |
-| `button.consentPair.border` | `color.border-strong` | #7E7B8B | same |
+| `button.consentPair.bg` | `color.secondary-translucent` | rgba(255, 255, 255, 0.55) | rgba(239, 238, 243, 0.10) |
+| `button.consentPair.fg` | `color.text` | #1A1B23 | #EFEEF3 |
+| `button.consentPair.border` | `color.secondary-translucent-edge` | rgba(255, 255, 255, 0.70) | rgba(239, 238, 243, 0.07) |
 | `button.consentPair.borderWidth` | — | 1 | same |
-| `button.consentPair.bgPressed` | `color.secondary-bg-pressed` | #DDD9E3 | #3A3B47 |
+| `button.consentPair.bgPressed` | `color.secondary-bg` | #E7E3EC | #30313C |
 | `button.consentPair.minHeight` | — | 52 | same |
 | `button.consentPair.paddingX` | `space.4` | 16 | same |
 | `button.consentPair.radius` | `radius.full` | 9999 | same |
-| `button.consentPair.type` | `type.button` | Geist 600 16/20 | same |
+| `button.consentPair.type` | `type.button` | Geist 600 15/20 | same |
 | `button.consentPair.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
 | `button.consentPair.borderDisabled` | `color.border` | #E3DFE9 | #30313C |
 | `button.stackAtFontScale` | — | 1.3 | same |
@@ -428,7 +428,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `button.translucent.minHeight` | — | 52 | same |
 | `button.translucent.paddingX` | `space.5` | 20 | same |
 | `button.translucent.radius` | `radius.full` | 9999 | same |
-| `button.translucent.type` | `type.button` | Geist 600 16/20 | same |
+| `button.translucent.type` | `type.button` | Geist 600 15/20 | same |
 | `button.translucent.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
 | `button.translucent.borderDisabled` | `color.disabled-bg` | #E7E5EC | #30313C |
 | `actionBar.bg` | `color.bg` | #EFECF2 | #121319 |
@@ -511,7 +511,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `textLink.fg` | `color.link` | #50576F | #C7CCDB |
 | `textLink.fgPressed` | `color.link-pressed` | #3B3F52 | #E1E4EE |
 | `textLink.fgDisabled` | `color.disabled-fg` | #636070 | #A8A5B3 |
-| `textLink.type` | `type.label` | Geist 600 14/20 | same |
+| `textLink.type` | `type.label` | Geist 600 13/18 | same |
 | `textLink.disabledCaption` | `type.caption` | Geist 400 13/18 | same |
 | `textLink.disabledCaptionColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `textLink.underlineWidth` | — | 1 | same |
@@ -563,7 +563,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:productHeader field -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `productHeader.kicker` | `type.bodySm` | Geist 400 14/20 | same |
+| `productHeader.kicker` | `type.bodySm` | Geist 400 13/18 | same |
 | `productHeader.kickerColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `productHeader.title` | `type.title` | Geist 600 22/28 | same |
 | `productHeader.titleColor` | `color.text` | #1A1B23 | #EFEEF3 |
@@ -576,13 +576,13 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `field.bg` | `color.surface-raised` | #FFFFFF | #20212A |
 | `field.fg` | `color.text` | #1A1B23 | #EFEEF3 |
 | `field.placeholder` | `color.text-subtle` | #5E5B6B | #A8A5B3 |
-| `field.border` | `color.border-strong` | #7E7B8B | same |
+| `field.border` | `color.border` | #E3DFE9 | #30313C |
 | `field.borderWidth` | — | 1 | same |
 | `field.focusBorder` | `color.focus-ring` | #666E88 | #BEB6DE |
 | `field.focusBorderWidth` | — | 2 | same |
-| `field.label` | `type.label` | Geist 600 14/20 | same |
+| `field.label` | `type.label` | Geist 600 13/18 | same |
 | `field.labelColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `field.value` | `type.body` | Geist 400 16/24 | same |
+| `field.value` | `type.body` | Geist 400 15/22 | same |
 | `field.minHeight` | — | 56 | same |
 | `field.radius` | `radius.full` | 9999 | same |
 | `field.paddingX` | `space.5` | 20 | same |
@@ -666,33 +666,33 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.head.label` | `type.verdictLabel` | Geist 600 15/20 caps | same |
 | `verdictCard.head.iconGap` | `space.3` | 12 | same |
 | `verdictCard.head.subtitleColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `verdictCard.head.fits.bg` | `verdict.fits.bg` | #E2EEE8 | #1A2A25 |
+| `verdictCard.head.fits.bg` | `color.surface-raised` | #FFFFFF | #20212A |
 | `verdictCard.head.fits.fg` | `verdict.fits.fg` | #2B5145 | #C4DDD2 |
-| `verdictCard.head.fits.border` | `verdict.fits.border` | #568676 | same |
+| `verdictCard.head.fits.border` | `color.border` | #E3DFE9 | #30313C |
 | `verdictCard.head.fits.icon` | `verdict.fits.icon` | #3D6B5C | #97C0B0 |
-| `verdictCard.head.fits.iconDisc` | `color.surface-raised` | #FFFFFF | #20212A |
+| `verdictCard.head.fits.iconDisc` | `verdict.fits.bg` | #E2EEE8 | #1A2A25 |
 | `verdictCard.head.fits.iconDiscSize` | — | 40 | same |
 | `verdictCard.head.fits.borderWidth` | — | 1 | same |
 | `verdictCard.head.fits.borderStyle` | — | solid | same |
 | `verdictCard.head.fits.showLabel` | — | true | same |
 | `verdictCard.head.fits.subtitle` | `type.verdictLine` | Geist 600 18/26 | same |
 | `verdictCard.head.fits.iconSize` | `icon.verdict.size` | 24 | same |
-| `verdictCard.head.caution.bg` | `verdict.caution.bg` | #F5EAD6 | #2A2317 |
+| `verdictCard.head.caution.bg` | `color.surface-raised` | #FFFFFF | #20212A |
 | `verdictCard.head.caution.fg` | `verdict.caution.fg` | #66460C | #EDD6AE |
-| `verdictCard.head.caution.border` | `verdict.caution.border` | #A57A2F | same |
+| `verdictCard.head.caution.border` | `color.border` | #E3DFE9 | #30313C |
 | `verdictCard.head.caution.icon` | `verdict.caution.icon` | #8A6118 | #D4A65A |
-| `verdictCard.head.caution.iconDisc` | `color.surface-raised` | #FFFFFF | #20212A |
+| `verdictCard.head.caution.iconDisc` | `verdict.caution.bg` | #F5EAD6 | #2A2317 |
 | `verdictCard.head.caution.iconDiscSize` | — | 40 | same |
 | `verdictCard.head.caution.borderWidth` | — | 1 | same |
 | `verdictCard.head.caution.borderStyle` | — | solid | same |
 | `verdictCard.head.caution.showLabel` | — | true | same |
 | `verdictCard.head.caution.subtitle` | `type.verdictLine` | Geist 600 18/26 | same |
 | `verdictCard.head.caution.iconSize` | `icon.verdict.size` | 24 | same |
-| `verdictCard.head.unknown.bg` | `verdict.unknown.bg` | #EFEEF3 | #20212A |
+| `verdictCard.head.unknown.bg` | `color.surface-raised` | #FFFFFF | #20212A |
 | `verdictCard.head.unknown.fg` | `verdict.unknown.fg` | #2F3243 | #C7CCDB |
 | `verdictCard.head.unknown.border` | `verdict.unknown.border` | #666E88 | #848CA5 |
 | `verdictCard.head.unknown.icon` | `verdict.unknown.icon` | #50576F | #A6ADC2 |
-| `verdictCard.head.unknown.iconDisc` | `verdict.unknown.disc` | #FFFFFF | #0E0F14 |
+| `verdictCard.head.unknown.iconDisc` | `verdict.unknown.bg` | #EFEEF3 | #20212A |
 | `verdictCard.head.unknown.iconDiscSize` | — | 40 | same |
 | `verdictCard.head.unknown.borderWidth` | — | 1 | same |
 | `verdictCard.head.unknown.borderStyle` | — | dashed | same |
@@ -715,7 +715,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `verdictCard.medicineGate.line` | `type.title` | Geist 600 22/28 | same |
 | `verdictCard.medicineGate.lineColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `verdictCard.nameOnly.borderStyle` | — | dashed | same |
-| `verdictCard.nameOnly.qualifier` | `type.label` | Geist 600 14/20 | same |
+| `verdictCard.nameOnly.qualifier` | `type.label` | Geist 600 13/18 | same |
 | `verdictCard.nameOnly.qualifierColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `verdictCard.demoBadge.bg` | `color.accent-warm` | #CFC4BB | #3D3936 |
 | `verdictCard.demoBadge.fg` | `color.on-accent-warm` | #4A4038 | #E4DCD5 |
@@ -795,14 +795,14 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 <!-- tokens:reasonRow -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `reasonRow.heading` | `type.section` | Geist 600 18/24 | same |
+| `reasonRow.heading` | `type.section` | Geist 600 16/22 | same |
 | `reasonRow.headingColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `reasonRow.index` | `type.reasonIndex` | Geist 500 15/22 tabular | same |
 | `reasonRow.indexColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `reasonRow.indexWidth` | — | 28 | same |
 | `reasonRow.reading` | `type.reason` | Geist 500 18/26 | same |
 | `reasonRow.readingColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `reasonRow.fact` | `type.body` | Geist 400 16/24 | same |
+| `reasonRow.fact` | `type.body` | Geist 400 15/22 | same |
 | `reasonRow.factColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `reasonRow.factGap` | — | 6 | same |
 | `reasonRow.chipGap` | `space.3` | 12 | same |
@@ -878,7 +878,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `bandChip.radius` | `radius.md` | 16 | same |
 | `bandChip.paddingX` | `space.3` | 12 | same |
 | `bandChip.visualMinHeight` | — | 32 | same |
-| `bandChip.type` | `type.label` | Geist 600 14/20 | same |
+| `bandChip.type` | `type.label` | Geist 600 13/18 | same |
 | `bandChip.separatorColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `bandChip.bgPressed` | `color.state.pressed` | rgba(26, 27, 35, 0.08) | rgba(239, 238, 243, 0.10) |
 | `bandChip.target` | `touch.min` | 48 | same |
@@ -903,9 +903,9 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `bandList.rowMinHeight` | — | 56 | same |
 | `bandList.rowPaddingY` | `space.2` | 8 | same |
 | `bandList.rowDivider` | `color.border` | #E3DFE9 | #30313C |
-| `bandList.name` | `type.body` | Geist 400 16/24 | same |
+| `bandList.name` | `type.body` | Geist 400 15/22 | same |
 | `bandList.nameColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `bandList.value` | `type.bodyStrong` | Geist 600 16/22 | same |
+| `bandList.value` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `bandList.valueColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `bandList.meterGap` | `space.1` | 4 | same |
 | `bandList.legend` | `type.caption` | Geist 400 13/18 | same |
@@ -969,7 +969,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `skinMap.radius` | `radius.lg` | 24 | same |
 | `skinMap.padding` | `space.4` | 16 | same |
 | `skinMap.border` | `color.border` | #E3DFE9 | #30313C |
-| `skinMap.heading` | `type.section` | Geist 600 18/24 | same |
+| `skinMap.heading` | `type.section` | Geist 600 16/22 | same |
 | `skinMap.listToggleTarget` | `touch.min` | 48 | same |
 | `skinMap.faceOutline` | `color.border-strong` | #7E7B8B | same |
 | `skinMap.faceStrokeWidth` | — | 1.5 | same |
@@ -989,7 +989,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `segmented.borderWidth` | — | 0 | same |
 | `segmented.radius` | `radius.full` | 9999 | same |
 | `segmented.fg` | `color.text-muted` | #4B4958 | #C6C3CF |
-| `segmented.type` | `type.label` | Geist 600 14/20 | same |
+| `segmented.type` | `type.label` | Geist 600 13/18 | same |
 | `segmented.selectedBg` | `color.segment-thumb` | #FFFFFF | #3A3B47 |
 | `segmented.selectedFg` | `color.text` | #1A1B23 | #EFEEF3 |
 | `segmented.selectedIcon` | — | check | same |
@@ -1064,7 +1064,7 @@ Priority: disabled > loading > pressed > focused > default. On the web, hover = 
 | `provenanceLedger.keyColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `provenanceLedger.keyWidth` | — | 96 | same |
 | `provenanceLedger.keyGap` | `space.4` | 16 | same |
-| `provenanceLedger.value` | `type.bodySm` | Geist 400 14/20 | same |
+| `provenanceLedger.value` | `type.bodySm` | Geist 400 13/18 | same |
 | `provenanceLedger.valueColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `provenanceLedger.mono` | `type.caption` | Geist 400 13/18 | same |
 | `provenanceLedger.caption` | `type.caption` | Geist 400 13/18 | same |
@@ -1129,18 +1129,18 @@ No screen-level overline ("Before the camera opens" is gone).
 <!-- tokens:consentSheet -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `consentSheet.privacyLead` | `type.bodyStrong` | Geist 600 16/22 | same |
-| `consentSheet.privacyRest` | `type.body` | Geist 400 16/24 | same |
+| `consentSheet.privacyLead` | `type.bodyStrong` | Geist 600 15/20 | same |
+| `consentSheet.privacyRest` | `type.body` | Geist 400 15/22 | same |
 | `consentSheet.privacyColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `consentSheet.keepBox.bg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
 | `consentSheet.keepBox.border` | `color.border` | #E3DFE9 | #30313C |
 | `consentSheet.keepBox.radius` | `radius.lg` | 24 | same |
 | `consentSheet.keepBox.padding` | `space.5` | 20 | same |
-| `consentSheet.keepBox.title` | `type.section` | Geist 600 18/24 | same |
-| `consentSheet.keepList` | `type.body` | Geist 400 16/24 | same |
+| `consentSheet.keepBox.title` | `type.section` | Geist 600 16/22 | same |
+| `consentSheet.keepList` | `type.body` | Geist 400 15/22 | same |
 | `consentSheet.keepIcon` | — | check-circle | same |
 | `consentSheet.dropIcon` | — | minus-circle | same |
-| `consentSheet.accuracyNote` | `type.bodySm` | Geist 400 14/20 | same |
+| `consentSheet.accuracyNote` | `type.bodySm` | Geist 400 13/18 | same |
 | `consentSheet.accuracyColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `consentSheet.checkbox.size` | — | 24 | same |
 | `consentSheet.checkbox.target` | `touch.min` | 48 | same |
@@ -1216,11 +1216,11 @@ No screen-level overline ("Before the camera opens" is gone).
 | `captureGuide.bracketWidth` | — | 3 | same |
 | `captureGuide.bracketLength` | — | 28 | same |
 | `captureGuide.frameRadius` | `radius.xl` | 28 | same |
-| `captureGuide.instruction` | `type.label` | Geist 600 14/20 | same |
+| `captureGuide.instruction` | `type.label` | Geist 600 13/18 | same |
 | `captureGuide.instructionColor` | `color.on-overlay` | #FFFFFF | same |
 | `captureGuide.hint.bg` | `color.overlay-camera` | rgba(14, 15, 20, 0.62) | same |
 | `captureGuide.hint.fg` | `color.on-overlay` | #FFFFFF | same |
-| `captureGuide.hint.type` | `type.bodyStrong` | Geist 600 16/22 | same |
+| `captureGuide.hint.type` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `captureGuide.hint.radius` | `radius.full` | 9999 | same |
 | `captureGuide.hint.paddingX` | `space.4` | 16 | same |
 | `captureGuide.hint.visualMinHeight` | — | 40 | same |
@@ -1304,26 +1304,26 @@ Status glyphs avoid every verdict silhouette. Pending and active rings hold the 
 | `processingStepper.connectorWidth` | — | 1.5 | same |
 | `processingStepper.done.fill` | `color.text` | #1A1B23 | #EFEEF3 |
 | `processingStepper.done.check` | `color.bg` | #EFECF2 | #121319 |
-| `processingStepper.done.label` | `type.body` | Geist 400 16/24 | same |
+| `processingStepper.done.label` | `type.body` | Geist 400 15/22 | same |
 | `processingStepper.done.labelColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `processingStepper.current.ring` | `color.text` | #1A1B23 | #EFEEF3 |
 | `processingStepper.current.ringWidth` | — | 1.5 | same |
 | `processingStepper.current.numeral` | `type.labelSm` | Geist 600 13/16 | same |
 | `processingStepper.current.numeralColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `processingStepper.current.label` | `type.bodyStrong` | Geist 600 16/22 | same |
+| `processingStepper.current.label` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `processingStepper.current.labelColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `processingStepper.pending.ring` | `color.border-strong` | #7E7B8B | same |
 | `processingStepper.pending.ringWidth` | — | 1.5 | same |
 | `processingStepper.pending.numeral` | `type.labelSm` | Geist 600 13/16 | same |
 | `processingStepper.pending.numeralColor` | `color.text-muted` | #4B4958 | #C6C3CF |
-| `processingStepper.pending.label` | `type.body` | Geist 400 16/24 | same |
+| `processingStepper.pending.label` | `type.body` | Geist 400 15/22 | same |
 | `processingStepper.pending.labelColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `processingStepper.failed.ring` | `color.text` | #1A1B23 | #EFEEF3 |
 | `processingStepper.failed.ringWidth` | — | 1.5 | same |
 | `processingStepper.failed.bar` | `color.text` | #1A1B23 | #EFEEF3 |
-| `processingStepper.failed.label` | `type.bodyStrong` | Geist 600 16/22 | same |
+| `processingStepper.failed.label` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `processingStepper.failed.labelColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `processingStepper.deletedStep.label` | `type.bodyStrong` | Geist 600 16/22 | same |
+| `processingStepper.deletedStep.label` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `processingStepper.deletedStep.caption` | `type.caption` | Geist 400 13/18 | same |
 | `processingStepper.deletedStep.captionColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 <!-- /tokens -->
@@ -1382,7 +1382,7 @@ Status glyphs avoid every verdict silhouette. Pending and active rings hold the 
 <!-- tokens:storeLinkOut -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `storeLinkOut.label` | `type.button` | Geist 600 16/20 | same |
+| `storeLinkOut.label` | `type.button` | Geist 600 15/20 | same |
 | `storeLinkOut.destination` | `type.caption` | Geist 400 13/18 | same |
 | `storeLinkOut.destinationColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `storeLinkOut.destinationDisabledColor` | `color.disabled-fg` | #636070 | #A8A5B3 |
@@ -1438,7 +1438,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 <!-- tokens:rankingDisclosure -->
 | Token | References | Light | Dark |
 |---|---|---|---|
-| `rankingDisclosure.type` | `type.bodySm` | Geist 400 14/20 | same |
+| `rankingDisclosure.type` | `type.body` | Geist 400 15/22 | same |
 | `rankingDisclosure.color` | `color.text` | #1A1B23 | #EFEEF3 |
 | `rankingDisclosure.rule` | `color.border-strong` | #7E7B8B | same |
 | `rankingDisclosure.ruleWidth` | — | 1 | same |
@@ -1493,8 +1493,8 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `shareTeachingCard.padding` | `space.4` | 16 | same |
 | `shareTeachingCard.stepIndex` | `type.reasonIndex` | Geist 500 15/22 tabular | same |
 | `shareTeachingCard.stepIndexColor` | `color.text-muted` | #4B4958 | #C6C3CF |
-| `shareTeachingCard.body` | `type.body` | Geist 400 16/24 | same |
-| `shareTeachingCard.title` | `type.section` | Geist 600 18/24 | same |
+| `shareTeachingCard.body` | `type.body` | Geist 400 15/22 | same |
+| `shareTeachingCard.title` | `type.section` | Geist 600 16/22 | same |
 | `shareTeachingCard.illustrationBg` | `color.bg-sunken` | #E7E3EC | #0E0F14 |
 | `shareTeachingCard.illustrationStroke` | `color.border-strong` | #7E7B8B | same |
 | `shareTeachingCard.highlight` | `color.accent` | #3B3F52 | #F6F5F8 |
@@ -1554,11 +1554,11 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `forecastCard.border` | `color.border` | #E3DFE9 | #30313C |
 | `forecastCard.radius` | `radius.lg` | 24 | same |
 | `forecastCard.padding` | `space.4` | 16 | same |
-| `forecastCard.kicker` | `type.label` | Geist 600 14/20 | same |
+| `forecastCard.kicker` | `type.label` | Geist 600 13/18 | same |
 | `forecastCard.kickerColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `forecastCard.figure` | `type.headline` | Geist 600 20/26 | same |
 | `forecastCard.figureColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `forecastCard.body` | `type.body` | Geist 400 16/24 | same |
+| `forecastCard.body` | `type.body` | Geist 400 15/22 | same |
 | `forecastCard.credit` | `type.fine` | Geist 400 12/16 | same |
 | `forecastCard.creditColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 <!-- /tokens -->
@@ -1624,7 +1624,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `tryOnCompare.badge.fg` | `color.on-overlay` | #FFFFFF | same |
 | `tryOnCompare.badge.type` | `type.labelSm` | Geist 600 13/16 | same |
 | `tryOnCompare.badge.radius` | `radius.full` | 9999 | same |
-| `tryOnCompare.disclaimer` | `type.label` | Geist 600 14/20 | same |
+| `tryOnCompare.disclaimer` | `type.label` | Geist 600 13/18 | same |
 | `tryOnCompare.disclaimerColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `tryOnCompare.disclaimerBg` | `color.surface` | #FFFFFF | #1A1B23 |
 | `tryOnCompare.note` | `type.caption` | Geist 400 13/18 | same |
@@ -1690,21 +1690,21 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `productMatchCard.bg` | `elevation.1.surface` | #FFFFFF | #1A1B23 |
 | `productMatchCard.border` | `color.border` | #E3DFE9 | #30313C |
 | `productMatchCard.radius` | `radius.lg` | 24 | same |
-| `productMatchCard.padding` | `space.4` | 16 | same |
+| `productMatchCard.padding` | `space.3` | 12 | same |
 | `productMatchCard.index` | `type.reasonIndex` | Geist 500 15/22 tabular | same |
 | `productMatchCard.indexColor` | `color.text-muted` | #4B4958 | #C6C3CF |
-| `productMatchCard.name` | `type.bodyStrong` | Geist 600 16/22 | same |
+| `productMatchCard.name` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `productMatchCard.nameColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `productMatchCard.fit` | `type.bodySm` | Geist 400 14/20 | same |
+| `productMatchCard.fit` | `type.bodySm` | Geist 400 13/18 | same |
 | `productMatchCard.fitColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `productMatchCard.meta` | `type.caption` | Geist 400 13/18 | same |
 | `productMatchCard.metaColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `productMatchCard.thumbBg` | `color.thumb-tile` | #F5F3F8 | #272832 |
 | `productMatchCard.thumbRadius` | `radius.md` | 16 | same |
-| `productMatchCard.thumbSize` | — | 64 | same |
+| `productMatchCard.thumbSize` | — | 56 | same |
 | `productMatchCard.heroBg` | `color.skin-gradient.mid` | #EEEAF6 | #2A2838 |
 | `productMatchCard.verdictTagIcon` | `icon.sm` | 16 | same |
-| `productMatchCard.minHeight` | — | 96 | same |
+| `productMatchCard.minHeight` | — | 80 | same |
 | `productMatchCard.listGap` | `space.3` | 12 | same |
 <!-- /tokens -->
 
@@ -1760,7 +1760,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `barcodeFrame.radius` | `radius.xl` | 28 | same |
 | `barcodeFrame.window.width` | — | 280 | same |
 | `barcodeFrame.window.height` | — | 160 | same |
-| `barcodeFrame.hint` | `type.bodyStrong` | Geist 600 16/22 | same |
+| `barcodeFrame.hint` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `barcodeFrame.hintColor` | `color.on-overlay` | #FFFFFF | same |
 | `barcodeFrame.torch` | `touch.min` | 48 | same |
 | `barcodeFrame.focus` | `color.focus-ring-overlay` | #FFFFFF | same |
@@ -1832,10 +1832,10 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `qrShareCard.timeRule.filled` | `meter.filled` | #272832 | #E7E5EC |
 | `qrShareCard.timeRule.track` | `color.border` | #E3DFE9 | #30313C |
 | `qrShareCard.timeRule.height` | — | 4 | same |
-| `qrShareCard.summary` | `type.bodySm` | Geist 400 14/20 | same |
+| `qrShareCard.summary` | `type.bodySm` | Geist 400 13/18 | same |
 | `qrShareCard.summaryColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `qrShareCard.expired.placeholderBg` | `color.bg-sunken` | #E7E3EC | #0E0F14 |
-| `qrShareCard.expired.message` | `type.body` | Geist 400 16/24 | same |
+| `qrShareCard.expired.message` | `type.body` | Geist 400 15/22 | same |
 | `qrShareCard.expired.messageColor` | `color.text` | #1A1B23 | #EFEEF3 |
 | `qrShareCard.brightnessBoost` | — | true | same |
 <!-- /tokens -->
@@ -1896,7 +1896,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `stateView.align` | — | start | same |
 | `stateView.title` | `type.title` | Geist 600 22/28 | same |
 | `stateView.titleColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `stateView.body` | `type.body` | Geist 400 16/24 | same |
+| `stateView.body` | `type.body` | Geist 400 15/22 | same |
 | `stateView.bodyColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `stateView.plateBg` | `color.sheen.lavender` | #ECE8F4 | #24222F |
 | `stateView.plateRadius` | `radius.lg` | 24 | same |
@@ -1904,7 +1904,7 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `stateView.offlineBanner.bg` | — | transparent | same |
 | `stateView.offlineBanner.fg` | `color.text` | #1A1B23 | #EFEEF3 |
 | `stateView.offlineBanner.border` | `color.border` | #E3DFE9 | #30313C |
-| `stateView.offlineBanner.type` | `type.bodySm` | Geist 400 14/20 | same |
+| `stateView.offlineBanner.type` | `type.bodySm` | Geist 400 13/18 | same |
 | `stateView.offlineBanner.icon` | — | cloud-off | same |
 | `stateView.offlineBanner.iconColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `stateView.offlineBanner.minHeight` | — | 48 | same |
@@ -1962,10 +1962,10 @@ The commission line appears **only on surfaces that carry affiliate tags**. Ther
 | `snackbar.bg` | `color.inverse-surface` | #20212A | #E7E5EC |
 | `snackbar.fg` | `color.inverse-text` | #EFEEF3 | #1A1B23 |
 | `snackbar.action` | `color.inverse-link` | #DDD8EE | #50576F |
-| `snackbar.actionType` | `type.label` | Geist 600 14/20 | same |
+| `snackbar.actionType` | `type.label` | Geist 600 13/18 | same |
 | `snackbar.actionTarget` | `touch.min` | 48 | same |
 | `snackbar.focus` | `color.focus-ring-inverse` | #BEB6DE | #50576F |
-| `snackbar.type` | `type.bodySm` | Geist 400 14/20 | same |
+| `snackbar.type` | `type.bodySm` | Geist 400 13/18 | same |
 | `snackbar.radius` | `radius.md` | 16 | same |
 | `snackbar.minHeight` | — | 48 | same |
 | `snackbar.paddingX` | `space.4` | 16 | same |
@@ -2159,9 +2159,9 @@ The scan metaphor lives on one tab only (v1.0 had Check with a face-scan glyph n
 | `listRow.paddingX` | `space.gutter` | 20 | same |
 | `listRow.paddingY` | `space.3` | 12 | same |
 | `listRow.gap` | `space.4` | 16 | same |
-| `listRow.title` | `type.bodyStrong` | Geist 600 16/22 | same |
+| `listRow.title` | `type.bodyStrong` | Geist 600 15/20 | same |
 | `listRow.titleColor` | `color.text` | #1A1B23 | #EFEEF3 |
-| `listRow.supporting` | `type.bodySm` | Geist 400 14/20 | same |
+| `listRow.supporting` | `type.bodySm` | Geist 400 13/18 | same |
 | `listRow.supportingColor` | `color.text-muted` | #4B4958 | #C6C3CF |
 | `listRow.leadingIcon` | `icon.lg` | 24 | same |
 | `listRow.trailingIcon` | `icon.md` | 20 | same |

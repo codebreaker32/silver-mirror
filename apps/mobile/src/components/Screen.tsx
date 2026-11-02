@@ -1,7 +1,8 @@
-import { createContext, useContext, useRef, useState, type ReactNode } from 'react';
+import { createContext, useContext, useId, useRef, useState, type ReactNode } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import { IconButton } from './IconButton';
 import type { IconName } from './Icon';
@@ -100,7 +101,9 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
     const next = viewport > 0 && y + viewport < content - 1;
     if (next !== under) setUnder(next);
   };
-  const body = <View style={{ paddingHorizontal: t.spacing.gutter, paddingBottom: t.spacing.section, gap: t.spacing.stackLg }}>{children}</View>;
+  // With a footer the last line clears the dock by the fade height plus 16dp, so it can always scroll into full view.
+  const tail = footer && scroll ? t.spacing.section + FADE + t.space[4] : t.spacing.section;
+  const body = <View style={{ paddingHorizontal: t.spacing.gutter, paddingBottom: tail, gap: t.spacing.stackLg }}>{children}</View>;
   return (
     <SafeAreaView testID={testID} edges={['top', 'left', 'right']} style={{ flex: 1, backgroundColor: t.colors.bg }}>
       {appBar ? <AppBar title={title} onBack={onBack} trailing={actions} center={appBarCenter} /> : null}
@@ -115,30 +118,23 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
                 const past = e.nativeEvent.contentOffset.y > t.space[2];
                 if (past !== scrolled) setScrolled(past);
               }
-              if (footer) {
-                geo.current.y = e.nativeEvent.contentOffset.y;
-                measure();
-              }
+              geo.current.y = e.nativeEvent.contentOffset.y;
+              measure();
             }}
-            onLayout={
-              footer
-                ? (e) => {
-                    geo.current.viewport = e.nativeEvent.layout.height;
-                    measure();
-                  }
-                : undefined
-            }
-            onContentSizeChange={
-              footer
-                ? (_w, h) => {
-                    geo.current.content = h;
-                    measure();
-                  }
-                : undefined
-            }
+            // Measured even without a footer: a screen that renders its loading state first (no footer) keeps this
+            // instance when the footer arrives, and onLayout would not fire again.
+            onLayout={(e) => {
+              geo.current.viewport = e.nativeEvent.layout.height;
+              measure();
+            }}
+            onContentSizeChange={(_w, h) => {
+              geo.current.content = h;
+              measure();
+            }}
           >
             {body}
           </ScrollView>
+          {footer && under ? <FooterFade /> : null}
           {edge && scrolled ? (
             <View
               pointerEvents="none"
@@ -169,5 +165,31 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
         <View style={{ height: bottom }} />
       )}
     </SafeAreaView>
+  );
+}
+
+const FADE = 28;
+
+/** A short page-to-transparent fade over the bottom of the scroll area, shown while content runs under the dock. */
+export function FooterFade() {
+  const t = useTheme();
+  const id = `fade${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+  return (
+    <View
+      pointerEvents="none"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: FADE }}
+    >
+      <Svg width="100%" height="100%" preserveAspectRatio="none">
+        <Defs>
+          <LinearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+            <Stop offset={0} stopColor={t.colors.bg} stopOpacity={0} />
+            <Stop offset={1} stopColor={t.colors.bg} stopOpacity={1} />
+          </LinearGradient>
+        </Defs>
+        <Rect x="0" y="0" width="100%" height="100%" fill={`url(#${id})`} />
+      </Svg>
+    </View>
   );
 }

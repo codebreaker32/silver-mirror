@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY, DEMO_KEY, type HowThisWasMade, type Store } from '@skinkey/contracts';
 import { FACET_MAP, medicineGate, rank, verdict } from '@skinkey/rules';
 import { useTheme } from '@/theme/ThemeProvider';
-import { AppBar, Body, Card, EmptyState, Icon, IconButton, IconDisc, PillButton, Tag, Txt, type IconName } from '@/components';
+import { AppBar, Body, Card, EmptyState, FooterFade, Icon, IconButton, IconDisc, PillButton, Tag, Txt, type IconName } from '@/components';
 import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
 import { BetterMatches, guessCategory, storeLinks, StoreSearchSheet, useBetterMatches } from '@/features/matches';
 import { openStoreUrl } from '@/features/matches/openStoreUrl';
@@ -357,123 +357,126 @@ export default function CheckScreen() {
       {state.phase === 'crop' ? (
         <CropStep uri={state.image.uri} width={state.image.width} height={state.image.height} onCropped={flow.sendCrop} onCancel={goBack} />
       ) : (
-        <ScrollView
-          ref={scroll}
-          onScroll={onScroll}
-          scrollEventThrottle={64}
-          onLayout={(e) => {
-            geo.current.viewport = e.nativeEvent.layout.height;
-            measure();
-          }}
-          onContentSizeChange={(_w, h) => {
-            geo.current.content = h;
-            measure();
-          }}
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{
-            paddingHorizontal: t.spacing.gutter,
-            paddingTop: t.space[2],
-            paddingBottom: inlineDock ? insets.bottom + t.space[6] : t.space[10],
-            gap: t.spacing.stackLg,
-          }}
-        >
-          {state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
-            <View style={{ gap: t.space[3] }}>
-              {origin ? <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} /> : null}
-              <ProductHeader title={header} meta={headerMeta} glyph={categoryGlyph(headerProduct?.category ?? category)} />
-            </View>
-          ) : origin && state.phase !== 'idle' ? (
-            <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} />
-          ) : null}
+        <View style={{ flex: 1 }}>
+          <ScrollView
+            ref={scroll}
+            onScroll={onScroll}
+            scrollEventThrottle={64}
+            onLayout={(e) => {
+              geo.current.viewport = e.nativeEvent.layout.height;
+              measure();
+            }}
+            onContentSizeChange={(_w, h) => {
+              geo.current.content = h;
+              measure();
+            }}
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{
+              paddingHorizontal: t.spacing.gutter,
+              paddingTop: t.space[2],
+              paddingBottom: inlineDock ? insets.bottom + t.space[6] : t.space[10] + t.space[4],
+              gap: t.spacing.stackLg,
+            }}
+          >
+            {state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
+              <View style={{ gap: t.space[3] }}>
+                {origin ? <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} /> : null}
+                <ProductHeader title={header} meta={headerMeta} glyph={categoryGlyph(headerProduct?.category ?? category)} />
+              </View>
+            ) : origin && state.phase !== 'idle' ? (
+              <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} />
+            ) : null}
 
-          {usingDemo && state.phase === 'confirm' ? <Tag label={`${COPY.reading.demo}: labelled sample readings`} variant="demo" /> : null}
+            {usingDemo && state.phase === 'confirm' ? <Tag label={`${COPY.reading.demo}: labelled sample readings`} variant="demo" /> : null}
 
-          {state.phase === 'resolving' ? <HeadSkeleton label="Reading the shared link…" /> : null}
-          {state.phase === 'confirm' ? <HeadSkeleton label="Confirm the product to see the check." /> : null}
-          {state.phase === 'loading' ? <HeadSkeleton label="Checking this product…" /> : null}
+            {state.phase === 'resolving' ? <HeadSkeleton label="Reading the shared link…" /> : null}
+            {state.phase === 'confirm' ? <HeadSkeleton label="Confirm the product to see the check." /> : null}
+            {state.phase === 'loading' ? <HeadSkeleton label="Checking this product…" /> : null}
 
-          {view && result ? (
-            <View
-              style={medicine ? { paddingTop: t.space[10] } : undefined}
-              onLayout={(e) => {
-                sheetY.current = e.nativeEvent.layout.y;
-                measure();
-              }}
-            >
-              <VerdictSheet
-                view={view}
-                demo={usingDemo}
-                onHowMade={() => setHowOpen(true)}
-                afterHead={
-                  !key && !medicine ? (
-                    <NoReadingCard onScan={() => router.push('/scan')} onDemo={chooseDemo} primary={view.unknownKind !== 'ingredients'} />
-                  ) : null
-                }
-                glyph={
-                  key && litZones(result.verdict).length ? (
-                    <ZoneGlyph model={glyphFromKey(key)} highlight={litZones(result.verdict)} width={160} showLegend={false} />
-                  ) : null
-                }
-                unknown={<UnknownPanel catalogCount={result.catalogCount} label={result.label} onSnap={() => void snap()} onChips={flow.setChips} onRun={flow.runLabel} />}
-                tryon={
-                  tryon && result.product ? (
-                    <PillButton
-                      label={tryon.label}
-                      variant="secondary"
-                      leadingIcon="face-frame"
-                      testID="tryon-entry"
-                      accessibilityHint="Asks for a separate selfie consent first."
-                      onPress={() =>
-                        router.push({
-                          pathname: '/tryon',
-                          params: { productId: result.product!.id, mode: tryon.mode, productName: nameOnly(result.product!), productSize: sizeMeta(result.product!.size) ?? '' },
-                        })
-                      }
-                    />
-                  ) : null
-                }
-                matches={
-                  <View
-                    onLayout={(e) => {
-                      matchesY.current = e.nativeEvent.layout.y;
-                      measure();
-                    }}
-                  >
-                    <BetterMatches state={matches} keyProfile={key} category={category} facetMap={FACET_MAP} />
-                  </View>
-                }
-              />
-            </View>
-          ) : null}
+            {view && result ? (
+              <View
+                style={medicine ? { paddingTop: t.space[10] } : undefined}
+                onLayout={(e) => {
+                  sheetY.current = e.nativeEvent.layout.y;
+                  measure();
+                }}
+              >
+                <VerdictSheet
+                  view={view}
+                  demo={usingDemo}
+                  onHowMade={() => setHowOpen(true)}
+                  afterHead={
+                    !key && !medicine ? (
+                      <NoReadingCard onScan={() => router.push('/scan')} onDemo={chooseDemo} primary={view.unknownKind !== 'ingredients'} />
+                    ) : null
+                  }
+                  glyph={
+                    key && litZones(result.verdict).length ? (
+                      <ZoneGlyph model={glyphFromKey(key)} highlight={litZones(result.verdict)} width={160} showLegend={false} />
+                    ) : null
+                  }
+                  unknown={<UnknownPanel catalogCount={result.catalogCount} label={result.label} onSnap={() => void snap()} onChips={flow.setChips} onRun={flow.runLabel} />}
+                  tryon={
+                    tryon && result.product ? (
+                      <PillButton
+                        label={tryon.label}
+                        variant="secondary"
+                        leadingIcon="face-frame"
+                        testID="tryon-entry"
+                        accessibilityHint="Asks for a separate selfie consent first."
+                        onPress={() =>
+                          router.push({
+                            pathname: '/tryon',
+                            params: { productId: result.product!.id, mode: tryon.mode, productName: nameOnly(result.product!), productSize: sizeMeta(result.product!.size) ?? '' },
+                          })
+                        }
+                      />
+                    ) : null
+                  }
+                  matches={
+                    <View
+                      onLayout={(e) => {
+                        matchesY.current = e.nativeEvent.layout.y;
+                        measure();
+                      }}
+                    >
+                      <BetterMatches state={matches} keyProfile={key} category={category} facetMap={FACET_MAP} />
+                    </View>
+                  }
+                />
+              </View>
+            ) : null}
 
-          {state.phase === 'not_skincare' ? (
-            <EmptyState
-              plate={{ icon: 'tag-check' }}
-              title="This doesn't look like a skincare listing"
-              body={`${COPY.appName} checks face and lip products. Try another product, or the sample share on Home.`}
-            >
-              <PillButton label="Back" onPress={goBack} />
-            </EmptyState>
-          ) : null}
+            {state.phase === 'not_skincare' ? (
+              <EmptyState
+                plate={{ icon: 'tag-check' }}
+                title="This doesn't look like a skincare listing"
+                body={`${COPY.appName} checks face and lip products. Try another product, or the sample share on Home.`}
+              >
+                <PillButton label="Back" onPress={goBack} />
+              </EmptyState>
+            ) : null}
 
-          {state.phase === 'error' ? (
-            <EmptyState plate={{ icon: 'cloud-off' }} title="Something went wrong">
-              <Body muted accessibilityLiveRegion="polite">
-                {state.message}
-              </Body>
-              <PillButton label="Try again" onPress={flow.retry} />
-              <PillButton label="Back" variant="tertiary" onPress={goBack} style={{ alignSelf: 'center' }} />
-            </EmptyState>
-          ) : null}
+            {state.phase === 'error' ? (
+              <EmptyState plate={{ icon: 'cloud-off' }} title="Something went wrong">
+                <Body muted accessibilityLiveRegion="polite">
+                  {state.message}
+                </Body>
+                <PillButton label="Try again" onPress={flow.retry} />
+                <PillButton label="Back" variant="tertiary" onPress={goBack} style={{ alignSelf: 'center' }} />
+              </EmptyState>
+            ) : null}
 
-          {state.phase === 'idle' ? (
-            <EmptyState plate="mark" title="Nothing to check yet" body={COPY.shareTo}>
-              <PillButton label="Paste a link" leadingIcon="paste" onPress={() => router.replace('/')} />
-            </EmptyState>
-          ) : null}
+            {state.phase === 'idle' ? (
+              <EmptyState plate="mark" title="Nothing to check yet" body={COPY.shareTo}>
+                <PillButton label="Paste a link" leadingIcon="paste" onPress={() => router.replace('/')} />
+              </EmptyState>
+            ) : null}
 
-          {inlineDock && dockActions ? <View style={{ paddingTop: t.space[2] }}>{dockActions}</View> : null}
-        </ScrollView>
+            {inlineDock && dockActions ? <View style={{ paddingTop: t.space[2] }}>{dockActions}</View> : null}
+          </ScrollView>
+          {dock && contentUnder ? <FooterFade /> : null}
+        </View>
       )}
 
       {dock}

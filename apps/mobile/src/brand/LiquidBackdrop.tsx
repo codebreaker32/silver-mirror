@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import Svg, { Circle, Defs, Ellipse, LinearGradient, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
+import Svg, { Defs, Ellipse, LinearGradient, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 
 /**
@@ -93,11 +93,9 @@ export function LiquidBackdrop({ style }: { style?: StyleProp<ViewStyle> }) {
         <Path d={g.ribBInner} fill={`url(#${id('ribB')})`} />
         <Path d={g.crestB} stroke={crest} strokeOpacity={g.crestOpacity} strokeWidth={g.crestWidth} fill="none" strokeLinecap="round" />
 
-        {/* Droplets: one large on the right, one small near the top ribbon. */}
+        {/* Droplets: one large on the right; the small bubbles are gone (round 1), the ribbons carry the liquid. */}
         <Ellipse cx="318" cy="592" rx="40" ry="44" fill={`url(#${id('drop')})`} stroke={rim} strokeWidth={1} />
         <Ellipse cx="306" cy="576" rx="12" ry="8" fill={colors.mark.glint} opacity={dark ? 0.12 : 0.7} />
-        <Circle cx="292" cy="236" r="9" fill={`url(#${id('drop')})`} stroke={rim} strokeWidth={1} />
-        <Circle cx="70" cy="520" r="5" fill={`url(#${id('drop')})`} stroke={rim} strokeWidth={0.75} />
       </Svg>
     </View>
   );

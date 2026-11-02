@@ -184,9 +184,9 @@ export interface TypeStyle extends TextStyle {
 export const typography: Record<TypeStyleName, TypeStyle> = {
   "display": {
     "fontFamily": "Geist_600SemiBold",
-    "fontSize": 26,
-    "lineHeight": 32,
-    "letterSpacing": -0.5,
+    "fontSize": 24,
+    "lineHeight": 30,
+    "letterSpacing": -0.4,
     "includeFontPadding": false
   },
   "title": {
@@ -212,9 +212,9 @@ export const typography: Record<TypeStyleName, TypeStyle> = {
   },
   "valueHero": {
     "fontFamily": "Geist_600SemiBold",
-    "fontSize": 28,
-    "lineHeight": 34,
-    "letterSpacing": -0.5,
+    "fontSize": 26,
+    "lineHeight": 32,
+    "letterSpacing": -0.4,
     "includeFontPadding": false
   },
   "headline": {
@@ -233,9 +233,9 @@ export const typography: Record<TypeStyleName, TypeStyle> = {
   },
   "section": {
     "fontFamily": "Geist_600SemiBold",
-    "fontSize": 18,
-    "lineHeight": 24,
-    "letterSpacing": -0.2,
+    "fontSize": 16,
+    "lineHeight": 22,
+    "letterSpacing": -0.1,
     "includeFontPadding": false
   },
   "reason": {
@@ -275,29 +275,29 @@ export const typography: Record<TypeStyleName, TypeStyle> = {
   },
   "body": {
     "fontFamily": "Geist_400Regular",
-    "fontSize": 16,
-    "lineHeight": 24,
+    "fontSize": 15,
+    "lineHeight": 22,
     "letterSpacing": 0,
     "includeFontPadding": false
   },
   "bodyStrong": {
     "fontFamily": "Geist_600SemiBold",
-    "fontSize": 16,
-    "lineHeight": 22,
+    "fontSize": 15,
+    "lineHeight": 20,
     "letterSpacing": 0,
     "includeFontPadding": false
   },
   "bodySm": {
     "fontFamily": "Geist_400Regular",
-    "fontSize": 14,
-    "lineHeight": 20,
+    "fontSize": 13,
+    "lineHeight": 18,
     "letterSpacing": 0.1,
     "includeFontPadding": false
   },
   "label": {
     "fontFamily": "Geist_600SemiBold",
-    "fontSize": 14,
-    "lineHeight": 20,
+    "fontSize": 13,
+    "lineHeight": 18,
     "letterSpacing": 0.1,
     "includeFontPadding": false
   },
@@ -317,7 +317,7 @@ export const typography: Record<TypeStyleName, TypeStyle> = {
   },
   "button": {
     "fontFamily": "Geist_600SemiBold",
-    "fontSize": 16,
+    "fontSize": 15,
     "lineHeight": 20,
     "letterSpacing": 0.1,
     "includeFontPadding": false
@@ -2470,14 +2470,14 @@ export const lightTheme: SkinKeyTheme = {
         "wordmarkWelcome": 24,
         "tagline": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
         "taglineColor": "#4B4958",
         "gap": 12,
-        "heroMark": 72,
+        "heroMark": 152,
         "wordmarkHero": 32
       },
       "appBar": {
@@ -2525,12 +2525,12 @@ export const lightTheme: SkinKeyTheme = {
           "fg": "#F6F5F8",
           "bgPressed": "#50576F",
           "ripple": "rgba(246, 245, 248, 0.18)",
-          "minHeight": 56,
+          "minHeight": 52,
           "paddingX": 24,
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -2551,7 +2551,7 @@ export const lightTheme: SkinKeyTheme = {
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -2569,7 +2569,7 @@ export const lightTheme: SkinKeyTheme = {
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -2588,7 +2588,7 @@ export const lightTheme: SkinKeyTheme = {
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -2598,17 +2598,17 @@ export const lightTheme: SkinKeyTheme = {
           "borderDisabled": "#E3DFE9"
         },
         "consentPair": {
-          "bg": "#E7E3EC",
+          "bg": "rgba(255, 255, 255, 0.55)",
           "fg": "#1A1B23",
-          "border": "#7E7B8B",
+          "border": "rgba(255, 255, 255, 0.70)",
           "borderWidth": 1,
-          "bgPressed": "#DDD9E3",
+          "bgPressed": "#E7E3EC",
           "minHeight": 52,
           "paddingX": 16,
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -2628,7 +2628,7 @@ export const lightTheme: SkinKeyTheme = {
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -2667,8 +2667,8 @@ export const lightTheme: SkinKeyTheme = {
         "fgDisabled": "#636070",
         "type": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -2687,8 +2687,8 @@ export const lightTheme: SkinKeyTheme = {
       "productHeader": {
         "kicker": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -2718,22 +2718,22 @@ export const lightTheme: SkinKeyTheme = {
         "bg": "#FFFFFF",
         "fg": "#1A1B23",
         "placeholder": "#5E5B6B",
-        "border": "#7E7B8B",
+        "border": "#E3DFE9",
         "borderWidth": 1,
         "focusBorder": "#666E88",
         "focusBorderWidth": 2,
         "label": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
         "labelColor": "#1A1B23",
         "value": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -2751,8 +2751,8 @@ export const lightTheme: SkinKeyTheme = {
         "fg": "#4B4958",
         "type": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -2780,8 +2780,8 @@ export const lightTheme: SkinKeyTheme = {
         "target": 48,
         "type": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -2827,11 +2827,11 @@ export const lightTheme: SkinKeyTheme = {
           "iconGap": 12,
           "subtitleColor": "#1A1B23",
           "fits": {
-            "bg": "#E2EEE8",
+            "bg": "#FFFFFF",
             "fg": "#2B5145",
-            "border": "#568676",
+            "border": "#E3DFE9",
             "icon": "#3D6B5C",
-            "iconDisc": "#FFFFFF",
+            "iconDisc": "#E2EEE8",
             "iconDiscSize": 40,
             "borderWidth": 1,
             "borderStyle": "solid",
@@ -2846,11 +2846,11 @@ export const lightTheme: SkinKeyTheme = {
             "iconSize": 24
           },
           "caution": {
-            "bg": "#F5EAD6",
+            "bg": "#FFFFFF",
             "fg": "#66460C",
-            "border": "#A57A2F",
+            "border": "#E3DFE9",
             "icon": "#8A6118",
-            "iconDisc": "#FFFFFF",
+            "iconDisc": "#F5EAD6",
             "iconDiscSize": 40,
             "borderWidth": 1,
             "borderStyle": "solid",
@@ -2865,11 +2865,11 @@ export const lightTheme: SkinKeyTheme = {
             "iconSize": 24
           },
           "unknown": {
-            "bg": "#EFEEF3",
+            "bg": "#FFFFFF",
             "fg": "#2F3243",
             "border": "#666E88",
             "icon": "#50576F",
-            "iconDisc": "#FFFFFF",
+            "iconDisc": "#EFEEF3",
             "iconDiscSize": 40,
             "borderWidth": 1,
             "borderStyle": "dashed",
@@ -2919,8 +2919,8 @@ export const lightTheme: SkinKeyTheme = {
           "borderStyle": "dashed",
           "qualifier": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 14,
-            "lineHeight": 20,
+            "fontSize": 13,
+            "lineHeight": 18,
             "letterSpacing": 0.1,
             "includeFontPadding": false
           },
@@ -2948,9 +2948,9 @@ export const lightTheme: SkinKeyTheme = {
       "reasonRow": {
         "heading": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 18,
-          "lineHeight": 24,
-          "letterSpacing": -0.2,
+          "fontSize": 16,
+          "lineHeight": 22,
+          "letterSpacing": -0.1,
           "includeFontPadding": false
         },
         "headingColor": "#1A1B23",
@@ -2976,8 +2976,8 @@ export const lightTheme: SkinKeyTheme = {
         "readingColor": "#1A1B23",
         "fact": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -2998,8 +2998,8 @@ export const lightTheme: SkinKeyTheme = {
         "visualMinHeight": 32,
         "type": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3041,16 +3041,16 @@ export const lightTheme: SkinKeyTheme = {
         "rowDivider": "#E3DFE9",
         "name": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "nameColor": "#1A1B23",
         "value": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -3089,9 +3089,9 @@ export const lightTheme: SkinKeyTheme = {
         "border": "#E3DFE9",
         "heading": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 18,
-          "lineHeight": 24,
-          "letterSpacing": -0.2,
+          "fontSize": 16,
+          "lineHeight": 22,
+          "letterSpacing": -0.1,
           "includeFontPadding": false
         },
         "listToggleTarget": 48,
@@ -3150,8 +3150,8 @@ export const lightTheme: SkinKeyTheme = {
         "keyGap": 16,
         "value": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3206,15 +3206,15 @@ export const lightTheme: SkinKeyTheme = {
       "consentSheet": {
         "privacyLead": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "privacyRest": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -3226,16 +3226,16 @@ export const lightTheme: SkinKeyTheme = {
           "padding": 20,
           "title": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 18,
-            "lineHeight": 24,
-            "letterSpacing": -0.2,
+            "fontSize": 16,
+            "lineHeight": 22,
+            "letterSpacing": -0.1,
             "includeFontPadding": false
           }
         },
         "keepList": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -3243,8 +3243,8 @@ export const lightTheme: SkinKeyTheme = {
         "dropIcon": "minus-circle",
         "accuracyNote": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3272,8 +3272,8 @@ export const lightTheme: SkinKeyTheme = {
         "frameRadius": 28,
         "instruction": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3283,8 +3283,8 @@ export const lightTheme: SkinKeyTheme = {
           "fg": "#FFFFFF",
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
-            "lineHeight": 22,
+            "fontSize": 15,
+            "lineHeight": 20,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -3315,8 +3315,8 @@ export const lightTheme: SkinKeyTheme = {
           "check": "#EFECF2",
           "label": {
             "fontFamily": "Geist_400Regular",
-            "fontSize": 16,
-            "lineHeight": 24,
+            "fontSize": 15,
+            "lineHeight": 22,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -3335,8 +3335,8 @@ export const lightTheme: SkinKeyTheme = {
           "numeralColor": "#1A1B23",
           "label": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
-            "lineHeight": 22,
+            "fontSize": 15,
+            "lineHeight": 20,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -3355,8 +3355,8 @@ export const lightTheme: SkinKeyTheme = {
           "numeralColor": "#4B4958",
           "label": {
             "fontFamily": "Geist_400Regular",
-            "fontSize": 16,
-            "lineHeight": 24,
+            "fontSize": 15,
+            "lineHeight": 22,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -3368,8 +3368,8 @@ export const lightTheme: SkinKeyTheme = {
           "bar": "#1A1B23",
           "label": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
-            "lineHeight": 22,
+            "fontSize": 15,
+            "lineHeight": 20,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -3378,8 +3378,8 @@ export const lightTheme: SkinKeyTheme = {
         "deletedStep": {
           "label": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
-            "lineHeight": 22,
+            "fontSize": 15,
+            "lineHeight": 20,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -3417,15 +3417,15 @@ export const lightTheme: SkinKeyTheme = {
         "pendingColor": "#4B4958",
         "label": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "labelCurrent": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -3449,9 +3449,9 @@ export const lightTheme: SkinKeyTheme = {
         "padding": 20,
         "title": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 18,
-          "lineHeight": 24,
-          "letterSpacing": -0.2,
+          "fontSize": 16,
+          "lineHeight": 22,
+          "letterSpacing": -0.1,
           "includeFontPadding": false
         },
         "titleColor": "#1A1B23",
@@ -3476,8 +3476,8 @@ export const lightTheme: SkinKeyTheme = {
         "chipGap": 8,
         "label": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3488,9 +3488,9 @@ export const lightTheme: SkinKeyTheme = {
         "heroDiscBg": "rgba(255, 255, 255, 0.55)",
         "valueHero": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 28,
-          "lineHeight": 34,
-          "letterSpacing": -0.5,
+          "fontSize": 26,
+          "lineHeight": 32,
+          "letterSpacing": -0.4,
           "includeFontPadding": false
         },
         "heroLabelColor": "#1A1B23",
@@ -3507,8 +3507,8 @@ export const lightTheme: SkinKeyTheme = {
         "icon": 24,
         "label": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3522,7 +3522,7 @@ export const lightTheme: SkinKeyTheme = {
       "storeLinkOut": {
         "label": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 20,
           "letterSpacing": 0.1,
           "includeFontPadding": false
@@ -3543,9 +3543,9 @@ export const lightTheme: SkinKeyTheme = {
       "rankingDisclosure": {
         "type": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
-          "letterSpacing": 0.1,
+          "fontSize": 15,
+          "lineHeight": 22,
+          "letterSpacing": 0,
           "includeFontPadding": false
         },
         "color": "#1A1B23",
@@ -3576,16 +3576,16 @@ export const lightTheme: SkinKeyTheme = {
         "stepIndexColor": "#4B4958",
         "body": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "title": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 18,
-          "lineHeight": 24,
-          "letterSpacing": -0.2,
+          "fontSize": 16,
+          "lineHeight": 22,
+          "letterSpacing": -0.1,
           "includeFontPadding": false
         },
         "illustrationBg": "#E7E3EC",
@@ -3601,8 +3601,8 @@ export const lightTheme: SkinKeyTheme = {
         "padding": 16,
         "kicker": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3617,8 +3617,8 @@ export const lightTheme: SkinKeyTheme = {
         "figureColor": "#1A1B23",
         "body": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -3657,8 +3657,8 @@ export const lightTheme: SkinKeyTheme = {
         },
         "disclaimer": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3679,7 +3679,7 @@ export const lightTheme: SkinKeyTheme = {
         "bg": "#FFFFFF",
         "border": "#E3DFE9",
         "radius": 24,
-        "padding": 16,
+        "padding": 12,
         "index": {
           "fontFamily": "Geist_500Medium",
           "fontSize": 15,
@@ -3693,16 +3693,16 @@ export const lightTheme: SkinKeyTheme = {
         "indexColor": "#4B4958",
         "name": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "nameColor": "#1A1B23",
         "fit": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3717,10 +3717,10 @@ export const lightTheme: SkinKeyTheme = {
         "metaColor": "#4B4958",
         "thumbBg": "#F5F3F8",
         "thumbRadius": 16,
-        "thumbSize": 64,
+        "thumbSize": 56,
         "heroBg": "#EEEAF6",
         "verdictTagIcon": 16,
-        "minHeight": 96,
+        "minHeight": 80,
         "listGap": 12
       },
       "barcodeFrame": {
@@ -3735,8 +3735,8 @@ export const lightTheme: SkinKeyTheme = {
         },
         "hint": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -3786,8 +3786,8 @@ export const lightTheme: SkinKeyTheme = {
         },
         "summary": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3796,8 +3796,8 @@ export const lightTheme: SkinKeyTheme = {
           "placeholderBg": "#E7E3EC",
           "message": {
             "fontFamily": "Geist_400Regular",
-            "fontSize": 16,
-            "lineHeight": 24,
+            "fontSize": 15,
+            "lineHeight": 22,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -3817,8 +3817,8 @@ export const lightTheme: SkinKeyTheme = {
         "titleColor": "#1A1B23",
         "body": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -3832,8 +3832,8 @@ export const lightTheme: SkinKeyTheme = {
           "border": "#E3DFE9",
           "type": {
             "fontFamily": "Geist_400Regular",
-            "fontSize": 14,
-            "lineHeight": 20,
+            "fontSize": 13,
+            "lineHeight": 18,
             "letterSpacing": 0.1,
             "includeFontPadding": false
           },
@@ -3861,8 +3861,8 @@ export const lightTheme: SkinKeyTheme = {
         "action": "#DDD8EE",
         "actionType": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3870,8 +3870,8 @@ export const lightTheme: SkinKeyTheme = {
         "focus": "#BEB6DE",
         "type": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -3930,16 +3930,16 @@ export const lightTheme: SkinKeyTheme = {
         "gap": 16,
         "title": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "titleColor": "#1A1B23",
         "supporting": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -4190,14 +4190,14 @@ export const darkTheme: SkinKeyTheme = {
         "wordmarkWelcome": 24,
         "tagline": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
         "taglineColor": "#C6C3CF",
         "gap": 12,
-        "heroMark": 72,
+        "heroMark": 152,
         "wordmarkHero": 32
       },
       "appBar": {
@@ -4245,12 +4245,12 @@ export const darkTheme: SkinKeyTheme = {
           "fg": "#2F3243",
           "bgPressed": "#C6C3CF",
           "ripple": "rgba(47, 50, 67, 0.16)",
-          "minHeight": 56,
+          "minHeight": 52,
           "paddingX": 24,
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -4271,7 +4271,7 @@ export const darkTheme: SkinKeyTheme = {
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -4289,7 +4289,7 @@ export const darkTheme: SkinKeyTheme = {
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -4308,7 +4308,7 @@ export const darkTheme: SkinKeyTheme = {
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -4318,17 +4318,17 @@ export const darkTheme: SkinKeyTheme = {
           "borderDisabled": "#30313C"
         },
         "consentPair": {
-          "bg": "#30313C",
+          "bg": "rgba(239, 238, 243, 0.10)",
           "fg": "#EFEEF3",
-          "border": "#7E7B8B",
+          "border": "rgba(239, 238, 243, 0.07)",
           "borderWidth": 1,
-          "bgPressed": "#3A3B47",
+          "bgPressed": "#30313C",
           "minHeight": 52,
           "paddingX": 16,
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -4348,7 +4348,7 @@ export const darkTheme: SkinKeyTheme = {
           "radius": 9999,
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
+            "fontSize": 15,
             "lineHeight": 20,
             "letterSpacing": 0.1,
             "includeFontPadding": false
@@ -4387,8 +4387,8 @@ export const darkTheme: SkinKeyTheme = {
         "fgDisabled": "#A8A5B3",
         "type": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -4407,8 +4407,8 @@ export const darkTheme: SkinKeyTheme = {
       "productHeader": {
         "kicker": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -4438,22 +4438,22 @@ export const darkTheme: SkinKeyTheme = {
         "bg": "#20212A",
         "fg": "#EFEEF3",
         "placeholder": "#A8A5B3",
-        "border": "#7E7B8B",
+        "border": "#30313C",
         "borderWidth": 1,
         "focusBorder": "#BEB6DE",
         "focusBorderWidth": 2,
         "label": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
         "labelColor": "#EFEEF3",
         "value": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -4471,8 +4471,8 @@ export const darkTheme: SkinKeyTheme = {
         "fg": "#C6C3CF",
         "type": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -4500,8 +4500,8 @@ export const darkTheme: SkinKeyTheme = {
         "target": 48,
         "type": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -4547,11 +4547,11 @@ export const darkTheme: SkinKeyTheme = {
           "iconGap": 12,
           "subtitleColor": "#EFEEF3",
           "fits": {
-            "bg": "#1A2A25",
+            "bg": "#20212A",
             "fg": "#C4DDD2",
-            "border": "#568676",
+            "border": "#30313C",
             "icon": "#97C0B0",
-            "iconDisc": "#20212A",
+            "iconDisc": "#1A2A25",
             "iconDiscSize": 40,
             "borderWidth": 1,
             "borderStyle": "solid",
@@ -4566,11 +4566,11 @@ export const darkTheme: SkinKeyTheme = {
             "iconSize": 24
           },
           "caution": {
-            "bg": "#2A2317",
+            "bg": "#20212A",
             "fg": "#EDD6AE",
-            "border": "#A57A2F",
+            "border": "#30313C",
             "icon": "#D4A65A",
-            "iconDisc": "#20212A",
+            "iconDisc": "#2A2317",
             "iconDiscSize": 40,
             "borderWidth": 1,
             "borderStyle": "solid",
@@ -4589,7 +4589,7 @@ export const darkTheme: SkinKeyTheme = {
             "fg": "#C7CCDB",
             "border": "#848CA5",
             "icon": "#A6ADC2",
-            "iconDisc": "#0E0F14",
+            "iconDisc": "#20212A",
             "iconDiscSize": 40,
             "borderWidth": 1,
             "borderStyle": "dashed",
@@ -4639,8 +4639,8 @@ export const darkTheme: SkinKeyTheme = {
           "borderStyle": "dashed",
           "qualifier": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 14,
-            "lineHeight": 20,
+            "fontSize": 13,
+            "lineHeight": 18,
             "letterSpacing": 0.1,
             "includeFontPadding": false
           },
@@ -4668,9 +4668,9 @@ export const darkTheme: SkinKeyTheme = {
       "reasonRow": {
         "heading": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 18,
-          "lineHeight": 24,
-          "letterSpacing": -0.2,
+          "fontSize": 16,
+          "lineHeight": 22,
+          "letterSpacing": -0.1,
           "includeFontPadding": false
         },
         "headingColor": "#EFEEF3",
@@ -4696,8 +4696,8 @@ export const darkTheme: SkinKeyTheme = {
         "readingColor": "#EFEEF3",
         "fact": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -4718,8 +4718,8 @@ export const darkTheme: SkinKeyTheme = {
         "visualMinHeight": 32,
         "type": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -4761,16 +4761,16 @@ export const darkTheme: SkinKeyTheme = {
         "rowDivider": "#30313C",
         "name": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "nameColor": "#EFEEF3",
         "value": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -4809,9 +4809,9 @@ export const darkTheme: SkinKeyTheme = {
         "border": "#30313C",
         "heading": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 18,
-          "lineHeight": 24,
-          "letterSpacing": -0.2,
+          "fontSize": 16,
+          "lineHeight": 22,
+          "letterSpacing": -0.1,
           "includeFontPadding": false
         },
         "listToggleTarget": 48,
@@ -4870,8 +4870,8 @@ export const darkTheme: SkinKeyTheme = {
         "keyGap": 16,
         "value": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -4926,15 +4926,15 @@ export const darkTheme: SkinKeyTheme = {
       "consentSheet": {
         "privacyLead": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "privacyRest": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -4946,16 +4946,16 @@ export const darkTheme: SkinKeyTheme = {
           "padding": 20,
           "title": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 18,
-            "lineHeight": 24,
-            "letterSpacing": -0.2,
+            "fontSize": 16,
+            "lineHeight": 22,
+            "letterSpacing": -0.1,
             "includeFontPadding": false
           }
         },
         "keepList": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -4963,8 +4963,8 @@ export const darkTheme: SkinKeyTheme = {
         "dropIcon": "minus-circle",
         "accuracyNote": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -4992,8 +4992,8 @@ export const darkTheme: SkinKeyTheme = {
         "frameRadius": 28,
         "instruction": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -5003,8 +5003,8 @@ export const darkTheme: SkinKeyTheme = {
           "fg": "#FFFFFF",
           "type": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
-            "lineHeight": 22,
+            "fontSize": 15,
+            "lineHeight": 20,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -5035,8 +5035,8 @@ export const darkTheme: SkinKeyTheme = {
           "check": "#121319",
           "label": {
             "fontFamily": "Geist_400Regular",
-            "fontSize": 16,
-            "lineHeight": 24,
+            "fontSize": 15,
+            "lineHeight": 22,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -5055,8 +5055,8 @@ export const darkTheme: SkinKeyTheme = {
           "numeralColor": "#EFEEF3",
           "label": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
-            "lineHeight": 22,
+            "fontSize": 15,
+            "lineHeight": 20,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -5075,8 +5075,8 @@ export const darkTheme: SkinKeyTheme = {
           "numeralColor": "#C6C3CF",
           "label": {
             "fontFamily": "Geist_400Regular",
-            "fontSize": 16,
-            "lineHeight": 24,
+            "fontSize": 15,
+            "lineHeight": 22,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -5088,8 +5088,8 @@ export const darkTheme: SkinKeyTheme = {
           "bar": "#EFEEF3",
           "label": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
-            "lineHeight": 22,
+            "fontSize": 15,
+            "lineHeight": 20,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -5098,8 +5098,8 @@ export const darkTheme: SkinKeyTheme = {
         "deletedStep": {
           "label": {
             "fontFamily": "Geist_600SemiBold",
-            "fontSize": 16,
-            "lineHeight": 22,
+            "fontSize": 15,
+            "lineHeight": 20,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -5137,15 +5137,15 @@ export const darkTheme: SkinKeyTheme = {
         "pendingColor": "#C6C3CF",
         "label": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "labelCurrent": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -5169,9 +5169,9 @@ export const darkTheme: SkinKeyTheme = {
         "padding": 20,
         "title": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 18,
-          "lineHeight": 24,
-          "letterSpacing": -0.2,
+          "fontSize": 16,
+          "lineHeight": 22,
+          "letterSpacing": -0.1,
           "includeFontPadding": false
         },
         "titleColor": "#EFEEF3",
@@ -5196,8 +5196,8 @@ export const darkTheme: SkinKeyTheme = {
         "chipGap": 8,
         "label": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -5208,9 +5208,9 @@ export const darkTheme: SkinKeyTheme = {
         "heroDiscBg": "#463F69",
         "valueHero": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 28,
-          "lineHeight": 34,
-          "letterSpacing": -0.5,
+          "fontSize": 26,
+          "lineHeight": 32,
+          "letterSpacing": -0.4,
           "includeFontPadding": false
         },
         "heroLabelColor": "#EFEEF3",
@@ -5227,8 +5227,8 @@ export const darkTheme: SkinKeyTheme = {
         "icon": 24,
         "label": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -5242,7 +5242,7 @@ export const darkTheme: SkinKeyTheme = {
       "storeLinkOut": {
         "label": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
+          "fontSize": 15,
           "lineHeight": 20,
           "letterSpacing": 0.1,
           "includeFontPadding": false
@@ -5263,9 +5263,9 @@ export const darkTheme: SkinKeyTheme = {
       "rankingDisclosure": {
         "type": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
-          "letterSpacing": 0.1,
+          "fontSize": 15,
+          "lineHeight": 22,
+          "letterSpacing": 0,
           "includeFontPadding": false
         },
         "color": "#EFEEF3",
@@ -5296,16 +5296,16 @@ export const darkTheme: SkinKeyTheme = {
         "stepIndexColor": "#C6C3CF",
         "body": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "title": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 18,
-          "lineHeight": 24,
-          "letterSpacing": -0.2,
+          "fontSize": 16,
+          "lineHeight": 22,
+          "letterSpacing": -0.1,
           "includeFontPadding": false
         },
         "illustrationBg": "#0E0F14",
@@ -5321,8 +5321,8 @@ export const darkTheme: SkinKeyTheme = {
         "padding": 16,
         "kicker": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -5337,8 +5337,8 @@ export const darkTheme: SkinKeyTheme = {
         "figureColor": "#EFEEF3",
         "body": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -5377,8 +5377,8 @@ export const darkTheme: SkinKeyTheme = {
         },
         "disclaimer": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -5399,7 +5399,7 @@ export const darkTheme: SkinKeyTheme = {
         "bg": "#1A1B23",
         "border": "#30313C",
         "radius": 24,
-        "padding": 16,
+        "padding": 12,
         "index": {
           "fontFamily": "Geist_500Medium",
           "fontSize": 15,
@@ -5413,16 +5413,16 @@ export const darkTheme: SkinKeyTheme = {
         "indexColor": "#C6C3CF",
         "name": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "nameColor": "#EFEEF3",
         "fit": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -5437,10 +5437,10 @@ export const darkTheme: SkinKeyTheme = {
         "metaColor": "#C6C3CF",
         "thumbBg": "#272832",
         "thumbRadius": 16,
-        "thumbSize": 64,
+        "thumbSize": 56,
         "heroBg": "#2A2838",
         "verdictTagIcon": 16,
-        "minHeight": 96,
+        "minHeight": 80,
         "listGap": 12
       },
       "barcodeFrame": {
@@ -5455,8 +5455,8 @@ export const darkTheme: SkinKeyTheme = {
         },
         "hint": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -5506,8 +5506,8 @@ export const darkTheme: SkinKeyTheme = {
         },
         "summary": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -5516,8 +5516,8 @@ export const darkTheme: SkinKeyTheme = {
           "placeholderBg": "#0E0F14",
           "message": {
             "fontFamily": "Geist_400Regular",
-            "fontSize": 16,
-            "lineHeight": 24,
+            "fontSize": 15,
+            "lineHeight": 22,
             "letterSpacing": 0,
             "includeFontPadding": false
           },
@@ -5537,8 +5537,8 @@ export const darkTheme: SkinKeyTheme = {
         "titleColor": "#EFEEF3",
         "body": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
+          "fontSize": 15,
+          "lineHeight": 22,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
@@ -5552,8 +5552,8 @@ export const darkTheme: SkinKeyTheme = {
           "border": "#30313C",
           "type": {
             "fontFamily": "Geist_400Regular",
-            "fontSize": 14,
-            "lineHeight": 20,
+            "fontSize": 13,
+            "lineHeight": 18,
             "letterSpacing": 0.1,
             "includeFontPadding": false
           },
@@ -5581,8 +5581,8 @@ export const darkTheme: SkinKeyTheme = {
         "action": "#50576F",
         "actionType": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -5590,8 +5590,8 @@ export const darkTheme: SkinKeyTheme = {
         "focus": "#50576F",
         "type": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },
@@ -5650,16 +5650,16 @@ export const darkTheme: SkinKeyTheme = {
         "gap": 16,
         "title": {
           "fontFamily": "Geist_600SemiBold",
-          "fontSize": 16,
-          "lineHeight": 22,
+          "fontSize": 15,
+          "lineHeight": 20,
           "letterSpacing": 0,
           "includeFontPadding": false
         },
         "titleColor": "#EFEEF3",
         "supporting": {
           "fontFamily": "Geist_400Regular",
-          "fontSize": 14,
-          "lineHeight": 20,
+          "fontSize": 13,
+          "lineHeight": 18,
           "letterSpacing": 0.1,
           "includeFontPadding": false
         },

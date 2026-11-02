@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from './Icon';
@@ -35,7 +34,7 @@ export function FocusTile({ label, icon, wide = false }: FocusItem & { wide?: bo
     <View
       accessible
       accessibilityLabel={label}
-      style={[surface, { flex: 1, minHeight: f.minHeight, borderRadius: f.radius, paddingHorizontal: t.space[2], paddingVertical: t.space[4], gap: f.gap, alignItems: 'center', justifyContent: 'flex-start' }]}
+      style={[surface, { flex: 1, minHeight: f.minHeight, borderRadius: f.radius, paddingHorizontal: t.space[2], paddingVertical: t.space[3] + 2, gap: t.space[2], alignItems: 'center', justifyContent: 'center' }]}
     >
       <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: f.disc, height: f.disc, borderRadius: t.radius.full, backgroundColor: f.discBg, alignItems: 'center', justifyContent: 'center' }}>
         <Icon name={icon} size={f.icon} color={f.iconColor} />
@@ -48,27 +47,23 @@ export function FocusTile({ label, icon, wide = false }: FocusItem & { wide?: bo
 }
 
 /**
- * Three tiles across with 12dp gaps (focusTile.columns). Fewer than three keep the one-third width and sit left
- * (never stretched); extra ones are dropped. `aside` (an explanation caption) fills the empty columns beside a short
- * row, centred vertically, instead of blank spacers.
+ * A fixed three-column grid with 12dp gaps (focusTile.columns), as showcase 04_report "Recommended Focus": every tile
+ * is exactly one third of the row; fewer than three keep that width and sit left, the empty columns stay empty (a
+ * caption goes below the row, never beside it). Extra tiles are dropped.
  */
-export function FocusTiles({ items, aside, accessibilityLabel = 'What this means for products' }: { items: readonly FocusItem[]; aside?: ReactNode; accessibilityLabel?: string }) {
+export function FocusTiles({ items, accessibilityLabel = 'What this means for products' }: { items: readonly FocusItem[]; accessibilityLabel?: string }) {
   const t = useTheme();
   const f = t.components.focusTile;
   const shown = items.slice(0, f.columns);
   const spacers = Math.max(0, f.columns - shown.length);
-  // Flat row so a tile is exactly one third: the aside spans the spare columns plus the gaps between them.
-  const gap = t.space[3];
   return (
-    <View accessibilityRole="list" accessibilityLabel={accessibilityLabel} style={{ flexDirection: 'row', gap }}>
+    <View accessibilityRole="list" accessibilityLabel={accessibilityLabel} style={{ flexDirection: 'row', gap: t.space[3] }}>
       {shown.map((it) => (
         <FocusTile key={it.label} {...it} />
       ))}
-      {spacers > 0 && aside ? (
-        <View style={{ flex: spacers, marginLeft: (spacers - 1) * gap, justifyContent: 'center' }}>{aside}</View>
-      ) : (
-        Array.from({ length: spacers }, (_, i) => <View key={`spacer${i}`} style={{ flex: 1 }} importantForAccessibility="no" />)
-      )}
+      {Array.from({ length: spacers }, (_, i) => (
+        <View key={`spacer${i}`} style={{ flex: 1 }} importantForAccessibility="no" accessibilityElementsHidden />
+      ))}
     </View>
   );
 }

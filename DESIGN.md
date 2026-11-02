@@ -70,10 +70,12 @@ Restrained strategy, tuned to the showcase: a lavender-grey **mist** page, clean
 
 | State | Light bg / fg / border / icon | Dark bg / fg / border / icon | Edge | Icon |
 |---|---|---|---|---|
-| **FITS** (muted sage) | `#E2EEE8` / `#2B5145` / `#568676` / `#3D6B5C` | `#1A2A25` / `#C4DDD2` / `#568676` / `#97C0B0` | 1dp solid | seal-check (only non-circular silhouette) |
-| **CAUTION** (soft amber, hue 37–39°) | `#F5EAD6` / `#66460C` / `#A57A2F` / `#8A6118` | `#2A2317` / `#EDD6AE` / `#A57A2F` / `#D4A65A` | 1dp solid | half-filled circle (never a triangle or "!") |
+| **FITS** (muted sage) | `#E2EEE8` / `#2B5145` / `#568676` / `#3D6B5C` | `#1A2A25` / `#C4DDD2` / `#568676` / `#97C0B0` | card hairline | seal-check (only non-circular silhouette) |
+| **CAUTION** (soft amber, hue 37–39°) | `#F5EAD6` / `#66460C` / `#A57A2F` / `#8A6118` | `#2A2317` / `#EDD6AE` / `#A57A2F` / `#D4A65A` | card hairline | half-filled circle (never a triangle or "!") |
 | **UNKNOWN** (neutral, slate ink) | `#EFEEF3` / `#2F3243` / `#666E88` / `#50576F` | `#20212A` / `#C7CCDB` / `#848CA5` / `#A6ADC2` | 1dp **dashed** | dashed circle + centre dot |
 | **MEDICINE** (ink outline) | screen bg / `#1A1B23` text, no box | screen bg / `#EFEEF3`, no box | none | pharmacist at a counter, 32dp |
+
+Since round 1 the verdict `bg` is the **tint of the 40dp icon disc** in the head, not the head fill: the head is a white raised card (hairline + soft violet shadow; graphite + sheen edge in dark), and the state is carried by the tinted disc, the verdict glyph and the coloured caps label. The verdict `border` is used only for the dashed UNKNOWN edge. Verdict tags on match rows are the grey chip pill with the verdict glyph in its icon ink.
 
 Rules (lint-enforced): CAUTION hue stays 25–65° in every role and mode; no verdict colour equals the accent; the UNKNOWN fill is ≥3:1 away from the primary pill and always dashed; verdict tint never leaves the head; "based on product name only" is the FITS/CAUTION head with a dashed edge plus the qualifier.
 
@@ -106,24 +108,27 @@ Two faces, both from `@expo-google-fonts`, both containing **₹ (U+20B9)**. Sin
 
 | Token | Face | Size / line (dp) | Tracking | Use |
 |---|---|---|---|---|
-| `type.display` | Geist 600 | 26 / 32 | −0.5 | Home greeting, empty-state headline |
+| `type.display` | Geist 600 | 24 / 30 | −0.4 | Home greeting, empty-state headline |
 | `type.title` | Geist 600 | 22 / 28 | −0.4 | Product title on /check, in-body page heads, medicine line |
 | `type.appBarTitle` | Geist 600 | 18 / 24 | −0.2 | Centred app-bar title (new) |
-| `type.value` | Geist 600 | 24 / 30 | −0.4 | "Combination" in the skin-type card (new) |
+| `type.value` | Geist 600 | 24 / 30 | −0.4 | "Combination" in the compact skin-type card |
+| `type.valueHero` | Geist 600 | 26 / 32 | −0.4 | Skin-type value in the hero card (Reading, Result) |
 | `type.headline` | Geist 600 | 20 / 26 | −0.2 | Card heads, sheet titles, matches banner |
 | `type.verdictLine` | Geist 600 | 18 / 26 | −0.1 | Verdict sentence |
 | `type.figure` | Geist 600, tabular | 24 / 30 | −0.3 | Catalogue count, QR countdown |
-| `type.section` | Geist 600 | 18 / 24 | −0.2 | "Check a product", "Key readings", "Better matches" |
+| `type.section` | Geist 600 | 16 / 22 | −0.1 | "Check a product", "Key readings", "Better matches" |
 | `type.reason` | Geist 500 | 18 / 26 | −0.1 | Reason reading line (> verdict label) |
 | `type.verdictLabel` | Geist 600 caps | 15 / 20 | +1.2 | FITS / CAUTION / UNKNOWN (the only caps line) |
-| `type.body` / `bodyStrong` | Geist 400 / 600 | 16 / 24 · 16 / 22 | 0 | Body; list-row and product-card titles |
-| `type.bodySm` | Geist 400 | 14 / 20 | +0.1 | Supporting lines, skin-type label |
-| `type.label` | Geist 600 | 14 / 20 | +0.1 | Chips, field labels, focus-tile labels |
+| `type.body` / `bodyStrong` | Geist 400 / 600 | 15 / 22 · 15 / 20 | 0 | Body; list-row and product-card titles |
+| `type.bodySm` | Geist 400 | 13 / 18 | +0.1 | Supporting lines, skin-type label, the Home subtitle |
+| `type.label` | Geist 600 | 13 / 18 | +0.1 | Chips, field labels, focus-tile labels |
 | `type.labelSm` / `labelSmRegular` | Geist 600 / 500 | 13 / 16 | +0.2 | Tab labels (selected / not) |
-| `type.button` | Geist 600 | 16 / 20 | +0.1 | All buttons |
+| `type.button` | Geist 600 | 15 / 20 | +0.1 | All buttons |
 | `type.overline` | Geist 600 | 13 / 18 | +0.1 | Ledger keys, **sentence case** |
 | `type.caption` | Geist 400 | 13 / 18 | +0.1 | Destination lines, timestamps |
 | `type.fine` | Geist 400 | 12 / 16 | +0.2 | Data credits only (the 12dp floor) |
+
+Round 1 of the showcase pass (2 Nov) tightened the scale toward the showcase's density (greeting 24, section 16, body 15, small 13, buttons 15); caption 13 and fine 12 are unchanged, and reasons stay 18 so they out-size the verdict label.
 
 Rules: sp scaling on, `maxFontSizeMultiplier` 2.0; buttons stack at 1.3×. No kicker or eyebrow above any heading. A screen shows at most five sizes. Prices, dates, SPF and counts use tabular figures. The welcome tagline is Geist 400 16/22 muted.
 
@@ -176,29 +181,29 @@ Token paths in `theme.components.*` (RN) and `--sk-<component>-*` (web). Every c
 ### 8.1 Buttons (`component.button`)
 | Variant | Look | Rules |
 |---|---|---|
-| `primary` | Slate pill (pearl in dark), **56dp**, label + trailing `arrow-right` when it moves forward | **At most one per screen state.** Pressed = accent-pressed + 0.98. |
+| `primary` | Slate pill (pearl in dark), **52dp**, 15dp label + trailing `arrow-right` when it moves forward | **At most one per screen state.** Pressed = accent-pressed + 0.98. |
 | `secondary` | Tonal mist pill, **52dp**, no outline | Second choice ("Use the Demo reading", "Try a sample share"). |
-| `translucent` (new) | White-glass pill + 1dp light edge (sheen edge in dark), 52dp | Welcome only, over `LiquidBackdrop`. |
+| `translucent` | White-glass pill + 1dp light edge (sheen edge in dark), 52dp | Welcome, over `LiquidBackdrop`. |
 | `tertiary` | Text + optional chevron, 48dp box | Dismiss, "See all", "Got it" (`SectionHeader action.chevron: false`). |
 | `destructiveNeutral` | Text pill with leading trash icon, no red | Always followed by a confirmation sheet. |
-| `consentPair` | Two identical tonal pills with a 1dp strong edge, 52dp | **Equal visual weight** (spec §2). |
+| `consentPair` | Two identical white-glass pills (the `translucent` fill + its light edge), 52dp, label in `color.text` | **Equal visual weight** (spec §2). One secondary-pill idiom with the welcome since round 1; no strong outline. |
 
 ### 8.2 Fields, chips, segmented
-- **Paste field** (`component.field`): white pill, 56dp, 1dp `border-strong`, inline trailing **Check** pill. Unchanged.
-- **Chip** (`component.chip`): light grey pill (`secondary-bg`: mist.150 / graphite.750), 36dp visual in a 48dp target, label 14/20 600. Selected = slate fill + check + weight. `ChipRail` = one horizontally scrolling row with the gutter as content inset (showcase 06_discover). Static reading chips ("Oiliness · High") read as "Oiliness, High".
+- **Paste field** (`component.field`): white pill, 56dp, the card hairline (`color.border`) + the soft card shadow in light (hairline only in dark), inline trailing slate **Check** pill. Focus = 2dp focus-ring edge, error = 2dp text edge.
+- **Chip** (`component.chip`): light grey pill (`secondary-bg`: mist.150 / graphite.750), 36dp visual in a 48dp target, label 13/18 600. Selected = slate fill + check + weight. `ChipRail` = one horizontally scrolling row with the gutter as content inset (showcase 06_discover). Static reading chips ("Oiliness · High") read as "Oiliness, High".
 - **Segmented** (`components/Segmented.tsx`, `component.segmented`): lavender-grey 48dp track (`segment-track`), 4dp inset; the selected segment is a white pill with its own soft violet shadow (graphite-700 + sheen edge in dark), a 16dp check and a 600 label; unselected labels 500 muted. tablist / tab + selected. `components/home/Segmented.tsx` becomes a re-export (P1).
 
 ### 8.3 Cards
 - **Card** (`Card.tsx`): `raised` (default) = white, radius 24, hairline + violet shadow (graphite-850 + sheen edge in dark). `gradient` (new) = the skin gradient via react-native-svg, light edge, no shadow (skin-type card, matches banner only). `surface`, `sunken`, `hero` unchanged in API. No nested cards.
 - **Skin-type card** (`SkinTypeCard.tsx`, `component.readingCard`): `size="compact"` (Home): raised, padding 20, ≥96dp, 56dp disc, "Your skin type" (bodySm muted) over the value (`type.value`), caption, trailing 24dp arrow-right; one target, one label in visual order. Empty: `icon="face-frame"`, `label="No reading yet"`, `quiet` value "Scan once, about a minute", children = the actions (card stops being one target). `size="hero"` (Reading / Result): gradient, padding 24, 72dp disc on white glass, label, value, one cosmetic `line`, no arrow. Strings come in as props.
 - **List rows with a thumb** (`ListRow thumb={{ icon | mark | glyph }}`): 56dp soft square tile (`thumb-tile`, radius 16) with an iris icon, the chrome S or a product glyph; title bodyStrong 16/22, supporting bodySm muted; row ≥72dp. `ListGroup thumbs` insets dividers to the text column (gutter + 56 + 16) and is a raised white card. `ThumbTile` is exported for custom rows.
-- **Product card** (`component.productMatchCard`): raised white, radius 24, padding 16, 64dp thumb tile (radius 16), name bodyStrong (2 lines), one reason line where commerce puts stars, verdict tag, trailing arrow-up-right. All cards alike; store named once above the list. **No hearts, stars, ratings or review counts.**
-- **Focus tile** (`component.focusTile`, showcase "Recommended Focus"): white tiles three across, 12dp gaps, radius 20, hairline + shadow (graphite-850 + sheen edge in dark), a 48dp lavender disc with a 24dp iris icon at the top, label 14/20 600 centred, two lines max. Fewer than three keep the one-third width and sit left. Facet words only (Lighter textures · Hydration · Fragrance-free).
+- **Product card** (`component.productMatchCard`): a compact row like 02_home: raised white, radius 24, padding 12, ≥80dp, 56dp thumb tile (radius 16), name bodyStrong on **one** line, then one reason line (bodySm, one line) with the verdict tag inline after it as a **grey chip pill** carrying the verdict glyph, trailing arrow-up-right. About four rows per screen. All cards alike; store named once above the list. **No hearts, stars, ratings or review counts.**
+- **Focus tile** (`component.focusTile`, showcase "Recommended Focus"): a fixed three-column grid, 12dp gaps, every tile one third of the row and near-square; white, radius 20, hairline + shadow (graphite-850 + sheen edge in dark), a 48dp lavender disc with a 24dp iris icon, label 13/18 600 centred, two lines max. Fewer than three keep the one-third width and sit left; the empty columns stay empty and the rules caption always sits **below** the row, never beside it. Facet words only (Lighter textures · Hydration · Fragrance-free).
 - **Checklist card** (`component.checklistCard`): raised card radius 24, rows ≥52dp with dividers; leading state icon (check-circle / circle-dot / circle), label (current 600), **trailing mark**: done = 20dp check in `verdict.fits.icon`, current = muted three dots, pending = nothing. Never a spinner; the delete row keeps its stamp.
 - No row of same-size icon + heading + text cards as page structure.
 
 ### 8.4 Verdict head (`component.verdictCard.head`)
-Radius **24**, padding 20. A 40dp white disc holds the 24dp verdict icon; next to it the caps label in the verdict fg; below, the verdict sentence in `type.verdictLine` (**Geist 600 18/26**) in full text colour. 1dp edge (dashed for UNKNOWN and name-only). No leading stripe. Greige **Demo reading** badge when the Demo reading is in use. MEDICINE: no box, no label, the 32dp pharmacist icon over one `type.title` line.
+A **white raised card** like every other card (round 1): radius **24**, padding 20, hairline + soft violet shadow (graphite-850 + sheen edge in dark). A 40dp disc in the verdict tint holds the 24dp verdict icon; next to it the caps label in the verdict fg; below, the verdict sentence in `type.verdictLine` (**Geist 600 18/26**) in full text colour. UNKNOWN keeps a 1dp dashed edge in its slate border; name-only gets a dashed `border-strong` edge. No leading stripe. Greige **Demo reading** badge when the Demo reading is in use. MEDICINE: no box, no label, the 32dp pharmacist icon over one `type.title` line.
 
 ### 8.5 Reasons (`component.reasonRow`)
 Section head "Why · 2 reasons" (sans). Each reason is a quiet surface row: reading line (`type.reason`, 18/500) → product fact (`type.body`) → rule tag and band chip. No decorative numerals.
@@ -208,7 +213,7 @@ Section head "Why · 2 reasons" (sans). Each reason is a quiet surface row: read
 
 ### 8.7 Sheets, dock, snackbar
 - **Bottom sheet:** radius 28 top corners, handle in a 48dp target, a Close button always, sheen-edge on top in dark.
-- **Action dock** (`component.actionBar`, also the `Screen` footer): ONE primary pill naming its destination + a 48dp round tonal **More** button. It **floats on the page** like showcase 04_report: `actionBar.bg` = `color.bg`, no shadow, no white band; a 1dp top hairline (sheen edge in dark) is drawn only while content sits under it (scroll offset + viewport < content height).
+- **Action dock** (`component.actionBar`, also the `Screen` footer): ONE primary pill naming its destination + a 48dp round tonal **More** button. It **floats on the page** like showcase 04_report: `actionBar.bg` = `color.bg`, no shadow, no white band; a 1dp top hairline (sheen edge in dark) is drawn only while content sits under it (scroll offset + viewport < content height). While content runs under it, a 28dp page-to-transparent fade sits above the dock (`FooterFade`), and scroll content ends with the fade height + 16dp of padding, so the last line ("Not saved…") always scrolls fully clear.
 - **Snackbar:** inverse surface, radius 16.
 
 ### 8.8 Tab bar (`component.bottomNav`)
@@ -221,7 +226,7 @@ Three tabs: **Check · Scan · Reading** (testIDs `tab-check` / `tab-scan` / `ta
 Rounded **28dp** plate on the sheen, four corner brackets in `color.bracket`, a faint oval, optional sparse dot grid. **No face, no photo, no mesh over a person.**
 
 ### 8.11 Welcome backdrop (`brand/LiquidBackdrop.tsx`)
-Full-bleed sheen, two wide liquid ribbons (top-right, bottom-left) with a bright crest, a large and two small droplets with a white rim; drawn in a 390×844 box and scaled to cover. Static, decorative, hidden from TalkBack; graphite/lavender-800 in dark. With `SilverMark` (`brand.heroMark` 72, no tile), `Wordmark` (`brand.wordmarkHero` 32 cap), the tagline (`COPY.welcome.tagline`), a primary **Get started** and a translucent **Use the Demo reading**.
+Full-bleed sheen, two wide liquid ribbons (top-right, bottom-left) with a bright crest, one large droplet with a white rim (the small bubbles were removed in round 1); drawn in a 390×844 box and scaled to cover. Static, decorative, hidden from TalkBack; graphite/lavender-800 in dark. With `SilverMark` (`brand.heroMark` 152, no tile: the S itself reads about 96dp tall, the hero as in 01_welcome), `Wordmark` (`brand.wordmarkHero` 32 cap), the tagline (`COPY.welcome.tagline`), a primary **Get started** and a translucent **Use the Demo reading**.
 
 ### 8.12 States
 Empty and error states: a face-frame or mark plate on the sheen, one `type.display` line (sans), one muted line, **one** pill action (optional tonal second). Left-aligned. Neutral, never red.
@@ -235,7 +240,7 @@ File paths, owners and the step-by-step checklist live in `design/redesign-scree
 ### 9.1 Splash and first launch (`app/welcome.tsx`, `features/home/WelcomeScreen.tsx`, `welcomeStore.ts`) → showcase `01_welcome`
 Splash: the chrome S centred on pearl `#F6F5F8` (light) or graphite `#121319` (dark), 120dp. No full-bleed liquid photo.
 
-**Welcome** (first run only): full-bleed `LiquidBackdrop`, no app bar or tab bar. One centred block in the space above the actions: `SilverMark` 72dp (`brand.heroMark`, no tile), 20dp, `Wordmark` at cap height 32 (`brand.wordmarkHero`), 12dp, `COPY.welcome.tagline` in Geist 400 16/22 in `color.text` (the showcase's darker brand line, not muted), max width 320. Bottom, 24dp gutter above the inset: slate **Get started** with an arrow (56dp), 12dp, translucent **Use the Demo reading** (52dp; light: a borderless frosted pill, `secondary-translucent` over the backdrop, no hairline; dark keeps the sheen edge). No carousel, no account line.
+**Welcome** (first run only): full-bleed `LiquidBackdrop`, no app bar or tab bar. One centred block in the space above the actions: `SilverMark` 152dp box (`brand.heroMark`, no tile; the S reads about 96dp), 24dp, `Wordmark` at cap height 32 (`brand.wordmarkHero`), 12dp, `COPY.welcome.tagline` in Geist 400 16/22 in `color.text` (the showcase's darker brand line, not muted), max width 320. Bottom, 24dp gutter above the inset: slate **Get started** with an arrow (56dp), 12dp, translucent **Use the Demo reading** (52dp; light: a borderless frosted pill, `secondary-translucent` over the backdrop, no hairline; dark keeps the sheen edge). No carousel, no account line.
 - **Backdrop (light)**: liquid silver, never near-white. The field runs mist `#EFECF2` → lavender `#ECE8F4` → `#E7E3EC` → mist.200, with one soft white glow top-left. Ribbon A sweeps from x≈150 at the top to the right edge at y≈420; ribbon B from the left edge at y≈470 to x≈360 at the bottom; both fill lavender → silver → white at 0.75 and carry a 3.5dp white crest (0.8) just inside the edge. Droplets with a white highlight and rim. Dark: the smaller graphite ribbons, unchanged.
 - **Get started** → mark seen → `router.replace('/')` (Home with "No reading yet" and **Start scan**). **Use the Demo reading** → `useDemo()` → mark seen → `replace('/')`. Android back = Get started. TalkBack order: wordmark, tagline, Get started, Use the Demo reading.
 - **Gate** (`(tabs)/index.tsx`): once the reading and the `welcomeSeen` flag (SecureStore, same KV as the share tip; also kept in memory so web cannot loop) have loaded, no reading + not seen + no web `?demo=` → `replace('/welcome')`. It runs on focus only, so a cold share still lands on /check. While the flag loads (one read) the tab shows the plain page colour, never Home then a jump.
@@ -244,9 +249,9 @@ Splash: the chrome S centred on pearl `#F6F5F8` (light) or graphite `#121319` (d
 ### 9.2 Home = Check tab (`(tabs)/index.tsx`, `features/home/*`, `components/home/*`) → showcase `02_home`
 Mist page, no brand bar, no sheen hero band. Top to bottom (above the fold on a 6.1" phone: greeting, line, card, paste field):
 1. **Greeting row**, 48dp (`touch.min`), top inset + 8: greeting in `type.display` ("Good afternoon", by the phone's clock; no name, no sparkle) left, 48dp gear **Settings** (`home-settings`, plain, no disc) right with its glyph on the gutter.
-2. One muted line, `body`, directly under the row (no extra margin, about 8dp visual gap, as in 02_home): `COPY.welcome.tagline`.
-3. 20dp, **skin-type card** (`KeyChip` → `SkinTypeCard size="compact"`, `key-chip`): droplet disc, "Your skin type" over the value (hd skin type, or the published band mapping), caption "Scan 2 Nov · photo deleted" / "Demo reading · sample, not a scan" / the mock line, trailing arrow. One target → Reading tab. Band meters live on the Reading tab only. **Empty**, same footprint: face-frame disc, "No reading yet" over "Scan once, about a minute", then slate **Start scan** (`home-start-scan`) and a centred tertiary text action **Use the Demo reading** (`home-use-demo`, 48dp target) inside the card: one pill, not a stack of pills.
-4. 28dp, section "Check a product", the **paste field** with the inline **Check** pill; in light it carries the card shadow (`elevation.1`) beside its 1dp `border-strong` edge, so it sits in the card family (no shadow in dark). The section head is its visible label (`hideLabel`: the "Product link or name" line is dropped here; the input keeps that accessible name). Unchanged behaviour.
+2. One small muted line, `bodySm` (13/18), directly under the row, as 02_home's compact subtitle: `COPY.welcome.tagline`.
+3. 16dp, **skin-type card** (`KeyChip` → `SkinTypeCard size="compact"`, `key-chip`): droplet disc, "Your skin type" over the value (hd skin type, or the published band mapping), caption "Scan 2 Nov · photo deleted" / "Demo reading · sample, not a scan" / the mock line, trailing arrow. One target → Reading tab. Band meters live on the Reading tab only. **Empty**, same footprint: face-frame disc, "No reading yet" over "Scan once, about a minute", then slate **Start scan** (`home-start-scan`) and a centred tertiary text action **Use the Demo reading** (`home-use-demo`, 48dp target) inside the card: one pill, not a stack of pills.
+4. 28dp, section "Check a product", the **paste field** with the inline **Check** pill; in light it carries the card hairline and the card shadow (`elevation.1`), so it sits in the card family (no shadow in dark). The section head is its visible label (`hideLabel`: the "Product link or name" line is dropped here; the input keeps that accessible name). Unchanged behaviour.
 5. 28dp, **Share from a store app** (`ShareSteps`, `share-tip`; hidden for good by tertiary **Got it**, `share-tip-dismiss`, `tipStore`; the head row has no 48dp minHeight, the action keeps its 48dp target through a negative vertical margin, so the head sits 12dp above the control like every other section head): Flipkart / Amazon / Nykaa `Segmented`, then one white `ListGroup thumbs` card of three rows from `COPY.shareSteps(store)`: `share` tile "Tap Share", chrome-S tile "Pick Silver Mirror" (Amazon: "Tap More first…"), `seal-check` tile "See if it fits". No numerals (the showcase's 1–4 are not built). The card reads to TalkBack as the store's `COPY.sharePaths` line plus the steps, polite live region on store change.
 6. 20dp, tonal **Try a sample share** (`sample-share`) with its centred caption.
 7. Footer captions: `COPY.footer` · `COPY.notAffiliated`.

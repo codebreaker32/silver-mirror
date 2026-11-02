@@ -458,9 +458,9 @@
         "font": "sans-semibold",
         "family": "sans",
         "weight": 600,
-        "size": 26,
-        "lineHeight": 32,
-        "letterSpacing": -0.5,
+        "size": 24,
+        "lineHeight": 30,
+        "letterSpacing": -0.4,
         "use": "Home greeting, empty-state headline (showcase: semibold sans, never serif)"
       },
       "title": {
@@ -494,9 +494,9 @@
         "font": "sans-semibold",
         "family": "sans",
         "weight": 600,
-        "size": 28,
-        "lineHeight": 34,
-        "letterSpacing": -0.5,
+        "size": 26,
+        "lineHeight": 32,
+        "letterSpacing": -0.4,
         "use": "Skin-type value in the hero skin-type card (Reading, Result; showcase 04_report 'Combination')"
       },
       "headline": {
@@ -521,9 +521,9 @@
         "font": "sans-semibold",
         "family": "sans",
         "weight": 600,
-        "size": 18,
-        "lineHeight": 24,
-        "letterSpacing": -0.2,
+        "size": 16,
+        "lineHeight": 22,
+        "letterSpacing": -0.1,
         "use": "Sentence-case section heads: 'Why · 2 reasons', 'What stays on this phone', 'Better matches'"
       },
       "reason": {
@@ -569,8 +569,8 @@
         "font": "sans-regular",
         "family": "sans",
         "weight": 400,
-        "size": 16,
-        "lineHeight": 24,
+        "size": 15,
+        "lineHeight": 22,
         "letterSpacing": 0,
         "use": "Body copy, the product fact in each reason (full text colour), consent body"
       },
@@ -578,8 +578,8 @@
         "font": "sans-semibold",
         "family": "sans",
         "weight": 600,
-        "size": 16,
-        "lineHeight": 22,
+        "size": 15,
+        "lineHeight": 20,
         "letterSpacing": 0,
         "use": "Band value (High), emphasised step, list row title"
       },
@@ -587,8 +587,8 @@
         "font": "sans-regular",
         "family": "sans",
         "weight": 400,
-        "size": 14,
-        "lineHeight": 20,
+        "size": 13,
+        "lineHeight": 18,
         "letterSpacing": 0.1,
         "use": "Ledger values, supporting lines, card secondary text"
       },
@@ -596,8 +596,8 @@
         "font": "sans-semibold",
         "family": "sans",
         "weight": 600,
-        "size": 14,
-        "lineHeight": 20,
+        "size": 13,
+        "lineHeight": 18,
         "letterSpacing": 0.1,
         "use": "Chip and band names, field labels, snackbar action"
       },
@@ -623,7 +623,7 @@
         "font": "sans-semibold",
         "family": "sans",
         "weight": 600,
-        "size": 16,
+        "size": 15,
         "lineHeight": 20,
         "letterSpacing": 0.1,
         "use": "All buttons"
@@ -1012,7 +1012,7 @@
       "tagline": "{type.bodySm}",
       "taglineColor": "{color.text-muted}",
       "gap": "{space.3}",
-      "heroMark": 72,
+      "heroMark": 152,
       "wordmarkHero": 32
     },
     "appBar": {
@@ -1049,7 +1049,7 @@
         "fg": "{color.on-accent}",
         "bgPressed": "{color.accent-pressed}",
         "ripple": "{color.state.ripple-on-accent}",
-        "minHeight": 56,
+        "minHeight": 52,
         "paddingX": "{space.6}",
         "radius": "{radius.full}",
         "type": "{type.button}",
@@ -1099,12 +1099,12 @@
         "borderDisabled": "{color.border}"
       },
       "consentPair": {
-        "$rule": "Start scan / Not now on every consent screen: identical tonal pill, size and type (spec §2: equal visual weight), so declining is never the weaker-looking choice. Product law beats the critique's slate-pill suggestion here.",
-        "bg": "{color.secondary-bg}",
-        "fg": "{color.on-secondary}",
-        "border": "{color.border-strong}",
+        "$rule": "Start scan / Not now on every consent screen: identical translucent pill, size and type (spec §2: equal visual weight), so declining is never the weaker-looking choice. 2.1 round 1: the same white-glass fill as the welcome secondary, so the app has one secondary-pill idiom; no strong outline.",
+        "bg": "{color.secondary-translucent}",
+        "fg": "{color.text}",
+        "border": "{color.secondary-translucent-edge}",
         "borderWidth": 1,
-        "bgPressed": "{color.secondary-bg-pressed}",
+        "bgPressed": "{color.secondary-bg}",
         "minHeight": 52,
         "paddingX": "{space.4}",
         "radius": "{radius.full}",
@@ -1167,11 +1167,11 @@
       "editTarget": "{touch.min}"
     },
     "field": {
-      "$rule": "Rounded filled pill field with a visible 1dp edge (>=3:1) and an inline trailing action pill inside it ('Check'). Label above, helper and error below.",
+      "$rule": "Rounded white pill field in the card family (2.1 round 1): the card hairline plus the soft card shadow in light, and an inline trailing slate action pill inside it ('Check') that, with the placeholder, identifies the field. Focus and error draw a 2dp edge at >=3:1. Label above, helper and error below.",
       "bg": "{color.surface-raised}",
       "fg": "{color.text}",
       "placeholder": "{color.text-subtle}",
-      "border": "{color.border-strong}",
+      "border": "{color.border}",
       "borderWidth": 1,
       "focusBorder": "{color.focus-ring}",
       "focusBorderWidth": 2,
@@ -1252,11 +1252,11 @@
         "iconGap": "{space.3}",
         "subtitleColor": "{color.text}",
         "fits": {
-          "bg": "{verdict.fits.bg}",
+          "bg": "{color.surface-raised}",
           "fg": "{verdict.fits.fg}",
-          "border": "{verdict.fits.border}",
+          "border": "{color.border}",
           "icon": "{verdict.fits.icon}",
-          "iconDisc": "{color.surface-raised}",
+          "iconDisc": "{verdict.fits.bg}",
           "iconDiscSize": 40,
           "borderWidth": 1,
           "borderStyle": "solid",
@@ -1265,11 +1265,11 @@
           "iconSize": "{icon.verdict.size}"
         },
         "caution": {
-          "bg": "{verdict.caution.bg}",
+          "bg": "{color.surface-raised}",
           "fg": "{verdict.caution.fg}",
-          "border": "{verdict.caution.border}",
+          "border": "{color.border}",
           "icon": "{verdict.caution.icon}",
-          "iconDisc": "{color.surface-raised}",
+          "iconDisc": "{verdict.caution.bg}",
           "iconDiscSize": 40,
           "borderWidth": 1,
           "borderStyle": "solid",
@@ -1278,11 +1278,11 @@
           "iconSize": "{icon.verdict.size}"
         },
         "unknown": {
-          "bg": "{verdict.unknown.bg}",
+          "bg": "{color.surface-raised}",
           "fg": "{verdict.unknown.fg}",
           "border": "{verdict.unknown.border}",
           "icon": "{verdict.unknown.icon}",
-          "iconDisc": "{verdict.unknown.disc}",
+          "iconDisc": "{verdict.unknown.bg}",
           "iconDiscSize": 40,
           "borderWidth": 1,
           "borderStyle": "dashed",
@@ -1675,7 +1675,7 @@
       "$rule": "Store searches are a row of three chips (Flipkart / Amazon.in / Nykaa, text only) with one shared destination line under them: 'Opens a keyword search for \"sunscreen\" in the store app (Nykaa: browser)'. Each chip is >=48dp and its accessibility label names the destination."
     },
     "rankingDisclosure": {
-      "type": "{type.bodySm}",
+      "type": "{type.body}",
       "color": "{color.text}",
       "rule": "{color.border-strong}",
       "ruleWidth": 1,
@@ -1748,7 +1748,7 @@
       "bg": "{elevation.1.surface}",
       "border": "{color.border}",
       "radius": "{radius.lg}",
-      "padding": "{space.4}",
+      "padding": "{space.3}",
       "index": "{type.reasonIndex}",
       "indexColor": "{color.text-muted}",
       "name": "{type.bodyStrong}",
@@ -1759,10 +1759,10 @@
       "metaColor": "{color.text-muted}",
       "thumbBg": "{color.thumb-tile}",
       "thumbRadius": "{radius.md}",
-      "thumbSize": 64,
+      "thumbSize": 56,
       "heroBg": "{color.skin-gradient.mid}",
       "verdictTagIcon": "{icon.sm}",
-      "minHeight": 96,
+      "minHeight": 80,
       "listGap": "{space.3}"
     },
     "barcodeFrame": {
