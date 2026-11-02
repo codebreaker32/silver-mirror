@@ -3,6 +3,10 @@ import { useTheme } from '@/theme/ThemeProvider';
 import { Icon } from './Icon';
 import { Txt } from './Text';
 
+/** Section-head size: 15/20 semibold everywhere a SectionHeader is used (Home, Reading, matches). */
+export const SECTION_SIZE = 15;
+export const SECTION_LINE = 20;
+
 interface SectionHeaderProps {
   /** Sentence case ("Check a product", "Why · 2 reasons"). No eyebrow above it. */
   title: string;
@@ -13,7 +17,7 @@ interface SectionHeaderProps {
   testID?: string;
 }
 
-/** Section head in type.section (Geist 600 18/24), header role. More space above a heading than below: callers add the gap above. */
+/** Section head, Geist 600 15/20 (quieter than type.section, showcase 04_report "Key Concerns"), header role. More space above a heading than below: callers add the gap above. */
 export function SectionHeader({ title, supporting, action, testID }: SectionHeaderProps) {
   const t = useTheme();
   const l = t.components.textLink;
@@ -22,7 +26,7 @@ export function SectionHeader({ title, supporting, action, testID }: SectionHead
       {/* No row minHeight: the action keeps its 48dp target through a negative vertical margin, so a head with an
           action sits as close to its content as one without (DESIGN.md §9.2). */}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[2] }}>
-        <Txt accessibilityRole="header" variant="section" style={{ flex: 1 }}>
+        <Txt accessibilityRole="header" variant="section" style={{ flex: 1, fontSize: SECTION_SIZE, lineHeight: SECTION_LINE }}>
           {title}
         </Txt>
         {action ? (
@@ -32,7 +36,7 @@ export function SectionHeader({ title, supporting, action, testID }: SectionHead
             accessibilityRole="button"
             accessibilityLabel={action.accessibilityLabel ?? action.label}
             hitSlop={{ left: t.space[2], right: t.space[2] }}
-            style={{ minHeight: t.touch.min, marginVertical: -(t.touch.min - t.typography.section.lineHeight) / 2, flexDirection: 'row', alignItems: 'center', gap: 2 }}
+            style={{ minHeight: t.touch.min, marginVertical: -(t.touch.min - SECTION_LINE) / 2, flexDirection: 'row', alignItems: 'center', gap: 2 }}
           >
             {({ pressed }) => {
               const fg = pressed ? l.fgPressed : l.fg;

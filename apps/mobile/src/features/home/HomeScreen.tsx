@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { useKey } from '@/features/key';
-import { Caption, Heading, IconButton, PillButton, Txt } from '@/components';
+import { Caption, Heading, Icon, IconButton, SectionHeader, Txt } from '@/components';
 import { KeyChip } from './KeyChip';
 import { PasteLinkField, type PasteInputRef } from './PasteLinkField';
 import { ShareTipCard } from './ShareTipCard';
@@ -17,6 +17,48 @@ export function greeting(now: Date = new Date()): string {
   if (h >= 5 && h < 12) return 'Good morning';
   if (h >= 12 && h < 17) return 'Good afternoon';
   return 'Good evening';
+}
+
+/** One short muted line under the greeting (showcase 02_home "Let's keep your skin happy today."): fits one line. */
+export const HOME_LINE = 'Check a product before you buy it.';
+
+/**
+ * Quiet secondary pill for "Try a sample share": white, hairline, 40dp visual in a 48dp target, 14/20 medium label and
+ * a muted 18dp icon, centred at its own width. Same label, testID and hint as before (QA taps by label).
+ */
+function SamplePill({ onPress, hint }: { onPress: () => void; hint: string }) {
+  const t = useTheme();
+  return (
+    <Pressable
+      testID="sample-share"
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel="Try a sample share"
+      accessibilityHint={hint}
+      style={{ alignSelf: 'center', minHeight: t.touch.min, justifyContent: 'center' }}
+    >
+      {({ pressed }) => (
+        <View
+          style={{
+            minHeight: 40,
+            paddingHorizontal: t.space[4],
+            borderRadius: t.radius.full,
+            borderWidth: StyleSheet.hairlineWidth,
+            borderColor: t.colors.borderStrong,
+            backgroundColor: pressed ? t.colors.secondaryBg : t.colors.surface,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: t.space[2],
+          }}
+        >
+          <Icon name="arrow-down-left" size={18} color={t.colors.textMuted} />
+          <Text {...t.textProps.labelSmRegular} style={{ fontFamily: t.typography.labelSmRegular.fontFamily, fontSize: 14, lineHeight: 20, color: t.colors.text }}>
+            Try a sample share
+          </Text>
+        </View>
+      )}
+    </Pressable>
+  );
 }
 
 /**
@@ -56,13 +98,13 @@ export default function HomeScreen() {
       >
         <View testID="home-hero">
           <View style={{ minHeight: t.touch.min, flexDirection: 'row', alignItems: 'center', gap: t.space[3] }}>
-            <Heading level="display" style={{ flex: 1 }}>
+            <Heading level="display" style={{ flex: 1, fontSize: 22, lineHeight: 28, letterSpacing: -0.3 }}>
               {greeting()}
             </Heading>
             <IconButton icon="gear" accessibilityLabel="Settings" onPress={() => router.push('/settings')} testID="home-settings" style={{ marginRight: -gearPull }} />
           </View>
-          <Txt variant="bodySm" tone="muted">
-            {COPY.welcome.tagline}
+          <Txt variant="bodySm" tone="muted" numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.85}>
+            {HOME_LINE}
           </Txt>
           <View style={{ marginTop: t.space[4] }}>
             {loading ? (
@@ -80,7 +122,7 @@ export default function HomeScreen() {
 
         <View style={{ marginTop: t.spacing.section, gap: t.spacing.section }}>
           <View style={{ gap: t.space[3] }}>
-            <Heading level="section">Check a product</Heading>
+            <SectionHeader title="Check a product" />
             <PasteLinkField ref={paste} hideLabel emphasis={key || loading ? 'primary' : 'secondary'} onSubmit={(q) => router.push({ pathname: '/check', params: { q } })} />
           </View>
 
@@ -93,14 +135,10 @@ export default function HomeScreen() {
             />
           ) : null}
 
-          <View style={{ gap: t.space[2] }}>
-            <PillButton
-              label="Try a sample share"
-              variant="secondary"
-              leadingIcon="arrow-down-left"
-              testID="sample-share"
+          <View style={{ gap: t.space[1] }}>
+            <SamplePill
               onPress={() => router.push({ pathname: '/check', params: { sample: '1' } })}
-              accessibilityHint={`Checks a labelled sample listing. Uses the ${COPY.reading.demo} if you haven't scanned.`}
+              hint={`Checks a labelled sample listing. Uses the ${COPY.reading.demo} if you haven't scanned.`}
             />
             <Caption style={{ textAlign: 'center' }}>
               A labelled sample listing{key && !isDemo ? '' : `, checked against the ${COPY.reading.demo}`}. No store app needed.

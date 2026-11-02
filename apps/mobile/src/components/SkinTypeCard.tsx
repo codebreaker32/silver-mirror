@@ -37,7 +37,8 @@ export interface SkinTypeCardProps {
  * compact: raised white card, padding 20, ≥96dp: 56dp lavender disc, label (14/20 muted) over the value (Geist 600
  * 24/30), an optional caption, trailing 24dp arrow-right when pressable. hero: the skin gradient, padding 24, a 72dp
  * disc on a white-glass fill (lavender-700 in dark), the label in text (not muted), the value in type.valueHero
- * (Geist 600 28/34) so it dominates as in 04_report, one cosmetic line, no arrow.
+ * (Geist 600 26/32) so it dominates as in 04_report, one cosmetic 14/20 muted line, no arrow. Radius 20 (compact) and
+ * 22 (hero), a touch softer than the generic 24dp card, as in the showcase.
  */
 export function SkinTypeCard({
   size = 'compact',
@@ -73,7 +74,7 @@ export function SkinTypeCard({
           {value}
         </Txt>
         {hero && line ? (
-          <Txt variant="body" tone="muted" style={{ marginTop: t.space[1] }}>
+          <Txt variant="bodySm" tone="muted" style={{ marginTop: t.space[1], fontSize: 14, lineHeight: 20 }}>
             {line}
           </Txt>
         ) : null}
@@ -91,6 +92,7 @@ export function SkinTypeCard({
       testID={testID}
       variant={hero ? 'gradient' : 'raised'}
       padding={hero ? rc.heroPadding : rc.padding}
+      radius={hero ? 22 : 20}
       gap={t.space[4]}
       onPress={pressable}
       accessibilityLabel={children ? undefined : a11y}

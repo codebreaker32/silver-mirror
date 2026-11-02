@@ -4,13 +4,23 @@ import type { FocusItem } from '@/components/FocusTile';
 
 /**
  * "What this means for products" tiles (DESIGN.md §9.9), derived only from which published fit rules the reading
- * triggers. Product-trait words only, never a promise about skin. Claude is never involved.
+ * triggers. Each tile is a trait you can find on a label, named from a rule's own ingredient set (OCC-1 lists
+ * petrolatum and mineral oil, SUP-1 humectants and ceramides, SUP-2 niacinamide). Listed in priority order; the screen
+ * shows the first three, as the showcase "Recommended Focus" row. Product-trait words only, never a promise about
+ * skin. Claude is never involved.
  */
 const FOCUS: readonly (FocusItem & { rules: readonly string[] })[] = [
-  { label: 'Lighter textures', icon: 'waves', rules: ['OCC-1', 'OCC-2', 'SUP-2'] },
-  { label: 'Hydration', icon: 'droplet', rules: ['SUP-1', 'ALC-1'] },
+  { label: 'Lighter textures', icon: 'waves', rules: ['OCC-1', 'OCC-2'] },
+  { label: 'Hydration', icon: 'droplet', rules: ['SUP-1'] },
   { label: 'Fragrance-free', icon: 'spray-off', rules: ['FRG-1'] },
+  { label: 'Niacinamide', icon: 'circle-dot', rules: ['SUP-2'] },
+  { label: 'Alcohol-free', icon: 'bottle', rules: ['ALC-1'] },
+  { label: 'Ceramides', icon: 'jar', rules: ['SUP-1'] },
+  { label: 'No mineral oil', icon: 'tube', rules: ['OCC-1'] },
 ];
+
+/** The row shows at most this many tiles (showcase 04_report: one even row of three). */
+export const FOCUS_MAX = 3;
 
 function triggers(ruleId: string, key: KeyProfile): boolean {
   const rule = RULES.find((r) => r.ruleId === ruleId);
@@ -31,5 +41,7 @@ export interface FocusTileItem extends FocusItem {
 }
 
 export function focusTilesFor(key: KeyProfile): FocusTileItem[] {
-  return FOCUS.map((f) => ({ label: f.label, icon: f.icon, rules: f.rules.filter((id) => triggers(id, key)) })).filter((f) => f.rules.length > 0);
+  return FOCUS.map((f) => ({ label: f.label, icon: f.icon, rules: f.rules.filter((id) => triggers(id, key)) }))
+    .filter((f) => f.rules.length > 0)
+    .slice(0, FOCUS_MAX);
 }

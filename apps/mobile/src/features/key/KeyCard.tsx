@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { COPY, type Band, type KeyProfile } from '@skinkey/contracts';
 import { deriveSkinType } from '@skinkey/rules';
-import { Body, Button, Caption, Chip, ChipRail, Divider, FocusTiles, Icon, Note, SectionHeader, SkinTypeCard, Tag, Txt } from '@/components';
+import { Body, Button, Caption, Divider, FocusTiles, Icon, Note, SectionHeader, SkinTypeCard, Txt } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
 import { BandList } from './BandChip';
 import { focusTilesFor } from './focus';
@@ -27,9 +27,38 @@ interface Props {
 const HERO_LABEL = 'Skin type';
 const BAND_RANK: Record<Band, number> = { High: 0, Medium: 1, Low: 2 };
 
+/** Small lavender-grey "Demo reading" chip inside the hero (12/16 medium, iris ink on the icon-disc lavender). */
+function DemoChip({ label }: { label: string }) {
+  const t = useTheme();
+  return (
+    <View style={{ alignSelf: 'flex-start', minHeight: 24, paddingHorizontal: t.space[3] - 2, borderRadius: t.radius.full, backgroundColor: t.colors.iconDisc, justifyContent: 'center' }}>
+      <Text {...t.textProps.labelSmRegular} style={{ fontFamily: t.typography.labelSmRegular.fontFamily, fontSize: 12, lineHeight: 16, color: t.colors.onIconDisc }}>
+        {label}
+      </Text>
+    </View>
+  );
+}
+
+/** Static grey pill for "Key readings" (showcase 04_report "Key Concerns"): 34dp, 13/18 medium, wraps in a ChipRow. */
+function ReadingChip({ label, accessibilityLabel, testID }: { label: string; accessibilityLabel: string; testID: string }) {
+  const t = useTheme();
+  return (
+    <View
+      testID={testID}
+      accessible
+      accessibilityLabel={accessibilityLabel}
+      style={{ minHeight: 34, paddingHorizontal: t.space[3] + 2, borderRadius: t.radius.full, backgroundColor: t.colors.secondaryBg, justifyContent: 'center' }}
+    >
+      <Text {...t.textProps.labelSmRegular} style={{ fontFamily: t.typography.labelSmRegular.fontFamily, fontSize: 13, lineHeight: 18, color: t.colors.text }}>
+        {label}
+      </Text>
+    </View>
+  );
+}
+
 /**
  * The reading, expanded (DESIGN.md §9.9–9.10, showcase 04_report): the gradient skin-type hero (Demo reading badge
- * inside), "Key readings" as a static chip rail highest band first, the focus tiles from the published rules, the band
+ * inside), "Key readings" as grey pills that wrap, highest band first, the focus tiles from the published rules, the band
  * list with meters and "Feels wrong? Edit", the photo-deleted stamp, the zone glyph, the accuracy note once, then the
  * neutral delete actions. Bands only, never numbers.
  */
@@ -62,28 +91,26 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
         line={line}
         accessibilityLabel={[`Skin-type reading: ${skinType}`, demo ? COPY.reading.demo : null, line].filter(Boolean).join('. ')}
       >
-        {demo ? (
-          <View style={{ flexDirection: 'row' }}>
-            <Tag label={COPY.reading.demo} variant="demo" />
-          </View>
-        ) : null}
+        {demo ? <DemoChip label={COPY.reading.demo} /> : null}
       </SkinTypeCard>
 
       <View style={{ gap: theme.space[3] }}>
         <SectionHeader title={COPY.reading.keyReadings} />
-        <ChipRail testID="key-readings" accessibilityLabel={COPY.reading.keyReadings}>
-          {ranked.map((c) => {
-            const r = keyProfile.bands[c];
-            return (
-              <Chip
-                key={c}
-                testID={`key-reading-${c}`}
-                label={`${CONCERN_LABEL[c]} · ${r.level}`}
-                accessibilityLabel={`${CONCERN_LABEL[c]}, ${r.level}${r.selfReported ? `, ${SELF_REPORTED_TAG}` : ''}`}
-              />
-            );
-          })}
-        </ChipRail>
+        <View testID="key-readings" accessibilityLabel={COPY.reading.keyReadings}>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: theme.space[2], rowGap: theme.space[2] }}>
+            {ranked.map((c) => {
+              const r = keyProfile.bands[c];
+              return (
+                <ReadingChip
+                  key={c}
+                  testID={`key-reading-${c}`}
+                  label={`${CONCERN_LABEL[c]} · ${r.level}`}
+                  accessibilityLabel={`${CONCERN_LABEL[c]}, ${r.level}${r.selfReported ? `, ${SELF_REPORTED_TAG}` : ''}`}
+                />
+              );
+            })}
+          </View>
+        </View>
         <Divider spacing={0} />
       </View>
 

@@ -1,7 +1,6 @@
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from './Icon';
-import { IconDisc } from './IconButton';
 
 export interface FocusItem {
   /** From the published facet map only, worded cosmetically ("Lighter textures", "Hydration", "Fragrance-free"). */
@@ -10,21 +9,55 @@ export interface FocusItem {
 }
 
 /**
- * Focus tile (component.focusTile, showcase 04_report "Recommended Focus"): a white tile, radius 20, hairline + the
- * soft violet shadow (graphite-850 + sheen edge in dark), a centred 48dp lavender disc with a 24dp line icon, and the
- * label centred, at most two lines. `wide` keeps the old one-row layout for callers that still ask for it.
+ * Quiet tile surface (showcase 04_report "Recommended Focus"): white, radius 18, a hairline and a very soft violet
+ * shadow in light; graphite + sheen edge in dark. Kept local so the tile reads lighter than the raised cards.
+ */
+function useTileSurface() {
+  const t = useTheme();
+  const f = t.components.focusTile;
+  return t.dark
+    ? { backgroundColor: f.bg, borderWidth: 1, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge }
+    : {
+        backgroundColor: f.bg,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: t.colors.border,
+        shadowColor: t.colors.shadow,
+        shadowOpacity: 0.06,
+        shadowRadius: 12,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 1,
+      };
+}
+
+/** Tile label: 13/17 medium (500), never semibold, centred. */
+function useTileLabel() {
+  const t = useTheme();
+  const f = t.components.focusTile;
+  return [f.label, { fontFamily: t.typography.labelSmRegular.fontFamily, fontSize: 13, lineHeight: 17, letterSpacing: 0, color: f.fg }];
+}
+
+const TILE_RADIUS = 18;
+
+/**
+ * Focus tile (component.focusTile, showcase 04_report "Recommended Focus"): a square white tile, a centred 44dp
+ * lavender disc with a 22dp line icon, and the label centred, at most two lines. `wide` is the one-row layout the
+ * grid uses when a reading has a single trait, so the row never shows an empty gap.
  */
 export function FocusTile({ label, icon, wide = false }: FocusItem & { wide?: boolean }) {
   const t = useTheme();
   const f = t.components.focusTile;
-  const surface = t.dark
-    ? { backgroundColor: f.bg, borderWidth: 1, borderColor: t.colors.border, borderTopColor: t.colors.sheenEdge }
-    : { ...t.elevation['1'].style, backgroundColor: f.bg };
+  const surface = useTileSurface();
+  const labelStyle = useTileLabel();
+  const disc = (
+    <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: 44, height: 44, borderRadius: t.radius.full, backgroundColor: f.discBg, alignItems: 'center', justifyContent: 'center' }}>
+      <Icon name={icon} size={22} color={f.iconColor} />
+    </View>
+  );
   if (wide) {
     return (
-      <View accessible accessibilityLabel={label} style={[surface, { flex: 1, minHeight: t.touch.min + t.space[2], borderRadius: f.radius, padding: f.padding, gap: t.space[3], flexDirection: 'row', alignItems: 'center' }]}>
-        <IconDisc icon={icon} />
-        <Text {...t.textProps.label} style={[f.label, { color: f.fg, flex: 1 }]}>
+      <View accessible accessibilityLabel={label} style={[surface, { flex: 1, minHeight: t.touch.min + t.space[4], borderRadius: TILE_RADIUS, paddingHorizontal: t.space[4], paddingVertical: t.space[3], gap: t.space[3], flexDirection: 'row', alignItems: 'center' }]}>
+        {disc}
+        <Text {...t.textProps.labelSmRegular} style={[labelStyle, { flex: 1, fontSize: 14, lineHeight: 20 }]}>
           {label}
         </Text>
       </View>
@@ -34,12 +67,10 @@ export function FocusTile({ label, icon, wide = false }: FocusItem & { wide?: bo
     <View
       accessible
       accessibilityLabel={label}
-      style={[surface, { flex: 1, minHeight: f.minHeight, borderRadius: f.radius, paddingHorizontal: t.space[2], paddingVertical: t.space[3] + 2, gap: t.space[2], alignItems: 'center', justifyContent: 'center' }]}
+      style={[surface, { flex: 1, aspectRatio: 1, minHeight: f.minHeight, borderRadius: TILE_RADIUS, paddingHorizontal: t.space[2], paddingVertical: t.space[3], gap: t.space[2] + 2, alignItems: 'center', justifyContent: 'center' }]}
     >
-      <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: f.disc, height: f.disc, borderRadius: t.radius.full, backgroundColor: f.discBg, alignItems: 'center', justifyContent: 'center' }}>
-        <Icon name={icon} size={f.icon} color={f.iconColor} />
-      </View>
-      <Text {...t.textProps.label} numberOfLines={2} style={[f.label, { color: f.fg, textAlign: 'center' }]}>
+      {disc}
+      <Text {...t.textProps.labelSmRegular} numberOfLines={2} style={[labelStyle, { textAlign: 'center' }]}>
         {label}
       </Text>
     </View>
@@ -47,22 +78,18 @@ export function FocusTile({ label, icon, wide = false }: FocusItem & { wide?: bo
 }
 
 /**
- * A fixed three-column grid with 12dp gaps (focusTile.columns), as showcase 04_report "Recommended Focus": every tile
- * is exactly one third of the row; fewer than three keep that width and sit left, the empty columns stay empty (a
- * caption goes below the row, never beside it). Extra tiles are dropped.
+ * One even row of focus tiles with 10dp gaps, as showcase 04_report "Recommended Focus": three square tiles that
+ * share the width. Two tiles share it the same way; a single trait becomes one wide row tile, so the row never
+ * leaves an empty column. Extra tiles past the third are dropped.
  */
 export function FocusTiles({ items, accessibilityLabel = 'What this means for products' }: { items: readonly FocusItem[]; accessibilityLabel?: string }) {
   const t = useTheme();
   const f = t.components.focusTile;
   const shown = items.slice(0, f.columns);
-  const spacers = Math.max(0, f.columns - shown.length);
   return (
-    <View accessibilityRole="list" accessibilityLabel={accessibilityLabel} style={{ flexDirection: 'row', gap: t.space[3] }}>
+    <View accessibilityRole="list" accessibilityLabel={accessibilityLabel} style={{ flexDirection: 'row', gap: t.space[2] + 2 }}>
       {shown.map((it) => (
-        <FocusTile key={it.label} {...it} />
-      ))}
-      {Array.from({ length: spacers }, (_, i) => (
-        <View key={`spacer${i}`} style={{ flex: 1 }} importantForAccessibility="no" accessibilityElementsHidden />
+        <FocusTile key={it.label} {...it} wide={shown.length === 1} />
       ))}
     </View>
   );
