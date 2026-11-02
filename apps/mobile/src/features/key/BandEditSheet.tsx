@@ -31,7 +31,7 @@ export function BandEditSheet({ visible, keyProfile, onClose, onSave }: Props) {
   return (
     <Sheet visible={visible} title="Feels wrong? Edit" onClose={onClose} actions={<Button label="Done" onPress={onClose} />}>
       <Body muted small>
-        Pick the band that feels right. Edited bands are tagged "{SELF_REPORTED_TAG}" everywhere they appear.
+        Pick the band that feels right.
       </Body>
       {CONCERNS.map((concern) => {
         const reading = keyProfile.bands[concern];

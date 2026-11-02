@@ -50,10 +50,6 @@ export function ResultScreen() {
         }
         onRemoved={home}
       />
-      <Button label="How this was made" variant="tertiary" trailingIcon="chevron-right" onPress={() => router.push('/how')} />
-      <Body muted small>
-        {COPY.footer}
-      </Body>
     </Screen>
   );
 }

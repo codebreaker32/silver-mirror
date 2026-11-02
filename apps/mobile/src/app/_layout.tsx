@@ -25,7 +25,6 @@ function RootStack() {
         <Stack.Screen name="tryon" options={{ presentation: 'modal' }} />
         <Stack.Screen name="key" />
         <Stack.Screen name="settings" />
-        <Stack.Screen name="how" />
         <Stack.Screen name="kit" />
       </Stack>
       <ShareRouter />

@@ -2,17 +2,16 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ComponentRef } 
 import { AccessibilityInfo, Pressable, ScrollView, View, useWindowDimensions, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { COPY, DEMO_KEY, type HowThisWasMade, type Store } from '@skinkey/contracts';
+import { COPY, DEMO_KEY, type Store } from '@skinkey/contracts';
 import { FACET_MAP, medicineGate, rank, verdict } from '@skinkey/rules';
 import { useTheme } from '@/theme/ThemeProvider';
 import { AppBar, Body, Card, EmptyState, FooterFade, Icon, IconButton, PageBackdrop, PillButton, Tag, Txt } from '@/components';
-import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
+import { glyphFromKey, useKey, ZoneGlyph } from '@/features/key';
 import { AFFILIATE, BetterMatches, BuySheet, buyLinks, guessCategory, hasAffiliate, storeLinks, StoreSearchSheet, useBetterMatches } from '@/features/matches';
 import { openStoreUrl } from '@/features/matches/openStoreUrl';
 import { CropStep, inputFromPaste, sampleInput, takeShare, type CheckInput } from '@/features/share';
 import { demo } from '@/demo';
 import { workerCheckApi } from './api';
-import { HowThisWasMadeSheet } from './components/HowThisWasMadeSheet';
 import { LabelCamera } from './components/LabelCamera';
 import { HeadSkeleton, HeroSkeleton, ProductHeader, ProductHero } from './components/ProductHeader';
 import { SaveHeart } from '@/components/SaveHeart';
@@ -35,12 +34,10 @@ type Origin = 'share' | 'paste' | 'sample' | 'screenshot' | 'catalog';
 const STORE_NAME: Record<Store, string | null> = { flipkart: 'Flipkart', amazon_in: 'Amazon', nykaa: 'Nykaa', other: null };
 
 function sourceLine(origin: Origin | null, store: Store): string {
-  if (origin === 'sample') return 'Sample share';
-  if (origin === 'paste') return 'Pasted link';
-  if (origin === 'catalog') return `From the ${COPY.appName} catalogue`;
-  if (origin === 'screenshot') return 'Shared screenshot';
+  // Only a real store share is named; sample, pasted, screenshot and catalogue checks show no source.
+  if (origin === 'sample' || origin === 'paste' || origin === 'catalog' || origin === 'screenshot') return '';
   const name = STORE_NAME[store];
-  return name ? `Shared from ${name}` : 'Shared link';
+  return name ? `Shared from ${name}` : '';
 }
 
 /** Row title in the showcase cards: 15 medium. */
@@ -79,7 +76,7 @@ function MatchesPill({ onPress }: { onPress: () => void }) {
         onPress={onPress}
         accessibilityRole="button"
         accessibilityLabel="Better matches"
-        accessibilityHint="Scrolls to catalogue products ranked by fit to your readings."
+        accessibilityHint="Scrolls to better matches."
         testID="find-better"
         style={{ minHeight: t.touch.min, justifyContent: 'center' }}
       >
@@ -105,20 +102,12 @@ export default function CheckScreen() {
   const { key: storedKey, isDemo, loading: keyLoading, useDemo: chooseDemo } = useKey();
   const [origin, setOrigin] = useState<Origin | null>(null);
   const [listingUrl, setListingUrl] = useState<string | null>(null);
-  const [howOpen, setHowOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [buyOpen, setBuyOpen] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
   const key = storedKey ?? (origin === 'sample' ? DEMO_KEY : null);
   const usingDemo = isDemo || (!storedKey && origin === 'sample');
   const flow = useCheckFlow(API, ENGINE, key);
-  const [scanLedger, setScanLedger] = useState<HowThisWasMade | null>(null);
-  useEffect(() => {
-    if (storedKey?.source !== 'youcam_hd') return;
-    loadScanLedger()
-      .then(setScanLedger)
-      .catch(() => undefined);
-  }, [storedKey?.source, storedKey?.scanId]);
   const { state, start, openProduct, reset } = flow;
 
   // Scroll geometry: the "Better matches" pill shows only while that section is off screen (component.actionBar).
@@ -146,7 +135,6 @@ export default function CheckScreen() {
     geo.current.y = 0;
     matchesY.current = null;
     setMatchesOnScreen(false);
-    setHowOpen(false);
     setMoreOpen(false);
     setCameraOpen(false);
   }, [reset]);
@@ -298,7 +286,7 @@ export default function CheckScreen() {
           ? shortListingTitle(rawTitle)
           : fallbackTitle;
   const headerProduct = result?.product ?? (state.phase === 'loading' ? state.candidate.product : null);
-  // The source is plain muted text in the meta line ("50g · Pasted link"), never a pill above the title (no eyebrow).
+  // The source is plain muted text in the meta line ("50g · Shared from Amazon"), never a pill above the title (no eyebrow).
   const source = origin ? sourceLine(origin, store) : null;
   const size = headerProduct ? sizeMeta(headerProduct.size) : null;
   const headerMeta = [size, source].filter(Boolean).join(' · ') || null;
@@ -425,13 +413,13 @@ export default function CheckScreen() {
               <HeroSkeleton />
             ) : state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
               <ProductHeader title={header} meta={headerMeta} glyph={categoryGlyph(headerProduct?.category ?? category)} />
-            ) : origin && state.phase !== 'idle' ? (
+            ) : origin && state.phase !== 'idle' && sourceLine(origin, store) ? (
               <Txt variant="caption" tone="muted" testID="source-line">
                 {sourceLine(origin, store)}
               </Txt>
             ) : null}
 
-            {usingDemo && state.phase === 'confirm' ? <Tag label={`${COPY.reading.demo}: labelled sample readings`} variant="demo" /> : null}
+            {usingDemo && state.phase === 'confirm' ? <Tag label={COPY.reading.demo} variant="demo" /> : null}
 
             {state.phase === 'resolving' ? <HeadSkeleton label="Reading the shared link…" /> : null}
             {state.phase === 'confirm' ? <HeadSkeleton label="Confirm the product to see the check." /> : null}
@@ -448,7 +436,6 @@ export default function CheckScreen() {
                 <VerdictSheet
                   view={view}
                   demo={usingDemo}
-                  onHowMade={() => setHowOpen(true)}
                   ingredients={ingredients}
                   onHeadPress={toReasons}
                   onReasonsLayout={(y) => {
@@ -539,15 +526,6 @@ export default function CheckScreen() {
           onConfirm={(c) => void flow.confirm(c)}
           onNotThis={flow.notThis}
           onClose={goBack}
-        />
-      ) : null}
-
-      {result && view ? (
-        <HowThisWasMadeSheet
-          visible={howOpen}
-          onClose={() => setHowOpen(false)}
-          ledgers={scanLedger ? [scanLedger, ...result.ledgers] : result.ledgers}
-          rulesetHash={result.verdict.provenance.rulesetHash}
         />
       ) : null}
 

@@ -53,14 +53,14 @@ describe('consent', () => {
 describe('steps', () => {
   it('shows the four scan steps with spec labels before the server answers', () => {
     const steps = scanDisplaySteps(undefined, 'active');
-    expect(steps.map((s) => s.label)).toEqual(['Uploading', 'Analysing (HD)', 'Reading results', 'Deleting from YouCam']);
+    expect(steps.map((s) => s.label)).toEqual(['Uploading', 'Analysing', 'Reading results', 'Deleting from YouCam']);
     expect(steps.map((s) => s.state)).toEqual(['active', 'pending', 'pending', 'pending']);
   });
 
   it('ticks the delete step only when YouCam confirmed it', () => {
     const server = (['upload', 'analyse', 'read', 'delete'] as const).map((id) => ({ id, state: 'done' as const, label: id }));
     const done = scanDisplaySteps(server, 'done', 'deleted');
-    expect(done.map((s) => s.label)).toEqual(['Uploaded', 'Analysed (YouCam HD)', 'Results read', 'Deleted from YouCam']);
+    expect(done.map((s) => s.label)).toEqual(['Uploaded', 'Analysed', 'Results read', 'Deleted from YouCam']);
     expect(done[3]).toMatchObject({ label: 'Deleted from YouCam', state: 'done' });
     expect(done.some((s) => s.label.includes('✓'))).toBe(false);
     const failed = scanDisplaySteps(server.map((s) => (s.id === 'delete' ? { ...s, state: 'failed' as const } : s)), 'done', 'delete_failed')[3];
@@ -72,8 +72,8 @@ describe('steps', () => {
     expect(tryonDisplaySteps(undefined, 'active', 'single', undefined).map((s) => s.id)).toEqual(['upload', 'render', 'delete']);
     expect(tryonDisplaySteps(undefined, 'active', 'multi', undefined).map((s) => s.label)).toEqual([
       'Uploading',
-      'Reading skin tone (YouCam)',
-      'Rendering 2 shades (YouCam)',
+      'Reading skin tone',
+      'Rendering 2 shades',
       'Deleting from YouCam',
     ]);
   });

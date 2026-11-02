@@ -17,7 +17,7 @@ describe('presentVerdict', () => {
       ['03', 'Label check · for information'],
     ]);
     expect(v.reasons[0]!.reading).toBe("Listing says 'fragrance-free'.");
-    expect(v.reasons[0]!.fact).toBe('Its ingredient list has Parfum (rule LC-\u20601a).');
+    expect(v.reasons[0]!.fact).toBe('Its ingredient list has Parfum.');
     expect(v.reasons[1]!.reading).toBe('Oiliness reading: High (whole face, scan 1 Nov).');
     expect(v.reasons[1]!.chip).toEqual({ concern: 'oiliness', level: 'High', selfReported: false });
     expect(v.reasons[1]!.a11y).toMatch(/^Reason 2 of 3\. Oiliness reading: High/);
@@ -26,12 +26,10 @@ describe('presentVerdict', () => {
 
   it('carries a provenance line, ledger rows and the fixed lines', () => {
     const v = presentVerdict(CAUTION_VERDICT, ctx);
-    expect(v.provenanceLine).toBe('Measured by YouCam Skin Analysis HD, 1 Nov · photo deleted · rules va1b2c3d');
-    expect(v.ledger.map((r) => r.key)).toEqual(['Reading', 'Product', 'Rules', 'Limits']);
+    expect(v.provenanceLine).toBe('Measured by YouCam Skin Analysis, 1 Nov · photo deleted · rules va1b2c3d');
+    expect(v.ledger.map((r) => r.key)).toEqual(['Reading', 'Product', 'Limits']);
     expect(v.ledger[1]!.links).toEqual([{ label: 'Ingredient list source', url: PRODUCT.source_url }]);
-    expect(v.ledger[2]!.sub!.replace(/\u2060/g, '')).toBe('LC-1a (regulatory list) · OCC-2 (literature-graded) · LC-1b (regulatory list)');
-    expect(v.ledger[2]!.links[0]).toEqual({ label: 'OCC-\u20602 source', url: 'https://example.org/fulton-1989' });
-    expect(v.ledger[3]!.value).toBe(COPY.accuracyNote);
+    expect(v.ledger[2]!.value).toBe(COPY.accuracyNote);
     expect(v.fixedLines).toEqual([COPY.footer, COPY.notAffiliated]);
   });
 

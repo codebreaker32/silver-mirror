@@ -166,7 +166,6 @@ const GROUPS = [
     ],
   ],
   [['settings', `/settings${q()}`]],
-  [['how', `/how${q()}`]],
   [['home-empty', `/?demo=none`]],
   [['welcome', '/welcome?demo=none']],
   [['key-empty', `/reading?demo=none`]],

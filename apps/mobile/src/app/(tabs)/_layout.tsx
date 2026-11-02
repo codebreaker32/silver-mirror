@@ -6,7 +6,7 @@ import { useTheme } from '@/theme/ThemeProvider';
 /**
  * Home · Shop · Scan · Reading · Routine (experience reference). Settings opens from the Home gear (/settings). Scan is a tab-bar button that opens the scan flow above
  * the tabs (see TAB_ITEMS). Scenes crossfade fast on a switch (instant with reduced motion) and keep their state. The
- * docked bar sits over the bottom of the scenes (TabBar.tsx); pushed details (/check, /tryon, /scan, /settings, /how)
+ * docked bar sits over the bottom of the scenes (TabBar.tsx); pushed details (/check, /tryon, /scan, /settings)
  * cover it.
  */
 export default function TabsLayout() {

@@ -22,7 +22,7 @@ const SKELETONS: ShopItem[] = Array.from({ length: 6 }, (_, i) => ({ id: `skelet
 function countLine(n: number, total: number | null, category: ShopCategory, q: string): string {
   if (category === 'saved') return n === 1 ? '1 saved product' : `${n} saved products`;
   const word = n === 1 ? 'product' : 'products';
-  if (category === 'all' && !q.trim() && total && n >= PAGE && total > n) return `${n} of ${total} verified products`;
+  if (category === 'all' && !q.trim() && total && n >= PAGE && total > n) return `${total} products`;
   return `${n} ${word}`;
 }
 
@@ -77,8 +77,8 @@ export function ShopScreen() {
       };
     }
     return {
-      title: 'No verified products here yet',
-      body: 'The catalogue grows as ingredient lists are checked.',
+      title: 'Nothing here yet',
+      body: 'Try another category.',
       action: { label: 'Browse all', onPress: () => setCategory('all'), testID: 'shop-browse-all' },
     };
   }, [firstLoad, shop.status, shop.items.length, shop.retry, query, category]);
@@ -92,7 +92,7 @@ export function ShopScreen() {
           <Text accessibilityRole="header" style={[homeType.greeting, { color: t.colors.text }]}>
             Shop
           </Text>
-          <Text style={[homeType.body, { color: t.colors.textMuted }]}>Verified products, checked against your reading</Text>
+          <Text style={[homeType.body, { color: t.colors.textMuted }]}>Checked against your reading</Text>
         </View>
         <View
           style={{

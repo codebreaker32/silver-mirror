@@ -22,7 +22,7 @@ export function errorMessage(e: unknown): string {
   if (e && typeof e === 'object' && 'body' in e) {
     const code = (e as { body?: { error?: { code?: string } } | null }).body?.error?.code;
     if (code === 'rate_limited') return `${COPY.appName} is busy right now. Try again in a minute.`;
-    if (code === 'cap_reached') return 'This install has used its checks for now. The sample share still works.';
+    if (code === 'cap_reached') return "You've used your checks for now. The sample still works.";
     if (code === 'claude_refusal') return "We couldn't read that. Try a clearer photo or paste the product name.";
   }
   return QUIET;

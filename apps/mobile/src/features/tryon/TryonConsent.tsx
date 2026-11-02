@@ -44,7 +44,7 @@ export function TryonConsent({ productName, mode, onAccept, onDecline }: { produ
       <PromiseList items={PROMISES} />
       <Body>
         {mode === 'multi'
-          ? 'YouCam reads your skin tone once to pick two shades, then renders both on the same photo. The tone is used for this try-on only and is never shown or kept.'
+          ? 'YouCam reads your skin tone once to pick two shades. The tone is never kept.'
           : 'YouCam renders the shade on your photo.'}
       </Body>
       <View style={{ gap: theme.space[1] }}>

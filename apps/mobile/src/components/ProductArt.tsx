@@ -85,7 +85,7 @@ export function ProductArt({ category, size, style, productId }: ProductArtProps
       style={[{ width: size, height: size, overflow: 'hidden', backgroundColor: t.colors.bgSunken }, style]}
       accessible
       accessibilityRole="image"
-      accessibilityLabel={`Photo of ${PHOTO_SUBJECT[key]} (illustrative)`}
+      accessibilityLabel={`Photo of ${PHOTO_SUBJECT[key]}`}
       pointerEvents="none"
     >
       <Image

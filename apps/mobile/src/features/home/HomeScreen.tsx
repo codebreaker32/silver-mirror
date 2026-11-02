@@ -128,11 +128,8 @@ export default function HomeScreen() {
         <FadeRise index={2} style={{ marginTop: section, gap: t.space[2] }}>
           <HomeBanner
             onSample={() => router.push({ pathname: '/check', params: { sample: '1' } })}
-            hint={`Checks a labelled sample listing. Uses the ${COPY.reading.demo} if you haven't scanned.`}
+            hint="Checks a sample product."
           />
-          <Caption>
-            A labelled sample listing{key && !isDemo ? '' : `, checked against the ${COPY.reading.demo}`}. No store app needed.
-          </Caption>
         </FadeRise>
 
         <FadeRise index={3} style={{ marginTop: section }}>

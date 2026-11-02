@@ -8,7 +8,7 @@ import type { ConfirmKind } from './ConfirmSheet';
 
 const REMOVED: Record<ConfirmKind, string> = {
   delete: 'Your readings were deleted from this phone.',
-  withdraw: 'Consent withdrawn. Your readings were deleted from this phone. If a YouCam deletion failed, YouCam removes files automatically within 30 days.',
+  withdraw: 'Consent withdrawn. Your reading was deleted from this phone.',
 };
 
 /**
@@ -41,10 +41,6 @@ export function KeyScreen() {
   return (
     <Screen title={COPY.reading.yours}>
       <KeyPanel keyProfile={key} isDemo={isDemo} onRemoved={setRemoved} />
-      <Button label="How this was made" variant="tertiary" trailingIcon="chevron-right" onPress={() => router.push('/how')} />
-      <Body muted small>
-        {COPY.footer}
-      </Body>
     </Screen>
   );
 }

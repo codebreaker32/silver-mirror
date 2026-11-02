@@ -60,7 +60,7 @@ export function RoutineScreen() {
           testID="routine-empty"
           plate="face"
           title="Your routine starts with your reading"
-          body="Each step is filled with a product from our catalogue that fits your reading. Scan once, about a minute, or try the Demo reading."
+          body="Scan once, or try the Demo reading."
         >
           <Button label="Start scan" trailingIcon="arrow-right" onPress={() => router.push('/scan')} />
           <Button label={COPY.reading.useDemo} variant="secondary" onPress={useDemo} />
@@ -87,7 +87,7 @@ export function RoutineScreen() {
       <View style={{ gap: t.space[2] }}>
         {title}
         <Text style={[homeType.body, { color: t.colors.textMuted }]}>
-          {isDemo ? `Built from the ${COPY.reading.demo}.` : 'Built from your reading.'} Every step is a catalogue product that fits it.
+          {isDemo ? `Built from the ${COPY.reading.demo}.` : 'Built from your reading.'}
         </Text>
       </View>
 
@@ -112,7 +112,7 @@ export function RoutineScreen() {
       <Sheet
         visible={!!changing}
         title={changing ? `Change ${changing.label.toLowerCase()}` : ''}
-        supporting="Other products in our catalogue that fit your reading."
+        supporting="Other picks that fit your reading."
         onClose={() => setChanging(null)}
         testID="routine-change-sheet"
       >
@@ -225,11 +225,11 @@ function StepRow({
 
   if (!p) {
     return (
-      <View style={shell} testID={`routine-step-${step.category}`} accessible accessibilityLabel={`Step ${index + 1} of ${total}, ${step.label}. Nothing in our catalogue fits your reading for this step yet.`}>
+      <View style={shell} testID={`routine-step-${step.category}`} accessible accessibilityLabel={`Step ${index + 1} of ${total}, ${step.label}. Nothing fits your reading here yet.`}>
         <View style={{ width: PLATE, height: PLATE, borderRadius: 12, backgroundColor: t.colors.bgSunken }} />
         <View style={{ flex: 1, gap: 2 }}>
           <Text style={[homeType.bodyStrong, { fontFamily: homeType.smallStrong.fontFamily, color: t.colors.text }]}>{step.label}</Text>
-          <Text style={[homeType.small, { color: t.colors.textMuted }]}>Nothing in our catalogue fits your reading for this step yet.</Text>
+          <Text style={[homeType.small, { color: t.colors.textMuted }]}>Nothing fits your reading here yet.</Text>
         </View>
       </View>
     );

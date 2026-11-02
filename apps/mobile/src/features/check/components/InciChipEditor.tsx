@@ -141,7 +141,7 @@ export function InciChipEditor({ chips, unreadable, onChange, onRun, onRetake }:
         </View>
       </Card>
       <Body small muted>
-        Claude read these names from your photo. Our rules decide once you run the check.
+        Correct any name we misread.
       </Body>
       <PillButton testID="chip-run" label={`Run the check on ${chips.length} ingredients`} disabled={chips.length === 0} onPress={() => onRun(chips)} />
       <PillButton label="Retake photo" variant="tertiary" leadingIcon="camera" onPress={onRetake} />

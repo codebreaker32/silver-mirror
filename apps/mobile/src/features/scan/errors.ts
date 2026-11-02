@@ -14,8 +14,8 @@ export function friendlyError(
   const code = e.body?.error.code;
   if (code === 'cap_reached') {
     return flow === 'scan'
-      ? { title: 'Scan limit reached', body: `This install has used its free scan. ${COPY.reading.yours} and the ${COPY.reading.demo} still work.`, retryable: false }
-      : { title: 'Try-on limit reached', body: 'This install has used its 3 try-ons.', retryable: false };
+      ? { title: 'Scan limit reached', body: `You've used your free scan. ${COPY.reading.yours} and the ${COPY.reading.demo} still work.`, retryable: false }
+      : { title: 'Try-on limit reached', body: "You've used your 3 try-ons.", retryable: false };
   }
   if (code === 'rate_limited') {
     return { title: 'YouCam is busy', body: 'Try again in a minute.', retryable: true };

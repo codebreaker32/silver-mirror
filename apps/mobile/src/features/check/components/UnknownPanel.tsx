@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { COPY } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Body, Caption, Card, Icon, PillButton, SectionHeader, Txt } from '@/components';
+import { Body, Card, Icon, PillButton, SectionHeader, Txt } from '@/components';
 import type { InciChip } from '../chips';
 import type { LabelState } from '../flow';
 import { InciChipEditor } from './InciChipEditor';
@@ -46,7 +46,7 @@ export function UnknownPanel({ catalogCount, label, onSnap, onChips, onRun }: Pr
               </Body>
             ) : (
               <Body small muted>
-                Photograph the ingredient list on the pack. Claude reads the names; you check them; our rules decide.
+                Photograph the ingredient list on the pack.
               </Body>
             )}
           </View>
@@ -59,11 +59,8 @@ export function UnknownPanel({ catalogCount, label, onSnap, onChips, onRun }: Pr
           onPress={onSnap}
           busy={label.step === 'reading'}
           busyLabel="Reading the label…"
-          accessibilityHint="Opens the camera. Claude reads the ingredient names; you confirm them before any check runs."
+          accessibilityHint="Opens the camera."
         />
-        {label.step === 'reading' ? (
-          <Caption accessibilityLiveRegion="polite">Reading the ingredient names (Claude). You'll check them next.</Caption>
-        ) : null}
       </Card>
       {catalogCount != null ? (
         <Body small muted testID="catalog-count">

@@ -135,13 +135,13 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
         ) : null}
         {skinType ? <MatchesBanner skinType={skinType} /> : <Honesty />}
       </View>
-      {!keyProfile ? <Body muted>Scan, or use the Demo reading, to rank catalogue products by fit to your readings.</Body> : null}
+      {!keyProfile ? <Body muted>Scan, or use the Demo reading, to see matches.</Body> : null}
       {state.status === 'loading' ? (
         <Body muted accessibilityLiveRegion="polite">
-          Ranking catalogue products…
+          Finding matches…
         </Body>
       ) : null}
-      {state.status === 'error' ? <Body>We couldn't load catalogue matches. The store searches below still work.</Body> : null}
+      {state.status === 'error' ? <Body>Couldn't load matches. Try the store searches below.</Body> : null}
       {state.status === 'ready' && ready.length === 0 ? (
         <Card variant="sunken" gap={t.space[1]} testID="no-matches">
           <Txt variant="bodyStrong">{COPY.noMatches}</Txt>

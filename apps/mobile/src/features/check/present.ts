@@ -94,10 +94,16 @@ function orderedReasons(v: Verdict): Reason[] {
   });
 }
 
+/** Reason sentence without rule codes: "our rule SUP-2 counts" → "we count", "(rule LC-1a)" dropped. */
+export function plainFact(s: string): string {
+  return s
+    .replace(/\bour rule [A-Z]{2,}-\w+ (flags|counts)\b/g, (_m, v: string) => `we ${v === 'flags' ? 'flag' : 'count'}`)
+    .replace(/\s*\(rule [A-Za-z0-9-]+(?:, for information)?\)/g, '');
+}
+
 function reasonView(r: Reason, i: number, total: number, scanDate: string | null, demo: boolean): ReasonView {
   const split = splitPlain(r.plain);
-  // Rule ids inside the sentence ("our rule SUP-2") must not break at the hyphen either.
-  const fact = split.fact.replace(/\b([A-Z]{2,}-)(?=[0-9A-Za-z])/g, '$1\u2060');
+  const fact = plainFact(split.fact);
   const lead = split.lead;
   const reading = lead ?? readingLine(r.reading, scanDate, demo);
   const isLabel = r.kind === 'LABEL_CHECK';
@@ -107,7 +113,7 @@ function reasonView(r: Reason, i: number, total: number, scanDate: string | null
   const ruleTag = `Rule ${ruleId(r.ruleId)}${grade ? ` · ${grade}` : ''}`;
   const chip =
     r.reading?.on === 'band' ? { concern: r.reading.concern, level: r.reading.level, selfReported: r.reading.selfReported } : null;
-  const a11y = [`Reason ${i + 1} of ${total}.`, kindNote ? `${kindNote}.` : null, reading, fact, `${ruleTag}.`]
+  const a11y = [`Reason ${i + 1} of ${total}.`, kindNote ? `${kindNote}.` : null, reading, fact]
     .filter(Boolean)
     .join(' ');
   return { id: `${r.ruleId}-${i}`, index: twoDigit(i + 1), reading, fact, ruleTag, kindNote, info, chip, glyphZone: r.glyphZone ?? null, a11y };
@@ -120,11 +126,11 @@ function skinRow(key: KeyProfile | null): LedgerRow {
     return { key: 'Reading', value, sub, links: [], a11y: `Reading: ${value}. ${sub}` };
   }
   if (key.source === 'demo') {
-    const value = 'Demo reading: labelled sample readings, not a scan';
+    const value = `${COPY.reading.demo}, not a scan`;
     const sub = 'No photo taken';
     return { key: 'Reading', value, sub, links: [], a11y: `Reading: ${value}. ${sub}` };
   }
-  const value = `Measured by YouCam Skin Analysis HD, ${shortDate(key.scanDate)}`;
+  const value = `Measured by YouCam Skin Analysis, ${shortDate(key.scanDate)}`;
   const parts: string[] = [key.photoDeleted ? COPY.reading.photoDeletedStamp : COPY.deleteFailed];
   if (key.selfReported.length) parts.push(`${key.selfReported.length} band${key.selfReported.length > 1 ? 's' : ''} ${COPY.selfReported}`);
   const sub = parts.join(' · ');
@@ -138,7 +144,7 @@ function productRow(v: Verdict, ctx: PresentContext): LedgerRow {
     const value = COPY.catalogSource;
     // Honest tier from the catalogue row: only a person's tick is ever called human-checked.
     const by = ctx.product?.verified_by;
-    const sub = by === 'human' ? COPY.catalogHumanChecked : by === 'brand_page_check' ? COPY.catalogBrandPageChecked : 'Copied from the brand page';
+    const sub = by === 'human' ? COPY.catalogHumanChecked : by === 'brand_page_check' ? COPY.catalogBrandPageChecked : 'From the brand page';
     const links = url ? [{ label: 'Ingredient list source', url }] : [];
     return { key: 'Product', value, sub, links, a11y: `Product: ${value}. ${sub}` };
   }
@@ -167,7 +173,7 @@ function rulesRow(v: Verdict, reasons: Reason[]): LedgerRow {
 function composeProvenance(v: Verdict, key: KeyProfile | null): string {
   const p = v.provenance;
   const parts: string[] = [];
-  if (key?.source === 'youcam_hd') parts.push(`Measured by YouCam Skin Analysis HD, ${shortDate(key.scanDate)}`);
+  if (key?.source === 'youcam_hd') parts.push(`Measured by YouCam Skin Analysis, ${shortDate(key.scanDate)}`);
   else if (key?.source === 'demo') parts.push('Demo reading (sample readings)');
   if (key?.source === 'youcam_hd') parts.push(key.photoDeleted ? 'photo deleted' : 'photo delete not confirmed');
   if (p.inciSource === 'label_photo_confirmed') parts.push(COPY.labelPhotoProvenance.replace(/\.$/, ''));
@@ -207,7 +213,7 @@ export function presentVerdict(v: Verdict, ctx: PresentContext): VerdictView {
   const reasons = ordered.map((r, i) => reasonView(r, i, ordered.length, scanDate, ctx.key?.source === 'demo'));
   const emptyReasonsNote = v.label === 'FITS' && reasons.length === 0 ? COPY.fitsNoFlags : null;
   const provenanceLine = v.provenance.line?.trim() || composeProvenance(v, ctx.key);
-  const ledger = [skinRow(ctx.key), productRow(v, ctx), rulesRow(v, ordered), { key: 'Limits', value: COPY.accuracyNote, sub: null, links: [], a11y: `Limits: ${COPY.accuracyNote}` } satisfies LedgerRow];
+  const ledger = [skinRow(ctx.key), productRow(v, ctx), { key: 'Limits', value: COPY.accuracyNote, sub: null, links: [], a11y: `Limits: ${COPY.accuracyNote}` } satisfies LedgerRow];
 
   return {
     label: v.label,

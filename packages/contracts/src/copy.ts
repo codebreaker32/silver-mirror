@@ -29,13 +29,13 @@ export const COPY = {
   noKeyPrompt: 'Scan for reasons based on your readings.',
   noMatches: 'No better matches in our catalogue yet',
   howMadeBoundary: 'Claude reads. Our rules decide.',
-  mockReading: 'Mock YouCam reading (test fixture, not your skin)',
+  mockReading: 'Sample reading, not a scan',
   fitsNoFlags: 'No ingredient in our rules flags your readings.',
-  catalogCount: (n: number) => `Our catalogue: ${n} verified products.`,
+  catalogCount: (n: number) => `${n} products in our catalogue.`,
   /** Catalogue provenance tiers (data/catalog: verified_by). Never call a brand-page check human. */
   catalogSource: 'Ingredient list from our catalogue',
   catalogHumanChecked: 'Human-checked against the brand page',
-  catalogBrandPageChecked: 'Checked against the brand page: a second read matched it word for word',
+  catalogBrandPageChecked: 'Checked against the brand page',
   snapLabel: 'Snap the ingredient list.',
   labelPhotoProvenance: 'Photo of label, confirmed by you.',
   tryonCaption: 'Two shades, same photo. Preview, not a shade guarantee.',
@@ -53,8 +53,7 @@ export const COPY = {
   orphanUpload: 'Not processed; YouCam removes it automatically within 30 days.',
   deleteFailed: 'Delete failed: auto-removed within 30 days.',
   betterMatchesHeader: 'Ranked by fit to your readings. No paid placements.',
-  flipkartFacetLink: (facet: string) =>
-    `Browse Flipkart's own ${facet} filter (seller-tagged, not checked by Silver Mirror)`,
+  flipkartFacetLink: (facet: string) => `Flipkart's ${facet} filter`,
   affiliateDisclosure: 'We may earn a commission if you buy; it never changes the ranking',
   coachMark: 'Find Silver Mirror in your share menu, then pin it',
   cropWarning: 'Crop out your address or order details',
@@ -96,21 +95,21 @@ export const COPY = {
   shareTo: 'In Flipkart, Amazon or Nykaa, tap Share → Silver Mirror.',
   scanSteps: {
     upload: 'Uploading',
-    analyse: 'Analysing (HD)',
+    analyse: 'Analysing',
     read: 'Reading results',
     delete: 'Deleting from YouCam',
   },
   /** Checklist-card labels once a step has finished (DESIGN.md §8.8); shown with the drawn circle-check icon, never a unicode tick. */
   scanStepsDone: {
     upload: 'Uploaded',
-    analyse: 'Analysed (YouCam HD)',
+    analyse: 'Analysed',
     read: 'Results read',
     delete: 'Deleted from YouCam',
   },
   tryonSteps: {
     upload: 'Uploading',
-    tone: 'Reading skin tone (YouCam)',
-    render: 'Rendering 2 shades (YouCam)',
+    tone: 'Reading skin tone',
+    render: 'Rendering 2 shades',
     delete: 'Deleting from YouCam',
   },
 } as const;

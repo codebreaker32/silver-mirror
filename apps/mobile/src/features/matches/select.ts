@@ -1,5 +1,6 @@
 import { COPY, type CatalogProduct, type KeyProfile, type ProductCategory, type RankedMatch, type Store } from '@skinkey/contracts';
 import { productTitle } from '../check/flow';
+import { plainFact } from '../check/present';
 import { readingsIn } from './filters';
 import { amazonSearchUrl, flipkartSearchUrl, nykaaSearchUrl } from './links';
 
@@ -81,7 +82,7 @@ export function selectMatches(
         shortReason: shortReason(m.reasonLine),
         url: link.url,
         destination,
-        a11y: `Match ${i + 1}. ${name}. Fits. ${m.reasonLine} ${destination}.`,
+        a11y: `Match ${i + 1}. ${name}. Fits. ${plainFact(m.reasonLine)} ${destination}.`,
       };
     });
 }

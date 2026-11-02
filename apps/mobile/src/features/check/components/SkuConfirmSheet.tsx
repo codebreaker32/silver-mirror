@@ -112,7 +112,7 @@ export function SkuConfirmSheet({ visible, mode, candidates, sharedTitle, onConf
     <Sheet
       visible={visible}
       title="Which product is this?"
-      supporting="Pick the one you're looking at. We check nothing until you pick."
+      supporting="Pick the one you're looking at."
       onClose={onClose}
       testID="sku-choose"
       actions={<PillButton label="None of these: check by name only" variant="secondary" onPress={onNotThis} testID="sku-none" />}

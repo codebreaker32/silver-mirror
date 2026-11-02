@@ -38,11 +38,11 @@ export function scanDisplaySteps(
     if (id === 'delete') {
       return { id, state, label: deleteLabel(base, state, deleteState), detail: deleteDetail(deleteState) ?? server?.detail };
     }
-    return { id, state, label: state === 'done' ? COPY.scanStepsDone[id] : base, detail: server?.detail };
+    return { id, state, label: state === 'done' ? COPY.scanStepsDone[id] : base };
   });
 }
 
-export const SINGLE_RENDER_LABEL = 'Rendering the shade (YouCam)';
+export const SINGLE_RENDER_LABEL = 'Rendering the shade';
 
 export function tryonDisplaySteps(
   serverSteps: readonly TryonStep[] | undefined,
@@ -61,7 +61,7 @@ export function tryonDisplaySteps(
       if (id === 'delete') {
         return { id, state, label: deleteLabel(base, state, deleteState), detail: deleteDetail(deleteState) ?? server?.detail };
       }
-      return { id, state, label: id === 'upload' && state === 'done' ? COPY.scanStepsDone.upload : base, detail: server?.detail };
+      return { id, state, label: id === 'upload' && state === 'done' ? COPY.scanStepsDone.upload : base };
     })
     .filter((s) => s.state !== 'skipped');
 }

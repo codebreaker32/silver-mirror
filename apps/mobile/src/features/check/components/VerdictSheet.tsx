@@ -18,7 +18,6 @@ interface Props {
   glyph?: ReactNode;
   /** The Demo reading is in use: greige badge inside the head. */
   demo?: boolean;
-  onHowMade?: () => void;
   /** Ingredient names we know for this product (catalogue INCI order), shown under "Key ingredients". */
   ingredients?: string[];
   /** Tap on the skin-match card: the screen scrolls to the reasons. */
@@ -31,9 +30,9 @@ const KEY_INGREDIENTS = 8;
 
 /**
  * Reasons before verdicts (DESIGN.md §9.4): head (the only tint) → reasons → try-on (tinted) → next step → where it
- * comes from → how it was made → better matches. MEDICINE stops after the head.
+ * comes from → how it was checked → better matches. MEDICINE stops after the head.
  */
-export function VerdictSheet({ view, afterHead, unknown, tryon, matches, glyph, demo = false, onHowMade, ingredients, onHeadPress, onReasonsLayout }: Props) {
+export function VerdictSheet({ view, afterHead, unknown, tryon, matches, glyph, demo = false, ingredients, onHeadPress, onReasonsLayout }: Props) {
   const t = useTheme();
   const medicine = view.label === 'MEDICINE';
   return (
@@ -75,21 +74,11 @@ export function VerdictSheet({ view, afterHead, unknown, tryon, matches, glyph, 
           <Disclosure title="How this was checked" icon="document" testID="how-checked">
             <View style={{ gap: t.space[3] }}>
               <ProvenanceLedger rows={view.ledger} line={null} />
-              {onHowMade ? (
-                <PillButton variant="tertiary" label="How this was made" trailingIcon="chevron-right" onPress={onHowMade} testID="how-made-link" />
-              ) : null}
             </View>
           </Disclosure>
         </View>
       ) : null}
       {view.showMatches && matches ? matches : null}
-      <View style={{ gap: t.space[1] }}>
-        {view.fixedLines.map((f) => (
-          <Txt key={f} variant="caption" tone="muted">
-            {f}
-          </Txt>
-        ))}
-      </View>
     </View>
   );
 }

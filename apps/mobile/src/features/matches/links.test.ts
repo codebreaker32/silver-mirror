@@ -34,7 +34,7 @@ describe('store links', () => {
   it('facet link uses the exact disclosure string and destination line', () => {
     const links = storeLinks({ category: 'moisturiser', key: oily, facetMap: MAP, facetLabel: COPY.flipkartFacetLink });
     expect(links.map((l) => l.id)).toEqual(['flipkart_facet', 'amazon', 'nykaa']);
-    expect(links[0]!.label).toBe("Browse Flipkart's own Oily Skin filter (seller-tagged, not checked by Silver Mirror)");
+    expect(links[0]!.label).toBe("Flipkart's Oily Skin filter");
     expect(links[0]!.destination).toBe('Opens a Flipkart search, filtered to Oily Skin');
     expect(links[1]!.destination).toBe('Opens an Amazon keyword search for "moisturiser for oily skin"');
   });

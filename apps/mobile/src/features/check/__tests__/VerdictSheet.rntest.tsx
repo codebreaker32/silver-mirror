@@ -22,9 +22,8 @@ const flat = (style: unknown): Record<string, unknown> =>
   Array.isArray(style) ? Object.assign({}, ...style.map(flat)) : ((style as Record<string, unknown>) ?? {});
 
 describe('VerdictSheet', () => {
-  it('CAUTION: reasons as rows without numerals, sentence-case ledger, How link and matches', async () => {
-    const onHowMade = jest.fn();
-    await wrap(<VerdictSheet view={presentVerdict(CAUTION_VERDICT, ctx)} onHowMade={onHowMade} matches={<Text>MATCHES</Text>} />);
+  it('CAUTION: reasons as rows without numerals, sentence-case ledger and matches', async () => {
+    await wrap(<VerdictSheet view={presentVerdict(CAUTION_VERDICT, ctx)} matches={<Text>MATCHES</Text>} />);
 
     const head = screen.getByTestId('verdict-head');
     expect(head.props.accessibilityLabel).toBe(`Caution. ${COPY.subtitle.CAUTION}`);
@@ -35,23 +34,19 @@ describe('VerdictSheet', () => {
     const first = screen.getByTestId('reason-01');
     expect(within(first).queryByText('01')).toBeNull();
     expect(within(first).getByText("Listing says 'fragrance-free'.")).toBeTruthy();
-    expect(within(first).getByText('Its ingredient list has Parfum (rule LC-\u20601a).')).toBeTruthy();
+    expect(within(first).getByText('Its ingredient list has Parfum.')).toBeTruthy();
     expect(within(screen.getByTestId('reason-02')).getByText('Oiliness reading: High (whole face, scan 1 Nov).')).toBeTruthy();
 
-    // "How this was checked" is a collapsed row; opening it shows the ledger and the How link.
+    // "How this was checked" is a collapsed row; opening it shows the ledger.
     expect(screen.getByTestId('how-checked-toggle').props.accessibilityState).toEqual({ expanded: false });
     await fireEvent.press(screen.getByTestId('how-checked-toggle'));
     expect(screen.getByTestId('how-checked-toggle').props.accessibilityState).toEqual({ expanded: true });
     // The ledger rows carry the provenance; no repeated summary caption above them.
     expect(screen.queryByTestId('provenance-line')).toBeNull();
     expect(screen.getByText('Where this comes from')).toBeTruthy();
-    for (const key of ['Reading', 'Product', 'Rules', 'Limits']) expect(screen.getByText(key)).toBeTruthy();
+    for (const key of ['Reading', 'Product', 'Limits']) expect(screen.getByText(key)).toBeTruthy();
     expect(screen.getByText(COPY.accuracyNote)).toBeTruthy();
-    expect(screen.getByText(COPY.footer)).toBeTruthy();
-    expect(screen.getByText(COPY.notAffiliated)).toBeTruthy();
-
-    await fireEvent.press(screen.getByTestId('how-made-link'));
-    expect(onHowMade).toHaveBeenCalled();
+    expect(screen.queryByText(COPY.footer)).toBeNull();
     expect(screen.getByText('MATCHES')).toBeTruthy();
   });
 
@@ -91,7 +86,7 @@ describe('VerdictSheet', () => {
   });
 
   it('MEDICINE: one fixed line, nothing else', async () => {
-    await wrap(<VerdictSheet view={presentVerdict(MEDICINE_VERDICT, ctx)} onHowMade={jest.fn()} matches={<Text>MATCHES</Text>} />);
+    await wrap(<VerdictSheet view={presentVerdict(MEDICINE_VERDICT, ctx)} matches={<Text>MATCHES</Text>} />);
     // Shown as a serif first sentence plus the rest as body, word for word; TalkBack hears the whole fixed string once.
     const line = COPY.medicine('adapalene');
     const cut = line.indexOf('. ');
@@ -101,7 +96,6 @@ describe('VerdictSheet', () => {
     expect(screen.queryByText('MEDICINE')).toBeNull();
     expect(screen.queryByTestId('reasons')).toBeNull();
     expect(screen.queryByText('Where this comes from')).toBeNull();
-    expect(screen.queryByTestId('how-made-link')).toBeNull();
     expect(screen.queryByText('MATCHES')).toBeNull();
   });
 });

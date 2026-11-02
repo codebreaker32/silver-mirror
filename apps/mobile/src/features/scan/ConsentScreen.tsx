@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COPY } from '@skinkey/contracts';
-import { Body, Button, ButtonPair, Note, PillButton, Screen } from '@/components';
+import { Body, Button, ButtonPair, Note, Screen } from '@/components';
 import { CheckboxRow, DetailsRow, FaceFramePlate, KeepCard, PromiseList } from '@/components/scan';
 import { useTheme } from '@/theme/ThemeProvider';
 import { saveScanConsent } from '../key';
@@ -62,7 +62,6 @@ export function ConsentScreen() {
         <DetailsRow>{COPY.privacyQualifier}</DetailsRow>
       </View>
       <Note>{COPY.accuracyNote}</Note>
-      <PillButton label="Read how deletion works" variant="tertiary" trailingIcon="chevron-right" onPress={() => router.push('/how')} />
     </Screen>
   );
 }

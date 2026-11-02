@@ -138,10 +138,6 @@ export function TryonScreen() {
           ) : null}
         </View>
         <TryonResult status={progress.status} steps={progress.steps} />
-        <Button label="How this was made" variant="tertiary" trailingIcon="chevron-right" onPress={() => router.push('/how')} />
-        <Body muted small>
-          {COPY.footer}
-        </Body>
       </Screen>
     );
   }
@@ -162,7 +158,7 @@ export function TryonScreen() {
       }
     >
       <Heading>{failed ? (retake ? 'Let’s take that again' : friendly?.title) : 'Making your preview'}</Heading>
-      {failed ? <Body>{retake ? hintForError(code) : friendly?.body}</Body> : <Body muted>Real steps from YouCam. Your photo was resized on this phone and deleted after upload.</Body>}
+      {failed ? <Body>{retake ? hintForError(code) : friendly?.body}</Body> : null}
       <Stepper steps={progress.steps} />
       <Body muted small>
         {COPY.privacyLine}

@@ -61,9 +61,7 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
     ? 'Estimated from your bands.'
     : demo
       ? `Sample reading for trying ${COPY.appName}.`
-      : `Measured by YouCam Skin Analysis HD, ${date}.`;
-  const ruleIds = [...new Set(focus.flatMap((f) => f.rules))];
-  const rulesCaption = <Caption>{`From our published rules (${ruleIds.join(', ')}). Traits to look for on a label.`}</Caption>;
+      : `Measured by YouCam Skin Analysis, ${date}.`;
   const ranked = CONCERNS.filter((c) => keyProfile.bands[c]?.level).sort((a, b) => BAND_RANK[keyProfile.bands[a].level] - BAND_RANK[keyProfile.bands[b].level]);
 
   return (
@@ -114,13 +112,10 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
       <View style={{ gap: theme.space[3] }}>
         <SectionHeader title="What this means" />
         {focus.length > 0 ? (
-          <>
-            <FocusTiles items={focus} />
-            {rulesCaption}
-          </>
+          <FocusTiles items={focus} />
         ) : (
           <Body muted small>
-            None of our published rules is triggered by your readings, so no ingredient stands out for you yet.
+            No ingredient stands out for your reading yet.
           </Body>
         )}
       </View>
@@ -140,7 +135,7 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
           ) : null}
           <Caption>
             {demo
-              ? `Sample readings for trying ${COPY.appName}, not a scan of a face. Kept on this phone only.`
+              ? 'Sample readings, not a scan. Kept on this phone only.'
               : `Scan ${date}. Kept on this phone only.`}
           </Caption>
         </View>

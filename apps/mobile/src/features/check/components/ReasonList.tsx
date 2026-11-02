@@ -48,6 +48,7 @@ function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
       <Txt variant="body" style={[r.fact, FACT_TYPE, { color: t.colors.textMuted }]}>
         {reason.fact}
       </Txt>
+      {reason.chip ? (
       <View
         style={{
           flexDirection: 'row',
@@ -61,11 +62,9 @@ function ReasonRow({ reason, order }: { reason: ReasonView; order: number }) {
           borderTopColor: r.divider,
         }}
       >
-        {reason.chip ? <BandChip {...reason.chip} /> : null}
-        <Txt variant="caption" tone="muted">
-          {reason.ruleTag}
-        </Txt>
+        <BandChip {...reason.chip} />
       </View>
+      ) : null}
     </Animated.View>
   );
 }

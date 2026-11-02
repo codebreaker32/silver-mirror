@@ -48,9 +48,6 @@ export function ProductHero({
           <ProductArt category={category} productId={productId} size={PLATE_HEIGHT} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: 16 }} />
           {trailing ? <View style={{ position: 'absolute', top: t.space[2], right: t.space[2] }}>{trailing}</View> : null}
         </View>
-        <Txt variant="caption" testID="product-photo-caption" style={[CAPTION_TYPE, { color: t.colors.textMuted }]}>
-          {hasProductPhoto(productId) ? 'Photo: Open Beauty Facts, CC BY-SA' : 'Illustrative photo'}
-        </Txt>
       </View>
       <View style={{ gap: t.space[1] }}>
         {brand ? (

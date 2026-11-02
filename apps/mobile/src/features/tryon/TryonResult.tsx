@@ -39,8 +39,7 @@ function SamplePreview({ index }: { index: number }) {
  */
 export function TryonResult({ status, steps }: { status: TryonStatusResponse; steps: readonly DisplayStep[] }) {
   const theme = useTheme();
-  // The mock Worker returns a placeholder image, not the user's photo: say so to TalkBack too.
-  const imageLabel = (shade: string) => (status.ledger.mock ? `Mock render placeholder for ${shade} (test, not your photo)` : `Your photo with a ${shade} preview`);
+  const imageLabel = (shade: string) => (status.ledger.mock ? `Sample preview for ${shade}` : `Your photo with a ${shade} preview`);
   const t = theme.components.tryOnCompare;
   const caption = status.renders.length >= 2 ? COPY.tryonCaption : SINGLE_CAPTION;
   return (
@@ -80,7 +79,7 @@ export function TryonResult({ status, steps }: { status: TryonStatusResponse; st
       </Txt>
       {steps.length ? <StepChecklist steps={steps} /> : null}
       <Body muted small>
-        Not saved. These previews disappear when you close this screen.
+        Not saved. Gone when you close this screen.
       </Body>
     </View>
   );

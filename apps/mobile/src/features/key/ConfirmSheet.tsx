@@ -50,7 +50,6 @@ export function ConfirmSheet({ kind, onClose, onConfirm }: { kind: ConfirmKind |
       }
     >
       <Body>{t.body}</Body>
-      {kind === 'withdraw' ? <Body muted small>{COPY.privacyQualifier}</Body> : null}
     </Sheet>
   );
 }

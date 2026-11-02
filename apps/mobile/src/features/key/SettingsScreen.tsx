@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
 import { COPY } from '@skinkey/contracts';
-import { rulesetHash } from '@skinkey/rules';
 import { Body, Card, Icon, ListGroup, Screen, Txt, haptic, type IconName } from '@/components';
 import { PHOTO_CREDITS, PHOTO_LICENCE } from '@/components/photos';
 import { useTheme } from '@/theme/ThemeProvider';
 import { clearLedger } from '../scan/ledgerStore';
+import { Disclosure } from '../check/components/Disclosure';
 import { ConfirmSheet, type ConfirmKind } from './ConfirmSheet';
 import { deleteKey, useKey, withdrawConsent } from './index';
 
@@ -99,7 +99,7 @@ export function SettingsScreen() {
             icon="droplet"
             onPress={go('/key')}
           />
-          <SettingsRow title="What stays on this phone" supporting="Bands, zone labels and scan date. No photo." icon="phone-lock" onPress={go('/how')} />
+          <SettingsRow title="What stays on this phone" supporting="Bands, zone labels and scan date. No photo." icon="phone-lock" chevron={false} />
           {key ? <SettingsRow title={COPY.reading.delete} supporting="Asks before it deletes" icon="trash" chevron={false} onPress={() => setConfirm('delete')} /> : null}
           <SettingsRow
             title="Withdraw consent"
@@ -116,31 +116,15 @@ export function SettingsScreen() {
         ) : null}
       </View>
 
-      <ListGroup title="About" inset={ROW_INSET}>
-        <SettingsRow title="How this was made" supporting="Task ids, units, time and delete status" icon="document" onPress={go('/how')} />
-        <SettingsRow title="Published rules" supporting={`Version ${rulesetHash().slice(0, 7)}, the same one each verdict names. ${COPY.howMadeBoundary}`} icon="info" />
-      </ListGroup>
-
-      <View style={{ gap: theme.space[2] }}>
-        <Txt accessibilityRole="header" variant="section">
-          Credits
-        </Txt>
-        <Card variant="raised" gap={theme.space[2]}>
+      <Disclosure title="Credits" icon="info" testID="photo-credits">
+        <View style={{ gap: theme.space[2] }}>
           {CREDITS.map((c) => (
             <Body key={c} small>
               {c}
             </Body>
           ))}
-        </Card>
-      </View>
-
-      <View testID="photo-credits" style={{ gap: theme.space[2] }}>
-        <Txt accessibilityRole="header" variant="section">
-          Photo credits
-        </Txt>
-        <Card variant="raised" gap={theme.space[2]}>
           <Body small muted>
-            {`Illustrative photos from Unsplash, used under the ${PHOTO_LICENCE}. They show a kind of product, not the exact one.`}
+            {`Photos from Unsplash (${PHOTO_LICENCE}).`}
           </Body>
           {PHOTO_CREDITS.map((c) => (
             <Body key={c.file} small>
@@ -150,8 +134,8 @@ export function SettingsScreen() {
           <Body small testID="product-photo-credit">
             Product photos: Open Beauty Facts contributors, CC BY-SA 3.0 (openbeautyfacts.org)
           </Body>
-        </Card>
-      </View>
+        </View>
+      </Disclosure>
 
       <View style={{ gap: theme.space[1] }}>
         <Body small muted>
@@ -159,9 +143,6 @@ export function SettingsScreen() {
         </Body>
         <Body small muted>
           {COPY.notAffiliated}
-        </Body>
-        <Body small muted>
-          Roadmap: share your readings with a pharmacist by QR code. Not built yet.
         </Body>
       </View>
 

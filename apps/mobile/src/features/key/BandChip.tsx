@@ -11,7 +11,7 @@ export function BandChip({ concern, reading }: { concern: Concern; reading: Band
 
 /**
  * Reading bands as rows in a rounded card (component.bandList): name left, bodyStrong band word right with the
- * neutral three-segment meter under it, hairlines between rows, one Low · Medium · High legend. No numbers.
+ * neutral three-segment meter under it, hairlines between rows. No numbers.
  * Each row is one TalkBack node. At 1.5× font the value stacks under the name.
  */
 export function BandList({ keyProfile }: { keyProfile: KeyProfile }) {
@@ -31,9 +31,6 @@ export function BandList({ keyProfile }: { keyProfile: KeyProfile }) {
         paddingVertical: t.space[2],
       }}
     >
-      <Txt variant="caption" style={[l.legend, { color: l.legendColor, paddingVertical: t.space[2] }]} importantForAccessibility="no">
-        Bands: Low · Medium · High
-      </Txt>
       {CONCERNS.map((c) => {
         const r = keyProfile.bands[c];
         return (

@@ -68,9 +68,6 @@ function CameraBody({ onClose, onPhoto }: { onClose: () => void; onPhoto: (base6
           <Txt accessibilityRole="header" variant="title">
             {COPY.appName} needs the camera to read the ingredient list.
           </Txt>
-          <Txt variant="body" tone="muted">
-            Claude reads the ingredient names; you check them before any check runs.
-          </Txt>
           <PillButton label="Allow camera" leadingIcon="camera" onPress={() => void requestPermission()} />
         </View>
       )}

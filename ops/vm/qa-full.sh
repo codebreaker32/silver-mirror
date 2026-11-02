@@ -47,14 +47,10 @@ $U tap "Scan, tab 3 of 5" || fail "scan tab not found"; sleep 3; shot 11_scan_co
 $U scroll; sleep 1; shot 11_scan_consent_2
 $U back; sleep 1
 
-# Settings + How
+# Settings
 home settings
 $U tap "^Settings$" || fail "settings gear not found"; sleep 3; shot 12_settings
 $U scroll; sleep 1; shot 12_settings_2
-$U tap "How this was made" || { $U scroll up; sleep 1; $U tap "How this was made"; } || fail "settings: no 'How this was made' row"
-sleep 3; shot 13_how
-$U scroll; sleep 1; shot 13_how_2
-$U scroll; sleep 1; shot 13_how_3
 
 FLIPKART='https://dl.flipkart.com/s/qPYPSuNNNN'
 AMAZON=$'Check this out at Amazon\nMinimalist SPF 30 Body Sunscreen, UVA & UVB Protection | Nourishing Lotion | Broad Spectrum PA+++ Sunscreen for All Skin Types | For Men & Women | 150 g https://amzn.in/d/05kxo4QC'

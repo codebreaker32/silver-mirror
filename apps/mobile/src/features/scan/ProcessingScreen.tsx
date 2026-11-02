@@ -7,7 +7,6 @@ import { call } from '@/lib/api';
 import { useTheme } from '@/theme/ThemeProvider';
 import { ResolvingFaceFrame } from '@/components/scan';
 import { loadScanConsent, saveKey, saveScanLedger, useKey } from '../key';
-import { PHOTO_DELETED_STAMP } from './deleteCopy';
 import { hintForError, isRetakeError } from './captureHints';
 import { cancelJob, ensureInstallToken } from './install';
 import { friendlyError } from './errors';
@@ -15,7 +14,7 @@ import { recordLedger } from './ledgerStore';
 import { deleteLocal, sleep, uploadToSlot } from './native';
 import { runScan, type ScanDeps, type ScanProgress } from './runScan';
 import { scanSession } from './session';
-import { scanDisplaySteps, type DisplayStep } from './steps';
+import { scanDisplaySteps } from './steps';
 import { Body, Button, Heading, Screen, Stepper, haptic } from './ui';
 
 const scanDeps: ScanDeps = {
@@ -44,8 +43,6 @@ export function ProcessingScreen() {
   const [progress, setProgress] = useState<ScanProgress>(
     () => demo?.scanProgress ?? { phase: 'uploading', steps: scanDisplaySteps(undefined, 'pending') },
   );
-  const deletedAt = useRef<Date | null>(null);
-  if (!deletedAt.current && progress.steps.some((s) => s.id === 'delete' && s.state === 'done')) deletedAt.current = new Date();
 
   useEffect(() => {
     alive.current = true;
@@ -84,7 +81,7 @@ export function ProcessingScreen() {
   const retake = youcamCode !== undefined && isRetakeError(youcamCode);
   const friendly = failed && !retake ? friendlyError(progress.error, 'scan') : null;
   const doneCount = progress.steps.filter((s) => s.state === 'done').length;
-  const steps = withDeleteStamp(progress.steps, deletedAt.current);
+  const steps = progress.steps;
   // Showcase 03_analyze: the frame runs the full content width, close to square, so the checklist and the line under
   // it still sit above the fold on a 6.1" phone. The FaceFrame (aspect 0.8) sits centred on its own sheen plate.
   const plateW = Math.max(0, width - theme.spacing.gutter * 2);
@@ -149,13 +146,3 @@ export function ProcessingScreen() {
   );
 }
 
-const pad = (n: number) => String(n).padStart(2, '0');
-
-/** "Photo deleted · 21:04" on the delete row once YouCam confirms the delete. */
-function withDeleteStamp(steps: readonly DisplayStep[], at: Date | null): DisplayStep[] {
-  return steps.map((s) =>
-    s.id === 'delete' && s.state === 'done' && s.label === COPY.scanStepsDone.delete && at
-      ? { ...s, stamp: `${PHOTO_DELETED_STAMP} · ${pad(at.getHours())}:${pad(at.getMinutes())}` }
-      : s,
-  );
-}
