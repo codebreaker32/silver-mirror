@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, Txt, type IconName } from '@/components';
-import { categoryGlyph } from '../display';
+import { ProductArt } from '@/components/ProductArt';
 import { displayTitle } from '../display';
 
 const TITLE_TYPE = { fontFamily: 'Geist_600SemiBold', fontSize: 18, lineHeight: 24, letterSpacing: -0.2 } as const;
@@ -13,11 +13,12 @@ const NAME_TYPE = { fontFamily: 'NotoSerifDisplay_400Regular', fontSize: 28, lin
 /** The product-art plate (reference product detail): one lavender-grey step under the page, radius 16. */
 const PLATE = '#E9E7F0';
 const PLATE_HEIGHT = 248;
+const CAPTION_TYPE = { fontFamily: 'Geist_400Regular', fontSize: 11, lineHeight: 14, letterSpacing: 0.1 } as const;
 
 /**
- * Product hero (reference product detail): a full-width image plate with the drawn ProductArt for the category
- * (never a product photo), then the brand (14 muted), the name in the serif display face on at most two lines, and
- * one muted meta line (size · source). `trailing` sits in the plate's top-right corner (the SaveHeart).
+ * Product hero (reference product detail): a full-width image plate filled edge to edge by the category's licensed
+ * photo (ProductArt), a tiny muted "Illustrative photo" caption under it so it never reads as the exact product, then
+ * the brand (14 muted), the name in the serif display face on at most two lines, and one muted meta line (size · source). `trailing` sits in the plate's top-right corner (the SaveHeart).
  */
 export function ProductHero({
   brand,
@@ -35,15 +36,17 @@ export function ProductHero({
   const t = useTheme();
   return (
     <View style={{ gap: t.space[4] }}>
-      <View
-        style={{ height: PLATE_HEIGHT, borderRadius: 16, backgroundColor: PLATE, alignItems: 'center', justifyContent: 'center' }}
-        testID="product-plate"
-      >
-        <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-          {/* Drawn category silhouette on the plate (never a product photo). */}
-          <Icon name={categoryGlyph(category as Parameters<typeof categoryGlyph>[0])} size={PLATE_HEIGHT / 2.4} color="#8E8A9C" strokeWidth={1.25} />
+      <View style={{ gap: 6 }}>
+        <View
+          style={{ height: PLATE_HEIGHT, borderRadius: 16, backgroundColor: PLATE, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
+          testID="product-plate"
+        >
+          <ProductArt category={category} size={PLATE_HEIGHT} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: 16 }} />
+          {trailing ? <View style={{ position: 'absolute', top: t.space[2], right: t.space[2] }}>{trailing}</View> : null}
         </View>
-        {trailing ? <View style={{ position: 'absolute', top: t.space[2], right: t.space[2] }}>{trailing}</View> : null}
+        <Txt variant="caption" testID="product-photo-caption" style={[CAPTION_TYPE, { color: t.colors.textMuted }]}>
+          Illustrative photo
+        </Txt>
       </View>
       <View style={{ gap: t.space[1] }}>
         {brand ? (

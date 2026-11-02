@@ -1,21 +1,20 @@
-import { useId } from 'react';
-import { View, type StyleProp, type ViewStyle } from 'react-native';
+import { useId, useState } from 'react';
+import { Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import Svg, { Defs, G, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
+import { PHOTOS, PHOTO_SUBJECT } from './photos';
 
 /**
- * Drawn product art (tokens 2.4). The app never shows product photos: each category gets one calm,
- * authored silhouette in silver-lavender shading on a transparent ground, so it sits on any plate
- * (colors.bg-sunken / the #E9E7F0 product plate). Caps and droppers are the charcoal primary.
+ * Product art: a licensed, illustrative photo per category (apps/mobile/assets/images/photos, credits in
+ * docs/CREDITS.md), cover-cropped to fill the box with the box's own corner radius. Unknown categories get the serum
+ * photo. The photo stands for the category, never the exact product: its label says "(illustrative)".
  *
- *   serum        dropper bottle
- *   moisturiser  squat jar
- *   cleanser     pump bottle
- *   sunscreen    upright tube (cap down)
- *   tinted_spf   the same tube with a quiet sand tint swatch on the label
- *   anything else  a plain bottle
+ *   serum        dropper bottle         sunscreen    blank tubes
+ *   moisturiser  cream jar              tinted_spf   skin-tone swatches
+ *   cleanser     pump bottle            anything else  the serum photo
  *
- * Decorative: hidden from screen readers; the card that holds it carries the product name.
+ * If the image fails to load, the drawn silhouette below (silver-lavender shading, charcoal caps) stands in, hidden
+ * from screen readers like before.
  */
 export type ProductArtCategory = 'serum' | 'moisturiser' | 'cleanser' | 'sunscreen' | 'tinted_spf';
 
@@ -41,6 +40,32 @@ export function artShape(category: string): ProductArtCategory | 'bottle' {
 const TINT = '#CDBFB1';
 
 export function ProductArt({ category, size, style }: ProductArtProps) {
+  const t = useTheme();
+  const [failed, setFailed] = useState(false);
+  if (failed) return <ProductArtDrawing category={category} size={size} style={style} />;
+  const shape = artShape(category);
+  const key = shape === 'bottle' ? 'serum' : shape;
+  const radius = StyleSheet.flatten(style)?.borderRadius;
+  return (
+    <View
+      style={[{ width: size, height: size, overflow: 'hidden', backgroundColor: t.colors.bgSunken }, style]}
+      accessible
+      accessibilityRole="image"
+      accessibilityLabel={`Photo of ${PHOTO_SUBJECT[key]} (illustrative)`}
+      pointerEvents="none"
+    >
+      <Image
+        source={PHOTOS[key]}
+        resizeMode="cover"
+        onError={() => setFailed(true)}
+        style={{ width: '100%', height: '100%', borderRadius: typeof radius === 'number' ? radius : 0 }}
+      />
+    </View>
+  );
+}
+
+/** The drawn silhouette: only shown when the category photo fails to load. Decorative. */
+function ProductArtDrawing({ category, size, style }: ProductArtProps) {
   const t = useTheme();
   const raw = useId().replace(/[^a-zA-Z0-9]/g, '');
   const body = `pa-body-${raw}`;

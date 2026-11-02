@@ -33,6 +33,7 @@ export function Picks({ picks, onOpen, onViewAll }: { picks: readonly HomePick[]
             accessibilityLabel={p.a11y}
             style={({ pressed }) => ({
               width: '48.5%',
+              minHeight: t.touch.min,
               borderRadius: RADIUS,
               overflow: 'hidden',
               backgroundColor: pressed ? t.colors.bgSunken : t.colors.surface,

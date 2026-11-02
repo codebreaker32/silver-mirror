@@ -4,13 +4,14 @@ import { useTheme } from '@/theme/ThemeProvider';
 import { haptic } from '@/components/haptics';
 import { Icon } from '@/components';
 import { ProductArt } from '@/components/ProductArt';
+import { PHOTOS } from '@/components/photos';
 import { homeType } from '@/components/home/homeType';
 
-const BACKDROP = require('../../../assets/images/welcome-backdrop.jpg');
+const BACKDROP = PHOTOS.texture;
 
 /**
- * Home hero (experience reference "Build a Routine", in our words): the welcome's liquid-silver photograph cropped to a
- * 16-radius plate under a soft near-white scrim, the serif line "Check before you buy" at left, a drawn serum bottle at
+ * Home hero (experience reference "Build a Routine", in our words): a licensed cream-texture photo (photos/texture.jpg) on a
+ * 16-radius plate under a soft near-white scrim, the serif line "Check before you buy" at left, the serum photo at
  * right, and the one charcoal pill "Try a sample share" (same testID, label and hint as before; QA taps it). The pill
  * presses to the darker charcoal with a 0.98 scale; no shadow at rest.
  */
@@ -18,7 +19,7 @@ export function HomeBanner({ onSample, hint }: { onSample: () => void; hint: str
   const t = useTheme();
   return (
     <View testID="home-banner" style={{ borderRadius: 16, overflow: 'hidden', backgroundColor: t.colors.bgSunken, minHeight: 196 }}>
-      <Image source={BACKDROP} resizeMode="cover" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }} />
+      <Image source={BACKDROP} accessibilityIgnoresInvertColors importantForAccessibility="no" resizeMode="cover" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }} />
       <View pointerEvents="none" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(247,246,250,0.55)' }} />
       <View
         pointerEvents="none"
@@ -26,7 +27,7 @@ export function HomeBanner({ onSample, hint }: { onSample: () => void; hint: str
         importantForAccessibility="no-hide-descendants"
         style={{ position: 'absolute', right: t.space[3], bottom: t.space[3], top: t.space[3], justifyContent: 'center' }}
       >
-        <ProductArt category="serum" size={150} />
+        <ProductArt category="serum" size={150} style={{ borderRadius: 12 }} />
       </View>
       <View style={{ padding: t.space[5], paddingRight: 120, gap: t.space[4], flex: 1, justifyContent: 'space-between' }}>
         <Text accessibilityRole="header" style={{ fontFamily: fonts.serifDisplay, fontSize: 28, lineHeight: 34, letterSpacing: -0.3, color: t.colors.text }}>
@@ -92,7 +93,7 @@ export function CategoryRow({ onOpen }: { onOpen: (category: (typeof HOME_CATEGO
           }}
           accessibilityRole="button"
           accessibilityLabel={`${c.label}, open in Shop`}
-          style={{ alignItems: 'center', gap: t.space[2], minWidth: 72 }}
+          style={{ alignItems: 'center', gap: t.space[2], minWidth: 72, minHeight: t.touch.min }}
         >
           {({ pressed }) => (
             <>
@@ -108,7 +109,7 @@ export function CategoryRow({ onOpen }: { onOpen: (category: (typeof HOME_CATEGO
                   transform: [{ scale: pressed ? 0.96 : 1 }],
                 }}
               >
-                <ProductArt category={c.category} size={40} />
+                <ProductArt category={c.category} size={56} style={{ borderRadius: 28 }} />
               </View>
               <Text numberOfLines={1} style={[homeType.small, { color: t.colors.text }]}>
                 {c.label}

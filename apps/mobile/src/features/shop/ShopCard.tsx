@@ -69,8 +69,8 @@ export const ShopCard = memo(function ShopCard({ item, width, index, keyProfile,
         accessibilityLabel={`${title}.${label ? ` ${SAY[label]}.` : ''} Opens a check for this product.`}
         style={{ padding: CARD_PAD, gap: t.space[2] }}
       >
-        <View style={{ width: inner, aspectRatio: 4 / 5, borderRadius: PLATE_RADIUS, backgroundColor: PLATE, alignItems: 'center', justifyContent: 'center' }}>
-          <ProductArt category={item.category} size={Math.round(inner * 0.78)} />
+        <View style={{ width: inner, aspectRatio: 4 / 5, borderRadius: PLATE_RADIUS, backgroundColor: PLATE, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          <ProductArt category={item.category} size={inner} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: PLATE_RADIUS }} />
         </View>
         <View style={{ paddingHorizontal: 4, paddingBottom: 6, gap: 2 }}>
           <Text numberOfLines={1} style={[homeType.small, { color: t.colors.textMuted }]}>

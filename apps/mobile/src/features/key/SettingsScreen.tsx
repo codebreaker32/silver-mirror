@@ -4,6 +4,7 @@ import { useRouter, type Href } from 'expo-router';
 import { COPY } from '@skinkey/contracts';
 import { rulesetHash } from '@skinkey/rules';
 import { Body, Card, Icon, ListGroup, Screen, Txt, haptic, type IconName } from '@/components';
+import { PHOTO_CREDITS, PHOTO_LICENCE } from '@/components/photos';
 import { useTheme } from '@/theme/ThemeProvider';
 import { clearLedger } from '../scan/ledgerStore';
 import { ConfirmSheet, type ConfirmKind } from './ConfirmSheet';
@@ -128,6 +129,22 @@ export function SettingsScreen() {
           {CREDITS.map((c) => (
             <Body key={c} small>
               {c}
+            </Body>
+          ))}
+        </Card>
+      </View>
+
+      <View testID="photo-credits" style={{ gap: theme.space[2] }}>
+        <Txt accessibilityRole="header" variant="section">
+          Photo credits
+        </Txt>
+        <Card variant="raised" gap={theme.space[2]}>
+          <Body small muted>
+            {`Illustrative photos from Unsplash, used under the ${PHOTO_LICENCE}. They show a kind of product, not the exact one.`}
+          </Body>
+          {PHOTO_CREDITS.map((c) => (
+            <Body key={c.file} small>
+              {`${c.shows}: ${c.photographer}`}
             </Body>
           ))}
         </Card>
