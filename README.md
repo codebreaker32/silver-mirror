@@ -4,9 +4,23 @@
 
 > The tag says oily skin. Your scan and the ingredients get a vote.
 
-**One line:** share a skincare product from the Flipkart, Amazon.in or Nykaa Android app and Silver Mirror checks the listing's ingredient list against your own YouCam Skin Analysis reading, then shows the rule behind every reason.
+**One line:** one consented YouCam Skin Analysis scan, then every skincare product you browse (or share in from the Flipkart, Amazon.in or Nykaa app) shows whether it suits your skin and why. Tinted sunscreens can be tried on your own face with YouCam Makeup VTO.
 
 Cosmetic guidance, not medical advice. Not affiliated with Flipkart, Amazon or Nykaa.
+
+## 📱 Download the app (Android)
+
+**[⬇️ Download Silver Mirror (APK)](https://github.com/codebreaker32/silver-mirror/releases/latest/download/silver-mirror.apk)**
+
+1. Open the link above **on your Android phone**. The file `silver-mirror.apk` downloads (about 80 MB).
+2. Tap the downloaded file. If Android asks, allow **"Install unknown apps"** for your browser or Files app (Settings → Apps → Special access → Install unknown apps), then go back and tap **Install**. This is normal for apps outside the Play Store.
+3. Open **Silver Mirror**, tap **Get started**, and either **Start scan** (one selfie, analysed by YouCam, then deleted) or **Use the Demo reading** to try it without a scan.
+4. Browse **Shop** or **Chosen for you**: every product shows **Fits / Caution / Unknown** and why. Tap **Buy on Amazon** to open it in the store, or share a product from the Amazon, Flipkart or Nykaa app into Silver Mirror.
+
+Needs Android 7 or newer and an internet connection. iPhone is not supported yet. Each install gets 2 free live scans.
+
+🎥 Demo video: see the Devpost project page. 🛠️ Want to run it from source? See [Run it](#run-it) below.
+
 
 <p>
   <img src="docs/screens/01-home-light.png" width="200" alt="Home, light theme: skin-type card for the Demo reading, paste field and the share-from-a-store-app steps">
