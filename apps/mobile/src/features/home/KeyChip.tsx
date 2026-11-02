@@ -1,7 +1,11 @@
 import { COPY, type KeyProfile } from '@skinkey/contracts';
 import { deriveSkinType } from '@skinkey/rules';
 import { shortDate } from '@/features/check/format';
-import { PillButton, SkinTypeCard } from '@/components';
+import { Pressable, Text, View } from 'react-native';
+import { PillButton } from '@/components';
+import { useTheme } from '@/theme/ThemeProvider';
+import { useGlass } from '@/components/glass';
+import { ReadingRing } from './ReadingRing';
 
 export interface KeyChipText {
   /** Card label: "Your skin type", or "No reading yet" when empty. */
@@ -34,33 +38,78 @@ interface ReadingCardProps {
 }
 
 /**
- * Home skin-type card (SkinTypeCard compact, DESIGN.md §9.2 item 3, showcase 02_home "Your Skin Type / Combination ->"):
- * droplet disc, "Your skin type" over the value, the scan stamp, a trailing arrow; one target, one label in visual
- * order. The band meters live on the Reading tab. Empty: a face-frame disc, "No reading yet", "Scan once, about a
- * minute", then slate Start scan and a centred text action, Use the Demo reading (48dp target), inside the same card.
+ * Home reading card (dashboard reference "Skin Health" card, without its number): a frosted glass card, radius 28.
+ * Left, "Your skin type" over the skin-type word set large and one muted line (scan stamp or the Demo reading line);
+ * right, the decorative ring with the droplet in a pastel disc (hidden from TalkBack, no figure). One target, one
+ * label in visual order, opens the Reading tab. Empty: the same card says "No reading yet" over "Scan once, about a
+ * minute" with the face-frame in the ring, then Start scan and the text action Use the Demo reading.
  */
 export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardProps) {
+  const t = useTheme();
+  const glass = useGlass(28);
   const { title, value, sub } = keyChipText(keyProfile, isDemo);
+  const pad = t.space[5];
+
+  const text = (
+    <View style={{ flex: 1, minWidth: 0, gap: t.space[1] }}>
+      <Text {...t.textProps.bodySm} style={[t.typography.bodySm, { color: t.colors.textMuted }]}>
+        {title}
+      </Text>
+      {keyProfile ? (
+        <Text
+          {...t.textProps.valueHero}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.7}
+          style={{ fontFamily: t.fonts.sansSemibold, fontSize: 34, lineHeight: 42, letterSpacing: -0.8, color: t.colors.text }}
+        >
+          {value}
+        </Text>
+      ) : (
+        <Text {...t.textProps.headline} style={[t.typography.headline, { color: t.colors.text }]}>
+          {value}
+        </Text>
+      )}
+      {sub ? (
+        <Text {...t.textProps.caption} style={[t.typography.caption, { color: t.colors.textMuted, marginTop: t.space[1] }]}>
+          {sub}
+        </Text>
+      ) : null}
+    </View>
+  );
+  const row = (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[4] }}>
+      {text}
+      <ReadingRing icon={keyProfile ? 'droplet' : 'face-frame'} />
+    </View>
+  );
 
   if (!keyProfile) {
     return (
-      <SkinTypeCard testID="key-chip" icon="face-frame" label={title} value={value} quiet accessibilityLabel={`${title}. ${value}`}>
-        <PillButton label="Start scan" trailingIcon="arrow-right" onPress={onPress} testID="home-start-scan" />
-        {onUseDemo ? <PillButton label={COPY.reading.useDemo} variant="tertiary" onPress={onUseDemo} testID="home-use-demo" style={{ alignSelf: 'center' }} /> : null}
-      </SkinTypeCard>
+      <View testID="key-chip" style={[glass, { padding: pad, gap: t.space[4] }]}>
+        <View accessible accessibilityLabel={`${title}. ${value}`}>
+          {row}
+        </View>
+        <View style={{ gap: t.space[1] }}>
+          <PillButton label="Start scan" trailingIcon="arrow-right" onPress={onPress} testID="home-start-scan" />
+          {onUseDemo ? <PillButton label={COPY.reading.useDemo} variant="tertiary" onPress={onUseDemo} testID="home-use-demo" style={{ alignSelf: 'center' }} /> : null}
+        </View>
+      </View>
     );
   }
 
   const selfReported = Object.values(keyProfile.bands).some((b) => b.selfReported);
   return (
-    <SkinTypeCard
+    <Pressable
       testID="key-chip"
-      label={title}
-      value={value}
-      caption={sub}
       onPress={onPress}
+      accessibilityRole="button"
       accessibilityLabel={[`${title}, ${value}`, sub, selfReported ? `Some readings ${COPY.selfReported}` : null, 'Open your reading'].filter(Boolean).join('. ')}
       accessibilityHint="Opens the Reading tab"
-    />
+      android_ripple={{ color: t.colors.state.ripple }}
+      style={({ pressed }) => [glass, { minHeight: t.touch.min, padding: pad, overflow: 'hidden', transform: [{ scale: pressed ? 0.99 : 1 }] }]}
+    >
+      {row}
+    </Pressable>
   );
 }

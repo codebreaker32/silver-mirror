@@ -5,6 +5,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import Svg, { Defs, LinearGradient, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import { IconButton } from './IconButton';
+import { tabBarSpace } from './TabBar';
 import type { IconName } from './Icon';
 import { Txt } from './Text';
 
@@ -120,6 +121,8 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
   const insets = useSafeAreaInsets();
   const inTab = useInTabScene();
   const bottom = inTab ? 0 : insets.bottom;
+  // Tab scenes run under the floating tab bar (TabBar.tsx): the scroll leaves its height free so the last line clears it.
+  const barSpace = inTab ? tabBarSpace(insets.bottom) : 0;
   // Tab scenes have no app bar, so scrolled content meets the status-bar strip directly. Like Home's status-bar scrim,
   // a hairline marks that edge once the body has scrolled, so no heading reads as sliding under the status icons.
   const edge = inTab && !appBar;
@@ -134,7 +137,7 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
     if (next !== under) setUnder(next);
   };
   // With a footer the last line clears the dock by the fade height plus 16dp, so it can always scroll into full view.
-  const tail = footer && scroll ? t.spacing.section + FADE + t.space[4] : t.spacing.section;
+  const tail = (footer && scroll ? t.spacing.section + FADE + t.space[4] : t.spacing.section) + (scroll ? barSpace : 0);
   const body = <View style={{ paddingHorizontal: t.spacing.gutter, paddingBottom: tail, gap: t.spacing.stackLg }}>{children}</View>;
   return (
     <SafeAreaView testID={testID} edges={['top', 'left', 'right']} style={{ flex: 1, backgroundColor: t.colors.bg }}>
@@ -196,7 +199,7 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
           {footer}
         </View>
       ) : (
-        <View style={{ height: bottom }} />
+        <View style={{ height: scroll ? bottom : bottom + barSpace }} />
       )}
     </SafeAreaView>
   );

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Keyboard, Platform, Pressable, Text, View } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from './Icon';
+import { useGlass } from './glass';
 
 /**
  * One item of the bottom bar. Tabs with `route` are real tab scenes in app/(tabs); a tab with `href` opens a
@@ -39,72 +41,77 @@ function useKeyboardOpen(): boolean {
   return open;
 }
 
+/** Floating bar geometry (dashboard reference): a 68dp glass pill, the 56dp Scan disc raised 20dp above its top edge. */
+export const TAB_BAR = { height: 68, raise: 20, scan: 56, radius: 28, inset: 16, gapBelow: 12 } as const;
+
 /**
- * Custom bottom tab bar (component.bottomNav, showcase 02_home): a white 64dp bar (graphite-850 in dark) with a 1dp
- * top hairline (sheen edge in dark), no shadow and no pill. Inactive = 24dp outline glyph in tab-inactive with a 500
- * label; active = the filled glyph in tab-active with a 600 label. Selection is fill + weight + colour + the selected
- * state, never colour alone. role tablist / tab. Owns the bottom safe-area inset. Hidden while the Android keyboard is open.
+ * Space a tab scene leaves at its bottom so the floating bar never covers its last line: the bar, the raised Scan disc
+ * and the gap under the bar (at least the system inset).
+ */
+export function tabBarSpace(bottomInset: number): number {
+  return TAB_BAR.height + TAB_BAR.raise + Math.max(bottomInset, TAB_BAR.gapBelow);
+}
+
+export function useTabBarSpace(): number {
+  return tabBarSpace(useSafeAreaInsets().bottom);
+}
+
+/**
+ * Custom bottom tab bar (dashboard reference, colors reference): a floating frosted glass pill inset from the screen
+ * edges (radius 28, white hairline, soft plum shadow), drawn over the scene. Check at left and Reading at right: outline
+ * glyph + 500 label when idle, the filled plum glyph + 600 plum label when selected (fill + weight + colour + the
+ * selected state, never colour alone). Scan in the middle is a raised 56dp plum disc with the white scan glyph and
+ * "Scan" under it. role tablist / tab; the labels and testIDs are what QA taps. Hidden while the Android keyboard is
+ * open. Scenes pad their bottom by tabBarSpace() so nothing hides under it.
  */
 export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: BottomTabBarProps) {
   const t = useTheme();
   const n = t.components.bottomNav;
   const router = useRouter();
   const keyboard = useKeyboardOpen();
+  const glass = useGlass(TAB_BAR.radius, 'bar');
   if (keyboard) return null;
 
   const focusedName = state.routes[state.index]?.name;
   const items = TAB_ITEMS.filter((it) => !it.route || state.routes.some((r) => r.name === it.route));
+  // Side items centre a 24dp glyph + 4dp + 16dp label in the 68dp bar; Scan's label shares that baseline.
+  const labelPad = (TAB_BAR.height - (t.icon.lg + t.space[1] + n.labelActive.lineHeight)) / 2;
 
   return (
     <View
+      pointerEvents="box-none"
       style={{
-        backgroundColor: n.bg,
-        borderTopWidth: 1,
-        borderTopColor: t.dark ? n.sheenEdge : n.border,
-        paddingBottom: insets.bottom,
-        paddingLeft: insets.left,
-        paddingRight: insets.right,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        paddingBottom: Math.max(insets.bottom, TAB_BAR.gapBelow),
+        paddingLeft: insets.left + TAB_BAR.inset,
+        paddingRight: insets.right + TAB_BAR.inset,
       }}
     >
-      <View testID="tab-bar" accessibilityRole="tablist" style={{ flexDirection: 'row', minHeight: n.minHeight, alignItems: 'stretch' }}>
-        {items.map((it, i) => {
-          const route = it.route ? state.routes.find((r) => r.name === it.route) : undefined;
-          const focused = Boolean(route && route.name === focusedName);
-          const options = route ? descriptors[route.key]?.options : undefined;
-          const label = it.label;
-          const onPress = () => {
-            if (it.href) {
-              router.push(it.href);
-              return;
-            }
-            if (!route) return;
-            const event = emitter.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-            if (!focused && !event.defaultPrevented) navigateToTab(route.key);
-          };
-          const onLongPress = () => {
-            if (route) emitter.emit({ type: 'tabLongPress', target: route.key });
-          };
-          return (
-            <Pressable
-              key={it.key}
-              testID={options?.tabBarButtonTestID ?? `tab-${it.key}`}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              accessibilityRole="tab"
-              accessibilityState={{ selected: focused }}
-              accessibilityLabel={options?.tabBarAccessibilityLabel ?? `${label}, tab ${i + 1} of ${items.length}`}
-              accessibilityHint={it.accessibilityHint}
-              android_ripple={{ color: t.colors.state.ripple, borderless: true, radius: n.rippleRadius }}
-              style={{ flex: 1, minWidth: n.itemMinWidth, minHeight: Math.max(n.itemTarget, n.minHeight), alignItems: 'center', justifyContent: 'center', gap: t.space[1] }}
-            >
-              <Icon
-                name={it.icon}
-                size={t.icon.lg}
-                filled={focused && n.iconActiveFilled}
-                knockout={n.bg}
-                color={focused ? n.iconActive : n.iconInactive}
-                strokeWidth={n.iconInactiveStrokeWidth}
-              />
+      <View pointerEvents="box-none" style={{ height: TAB_BAR.height + TAB_BAR.raise }}>
+        <View pointerEvents="none" style={[glass, { position: 'absolute', left: 0, right: 0, bottom: 0, height: TAB_BAR.height }]} />
+        <View testID="tab-bar" accessibilityRole="tablist" pointerEvents="box-none" style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+          {items.map((it, i) => {
+            const route = it.route ? state.routes.find((r) => r.name === it.route) : undefined;
+            const focused = Boolean(route && route.name === focusedName);
+            const options = route ? descriptors[route.key]?.options : undefined;
+            const label = it.label;
+            const raised = !it.route;
+            const onPress = () => {
+              if (it.href) {
+                router.push(it.href);
+                return;
+              }
+              if (!route) return;
+              const event = emitter.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
+              if (!focused && !event.defaultPrevented) navigateToTab(route.key);
+            };
+            const onLongPress = () => {
+              if (route) emitter.emit({ type: 'tabLongPress', target: route.key });
+            };
+            const text = (
               <Text
                 {...t.textProps[focused ? 'labelSm' : 'labelSmRegular']}
                 numberOfLines={1}
@@ -112,9 +119,73 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
               >
                 {label}
               </Text>
-            </Pressable>
-          );
-        })}
+            );
+            return (
+              <Pressable
+                key={it.key}
+                testID={options?.tabBarButtonTestID ?? `tab-${it.key}`}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: focused }}
+                accessibilityLabel={options?.tabBarAccessibilityLabel ?? `${label}, tab ${i + 1} of ${items.length}`}
+                accessibilityHint={it.accessibilityHint}
+                android_ripple={raised ? undefined : { color: t.colors.state.ripple, borderless: true, radius: n.rippleRadius }}
+                style={{
+                  flex: raised ? undefined : 1,
+                  width: raised ? TAB_BAR.scan + t.space[6] : undefined,
+                  minWidth: raised ? undefined : n.itemMinWidth,
+                  minHeight: n.itemTarget,
+                  height: raised ? TAB_BAR.height + TAB_BAR.raise : TAB_BAR.height,
+                  alignItems: 'center',
+                  justifyContent: raised ? 'flex-end' : 'center',
+                  paddingBottom: raised ? labelPad : 0,
+                  gap: t.space[1],
+                }}
+              >
+                {raised ? (
+                  ({ pressed }) => (
+                    <>
+                      <View
+                        style={{
+                          width: TAB_BAR.scan,
+                          height: TAB_BAR.scan,
+                          borderRadius: TAB_BAR.scan / 2,
+                          backgroundColor: pressed ? t.colors.plumPressed : t.colors.plum,
+                          borderWidth: 3,
+                          borderColor: t.colors.glass,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          shadowColor: t.colors.plum,
+                          shadowOpacity: 0.3,
+                          shadowRadius: 12,
+                          shadowOffset: { width: 0, height: 6 },
+                          elevation: 6,
+                          transform: [{ scale: pressed ? 0.96 : 1 }],
+                        }}
+                      >
+                        <Icon name={it.icon} size={t.icon.lg} color={t.colors.onAccent} strokeWidth={1.75} />
+                      </View>
+                      {text}
+                    </>
+                  )
+                ) : (
+                  <>
+                    <Icon
+                      name={it.icon}
+                      size={t.icon.lg}
+                      filled={focused && n.iconActiveFilled}
+                      knockout={t.colors.glass}
+                      color={focused ? n.iconActive : n.iconInactive}
+                      strokeWidth={n.iconInactiveStrokeWidth}
+                    />
+                    {text}
+                  </>
+                )}
+              </Pressable>
+            );
+          })}
+        </View>
       </View>
     </View>
   );
