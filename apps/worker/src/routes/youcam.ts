@@ -1,11 +1,11 @@
 import { ScanStartRequest, ScanSubmitRequest, TryonStartRequest, type Caps, type CatalogProduct } from '@skinkey/contracts';
 import { Hono, type Context } from 'hono';
-import { ctxOf, isDemo, requireInstall, type AppCtx, type HonoEnv } from '../context';
+import { clientIp, ctxOf, isDemo, requireInstall, type AppCtx, type HonoEnv } from '../context';
 import { intVar } from '../env';
 import { randomId } from '../lib/b64';
 import { HttpError } from '../lib/errors';
 import { budget, readGlobalLedger, UNIT_COSTS, wouldBreachFloor } from '../lib/ledger';
-import { issueInstallToken } from '../lib/install';
+import { issueInstallToken, safeEqual } from '../lib/install';
 import { advanceScan, keyBuilder, scanResponse, submitScan, type ScanJob } from '../jobs/scan';
 import { loadJob, saveJob, type AnyJob } from '../jobs/store';
 import { advanceTryon, submitTryon, tryonResponse, type TryonJob } from '../jobs/tryon';
@@ -13,7 +13,7 @@ import { MOCK_ORIGIN } from '../mock';
 import { MOCK_SCENARIO_HEADER } from '../proposals';
 import { VTO_IMAGE, type VtoKind, type VtoShade } from '../youcam/bodies';
 import { YouCamHttpError, type YouCamClient } from '../youcam/client';
-import { idempotent, parseJson } from './util';
+import { dailyLimit, idempotent, parseJson } from './util';
 
 export const youcamRoutes = new Hono<HonoEnv>();
 
@@ -23,8 +23,10 @@ const budgetFor = async (ctx: AppCtx) =>
   budget(await readGlobalLedger(ctx.store, false), intVar(ctx.env.UNIT_BALANCE_START, 1022), intVar(ctx.env.UNIT_FLOOR, 50));
 
 /** Live, non-demo jobs spend units: check the floor, then reserve one use of the install's cap. */
-const reserve = async (ctx: AppCtx, installId: string, kind: 'scan' | 'tryon', cost: number, simulated: boolean): Promise<{ caps: Caps; consumed: boolean }> => {
+const reserve = async (c: Context<HonoEnv>, ctx: AppCtx, installId: string, kind: 'scan' | 'tryon', cost: number, simulated: boolean): Promise<{ caps: Caps; consumed: boolean }> => {
   if (simulated) return { caps: await ctx.caps.caps(installId), consumed: false };
+  // Per-IP daily ceiling on live spend, so minting many install tokens cannot drain the YouCam balance.
+  await dailyLimit(c, `live-${kind}`, clientIp(c), kind === 'scan' ? 3 : 6);
   if (wouldBreachFloor(await budgetFor(ctx), cost))
     throw new HttpError('cap_reached', 'Live YouCam calls are paused to protect the judging reserve. Try the Demo reading.');
   const caps = await ctx.caps.consume(installId, kind);
@@ -65,6 +67,7 @@ const settle = async (ctx: AppCtx, job: AnyJob, refund: boolean | undefined) => 
 
 youcamRoutes.post('/install', async (c) => {
   const ctx = ctxOf(c);
+  if (ctx.mode === 'live') await dailyLimit(c, 'install', clientIp(c), 5);
   const { installId, token } = await issueInstallToken(ctx.installSecret());
   return c.json({ installToken: token, caps: await ctx.caps.caps(installId) });
 });
@@ -80,7 +83,7 @@ youcamRoutes.post('/scan/start', async (c) => {
   const demo = isDemo(c);
   const simulated = demo || ctx.mode === 'mock';
   return idempotent(c, `scan:${installId}`, async () => {
-    const { caps, consumed } = await reserve(ctx, installId, 'scan', UNIT_COSTS.skin_analysis_hd, simulated);
+    const { caps, consumed } = await reserve(c, ctx, installId, 'scan', UNIT_COSTS.skin_analysis_hd, simulated);
     const yc = ctx.youcam(demo);
     let upload;
     try {
@@ -130,7 +133,8 @@ youcamRoutes.post('/scan/:id/cancel', async (c) => {
   const ctx = ctxOf(c);
   const job = await ownJob(c, 'scan', c.req.param('id'));
   if (!job.submittedAt && job.tasks.length === 0) job.file.state = 'orphan';
-  await settle(ctx, job, true);
+  // Refund the cap only if no YouCam task was ever created (units not spent).
+  await settle(ctx, job, !job.submittedAt && job.tasks.length === 0);
   return c.json(scanResponse(job, ctx.clock.now()));
 });
 
@@ -163,7 +167,7 @@ youcamRoutes.post('/tryon', async (c) => {
   const simulated = demo || ctx.mode === 'mock';
   const cost = req.mode === 'multi' ? UNIT_COSTS.skin_tone + 2 * UNIT_COSTS.makeup_vto : UNIT_COSTS.makeup_vto;
   return idempotent(c, `tryon:${installId}`, async () => {
-    const { caps, consumed } = await reserve(ctx, installId, 'tryon', cost, simulated);
+    const { caps, consumed } = await reserve(c, ctx, installId, 'tryon', cost, simulated);
     let upload;
     try {
       upload = await createUpload(ctx, ctx.youcam(demo), simulated, fileName(c, simulated, 'tryon'), req.image.fileSize);
@@ -216,7 +220,8 @@ youcamRoutes.post('/tryon/:id/cancel', async (c) => {
   const ctx = ctxOf(c);
   const job = await ownJob(c, 'tryon', c.req.param('id'));
   if (!job.submittedAt && job.tasks.length === 0) job.file.state = 'orphan';
-  await settle(ctx, job, true);
+  // Refund the cap only if no YouCam task was ever created (units not spent).
+  await settle(ctx, job, !job.submittedAt && job.tasks.length === 0);
   return c.json(tryonResponse(job, ctx.clock.now()));
 });
 
@@ -228,7 +233,7 @@ youcamRoutes.get('/ledger', async (c) => {
   const g = await readGlobalLedger(ctx.store, !live);
   let youcamCredit: number | null | undefined;
   if (c.req.query('verify') === '1') {
-    if (!ctx.env.ADMIN_TOKEN || c.req.header('x-skinkey-admin') !== ctx.env.ADMIN_TOKEN) throw new HttpError('unauthorized', 'Admin token required');
+    if (!ctx.env.ADMIN_TOKEN || !safeEqual(c.req.header('x-skinkey-admin') ?? '', ctx.env.ADMIN_TOKEN)) throw new HttpError('unauthorized', 'Admin token required');
     const credit = await ctx.youcam(false).credit();
     youcamCredit = credit.results.reduce((n, r) => n + r.amount, 0);
   }

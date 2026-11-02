@@ -102,7 +102,7 @@ export const resolve = async (ctx: AppCtx, req: ResolveRequest, ip: string, limi
 claudeRoutes.post('/resolve', async (c) => {
   const ctx = ctxOf(c);
   const req = await parseJson(c, ResolveRequest);
-  return c.json(await resolve(ctx, req, clientIp(c), (ip) => dailyLimit(c, 'resolve', ip, 200)));
+  return c.json(await resolve(ctx, req, clientIp(c), (ip) => dailyLimit(c, 'resolve', ip, 200).then(() => dailyLimit(c, 'claude-global', 'all', 1500))));
 });
 
 /** X4 label OCR: Claude reads the label; the phone shows editable chips and the user confirms before any rule runs. */
@@ -111,6 +111,7 @@ claudeRoutes.post('/label-ocr', async (c) => {
   const req = await parseJson(c, LabelOcrRequest);
   if (base64DecodedLength(req.imageBase64) > MAX_IMAGE_BYTES) throw new HttpError('bad_request', 'Label photo is larger than 5 MB');
   await dailyLimit(c, 'label-ocr', clientIp(c), 40);
+  await dailyLimit(c, 'claude-global', 'all', 1500);
   const claude = ctx.claude();
   const vocabulary = inciVocabulary(ctx.catalog);
   const started = ctx.clock.now();

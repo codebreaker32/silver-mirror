@@ -133,6 +133,7 @@ export const createMockYouCam = (options: MockOptions = {}) => {
   app.use('*', async (c, next) => {
     await next();
     state.calls.push({ method: c.req.method, path: new URL(c.req.url).pathname.replace(/^\/mock-youcam/, ''), status: c.res.status });
+    if (state.calls.length > 500) state.calls.splice(0, state.calls.length - 500);
   });
 
   app.use('/s2s/*', async (c, next) => {
