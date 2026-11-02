@@ -53,6 +53,9 @@ export const FEATURE: Record<TaskKind, LedgerFeature> = {
 export const isDue = (t: TaskRecord, now: number) =>
   (t.state === 'task_created' || t.state === 'running') && (t.lastPollAt === undefined || now - t.lastPollAt >= TIMING.pollMinMs);
 
+/** Error code recorded when a task GET answers 400/404 before any delete was sent. */
+export const TASK_EXPIRED = 'task_expired';
+
 /** One GET for one task, applying the result to its delete state. Every task gets at least one GET (tone doc: unpolled tasks time out). */
 export const pollTask = async <R>(job: JobBase, t: TaskRecord, ctx: JobCtx): Promise<TaskPoll<R>> => {
   const now = ctx.clock.now();
@@ -70,15 +73,20 @@ export const pollTask = async <R>(job: JobBase, t: TaskRecord, ctx: JobCtx): Pro
     t.terminalAt = now;
     t.error = poll.error;
   } else {
-    t.error = 'task_expired';
+    // A 400/404 before we sent any delete is not a delete: the task expired or YouCam lost it. Treat it as a task
+    // error so the job shows its quiet error copy and the delete path still runs; "gone" only confirms a delete
+    // once one was requested (advanceDeletes).
+    setState(t, 'terminal_error');
     t.terminalAt = now;
-    setState(t, 'deleted');
-    t.deletedAt = now;
+    t.error = TASK_EXPIRED;
   }
   return poll;
 };
 
-/** Sends deletes once every task on the file is terminal and read, then confirms each with a later GET. */
+/**
+ * Sends deletes once every task on the file is terminal and read, then confirms each with a later GET of that same task id.
+ * Tasks on a shared file each get their own delete and their own confirming GETs: one task's 400 never confirms another's.
+ */
 export const advanceDeletes = async (job: JobBase, ctx: JobCtx): Promise<void> => {
   if (!readyToDelete(job.tasks)) return;
   for (const t of job.tasks) {
@@ -90,7 +98,8 @@ export const advanceDeletes = async (job: JobBase, ctx: JobCtx): Promise<void> =
         setState(t, 'delete_requested');
         t.deleteRequestedAt = now;
       } catch (e) {
-        t.error = e instanceof YouCamHttpError ? `delete:${e.errorCode}` : 'delete:network';
+        // Kept apart from t.error so an expired or failed task keeps its own error code in the ledger and steps.
+        t.deleteError = e instanceof YouCamHttpError ? `delete:${e.errorCode}` : 'delete:network';
         if (t.deleteAttempts >= TIMING.maxDeleteAttempts) {
           setState(t, 'delete_failed');
           await recordGlobal(ctx.store, job.mock, { deleteFailed: true });
@@ -159,7 +168,7 @@ export const ledgerFor = (job: JobBase, now: number) => {
         latencyMs: Math.max(0, (t.deletedAt ?? now) - (t.deleteRequestedAt ?? t.terminalAt ?? now)),
         startedAt: iso(t.deleteRequestedAt ?? t.terminalAt ?? now),
         status: t.state === 'delete_failed' ? 'error' : 'ok',
-        ...(t.state === 'delete_failed' && t.error ? { errorCode: t.error } : {}),
+        ...(t.state === 'delete_failed' && (t.deleteError ?? t.error) ? { errorCode: t.deleteError ?? t.error } : {}),
         deleteState: t.state,
       });
     }

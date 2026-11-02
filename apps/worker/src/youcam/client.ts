@@ -44,7 +44,10 @@ export type TaskPoll<R> =
   | { kind: 'running' }
   | { kind: 'success'; results: R }
   | { kind: 'error'; error: string; message?: string }
-  /** 400/404 InvalidTaskId: the task no longer exists (deleted or expired). Used to confirm a delete (G0). */
+  /**
+   * 400/404 InvalidTaskId: the task no longer exists (deleted or expired). The caller decides what it means:
+   * after a delete was sent it confirms the delete (G0); before that it is an expired task, not a delete.
+   */
   | { kind: 'gone'; status: number };
 
 export class YouCamClient {

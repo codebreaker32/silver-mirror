@@ -76,6 +76,42 @@ describe('try-on chain (mock YouCam)', () => {
     expect(last.steps.map((x: { state: string }) => x.state)).toEqual(['done', 'failed', 'failed', 'done']);
   });
 
+  it('tasks on one shared file each get their own delete and their own confirming GETs (G0, G3)', async () => {
+    const s = setup({ mockOptions: { deleteLagGets: 2 } });
+    await s.install();
+    const { json } = await start(s, { productId: 'plum-lip-tint-candy', mode: 'multi' });
+    await s.put(json.upload);
+    await s.req('POST', `/v1/tryon/${json.tryonId}/submit`);
+    const { last } = await pollUntil(s, `/v1/tryon/${json.tryonId}`, settled);
+    expect(last).toMatchObject({ status: 'done', deleteState: 'deleted' });
+    const calls = s.mock.state.calls;
+    const firstDelete = calls.findIndex((c) => c.path === '/s2s/v2.0/task/delete');
+    const taskIds = [...s.mock.state.tasks.keys()];
+    expect(taskIds).toHaveLength(3);
+    expect(new Set([...s.mock.state.tasks.values()].map((t) => t.fileId)).size).toBe(1);
+    // With a 2-GET lag each task needs 3 confirming GETs of its own id; one task's 400 never confirms another.
+    for (const id of taskIds) expect(calls.slice(firstDelete).filter((c) => c.method === 'GET' && c.path.endsWith(`/${id}`))).toHaveLength(3);
+    const deletes = last.ledger.entries.filter((e: { feature: string }) => e.feature === 'task_delete');
+    expect(deletes.map((e: { taskId: string }) => e.taskId).sort()).toEqual([...taskIds].sort());
+    for (const d of deletes) expect(d).toMatchObject({ status: 'ok', deleteState: 'deleted' });
+  });
+
+  it('an expired tone task (400 before any delete) fails with error copy and makes no renders', async () => {
+    const s = setup();
+    await s.install();
+    const { json } = await start(s, { productId: 'plum-lip-tint-candy', mode: 'multi' }, { 'x-mock-scenario': 'expired' });
+    await s.put(json.upload);
+    await s.req('POST', `/v1/tryon/${json.tryonId}/submit`);
+    const { history, last } = await pollUntil(s, `/v1/tryon/${json.tryonId}`, settled);
+    for (const h of history) TryonStatusResponse.parse(h);
+    expect(last.status).toBe('failed');
+    expect(last.error).toEqual({ code: 'unknown', message: "YouCam couldn't read this photo. Try again" });
+    expect(last.steps[1]).toMatchObject({ id: 'tone', state: 'failed', detail: "YouCam couldn't read this photo. Try again" });
+    expect(history.some((h) => h.deleteState === 'deleted')).toBe(false);
+    expect(last.deleteState).toBe('delete_failed');
+    expect(s.mock.state.calls.some((c) => c.method === 'POST' && c.path === '/s2s/v2.0/task/makeup-vto')).toBe(false);
+  });
+
   it('validates product, shades and the 768×1024 size before opening an upload', async () => {
     const s = setup();
     await s.install();

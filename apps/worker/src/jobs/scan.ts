@@ -17,7 +17,7 @@ import { YouCamHttpError } from '../youcam/client';
 import { mapYouCamError, overlayUrl, rawScoreReadings, zoneLabels } from '../youcam/parse';
 import type { SkinAnalysisResults } from '../youcam/types';
 import { newTask, setState } from './deleteState';
-import { advanceDeletes, deletesFinal, isDue, ledgerFor, markOrphan, pollTask, TIMING, type JobBase, type JobCtx } from './engine';
+import { advanceDeletes, deletesFinal, isDue, ledgerFor, markOrphan, pollTask, TASK_EXPIRED, TIMING, type JobBase, type JobCtx } from './engine';
 
 export interface ScanJob extends JobBase {
   kind: 'scan';
@@ -105,8 +105,10 @@ export const advanceScan = async (job: ScanJob, ctx: ScanCtx): Promise<AdvanceOu
         }
       }
       setState(t, 'result_read');
-    } else if (poll.kind === 'error') {
-      job.error = { ...mapYouCamError(poll.error), youcamError: poll.error };
+    } else if (poll.kind === 'error' || poll.kind === 'gone') {
+      // An expired task (400 before any delete) takes the same quiet error path as an engine error.
+      const code = poll.kind === 'error' ? poll.error : TASK_EXPIRED;
+      job.error = { ...mapYouCamError(code), youcamError: code };
       out.refund = true;
     }
   }

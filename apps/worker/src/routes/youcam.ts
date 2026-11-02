@@ -39,6 +39,8 @@ const fileName = (c: Context<HonoEnv>, simulated: boolean, kind: string) => {
 
 const createUpload = async (ctx: AppCtx, yc: YouCamClient, simulated: boolean, name: string, size: number) => {
   try {
+    // 'image/jpg' is the value the File API reference documents (docs/youcam/md/file_post.md) and live-smoke.ts sends;
+    // the phone PUTs with the headers YouCam signs back, so this string is never compared with the bytes' real MIME type.
     const { fileId, upload } = await yc.createFile({ fileName: name, contentType: 'image/jpg', fileSize: size });
     return { fileId, upload: simulated || ctx.mode === 'mock' ? { ...upload, url: upload.url.replace(MOCK_ORIGIN, `${ctx.origin}/mock-youcam`) } : upload };
   } catch (e) {

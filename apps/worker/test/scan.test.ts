@@ -116,6 +116,29 @@ describe('scan chain (mock YouCam)', () => {
     expect(last.ledger.totalUnits).toBe(0);
   });
 
+  it('an expired task (400 before any delete) fails with the quiet error copy and is never reported as deleted', async () => {
+    const s = setup();
+    await s.install();
+    const { json } = await startScan(s, { 'x-mock-scenario': 'expired' });
+    await s.put(json.upload);
+    await s.req('POST', '/v1/scan/submit', { scanId: json.scanId });
+    const { history, last } = await pollUntil(s, `/v1/scan/${json.scanId}`, settled);
+    for (const h of history) ScanStatusResponse.parse(h);
+    expect(last.status).toBe('failed');
+    expect(last.error).toEqual({ code: 'unknown', message: "YouCam couldn't read this photo. Try again" });
+    expect(last.steps[1]).toMatchObject({ id: 'analyse', state: 'failed', detail: "YouCam couldn't read this photo. Try again" });
+    expect(history.some((h) => h.deleteState === 'deleted')).toBe(false);
+    // The delete is still sent; YouCam refuses it for a task it no longer has, so it ends delete_failed, not deleted.
+    expect(s.mock.state.calls.some((c) => c.path === '/s2s/v2.0/task/delete')).toBe(true);
+    expect(last.deleteState).toBe('delete_failed');
+    expect(last.steps[3]).toMatchObject({ state: 'failed', detail: 'Delete failed: auto-removed within 30 days.' });
+    const task = last.ledger.entries.find((e: { feature: string }) => e.feature === 'skin_analysis_hd');
+    expect(task).toMatchObject({ units: 0, status: 'error', errorCode: 'task_expired' });
+    const del = last.ledger.entries.find((e: { feature: string }) => e.feature === 'task_delete');
+    expect(del).toMatchObject({ status: 'error', errorCode: 'delete:InvalidTaskId', deleteState: 'delete_failed' });
+    expect(last.ledger.totalUnits).toBe(0);
+  });
+
   it('records an orphan upload when the phone cancels before submit', async () => {
     const s = setup();
     await s.install();

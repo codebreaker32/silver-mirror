@@ -16,7 +16,8 @@ const makeupVto = spikeG5Foundation.result;
  * and replays fixtures recorded from the 2026-11-01 spikes. Tests and agents use this; it never touches the real API.
  *
  * Scenarios ride on the uploaded file name: `mock-<scenario>.jpg`.
- *   oily | slow | error_src_face_too_small | error_lighting_dark | error_no_face | error_face_position_too_small | create_400 | delete_fail
+ *   oily | slow | error_src_face_too_small | error_lighting_dark | error_no_face | error_face_position_too_small | create_400 | delete_fail | expired
+ * `expired`: the task answers 400 InvalidTaskId ("doesn't exist, or the task has expired") once it would have finished, before any delete.
  */
 export const MOCK_ORIGIN = 'https://mock.youcam.local';
 
@@ -230,6 +231,8 @@ export const createMockYouCam = (options: MockOptions = {}) => {
     task.polls += 1;
     const needed = task.scenario === 'slow' ? 3 : pollsUntilDone;
     if (task.polls <= needed && !task.deleted) return c.json({ status: 200, data: { task_status: 'running' } });
+    if (task.scenario === 'expired' && !task.deleted)
+      return c.json({ status: 400, error: "This task ID doesn't exist, or the task has expired", error_code: 'InvalidTaskId' }, 400);
     if (task.inputMissing)
       return c.json({ status: 200, data: { task_status: 'error', error: 'error_download_image', error_message: 'Download source image error' } });
     const engineError = task.scenario?.startsWith('error_') ? task.scenario : null;
@@ -251,7 +254,7 @@ export const createMockYouCam = (options: MockOptions = {}) => {
     const body = await c.req.json<{ task_id?: string }>().catch(() => ({}) as { task_id?: string });
     if (!body.task_id) return invalid(c, 'task_id is missing');
     const task = state.tasks.get(body.task_id);
-    if (!task || (task.deleted && task.deleteGets > deleteLagGets)) return invalid(c, 'No matching task', 'InvalidTaskId');
+    if (!task || task.scenario === 'expired' || (task.deleted && task.deleteGets > deleteLagGets)) return invalid(c, 'No matching task', 'InvalidTaskId');
     const needed = task.scenario === 'slow' ? 3 : pollsUntilDone;
     if (task.polls <= needed) return invalid(c, 'The task has not finished yet and cannot be deleted', 'OperationInvalid');
     if (task.scenario === 'delete_fail') return invalid(c, 'Operation not supported', 'OperationNotSupport');

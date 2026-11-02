@@ -6,7 +6,7 @@ import { YouCamHttpError } from '../youcam/client';
 import { mapYouCamError } from '../youcam/parse';
 import type { MakeupVtoResults, SkinToneResults } from '../youcam/types';
 import { isTerminalTask, newTask, setState, type TaskRecord } from './deleteState';
-import { advanceDeletes, deletesFinal, isDue, ledgerFor, markOrphan, pollTask, TIMING, type JobBase, type JobCtx } from './engine';
+import { advanceDeletes, deletesFinal, isDue, ledgerFor, markOrphan, pollTask, TASK_EXPIRED, TIMING, type JobBase, type JobCtx } from './engine';
 
 export interface TryonJob extends JobBase {
   kind: 'tryon';
@@ -77,7 +77,10 @@ export const advanceTryon = async (job: TryonJob, ctx: JobCtx): Promise<TryonOut
       const picks = hex && /^#?[0-9a-f]{6}$/i.test(hex) ? nearestShades(hex.startsWith('#') ? hex : `#${hex}`, job.shades, 2) : [];
       if (picks.length === 0) job.error = { code: 'unknown', message: "We couldn't pick shades from this photo. Try again", youcamError: 'no_skin_color' };
       for (const shade of picks) await createVto(job, ctx, shade);
-    } else if (poll.kind === 'error') job.error = { ...mapYouCamError(poll.error), youcamError: poll.error };
+    } else if (poll.kind === 'error' || poll.kind === 'gone') {
+      const code = poll.kind === 'error' ? poll.error : TASK_EXPIRED;
+      job.error = { ...mapYouCamError(code), youcamError: code };
+    }
   }
 
   const vtos = job.tasks.filter((t) => t.kind === 'makeup_vto');
@@ -85,7 +88,10 @@ export const advanceTryon = async (job: TryonJob, ctx: JobCtx): Promise<TryonOut
     if (!isDue(v, ctx.clock.now())) continue;
     const poll = await pollTask<MakeupVtoResults>(job, v, ctx);
     if (poll.kind === 'success') v.resultUrl = poll.results?.url;
-    else if (poll.kind === 'error' && !job.error) job.error = { ...mapYouCamError(poll.error), youcamError: poll.error };
+    else if ((poll.kind === 'error' || poll.kind === 'gone') && !job.error) {
+      const code = poll.kind === 'error' ? poll.error : TASK_EXPIRED;
+      job.error = { ...mapYouCamError(code), youcamError: code };
+    }
   }
 
   const toneSettled = !tone || tone.state !== 'task_created' && tone.state !== 'running';

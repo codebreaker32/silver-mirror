@@ -5,11 +5,12 @@ import type { TaskKind } from '../youcam/types';
  * Spec §3 delete state machine, one record per uploaded file:
  * uploaded → task_created → running → terminal(success|error) → result_read → delete_requested → deleted | delete_failed,
  * plus `orphan` for an upload that never got a task (nothing to delete; YouCam auto-removes within 30 days).
+ * `deleted` is reachable only from `delete_requested`: a task that answers 400 before we asked for a delete is an error, not a delete.
  */
 const EDGES: Record<DeleteState, readonly DeleteState[]> = {
   uploaded: ['task_created', 'orphan'],
-  task_created: ['running', 'terminal_success', 'terminal_error', 'deleted'],
-  running: ['running', 'terminal_success', 'terminal_error', 'deleted'],
+  task_created: ['running', 'terminal_success', 'terminal_error'],
+  running: ['running', 'terminal_success', 'terminal_error'],
   terminal_success: ['result_read'],
   terminal_error: ['delete_requested', 'delete_failed'],
   result_read: ['delete_requested', 'delete_failed'],
@@ -59,6 +60,8 @@ export interface TaskRecord {
   lastPollAt?: number;
   units: number;
   error?: string;
+  /** Last delete-call failure (`delete:<code>`), separate from the task's own error. */
+  deleteError?: string;
   shadeName?: string;
   /** Signed result URL, kept only until the bytes are read in the delivering request. */
   resultUrl?: string;

@@ -31,6 +31,14 @@ describe('delete state machine', () => {
       for (const to of ['task_created', 'delete_requested', 'deleted'] as const) expect(canTransition(final, to)).toBe(false);
   });
 
+  it('a task that answers 400 before any delete is an error, never a confirmed delete', () => {
+    for (const from of ['task_created', 'running'] as const) {
+      expect(canTransition(from, 'deleted')).toBe(false);
+      expect(canTransition(from, 'terminal_error')).toBe(true);
+    }
+    expect(canTransition('delete_requested', 'deleted')).toBe(true);
+  });
+
   it('only an upload with no task can become an orphan', () => {
     expect(canTransition('uploaded', 'orphan')).toBe(true);
     expect(canTransition('task_created', 'orphan')).toBe(false);
