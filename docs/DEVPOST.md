@@ -26,7 +26,7 @@ Desk research shaped the brief. It is desk research only; nobody was interviewed
 1. **One reading.** After consent, one selfie goes to YouCam HD Skin Analysis. Silver Mirror keeps only Low / Medium / High bands for oiliness, moisture, redness and pores, the per-zone skin-type labels and the scan date, on the phone. The photo is deleted from YouCam straight after, and the app waits for YouCam to confirm the delete before it shows the tick.
 2. **Share from the store app.** In Flipkart or Nykaa, tap Share, then Silver Mirror. In Amazon, Share, then More, then Silver Mirror. Flipkart sends only a short link; the phone follows it, stops as soon as the listing address arrives (the page itself is never read), and the product slug becomes the title.
 3. **Confirm the product.** A deterministic name match against the catalogue proposes rows first, with SKU disqualifiers for a conflicting SPF, body vs face and product type. Claude (effort low, catalogue ids only) is asked only when the name doesn't match or the shopper shares a screenshot, and the same disqualifiers re-check its picks. The shopper picks one; nothing is judged before that.
-4. **Verdict with reasons.** A published, deterministic rules engine returns FITS, CAUTION, UNKNOWN or MEDICINE. Each reason names the ingredient, the reading and the rule id: "Contains niacinamide, which our rule SUP-2 counts as a fit for oily-looking skin." CAUTION says "May not suit your readings. A cosmetic fit note, not a health warning."
+4. **Verdict with reasons.** A published, deterministic rules engine returns FITS, CAUTION, UNKNOWN or MEDICINE. Each reason names the ingredient and the reading behind it, in plain words: "Contains glycerin, a fit for your dry U-zone reading." The rule behind each reason is published (`/rules`) but kept out of the shopper's way. CAUTION says "May not suit your readings. A cosmetic fit note, not a health warning."
 5. **Try-on.** For tinted sunscreens with a brand-sourced shade colour (7 of our 11, e.g. Foxtale SPF 50 Tinted Fluid Sunscreen), YouCam Makeup VTO renders the brand's shades on the shopper's own photo, right under the verdict's reasons: two shades picked with YouCam Skin Tone where the brand sells several, the one shade otherwise. Preview, not a shade guarantee. Shade colours come only from each brand's own swatch or texture image, with the source recorded per shade; the 4 tinted rows without one hide the button rather than guess.
 6. **Better matches.** Up to three FITS products from the verified catalogue, ranked by fit with no paid placements. Each opens a search for that product in the store the shopper came from, and one more link opens a Flipkart search filtered to their skin-type reading.
 7. **Honest UNKNOWN.** If we have no ingredient list, we say so ("This doesn't mean it's bad") and offer a label photo: Claude reads the ingredient names into editable chips, the shopper confirms, the rules decide.
@@ -56,7 +56,7 @@ Base URL `https://yce-api-01.makeupar.com`, server-to-server from the Worker onl
 | Facial Color Tones (skin tone) | `POST /s2s/v2.0/task/skin-tone-analysis`, `GET /s2s/v2.0/task/skin-tone-analysis/{task_id}` | picks two candidate shades for try-on; the colour is never shown | 20 |
 | Makeup VTO | `POST /s2s/v2.0/task/makeup-vto`, `GET /s2s/v2.0/task/makeup-vto/{task_id}` | two shades on the same photo (`foundation`, `lip_color`) | 1 each |
 | Task delete | `POST /s2s/v2.0/task/delete` | delete after every result, confirmed by a later GET | 0 |
-| Credit | `GET /s2s/v1.0/client/credit`, `GET /s2s/v2.0/credit/feature-cost` | unit ledger on "How this was made" | 0 |
+| Credit | `GET /s2s/v1.0/client/credit`, `GET /s2s/v2.0/credit/feature-cost` | unit ledger in the Worker (`GET /v1/ledger`) | 0 |
 
 Measured live in the API spike (each feature called on its own): HD Skin Analysis succeeded on the first poll at 5.4 s; each Makeup VTO took about 5.3 s; delete returned 200 and the task was gone (GET 400, mask URL 404) about 2 s later. Skin tone was priced from the live feature-cost list and exercised against the mock only. The app's own chain (upload slot → `src_file_id` → task → delete) has run end to end against the mock, not yet live.
 
@@ -74,7 +74,7 @@ Measured live in the API spike (each feature called on its own): HD Skin Analysi
 - A working Android APK where a real share from the Flipkart, Amazon.in or Nykaa app lands on a verdict with reasons, in light and dark.
 - Two-shade YouCam Makeup VTO on 7 tinted sunscreens, each shade colour taken from the brand's own page with its source recorded.
 - A pre-registered, tagged audit with its own result published as is: 0 of 136 label-check mismatches, 70 of 136 flagged CAUTION for a profile their own claim points to, 0 reviewed by a person so far.
-- Every verdict shows its working: rule id, reading, ingredient, ruleset version, YouCam task id, units and delete state.
+- Every verdict names the ingredient and the reading behind it. The rule id, ruleset version, YouCam task id, units and delete state are recorded by the Worker ledger and the published rules, not shown as developer detail in the app.
 - No numeric skin score, no age estimate, no before/after anywhere.
 
 ## What we learned
