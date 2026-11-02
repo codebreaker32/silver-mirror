@@ -152,7 +152,7 @@ const GROUPS = [
   [['scan-consent', `/scan${q()}`]],
   [['scan-processing', `/scan/processing${q()}`]],
   [['scan-result', `/scan/result${q()}`]],
-  [['key', `/key${q()}`]],
+  [['key', `/reading${q()}`]],
   [
     ['tryon-consent', `/tryon${q({ productId: tinted.id, mode: 'multi', productName: tinted.name })}`],
     [
@@ -168,7 +168,10 @@ const GROUPS = [
   [['settings', `/settings${q()}`]],
   [['how', `/how${q()}`]],
   [['home-empty', `/?demo=none`]],
-  [['key-empty', `/key?demo=none`]],
+  [['key-empty', `/reading?demo=none`]],
+  [['kit-1', `/kit${q({ part: '1' })}`]],
+  [['kit-2', `/kit${q({ part: '2' })}`]],
+  [['kit-3', `/kit${q({ part: '3' })}`]],
 ];
 
 rmSync(OUT, { recursive: true, force: true });

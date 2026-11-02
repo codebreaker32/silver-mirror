@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import { WORDMARK } from './wordmarkPaths';
@@ -19,16 +20,13 @@ export function Wordmark({ capHeight, color, header = false }: WordmarkProps) {
   const theme = useTheme();
   const [x, y, w, h] = WORDMARK.viewBox;
   const scale = capHeight / WORDMARK.capHeight;
+  // The accessible node is a View, not the Svg: on web, react-native-web turns an element with a role into that
+  // role's tag (header -> <h1>), which would drop the <svg> and leave the wordmark invisible.
   return (
-    <Svg
-      width={w * scale}
-      height={h * scale}
-      viewBox={`${x} ${y} ${w} ${h}`}
-      accessible
-      accessibilityRole={header ? 'header' : 'text'}
-      accessibilityLabel={WORDMARK.text}
-    >
-      <Path d={WORDMARK.d} fill={color ?? theme.components.brand.wordmarkColor} />
-    </Svg>
+    <View accessible accessibilityRole={header ? 'header' : 'text'} accessibilityLabel={WORDMARK.text}>
+      <Svg width={w * scale} height={h * scale} viewBox={`${x} ${y} ${w} ${h}`} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        <Path d={WORDMARK.d} fill={color ?? theme.components.brand.wordmarkColor} />
+      </Svg>
+    </View>
   );
 }

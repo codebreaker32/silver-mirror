@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { View } from 'react-native';
 import Svg, { Defs, G, LinearGradient, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import {
@@ -40,11 +41,10 @@ export function SilverMark({ size, tile = true, accessibilityLabel }: SilverMark
   const chromeId = `smChrome${uid}`;
   const tileId = `smTile${uid}`;
   const hiId = `smHi${uid}`;
-  const a11y = accessibilityLabel
-    ? { accessible: true, accessibilityRole: 'image' as const, accessibilityLabel }
-    : { accessibilityElementsHidden: true, importantForAccessibility: 'no-hide-descendants' as const };
-
-  return (
+  // The Svg itself is always hidden; a labelled mark gets a wrapping View as its accessible node (on web,
+  // react-native-web may swap a role-carrying element's tag, which would drop the <svg>).
+  const a11y = { accessibilityElementsHidden: true, importantForAccessibility: 'no-hide-descendants' as const };
+  const svg = (
     <Svg width={Math.max(24, size)} height={Math.max(24, size)} viewBox={`0 0 ${MARK_VIEWBOX} ${MARK_VIEWBOX}`} {...a11y}>
       <Defs>
         <LinearGradient
@@ -115,5 +115,11 @@ export function SilverMark({ size, tile = true, accessibilityLabel }: SilverMark
         />
       ))}
     </Svg>
+  );
+  if (!accessibilityLabel) return svg;
+  return (
+    <View accessible accessibilityRole="image" accessibilityLabel={accessibilityLabel} style={{ alignSelf: 'flex-start' }}>
+      {svg}
+    </View>
   );
 }

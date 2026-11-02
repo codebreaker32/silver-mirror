@@ -1,10 +1,15 @@
 import { createContext, useContext, type ReactNode } from 'react';
-import { useSkinKeyTheme, type SkinKeyTheme } from '@skinkey/design';
+import { useSkinKeyTheme, type ColorScheme, type SkinKeyTheme } from '@skinkey/design';
 
 const ThemeContext = createContext<SkinKeyTheme | null>(null);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const theme = useSkinKeyTheme();
+/**
+ * Provides the Silver Mirror theme. Follows the phone's light/dark setting (useColorScheme, re-rendering when it
+ * changes); both themes are designed (pearl daylight / graphite with a silver sheen). `scheme` forces one for tests
+ * and the kit gallery.
+ */
+export function ThemeProvider({ children, scheme }: { children: ReactNode; scheme?: ColorScheme }) {
+  const theme = useSkinKeyTheme(scheme);
   return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
 }
 

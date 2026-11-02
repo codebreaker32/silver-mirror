@@ -5,32 +5,47 @@ import { ShareIntentProvider } from 'expo-share-intent';
 import { useEffect } from 'react';
 import { fontAssets } from '@skinkey/design';
 import { ShareRouter } from '@/features/share';
-import { ThemeProvider } from '@/theme/ThemeProvider';
+import { SystemChrome } from '@/theme/SystemChrome';
+import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 
-SplashScreen.preventAutoHideAsync();
+// Hold the native splash (chrome S on pearl / graphite) until Noto Serif Display and Geist are loaded,
+// so no screen ever paints in a fallback face.
+SplashScreen.preventAutoHideAsync().catch(() => undefined);
+
+function RootStack() {
+  const t = useTheme();
+  return (
+    <SystemChrome>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: t.colors.bg } }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="check" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="scan" />
+        <Stack.Screen name="tryon" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="key" />
+        <Stack.Screen name="settings" />
+        <Stack.Screen name="how" />
+        <Stack.Screen name="kit" />
+      </Stack>
+      <ShareRouter />
+    </SystemChrome>
+  );
+}
 
 export default function RootLayout() {
-  const [loaded] = useFonts(fontAssets);
+  const [loaded, error] = useFonts(fontAssets);
+  // A font that fails to load must not strand the user on the splash: fall back to the system face.
+  const ready = loaded || Boolean(error);
 
   useEffect(() => {
-    if (loaded) SplashScreen.hideAsync();
-  }, [loaded]);
+    if (ready) SplashScreen.hideAsync().catch(() => undefined);
+  }, [ready]);
 
-  if (!loaded) return null;
+  if (!ready) return null;
 
   return (
     <ShareIntentProvider>
       <ThemeProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="check" options={{ presentation: 'modal' }} />
-          <Stack.Screen name="scan" />
-          <Stack.Screen name="tryon" options={{ presentation: 'modal' }} />
-          <Stack.Screen name="key" />
-          <Stack.Screen name="settings" />
-          <Stack.Screen name="how" />
-        </Stack>
-        <ShareRouter />
+        <RootStack />
       </ThemeProvider>
     </ShareIntentProvider>
   );

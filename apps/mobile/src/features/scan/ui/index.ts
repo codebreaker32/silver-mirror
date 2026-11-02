@@ -1,3 +1,4 @@
+// Retired kit: everything now lives in the shared kit (@/components). These re-exports keep old imports working.
 export { Button, TextLink, type ButtonVariant } from './Button';
 export { CheckboxRow } from './Checkbox';
 export { Icon, type IconName } from './Icon';

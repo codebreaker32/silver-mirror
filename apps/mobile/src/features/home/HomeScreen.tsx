@@ -36,7 +36,7 @@ export default function HomeScreen() {
         <Text style={[t.type.reason, { color: t.colors.text }]}>
           The tag says oily skin. Your scan and the ingredients get a vote.
         </Text>
-        <KeyChip keyProfile={key} isDemo={isDemo} onPress={() => router.push(key ? '/key' : '/scan')} />
+        <KeyChip keyProfile={key} isDemo={isDemo} onPress={() => (key ? router.navigate('/reading') : router.push('/scan'))} />
       </View>
 
       <View style={{ gap: t.space[3] }}>
