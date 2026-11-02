@@ -8,7 +8,7 @@ Silver Mirror
 
 ## Tagline (under 200 characters)
 
-Scan once with YouCam. Then share any skincare listing from Flipkart, Amazon or Nykaa: see if it suits your reading, the ingredient and rule behind each reason, and tinted shades on your photo.
+Scan your skin once with YouCam. Every product you browse shows if it suits you and why; try tinted shades on your own face, then buy on Amazon, Flipkart or Nykaa.
 
 ## Inspiration
 
