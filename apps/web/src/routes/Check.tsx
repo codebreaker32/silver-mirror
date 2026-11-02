@@ -9,7 +9,7 @@ import {
   type ResolveCandidate,
   type ResolveResponse,
 } from '@skinkey/contracts';
-import { facetFor, rank, READING_PROFILES } from '@skinkey/rules';
+import { facetFor, flipkartSearchUrl, rank, READING_PROFILES } from '@skinkey/rules';
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { SAMPLE_SHARE } from '../../../../packages/contracts/src/proposals/web';
@@ -514,9 +514,9 @@ function BetterMatches({ product, keyProfile }: { product: CatalogProduct | null
             <span className="match-text">
               <span className="match-name">{productLine(p)}</span>
               <span className="match-reason">{m.reasonLine}</span>
-              <span className="caption">{COPY.linkOutMatch}</span>
+              <span className="caption">{COPY.linkOutMatch('Flipkart')}</span>
             </span>
-            <a className="btn btn-secondary btn-sm" href={m.searchUrl} aria-label={`Flipkart search for ${p.brand} ${p.name}`}>
+            <a className="btn btn-secondary btn-sm" href={flipkartSearchUrl(`${p.brand} ${p.name}`)} aria-label={`Flipkart search for ${p.brand} ${p.name}`}>
               Flipkart search
               <Icon name="arrow-up-right" size={16} />
             </a>

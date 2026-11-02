@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { CatalogProduct, KeyProfile, ProductCategory } from '@skinkey/contracts';
+import type { CatalogProduct, KeyProfile, ProductCategory, Store } from '@skinkey/contracts';
 import type { CheckApi } from '@/features/check/api';
 import { selectMatches, type MatchView, type Rank } from './select';
 
@@ -31,9 +31,11 @@ export function useBetterMatches(opts: {
   category: ProductCategory | null;
   title: string | null;
   excludeId?: string;
+  /** The store the product was shared from: match cards search there. */
+  store?: Store | null;
   enabled: boolean;
 }): MatchesState {
-  const { api, rank, key, category, title, excludeId, enabled } = opts;
+  const { api, rank, key, category, title, excludeId, store, enabled } = opts;
   const [state, setState] = useState<MatchesState>({ status: 'idle' });
 
   useEffect(() => {
@@ -50,12 +52,12 @@ export function useBetterMatches(opts: {
         .slice(0, MAX_FETCH)
         .map((r) => r.id);
       const products = await loadProducts(api, ids, ctl.signal);
-      if (!ctl.signal.aborted) setState({ status: 'ready', matches: selectMatches(rank, products, key, excludeId), catalogCount: search.catalogCount });
+      if (!ctl.signal.aborted) setState({ status: 'ready', matches: selectMatches(rank, products, key, excludeId, 3, store), catalogCount: search.catalogCount });
     })().catch(() => {
       if (!ctl.signal.aborted) setState({ status: 'error' });
     });
     return () => ctl.abort();
-  }, [api, rank, key, category, title, excludeId, enabled]);
+  }, [api, rank, key, category, title, excludeId, store, enabled]);
 
   return state;
 }

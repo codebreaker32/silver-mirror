@@ -97,7 +97,7 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
               name={m.name}
               reason={m.shortReason}
               verdict={{ tone: 'fits', label: 'FITS' }}
-              destination="Opens a Flipkart search for this product"
+              destination={m.destination}
               glyph={categoryGlyph(m.category ?? category)}
               hero={i === 0}
               accessibilityLabel={m.a11y}

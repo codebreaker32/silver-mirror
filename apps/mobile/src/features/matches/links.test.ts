@@ -74,5 +74,19 @@ describe('selectMatches', () => {
     expect(out).toHaveLength(1);
     expect(out[0]).toMatchObject({ index: '01', name: 'Garnier Super UV Invisible Serum Sunscreen', meta: '30 ml' });
     expect(out[0]!.a11y).toMatch(/^Match 1\. .* Fits\. .* Opens a Flipkart search for this product\.$/);
+    // The engine's brandless searchUrl is ignored: the search is brand + name.
+    expect(out[0]!.url).toBe(flipkartSearchUrl(`${PRODUCT.brand} ${PRODUCT.name}`));
+  });
+
+  it('searches the store the product was shared from', () => {
+    const rank = vi.fn(() => ranked);
+    const nykaa = selectMatches(rank, [PRODUCT, TINTED], oily, 'current', 3, 'nykaa');
+    expect(nykaa[0]!.url).toBe(nykaaSearchUrl(`${PRODUCT.brand} ${PRODUCT.name}`));
+    expect(nykaa[0]!.destination).toBe('Opens a Nykaa search for this product');
+    expect(nykaa[0]!.a11y).toMatch(/Opens a Nykaa search for this product\.$/);
+    const amazon = selectMatches(rank, [PRODUCT, TINTED], oily, 'current', 3, 'amazon_in');
+    expect(amazon[0]!.url).toBe(amazonSearchUrl(`${PRODUCT.brand} ${PRODUCT.name}`));
+    expect(amazon[0]!.destination).toBe('Opens an Amazon search for this product');
+    expect(opensInCustomTab(nykaa[0]!.url)).toBe(true);
   });
 });

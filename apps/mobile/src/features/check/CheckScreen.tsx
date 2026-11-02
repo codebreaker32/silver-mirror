@@ -162,10 +162,31 @@ export default function CheckScreen() {
   }, [storedKey?.source, storedKey?.scanId]);
   const { state, start, reset } = flow;
 
+  // Scroll geometry: the "Better matches" pill shows only while that section is off screen, and the dock edge only
+  // while content scrolls under it (component.actionBar).
+  const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  const sheetY = useRef(0);
+  const matchesY = useRef<number | null>(null);
+  const geo = useRef({ y: 0, viewport: 0, content: 0 });
+  const [matchesOnScreen, setMatchesOnScreen] = useState(false);
+  const [under, setUnder] = useState(false);
+  const measure = useCallback(() => {
+    const { y, viewport, content } = geo.current;
+    const top = matchesY.current == null ? null : sheetY.current + matchesY.current;
+    setMatchesOnScreen(top != null && y + viewport > top + t.space[12]);
+    setUnder(content - (y + viewport) > 1);
+  }, [t.space]);
+
   const begin = useCallback(
     (input: CheckInput, from: Origin) => {
       // Each new input is a fresh check: drop the previous result, sheets and listing link.
       reset();
+      // A share that replaces a scrolled check starts at the top. Android can clamp the offset without an onScroll,
+      // so reset the remembered geometry too, or the "Better matches" pill stays hidden on the new page.
+      scroll.current?.scrollTo({ y: 0, animated: false });
+      geo.current.y = 0;
+      matchesY.current = null;
+      setMatchesOnScreen(false);
       setHowOpen(false);
       setMoreOpen(false);
       setCameraOpen(false);
@@ -224,24 +245,11 @@ export default function CheckScreen() {
     category,
     title: result?.title ?? null,
     excludeId: result?.product?.id,
+    store: result?.store ?? null,
     enabled: !!view?.showMatches,
   });
   const links = useMemo(() => storeLinks({ category, key, facetMap: FACET_MAP, facetLabel: COPY.flipkartFacetLink }), [category, key]);
 
-  // Scroll geometry: the "Better matches" pill shows only while that section is off screen, and the dock edge only
-  // while content scrolls under it (component.actionBar).
-  const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
-  const sheetY = useRef(0);
-  const matchesY = useRef<number | null>(null);
-  const geo = useRef({ y: 0, viewport: 0, content: 0 });
-  const [matchesOnScreen, setMatchesOnScreen] = useState(false);
-  const [under, setUnder] = useState(false);
-  const measure = useCallback(() => {
-    const { y, viewport, content } = geo.current;
-    const top = matchesY.current == null ? null : sheetY.current + matchesY.current;
-    setMatchesOnScreen(top != null && y + viewport > top + t.space[12]);
-    setUnder(content - (y + viewport) > 1);
-  }, [t.space]);
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     geo.current.y = e.nativeEvent.contentOffset.y;
     measure();
@@ -402,10 +410,14 @@ export default function CheckScreen() {
                     <PillButton
                       label={tryon.label}
                       variant="secondary"
+                      leadingIcon="face-frame"
                       testID="tryon-entry"
                       accessibilityHint="Asks for a separate selfie consent first."
                       onPress={() =>
-                        router.push({ pathname: '/tryon', params: { productId: result.product!.id, mode: tryon.mode, productName: productLine(result.product!) } })
+                        router.push({
+                          pathname: '/tryon',
+                          params: { productId: result.product!.id, mode: tryon.mode, productName: nameOnly(result.product!), productSize: sizeMeta(result.product!.size) ?? '' },
+                        })
                       }
                     />
                   ) : null
