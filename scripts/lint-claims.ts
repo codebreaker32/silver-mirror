@@ -48,6 +48,19 @@ const looksLikeCode = (s: string) => !/\s/.test(s) && /^[a-z0-9_./:#@-]*$/i.test
 
 export interface Hit { file: string; line: number; text: string; v: LintViolation }
 
+/**
+ * The app was renamed SkinKey → Silver Mirror (user-facing only). The old name and the old glossary ("Your Key",
+ * "Demo Key", "Delete Key", "No Key yet") must not come back in copy. Code identifiers are not copy; a line that has to
+ * quote the old name is marked lint-claims:allow.
+ */
+const RENAME = /\bSkinKey\b|\b(?:Your|Demo|Delete) Key\b|\bNo Key yet\b/;
+function lintAll(text: string): LintViolation[] {
+  const out = lintCopy(text);
+  const m = text.match(RENAME);
+  if (m) out.push({ id: 'old-name', match: m[0], why: 'renamed: use Silver Mirror / Your reading / Demo reading / Delete my reading / No reading yet' });
+  return out;
+}
+
 function lintCode(file: string): Hit[] {
   const src = readFileSync(file, 'utf8');
   const sf = ts.createSourceFile(file, src, ts.ScriptTarget.Latest, true, file.endsWith('x') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
@@ -58,7 +71,7 @@ function lintCode(file: string): Hit[] {
     const line = sf.getLineAndCharacterOfPosition(node.getStart()).line + 1;
     // Third-party data quoted verbatim (e.g. a retailer's product title) is marked on the same or previous line.
     if (`${lines[line - 2] ?? ''}${lines[line - 1]}`.includes('lint-claims:allow')) return;
-    for (const v of lintCopy(text)) hits.push({ file, line, text: text.trim().slice(0, 100), v });
+    for (const v of lintAll(text)) hits.push({ file, line, text: text.trim().slice(0, 100), v });
   };
   const visit = (node: ts.Node) => {
     if ((ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) && !isCodeString(node)) check(node, node.text);
@@ -78,7 +91,7 @@ function lintDoc(file: string): Hit[] {
     // Lines quoting the banned list itself are allowed when marked.
     if (inFence || raw.includes('lint-claims:allow')) return;
     const line = raw.replace(/`[^`]*`/g, ' ');
-    for (const v of lintCopy(line)) hits.push({ file, line: i + 1, text: raw.trim().slice(0, 100), v });
+    for (const v of lintAll(line)) hits.push({ file, line: i + 1, text: raw.trim().slice(0, 100), v });
   });
   return hits;
 }

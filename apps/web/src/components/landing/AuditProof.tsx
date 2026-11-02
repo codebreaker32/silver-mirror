@@ -1,7 +1,7 @@
 import { COPY } from '@skinkey/contracts';
 import { resultsCsv, summaryJson } from 'virtual:skinkey-audit';
 import { Link } from 'react-router';
-import { loadAudit } from '../../lib/audit';
+import { labelCheckSentence, loadAudit } from '../../lib/audit';
 import { Icon } from '../Icon';
 
 /**
@@ -49,7 +49,7 @@ export function AuditProof() {
             <p className="figure-big">
               {s.label_check.c} <span>of</span> {checked}
             </p>
-            <figcaption>{s.text.label_check}</figcaption>
+            <figcaption>{labelCheckSentence(s)}</figcaption>
           </figure>
         </div>
         <div className="audit-foot" data-reveal>

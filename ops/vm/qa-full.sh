@@ -72,6 +72,8 @@ flow() {
   shot "${tag}_2_verdict"
   $U scroll; sleep 1; shot "${tag}_2_verdict_scrolled"
   if $U tap "^Better matches$"; then sleep 3; shot "${tag}_3_matches"
+    # one more step so the first match card is on screen (Amazon stopped at the filter chips before)
+    $U scroll; sleep 1; shot "${tag}_3_matches_2"
   else
     $U scroll; sleep 1
     $U has "^Better matches$" && shot "${tag}_3_matches" || fail "$tag: no Better matches section"
@@ -93,6 +95,12 @@ done
 $E share-text "$AMAZON" >/dev/null 2>&1; sleep "$W"
 shot amazon_after_nykaa
 $U has "Shared from Amazon" || fail "second share on top of a check did not replace it"
+
+# medicine gate: a retinoid listing shows MEDICINE (pharmacist icon + line), no reasons, ledger or better matches
+$E kill >/dev/null 2>&1; sleep 1
+$E share-text $'Check this out at Amazon\nDifferin Adapalene Gel 0.1% 15 g https://amzn.in/d/0medicine01' >/dev/null 2>&1; sleep "$W"
+shot medicine_1_arrived
+$U has "Better matches" && fail "medicine: Better matches shown on a MEDICINE result"
 
 echo "[qa] $M done; failures: ${#FAIL[@]}"
 for f in "${FAIL[@]}"; do echo "[qa]   - $f"; done

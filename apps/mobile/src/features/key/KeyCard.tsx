@@ -6,7 +6,7 @@ import { Body, Button, Caption, Card, Divider, FocusTiles, Icon, IconDisc, Note,
 import { useTheme } from '@/theme/ThemeProvider';
 import { BandList } from './BandChip';
 import { focusTilesFor } from './focus';
-import { formatScanDate, glyphFromKey, type GlyphZone } from './model';
+import { formatScanDate, glyphFromKey, zoneCaption, type GlyphZone } from './model';
 import { ZoneGlyph } from './ZoneGlyph';
 
 interface Props {
@@ -38,7 +38,7 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
     keyProfile.skinType?.value ??
     deriveSkinType({ oiliness: keyProfile.bands.oiliness.level, moisture: keyProfile.bands.moisture.level, redness: keyProfile.bands.redness.level, pore: keyProfile.bands.pore.level });
   const estimated = !keyProfile.skinType || keyProfile.skinType.derived;
-  const meta = demo ? `${COPY.reading.demo} · sample readings, not a scan` : `Scan ${date}${keyProfile.photoDeleted ? ' · photo deleted' : ''}`;
+  const meta = demo ? null : `Scan ${date}${keyProfile.photoDeleted ? ' · photo deleted' : ''}`;
   const ruleIds = [...new Set(focus.flatMap((f) => f.rules))];
 
   return (
@@ -46,25 +46,25 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
       <Card variant="raised" gap={theme.space[4]}>
         <View
           accessible
-          accessibilityLabel={[`Skin-type reading: ${skinType}`, meta].join('. ')}
+          accessibilityLabel={[`Skin-type reading: ${skinType}`, demo ? COPY.reading.demo : meta, estimated ? 'Estimated from your bands' : null].filter(Boolean).join('. ')}
           style={{ flexDirection: 'row', alignItems: 'flex-start', gap: theme.space[4] }}
         >
           <IconDisc icon="droplet" />
           <View style={{ flex: 1, gap: theme.space[1] }}>
             <Txt variant="headline">{`Skin-type reading: ${skinType}`}</Txt>
-            <Caption>{meta}</Caption>
+            {meta ? <Caption>{meta}</Caption> : null}
+            {estimated ? <Caption>Skin type estimated from your bands</Caption> : null}
           </View>
         </View>
-        {demo || estimated ? (
+        {demo ? (
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.space[2] }}>
-            {demo ? <Tag label={COPY.reading.demo} variant="demo" /> : null}
-            {estimated ? <Tag label="estimated from your bands" variant="outline" /> : null}
+            <Tag label={COPY.reading.demo} variant="demo" />
           </View>
         ) : null}
         <Divider spacing={0} />
         <View accessible style={{ gap: theme.space[1] }}>
           <Body small>
-            {demo ? `Sample readings for trying ${COPY.appName}. Not measured from a face.` : `Measured by YouCam Skin Analysis HD, ${date}`}
+            {demo ? `Sample readings for trying ${COPY.appName}, not a scan of a face.` : `Measured by YouCam Skin Analysis HD, ${date}`}
           </Body>
           {!demo && keyProfile.photoDeleted ? (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[2] }}>
@@ -98,7 +98,7 @@ export function KeyCard({ keyProfile, isDemo, showGlyph = true, glyph, highlight
         )}
       </View>
 
-      {glyph ?? (showGlyph ? <ZoneGlyph model={glyphFromKey(keyProfile)} highlight={highlight} caption={`Zones from your ${date} scan · no photo kept`} /> : null)}
+      {glyph ?? (showGlyph ? <ZoneGlyph model={glyphFromKey(keyProfile)} highlight={highlight} caption={zoneCaption(keyProfile)} /> : null)}
 
       <Note>{COPY.accuracyNote}</Note>
 

@@ -35,10 +35,11 @@ describe('VerdictSheet', () => {
     const first = screen.getByTestId('reason-01');
     expect(within(first).queryByText('01')).toBeNull();
     expect(within(first).getByText("Listing says 'fragrance-free'.")).toBeTruthy();
-    expect(within(first).getByText('Its ingredient list has Parfum (rule LC-1a).')).toBeTruthy();
+    expect(within(first).getByText('Its ingredient list has Parfum (rule LC-\u20601a).')).toBeTruthy();
     expect(within(screen.getByTestId('reason-02')).getByText('Oiliness reading: High (whole face, scan 1 Nov).')).toBeTruthy();
 
-    expect(screen.getByTestId('provenance-line').props.children).toMatch(/^Measured by YouCam Skin Analysis HD, 1 Nov · photo deleted · rules v/);
+    // The ledger rows carry the provenance; no repeated summary caption above them.
+    expect(screen.queryByTestId('provenance-line')).toBeNull();
     expect(screen.getByText('Where this comes from')).toBeTruthy();
     for (const key of ['Reading', 'Product', 'Rules', 'Limits']) expect(screen.getByText(key)).toBeTruthy();
     expect(screen.getByText(COPY.accuracyNote)).toBeTruthy();

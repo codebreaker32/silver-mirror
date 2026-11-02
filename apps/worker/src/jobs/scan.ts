@@ -93,7 +93,7 @@ export const advanceScan = async (job: ScanJob, ctx: ScanCtx): Promise<AdvanceOu
         try {
           job.key = ctx.buildKey({ readings: rawScoreReadings(rows), zones: zoneLabels(rows), scanDate: iso(now), scanId: job.id, demo: job.demo });
         } catch (e) {
-          job.error = { code: 'unknown', message: "We couldn't build your Key from this scan. Try again", youcamError: `key:${(e as Error).message}` };
+          job.error = { code: 'unknown', message: "We couldn't build your reading from this scan. Try again", youcamError: `key:${(e as Error).message}` };
         }
         const url = job.key && !job.overlayDelivered ? overlayUrl(rows) : null;
         if (url) {

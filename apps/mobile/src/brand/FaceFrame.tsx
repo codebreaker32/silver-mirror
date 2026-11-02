@@ -12,13 +12,15 @@ interface FaceFrameProps {
   progress?: number;
   /** Faint dot grid inside the oval. Never drawn over a real face. */
   dots?: boolean;
+  /** Draw its own sheen tile (default). Off when the frame already sits on a sheen plate: no card inside a card. */
+  tile?: boolean;
 }
 
 /**
  * Face-frame illustration (component.faceFrame): sheen plate, four corner brackets, a faint oval.
  * No face, no photo, no mesh over a person. Decorative: the screen's text says what is happening.
  */
-export function FaceFrame({ width, progress = 0, dots = true }: FaceFrameProps) {
+export function FaceFrame({ width, progress = 0, dots = true, tile = true }: FaceFrameProps) {
   const theme = useTheme();
   const f = theme.components.faceFrame;
   const height = Math.round(width / f.aspect);
@@ -45,9 +47,9 @@ export function FaceFrame({ width, progress = 0, dots = true }: FaceFrameProps) 
     <View
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
-      style={{ width, height, borderRadius: f.radius, overflow: 'hidden', backgroundColor: f.bg }}
+      style={{ width, height, borderRadius: f.radius, overflow: 'hidden', backgroundColor: tile ? f.bg : undefined }}
     >
-      <SheenBackdrop radius={f.radius} />
+      {tile ? <SheenBackdrop radius={f.radius} /> : null}
       {/* Positioned after the sheen so it paints above it on web too (an absolute sibling otherwise covers static SVG). */}
       <Svg width={width} height={height} viewBox={`0 0 ${w} ${h}`} style={{ position: 'absolute', top: 0, left: 0 }}>
         <Ellipse cx={50} cy={h / 2} rx={24} ry={h * 0.34} stroke={f.oval} strokeWidth={(f.ovalWidth / width) * w} fill="none" />

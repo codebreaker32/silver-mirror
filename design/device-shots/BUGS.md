@@ -1,12 +1,12 @@
 # On-device test findings (Samsung SM-A276B, Android 16, release APK + local mock Worker, 2026-11-02 ~09:15 IST)
 
 ## Functional
-1. **CRITICAL: a share sent while the app is already running is ignored.** The screen shows "Nothing to check yet". Cold-start shares work (Flipkart, Amazon, Nykaa). The warm-start intent (onNewIntent / expo-share-intent hook when the app is foregrounded or backgrounded) must be handled: reset the check state for each new share.
-2. **CRITICAL for the demo: catalogue hits show UNKNOWN.** The product is in the catalogue (Minimalist SPF 50 from brand_official), but the verdict says "We can't read this listing's ingredients" and "Our catalogue: 0 verified products". The cause is that verification gating requires a human tick in data/catalog/verified.json, and there are 0 ticks. Fix one of two ways: (a) tick the demo rows, or (b) let brand_official rows that passed the two-agent verbatim check count as "checked against brand page", and label the human-ticked rows separately.
-3. Flipkart title shows the raw lowercase slug ("vaseline gluta hya dewy radiance"). Title-case it and/or resolve it through the catalogue or Claude.
-4. Amazon share "Minimalist SPF 30 Body Sunscreen …" offered the wrong SKUs (SPF 50, SPF 60). The fuzzy-match threshold is too loose. Token mismatches like SPF 30 vs 50 or "Body" should disqualify a candidate, and "None of these" should lead to a name-only check.
-5. Nykaa: product URLs open in Chrome, not the app. Search URLs open the app home. Outbound to Nykaa must use the browser (already the plan).
-6. The share sheet shows only pinned and recent apps first, so SkinKey isn't visible without scrolling. The pin coach mark is essential.
+1. **FIXED (emulator QA 2 Nov: warm shares and a share on top of an open check both land).** ~~CRITICAL: a share sent while the app is already running is ignored.~~ The screen shows "Nothing to check yet". Cold-start shares work (Flipkart, Amazon, Nykaa). The warm-start intent (onNewIntent / expo-share-intent hook when the app is foregrounded or backgrounded) must be handled: reset the check state for each new share.
+2. **FIXED (option b: brand-page rows that passed the second verbatim read count, labelled "Checked against the brand page"; human ticks labelled separately).** ~~CRITICAL for the demo: catalogue hits show UNKNOWN.~~ The product is in the catalogue (Minimalist SPF 50 from brand_official), but the verdict says "We can't read this listing's ingredients" and "Our catalogue: 0 verified products". The cause is that verification gating requires a human tick in data/catalog/verified.json, and there are 0 ticks. Fix one of two ways: (a) tick the demo rows, or (b) let brand_official rows that passed the two-agent verbatim check count as "checked against brand page", and label the human-ticked rows separately.
+3. **FIXED** (displayTitle title-cases lowercase slugs). Flipkart title shows the raw lowercase slug ("vaseline gluta hya dewy radiance"). Title-case it and/or resolve it through the catalogue or Claude.
+4. **FIXED** (SPF / size / "Body" mismatches disqualify; emulator QA goes straight to a name-only UNKNOWN). Amazon share "Minimalist SPF 30 Body Sunscreen …" offered the wrong SKUs (SPF 50, SPF 60). The fuzzy-match threshold is too loose. Token mismatches like SPF 30 vs 50 or "Body" should disqualify a candidate, and "None of these" should lead to a name-only check.
+5. **FIXED** (Nykaa back-link and store search open in a Custom Tab). Nykaa: product URLs open in Chrome, not the app. Search URLs open the app home. Outbound to Nykaa must use the browser (already the plan).
+6. **FIXED** (Home share-teaching card: "Find Silver Mirror in your share menu, then pin it"). The share sheet shows only pinned and recent apps first, so the app isn't visible without scrolling. The pin coach mark is essential.
 
 ## Visual / UX (feeds the redesign)
 - The app follows phone dark mode, and dark mode reads as generic flat black. Both themes need a real design (decision: follow the phone, both redesigned).
@@ -27,3 +27,40 @@ Screens: 01–19 *.png in this folder; contact sheets sheet.png, sheet2.png, she
 8. **CRITICAL (config, needs Aman): live `/v1/install` returns "Install tokens are not configured".** `INSTALL_HMAC_SECRET` was missing from `.env` when the secrets were uploaded, so an empty value was stored. It has now been generated in `.env`. Aman runs once:
    `cd /home/aman/youcam && set -a && . ./.env && set +a && cd apps/worker && printf '%s' "$INSTALL_HMAC_SECRET" | npx wrangler secret put INSTALL_HMAC_SECRET --env production`
    Re-check with `curl -X POST https://skinkey-worker.skinkey-worker.workers.dev/v1/install`.
+
+## Review batch, 2 Nov (design critique, craft, copy truth and functional QA of the Silver Mirror build)
+Re-checked on the build VM: web shots (`design/web-shots`, `design/web-shots/site`) and the emulator walkthrough
+(`design/emulator-shots`, light + dark) of the rebuilt release APK.
+
+Fixed:
+- **Pore-zone legend** (ZoneGlyph): each swatch draws its own hatch lines; Medium = single hatch, High = cross-hatch, in both themes (url(#pattern) did not resolve across Svg roots on Android).
+- **Demo reading called a scan**: zone lines say "sample reading" and the caption reads "Sample zones · Demo reading · no photo taken"; reason lines on the Demo reading say "sample reading".
+- **Better matches pill covering copy**: it now sits inside the dock, above Back to listing, only while the section is off screen.
+- **Product title**: catalogue rows show brand · name in the title and the pack size (without "also …") in the meta line; raw marketplace titles drop their SEO tail ("Minimalist SPF 30 Body Sunscreen"), cap at 3 lines, and the full listing title moves to the ledger's Product row.
+- **Home under the status bar**: a bg scrim covers the status area once Home scrolls; the hero sheen fades into the page instead of ending on a hard, rounded edge.
+- **Reading tab indicator**: the active pill remounts with its fill so Android keeps the 16dp radius (it rendered square).
+- **Share tip**: "Paste a link instead" removed; the mock share strip has labelled tiles (Messages, Copy link) instead of grey bars.
+- **Better matches cards**: one reason line ("Niacinamide · fits your oiliness reading"); full reason stays in the TalkBack label.
+- **Rule jargon**: "Rule SUP-2 · literature-graded", ledger "SUP-2 (literature-graded)"; rule ids never break at the hyphen.
+- **UNKNOWN redundancy**: catalogue count once (under Next step); the provenance caption above the ledger is gone.
+- **Settings**: Published rules uses the info icon (seal-check is FITS only) and the same short ruleset version as each verdict; group heads align to the gutter; dividers inset both sides; Withdraw consent has its own icon.
+- **How this was made (app)**: shared-link and label checks are recorded (resolve / labelOcr ledgers); the static Delete steps are a numbered list, not empty rings; the duplicated 30-day line is gone; empty-state copy says sample checks make no calls.
+- **Scan consent**: "Read how deletion works" is a chevron tertiary like every other text action; the face frame sits straight on the sheen plate (no card in a card). Disabled label contrast is 4.89:1 light / 5.34:1 dark (check-contrast), so no token change.
+- **Reading tab**: the Demo reading shows once (badge + one line); "estimated from your bands" is a caption; one focus trait is a full-width row.
+- **Sample share**: now a catalogued product (Minimalist Niacinamide 10% Face Serum), so the first demo verdict has reasons; the dock says "Back to home" instead of pointing at a listing that does not exist. Paste placeholder shortened to "Paste a link or name".
+- **Try-on demo previews** (web `?demo=` only): token-drawn face-frame plates labelled "Sample preview", no raster MOCK slabs, honest shade labels.
+- **Site /rules**: phone rows stack as cards with column heads; desktop cells wrap; regex families sit behind a "Pattern" disclosure; the old app name in a rule citation is swapped at render time (rule data unchanged, so ruleset 440f555a8845 holds).
+- **Site landing lookup**: verdict labels sit on their own line under the profile name (no clipping); the ingredient field keeps icon and value on one row.
+- **Site /how**: "Delete failed: Delete failed:" fixed; on phone the three diagrams become stacked lists (no 5px labels); the prompt table stacks; the overflowing box label is shorter.
+- **Site misc**: developer note "Release link pending…" removed; nav CTA is tonal (one primary per view); "0 of 136 … plus 0 more" reads "None of the 136 …"; audit result sentences in Geist; botanical plates framed and dimmed in dark; highlighted INCI no longer detaches from its comma.
+- **Copy truth**: README renamed (Silver Mirror, Your reading, share paths, honest verified-catalogue wording); Worker scan error says "your reading"; stale proposal strings updated; lint-claims now fails on "SkinKey", "Your/Demo/Delete Key", "No Key yet".
+- **QA script**: one extra scroll after Better matches (Amazon's first card) and a medicine-gate share.
+
+Checked, no change:
+- Web greeting "Good morning" vs "Good afternoon" in one run: the shots straddled 12:00 IST (06:29–06:30 UTC); the greeting uses the device's local hour. The kit's "Good evening" is a fixed demo clock.
+- "Nose pore reading: High" appended to oiliness reasons is spec §2B wording (G1 fail example), kept.
+
+Still open (not in this batch):
+- Item 7 (Flipkart short links on the live Worker) and item 8 (INSTALL_HMAC_SECRET) above.
+- secrets:grep on the VM checks patterns only (no .env there): run it locally or with the key values before submission.
+- Dark-mode UNKNOWN icon disc, greige focus tiles in dark, light-mode chrome S contrast, landing scrollytelling spacing on desktop, nested cards on the landing fold, reason-card hierarchy, kit-2 MEDICINE state.

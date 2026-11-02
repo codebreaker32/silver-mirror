@@ -53,11 +53,19 @@ export interface PresentContext {
   product: CatalogProduct | null;
   catalogCount: number | null;
   labelTokenCount?: number;
+  /** The full listing title as shared (the header shows a shortened one). */
+  listingTitle?: string | null;
 }
 
 const TITLE_CASE: Record<VerdictLabel, string> = { FITS: 'Fits', CAUTION: 'Caution', UNKNOWN: 'Unknown', MEDICINE: 'Medicine' };
 
 export const shortHash = (hash: string) => hash.slice(0, 7);
+
+/** Rule ids with a word joiner (U+2060) after each hyphen so "SUP-2" never splits across lines. Zero-width, no glyph. */
+export const ruleId = (id: string) => id.replace(/-/g, '-\u2060');
+
+const GRADE_WORD: Record<string, string> = { R: 'regulatory list', L: 'literature-graded', T: 'team rule' };
+export const gradeWord = (g: string | null | undefined) => (g ? (GRADE_WORD[g] ?? `grade ${g}`) : null);
 
 function subtitleFor(v: Verdict): string {
   if (v.label === 'MEDICINE') return COPY.medicine(v.medicineToken ?? 'a medicine ingredient');
@@ -86,13 +94,17 @@ function orderedReasons(v: Verdict): Reason[] {
   });
 }
 
-function reasonView(r: Reason, i: number, total: number, scanDate: string | null): ReasonView {
-  const { lead, fact } = splitPlain(r.plain);
-  const reading = lead ?? readingLine(r.reading, scanDate);
+function reasonView(r: Reason, i: number, total: number, scanDate: string | null, demo: boolean): ReasonView {
+  const split = splitPlain(r.plain);
+  // Rule ids inside the sentence ("our rule SUP-2") must not break at the hyphen either.
+  const fact = split.fact.replace(/\b([A-Z]{2,}-)(?=[0-9A-Za-z])/g, '$1\u2060');
+  const lead = split.lead;
+  const reading = lead ?? readingLine(r.reading, scanDate, demo);
   const isLabel = r.kind === 'LABEL_CHECK';
   const info = isLabel && !r.counted;
   const kindNote = isLabel ? (info ? 'Label check · for information' : 'Label check') : null;
-  const ruleTag = `Rule ${r.ruleId}${r.grade ? ` · grade ${r.grade}` : ''}`;
+  const grade = gradeWord(r.grade);
+  const ruleTag = `Rule ${ruleId(r.ruleId)}${grade ? ` · ${grade}` : ''}`;
   const chip =
     r.reading?.on === 'band' ? { concern: r.reading.concern, level: r.reading.level, selfReported: r.reading.selfReported } : null;
   const a11y = [`Reason ${i + 1} of ${total}.`, kindNote ? `${kindNote}.` : null, reading, fact, `${ruleTag}.`]
@@ -136,17 +148,18 @@ function productRow(v: Verdict, ctx: PresentContext): LedgerRow {
     return { key: 'Product', value, sub, links: [], a11y: `Product: ${value}${sub ? ` ${sub}` : ''}` };
   }
   const value = 'Product name only';
-  const sub = ctx.catalogCount != null ? COPY.catalogCount(ctx.catalogCount) : null;
+  // The catalogue count sits once, under Next step; the ledger keeps the full listing title the header shortened.
+  const sub = ctx.listingTitle?.trim() ? `Listing title: ${ctx.listingTitle.trim()}` : null;
   return { key: 'Product', value, sub, links: [], a11y: `Product: ${value}.${sub ? ` ${sub}` : ''}` };
 }
 
 function rulesRow(v: Verdict, reasons: Reason[]): LedgerRow {
   const value = `Published rules (version ${shortHash(v.provenance.rulesetHash)})`;
-  const sub = reasons.length ? reasons.map((r) => `${r.ruleId}${r.grade ? ` (${r.grade})` : ''}`).join(' · ') : null;
+  const sub = reasons.length ? reasons.map((r) => `${ruleId(r.ruleId)}${r.grade ? ` (${gradeWord(r.grade)})` : ''}`).join(' · ') : null;
   const links: LedgerLink[] = [];
   for (const r of reasons) {
-    if (r.sourceUrl && !links.some((l) => l.url === r.sourceUrl)) links.push({ label: `${r.ruleId} source`, url: r.sourceUrl });
-    if (r.inciSourceUrl && !links.some((l) => l.url === r.inciSourceUrl)) links.push({ label: `${r.ruleId} ingredient name`, url: r.inciSourceUrl });
+    if (r.sourceUrl && !links.some((l) => l.url === r.sourceUrl)) links.push({ label: `${ruleId(r.ruleId)} source`, url: r.sourceUrl });
+    if (r.inciSourceUrl && !links.some((l) => l.url === r.inciSourceUrl)) links.push({ label: `${ruleId(r.ruleId)} ingredient name`, url: r.inciSourceUrl });
   }
   return { key: 'Rules', value, sub, links, a11y: `Rules: ${value}.${sub ? ` ${sub}.` : ''}` };
 }
@@ -191,7 +204,7 @@ export function presentVerdict(v: Verdict, ctx: PresentContext): VerdictView {
 
   const ordered = orderedReasons(v);
   const scanDate = ctx.key?.source === 'youcam_hd' ? ctx.key.scanDate : null;
-  const reasons = ordered.map((r, i) => reasonView(r, i, ordered.length, scanDate));
+  const reasons = ordered.map((r, i) => reasonView(r, i, ordered.length, scanDate, ctx.key?.source === 'demo'));
   const emptyReasonsNote = v.label === 'FITS' && reasons.length === 0 ? COPY.fitsNoFlags : null;
   const provenanceLine = v.provenance.line?.trim() || composeProvenance(v, ctx.key);
   const ledger = [skinRow(ctx.key), productRow(v, ctx), rulesRow(v, ordered), { key: 'Limits', value: COPY.accuracyNote, sub: null, links: [], a11y: `Limits: ${COPY.accuracyNote}` } satisfies LedgerRow];

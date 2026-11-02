@@ -66,8 +66,15 @@ const ZONE_NAME: Record<GlyphZone, string> = {
 
 const lower = (b: Band) => b.toLowerCase();
 
+/** "scan 1 Nov", or "sample reading" for the Demo reading (never described as a scan). */
+export const readingWhen = (key: KeyProfile) => (key.source === 'demo' ? 'sample reading' : `scan ${formatScanDate(key.scanDate)}`);
+
+/** Caption under the zone glyph. The Demo reading says so; a real scan names its date. */
+export const zoneCaption = (key: KeyProfile) =>
+  key.source === 'demo' ? 'Sample zones · Demo reading · no photo taken' : `Zones from your ${formatScanDate(key.scanDate)} scan · no photo kept`;
+
 export function glyphFromKey(key: KeyProfile): GlyphModel {
-  const date = formatScanDate(key.scanDate);
+  const when = readingWhen(key);
   const pores = key.pores as Partial<Record<PoreRegion, Band>>;
   const hasPoreRegions = Boolean(pores.forehead || pores.nose || pores.cheek);
   const zones: Record<GlyphZone, Band | null> = hasPoreRegions
@@ -88,10 +95,10 @@ export function glyphFromKey(key: KeyProfile): GlyphModel {
 
   const lines: string[] = [];
   if (key.copySet === 'A' && (key.zones.t_zone || key.zones.u_zone)) {
-    if (key.zones.t_zone) lines.push(`T-zone reading: ${key.zones.t_zone} (scan ${date})`);
-    if (key.zones.u_zone) lines.push(`U-zone reading: ${key.zones.u_zone} (scan ${date})`);
+    if (key.zones.t_zone) lines.push(`T-zone reading: ${key.zones.t_zone} (${when})`);
+    if (key.zones.u_zone) lines.push(`U-zone reading: ${key.zones.u_zone} (${when})`);
   } else {
-    lines.push(`Oiliness reading: ${key.bands.oiliness.level} (whole face, scan ${date})`);
+    lines.push(`Oiliness reading: ${key.bands.oiliness.level} (whole face, ${when})`);
   }
   if (pores.nose) lines.push(`Nose pore reading: ${pores.nose}`);
   if (pores.forehead) lines.push(`Forehead pore reading: ${pores.forehead}`);

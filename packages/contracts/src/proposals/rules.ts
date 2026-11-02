@@ -23,6 +23,6 @@ export type SkinTypeZones = z.infer<typeof SkinTypeZones>;
 
 /** P4. Two fixed strings the engine uses today as exports of @skinkey/rules; proposed for COPY. */
 export const PROPOSED_COPY = {
-  noReadingsSubtitle: 'We need your readings to check fit. Scan, or try the Demo Key.',
+  noReadingsSubtitle: 'We need your readings to check fit. Scan, or try the Demo reading.',
   nameOnlyNote: "We don't have this product's ingredient list, so this is a weaker check.",
 } as const;

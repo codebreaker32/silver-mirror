@@ -42,8 +42,54 @@ function Defs() {
   );
 }
 
+/** Phone layout (≤720px): the same diagram as a stacked list, so no label shrinks below 12px. */
+function DiagramList({ items, label }: { items: { title: string; lines: string[]; note?: string }[]; label: string }) {
+  return (
+    <ol className="diagram-list" aria-label={label}>
+      {items.map((it) => (
+        <li key={it.title}>
+          <p className="diagram-list-title">{it.title}</p>
+          <ul>
+            {it.lines.map((l) => (
+              <li key={l}>{l}</li>
+            ))}
+          </ul>
+          {it.note ? <p className="diagram-list-note">{it.note}</p> : null}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+const ARCH_LIST = [
+  {
+    title: 'Silver Mirror app (Android)',
+    lines: ['Share sheet in, from store apps', 'Capture guide, 1080p short side', 'Reading kept: bands, zones, date', 'Rules package: verdict + rank', 'Photo cache deleted after upload'],
+    note: "API calls go to the Worker. The photo goes straight to YouCam's upload URL.",
+  },
+  { title: 'This website', lines: ['Web check with the Demo reading', 'Same rules package, in the browser', '/rules and /audit from build files'] },
+  {
+    title: 'Cloudflare Worker',
+    lines: [
+      'Holds the YouCam and Anthropic keys',
+      '250 requests / 300 s window',
+      'At least 1.2 s between calls',
+      'Idempotency keys on creates',
+      'Unit ledger, checked against credit',
+      'Caps: 1 scan, 3 try-ons per install',
+      'Polls every task, then deletes it',
+      'Mock YouCam for development and CI',
+    ],
+    note: 'Calls YouCam with the Bearer key; sends Claude product text only.',
+  },
+  { title: 'YouCam API (Perfect Corp)', lines: ['Skin Analysis HD (v2.1)', 'Facial Color Tones', 'Makeup VTO', 'task/delete, credit, feature cost'] },
+  { title: 'Claude Opus 5.5', lines: ['X3: title or screenshot to catalogue ids', 'X4: label photo to ingredient names', 'Structured output, never a verdict'] },
+];
+
 function Architecture() {
   return (
+    <>
+    <DiagramList items={ARCH_LIST} label="Silver Mirror architecture" />
     <svg className="diagram" viewBox="0 0 1000 470" role="img" aria-labelledby="arch-title arch-desc">
       <title id="arch-title">Silver Mirror architecture</title>
       <desc id="arch-desc">
@@ -58,7 +104,7 @@ function Architecture() {
         h={190}
         kind="box-accent"
         title="Silver Mirror app (Android)"
-        lines={['Share sheet in, from store apps', 'Capture guide, 1080p short side', 'Reading on phone: bands, zones, date', 'Rules package: verdict + rank', 'Photo cache deleted after upload']}
+        lines={['Share sheet in, from store apps', 'Capture guide, 1080p short side', 'Reading kept: bands, zones, date', 'Rules package: verdict + rank', 'Photo cache deleted after upload']}
       />
       <Box
         x={20}
@@ -107,8 +153,26 @@ function Architecture() {
       <Arrow d="M155 40 C 155 0, 850 0, 850 36" dashed label="photo PUT straight to YouCam's upload URL" lx={360} ly={18} />
       <Arrow d="M290 340 C 330 340, 330 270, 366 270" dashed label="label photo, rules" lx={296} ly={366} />
     </svg>
+    </>
   );
 }
+
+const SCAN_STEPS: { t: string; l: string[]; kind?: BoxProps['kind'] }[] = [
+  { t: 'P1  POST /s2s/v2.0/file, then PUT', l: ['JPG, short side at least 1080 px. 0 units.', 'Phone deletes the capture right after the PUT.'] },
+  { t: 'P2  POST /s2s/v2.1/task/skin-analysis', l: ['hd_skin_type, hd_oiliness, hd_moisture, hd_redness, hd_pore', 'enable_mask_overlay: true · format: "json" · 16 units'] },
+  { t: 'P3  GET …/task/skin-analysis/{task_id}', l: ['Poll until terminal, at least one GET.', 'raw_score kept; ui_score dropped at the Worker.'] },
+  { t: 'P4  POST /s2s/v2.0/task/delete', l: ['After the result is read. Removes the task,', 'its outputs and the uploaded input file.'], kind: 'box-delete' },
+];
+const TRYON_STEPS: { t: string; l: string[]; kind?: BoxProps['kind'] }[] = [
+  { t: 'T1  POST /s2s/v2.0/file, then PUT', l: ['Fresh selfie resized to 768 × 1024.', 'Separate try-on consent first.'] },
+  { t: 'T2  POST /s2s/v2.0/task/skin-tone-analysis', l: ['Multi-shade only · 20 units. The tone picks two', 'candidate shades internally and is never shown.'] },
+  { t: 'T3  POST /s2s/v2.0/task/makeup-vto  ×1–2', l: ['foundation or lip_color effect, version "1.0"', '1 unit per render · renders held in memory only'] },
+  { t: 'T4  GET each task, then task/delete each', l: ['Every task on the file terminal and read,', 'then each one deleted.'], kind: 'box-delete' },
+];
+const SCAN_TITLE = 'Reading scan (once, at onboarding)';
+const SCAN_UNITS = '16 units per reading';
+const TRYON_TITLE = 'Tint try-on (tinted products only)';
+const TRYON_UNITS = '22 units for two shades, 1 unit for one';
 
 function Chain() {
   const col = (x: number, title: string, steps: { t: string; l: string[]; kind?: BoxProps['kind'] }[], units: string) => (
@@ -127,42 +191,43 @@ function Chain() {
       ))}
     </g>
   );
+  const asList = (steps: typeof SCAN_STEPS) => steps.map((st) => ({ title: st.t.replace(/\s{2,}/g, ' '), lines: [st.l.join(' ')] }));
   return (
-    <svg className="diagram" viewBox="0 0 1000 520" role="img" aria-labelledby="chain-title">
-      <title id="chain-title">YouCam call chain for the reading scan and the tint try-on</title>
-      <Defs />
-      {col(
-        20,
-        'Reading scan (once, at onboarding)',
-        [
-          { t: 'P1  POST /s2s/v2.0/file, then PUT', l: ['JPG, short side at least 1080 px. 0 units.', 'Phone deletes the capture right after the PUT.'] },
-          { t: 'P2  POST /s2s/v2.1/task/skin-analysis', l: ['hd_skin_type, hd_oiliness, hd_moisture, hd_redness, hd_pore', 'enable_mask_overlay: true · format: "json" · 16 units'] },
-          { t: 'P3  GET …/task/skin-analysis/{task_id}', l: ['Poll until terminal, at least one GET.', 'raw_score kept; ui_score dropped at the Worker.'] },
-          { t: 'P4  POST /s2s/v2.0/task/delete', l: ['After the result is read. Removes the task,', 'its outputs and the uploaded input file.'], kind: 'box-delete' },
-        ],
-        '16 units per reading',
-      )}
-      {col(
-        540,
-        'Tint try-on (tinted products only)',
-        [
-          { t: 'T1  POST /s2s/v2.0/file, then PUT', l: ['Fresh selfie resized to 768 × 1024.', 'Separate try-on consent first.'] },
-          { t: 'T2  POST /s2s/v2.0/task/skin-tone-analysis', l: ['Multi-shade only · 20 units. The tone picks two', 'candidate shades internally and is never shown.'] },
-          { t: 'T3  POST /s2s/v2.0/task/makeup-vto  ×1–2', l: ['foundation or lip_color effect, version "1.0"', '1 unit per render · renders held in memory only'] },
-          { t: 'T4  GET each task, then task/delete each', l: ['Every task on the file terminal and read,', 'then each one deleted.'], kind: 'box-delete' },
-        ],
-        '22 units for two shades, 1 unit for one',
-      )}
-    </svg>
+    <>
+      <div className="diagram-list-group">
+        <p className="ui-title">{SCAN_TITLE}</p>
+        <p className="small muted">{SCAN_UNITS}</p>
+        <DiagramList items={asList(SCAN_STEPS)} label={SCAN_TITLE} />
+        <p className="ui-title">{TRYON_TITLE}</p>
+        <p className="small muted">{TRYON_UNITS}</p>
+        <DiagramList items={asList(TRYON_STEPS)} label={TRYON_TITLE} />
+      </div>
+      <svg className="diagram" viewBox="0 0 1000 520" role="img" aria-labelledby="chain-title">
+        <title id="chain-title">YouCam call chain for the reading scan and the tint try-on</title>
+        <Defs />
+        {col(20, SCAN_TITLE, SCAN_STEPS, SCAN_UNITS)}
+        {col(540, TRYON_TITLE, TRYON_STEPS, TRYON_UNITS)}
+      </svg>
+    </>
   );
 }
 
 const STATES = ['uploaded', 'task_created', 'running', 'terminal', 'result_read', 'delete_requested', 'deleted'];
 
+const STATE_NOTE: Record<string, string> = {
+  uploaded: 'Upload with no task (cancel, 400, quality fail) becomes an orphan.',
+  delete_requested: 'If the delete call fails, the record shows delete failed. Failure is shown, never hidden.',
+};
+
 function DeleteMachine() {
   const w = 128;
   const gap = 12;
   return (
+    <>
+    <DiagramList
+      label="Delete state machine, one record per uploaded file"
+      items={STATES.map((st) => ({ title: st.replace('_', ' '), lines: [], note: STATE_NOTE[st] }))}
+    />
     <svg className="diagram" viewBox="0 0 1000 250" role="img" aria-labelledby="sm-title">
       <title id="sm-title">Delete state machine, one record per uploaded file</title>
       <Defs />
@@ -195,6 +260,7 @@ function DeleteMachine() {
         Failure is shown, never hidden
       </text>
     </svg>
+    </>
   );
 }
 
@@ -241,7 +307,7 @@ export function How() {
             <strong>Orphan upload:</strong> {COPY.orphanUpload}
           </li>
           <li>
-            <strong>Delete failed:</strong> {COPY.deleteFailed}
+            <strong>If a delete call fails:</strong> {COPY.deleteFailed.replace(/^Delete failed:\s*/, '')}
           </li>
           <li>
             <strong>Tasks sharing a file:</strong> all finish, all results are read, then each task is deleted.
@@ -277,8 +343,8 @@ export function How() {
           Claude Opus 5.5 is called with structured outputs and adaptive thinking. It proposes; a person or the rules decide.
           Verdict copy is never written by a model at runtime.
         </p>
-        <div className="table-scroll">
-          <table className="data">
+        <div className="table-scroll table-stack">
+          <table className="data stack-rows">
             <thead>
               <tr>
                 <th scope="col">Prompt</th>
@@ -289,18 +355,18 @@ export function How() {
             <tbody>
               <tr>
                 <th scope="row">X3 share resolver (runtime, effort low)</th>
-                <td>Messy title, URL or cropped screenshot to catalogue ids only</td>
-                <td>You confirm the product before any verdict. Below threshold: UNKNOWN. Never invents an ingredient list.</td>
+                <td data-col="Job">Messy title, URL or cropped screenshot to catalogue ids only</td>
+                <td data-col="Guard">You confirm the product before any verdict. Below threshold: UNKNOWN. Never invents an ingredient list.</td>
               </tr>
               <tr>
                 <th scope="row">X4 label reader (runtime, effort medium)</th>
-                <td>Photo of an ingredient list to CosIng names</td>
-                <td>Editable chips; uncertain names are outlined. You confirm, then the same rules run.</td>
+                <td data-col="Job">Photo of an ingredient list to CosIng names</td>
+                <td data-col="Guard">Editable chips; uncertain names are outlined. You confirm, then the same rules run.</td>
               </tr>
               <tr>
                 <th scope="row">X1, X2, X5 (offline)</th>
-                <td>Catalogue extraction, verification packets, claim spans</td>
-                <td>Two passes diffed. A brand-page row counts once a second, independent read matched it word for word (labelled “checked against the brand page”); rows a person has ticked are labelled human-checked. Retailer rows never count.</td>
+                <td data-col="Job">Catalogue extraction, verification packets, claim spans</td>
+                <td data-col="Guard">Two passes diffed. A brand-page row counts once a second, independent read matched it word for word (labelled “checked against the brand page”); rows a person has ticked are labelled human-checked. Retailer rows never count.</td>
               </tr>
             </tbody>
           </table>

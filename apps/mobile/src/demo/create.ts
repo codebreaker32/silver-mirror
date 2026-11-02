@@ -13,7 +13,6 @@ import {
 } from '@skinkey/contracts';
 // Pure catalogue helpers and the generated catalogue the Worker serves. Web demo bundle only (see index.web.ts).
 import { bundledCatalog, detectStore, extractTitle, MATCH, searchCatalog, toSummary } from '../../../worker/src/catalog';
-import { MOCK_JPEG_BASE64 } from '../../../worker/src/mock/assets';
 import type { CheckApi } from '@/features/check/api';
 import { memoryBackend, STORAGE_KEYS } from '@/features/key/store';
 import { scanDisplaySteps } from '@/features/scan/steps';
@@ -97,7 +96,8 @@ function createTryon(productId: string, mode: TryonMode, shadeName?: string): Tr
   const p = bundledCatalog().byId.get(productId);
   const names = shadeName ? [shadeName] : (p?.shades.map((s) => s.name) ?? []);
   const shades = mode === 'single' ? names.slice(0, 1) : names.slice(0, 2);
-  const picked = shades.length ? shades : mode === 'single' ? ['Shade A'] : ['Shade A', 'Shade B'];
+  // The catalogue has no shade names for most tinted rows: label the placeholders honestly instead of "Shade A/B".
+  const picked = shades.length ? shades : mode === 'single' ? ['Sample shade'] : ['Lighter sample', 'Deeper sample'];
   const now = Date.now();
   const steps = TRYON_STEP_IDS.filter((id) => mode === 'multi' || id !== 'tone').map((id) => ({
     id,
@@ -110,7 +110,8 @@ function createTryon(productId: string, mode: TryonMode, shadeName?: string): Tr
     mode,
     steps,
     deleteState: 'deleted',
-    renders: picked.map((name, i) => ({ shadeName: name, imageBase64: i % 2 ? MOCK_JPEG_BASE64.render_b : MOCK_JPEG_BASE64.render_a })),
+    // Empty image = drawn placeholder (TryonResult renders a token-drawn face-frame plate, labelled "Sample preview").
+    renders: picked.map((name) => ({ shadeName: name, imageBase64: '' })),
     ledger: {
       mock: true,
       entries: [

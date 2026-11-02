@@ -8,6 +8,8 @@ interface SheenBackdropProps {
   style?: StyleProp<ViewStyle>;
   /** Corner radius when the sheen fills a card or plate rather than the whole screen. */
   radius?: number;
+  /** Fade the lower edge into the page bg instead of ending on a hard line (the Home hero band). */
+  fadeBottom?: boolean;
 }
 
 /**
@@ -15,7 +17,7 @@ interface SheenBackdropProps {
  * soft highlight. Allowed on hero zones, empty-state plates and the face frame only; never behind reasons,
  * the ledger, forms or the verdict head. Never animated. Decorative and untouchable.
  */
-export function SheenBackdrop({ style, radius = 0 }: SheenBackdropProps) {
+export function SheenBackdrop({ style, radius = 0, fadeBottom = false }: SheenBackdropProps) {
   const { colors, dark } = useTheme();
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const h = SHEEN_GRADIENT.highlight;
@@ -37,9 +39,16 @@ export function SheenBackdrop({ style, radius = 0 }: SheenBackdropProps) {
             <Stop offset={0} stopColor={colors.mark.glint} stopOpacity={dark ? h.opacity * 0.12 : h.opacity} />
             <Stop offset={1} stopColor={colors.mark.glint} stopOpacity={0} />
           </RadialGradient>
+          {fadeBottom ? (
+            <LinearGradient id={`sheenFade${uid}`} x1="0" y1="0" x2="0" y2="1">
+              <Stop offset={0.62} stopColor={colors.bg} stopOpacity={0} />
+              <Stop offset={1} stopColor={colors.bg} stopOpacity={1} />
+            </LinearGradient>
+          ) : null}
         </Defs>
         <Rect x="0" y="0" width="100%" height="100%" fill={`url(#sheen${uid})`} />
         <Rect x="0" y="0" width="100%" height="100%" fill={`url(#sheenHi${uid})`} />
+        {fadeBottom ? <Rect x="0" y="0" width="100%" height="100%" fill={`url(#sheenFade${uid})`} /> : null}
       </Svg>
     </View>
   );

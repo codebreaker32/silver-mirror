@@ -17,7 +17,7 @@ describe('presentVerdict', () => {
       ['03', 'Label check · for information'],
     ]);
     expect(v.reasons[0]!.reading).toBe("Listing says 'fragrance-free'.");
-    expect(v.reasons[0]!.fact).toBe('Its ingredient list has Parfum (rule LC-1a).');
+    expect(v.reasons[0]!.fact).toBe('Its ingredient list has Parfum (rule LC-\u20601a).');
     expect(v.reasons[1]!.reading).toBe('Oiliness reading: High (whole face, scan 1 Nov).');
     expect(v.reasons[1]!.chip).toEqual({ concern: 'oiliness', level: 'High', selfReported: false });
     expect(v.reasons[1]!.a11y).toMatch(/^Reason 2 of 3\. Oiliness reading: High/);
@@ -29,8 +29,8 @@ describe('presentVerdict', () => {
     expect(v.provenanceLine).toBe('Measured by YouCam Skin Analysis HD, 1 Nov · photo deleted · rules va1b2c3d');
     expect(v.ledger.map((r) => r.key)).toEqual(['Reading', 'Product', 'Rules', 'Limits']);
     expect(v.ledger[1]!.links).toEqual([{ label: 'Ingredient list source', url: PRODUCT.source_url }]);
-    expect(v.ledger[2]!.sub).toBe('LC-1a (R) · OCC-2 (L) · LC-1b (R)');
-    expect(v.ledger[2]!.links[0]).toEqual({ label: 'OCC-2 source', url: 'https://example.org/fulton-1989' });
+    expect(v.ledger[2]!.sub!.replace(/\u2060/g, '')).toBe('LC-1a (regulatory list) · OCC-2 (literature-graded) · LC-1b (regulatory list)');
+    expect(v.ledger[2]!.links[0]).toEqual({ label: 'OCC-\u20602 source', url: 'https://example.org/fulton-1989' });
     expect(v.ledger[3]!.value).toBe(COPY.accuracyNote);
     expect(v.fixedLines).toEqual([COPY.footer, COPY.notAffiliated]);
   });
@@ -57,11 +57,13 @@ describe('presentVerdict', () => {
     expect(v.emptyReasonsNote).toBe(COPY.fitsNoFlags);
   });
 
-  it('UNKNOWN: fixed subtitle, product row shows the catalogue count, no reasons heading', () => {
+  it('UNKNOWN: fixed subtitle, product row keeps the full listing title, no reasons heading', () => {
     const v = presentVerdict(UNKNOWN_VERDICT, { key: SCANNED_KEY, product: null, catalogCount: 42 });
     expect(v.subtitle).toBe(COPY.subtitle.UNKNOWN);
     expect(v.showReasons).toBe(false);
-    expect(v.ledger[1]).toMatchObject({ value: 'Product name only', sub: COPY.catalogCount(42) });
+    expect(v.ledger[1]).toMatchObject({ value: 'Product name only', sub: null });
+    const titled = presentVerdict(UNKNOWN_VERDICT, { key: SCANNED_KEY, product: null, catalogCount: 42, listingTitle: 'Brand X Sunscreen | For All | 50 g' });
+    expect(titled.ledger[1]!.sub).toBe('Listing title: Brand X Sunscreen | For All | 50 g');
   });
 
   it('MEDICINE: one fixed line, no label, reasons, ledger or matches', () => {
@@ -82,7 +84,7 @@ describe('presentVerdict', () => {
   it('labels the Demo reading and never dates it as a scan', () => {
     const v = presentVerdict(CAUTION_VERDICT, { key: DEMO_KEY, product: PRODUCT, catalogCount: 1 });
     expect(v.ledger[0]!.value).toMatch(/^Demo reading/);
-    expect(v.reasons[1]!.reading).toBe('Oiliness reading: High (whole face).');
+    expect(v.reasons[1]!.reading).toBe('Oiliness reading: High (whole face, sample reading).');
   });
 
   it('heading pluralises', () => {

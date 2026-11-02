@@ -27,7 +27,7 @@ export function FaceFramePlate({ maxWidth = 136 }: { maxWidth?: number }) {
       }}
     >
       <SheenBackdrop radius={t.radius.xl} />
-      <FaceFrame width={frame} />
+      <FaceFrame width={frame} tile={false} />
     </View>
   );
 }

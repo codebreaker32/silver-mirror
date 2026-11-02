@@ -55,7 +55,6 @@ export function GetTheApp() {
             <Icon name="download" />
             Download the APK
           </a>
-          {!config.apkUrl && <p className="ui-caption">Release link pending: the GitHub release URL replaces this build path.</p>}
           <p className="ui-caption">{COPY.notAffiliated}</p>
         </div>
       </div>

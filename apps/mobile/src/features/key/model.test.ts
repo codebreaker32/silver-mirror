@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { DEMO_KEY, KeyProfile } from '@skinkey/contracts';
-import { applyBandEdit, bandA11yLabel, formatScanDate, glyphFromKey, isExpired, parseStoredKey } from './model';
+import { applyBandEdit, bandA11yLabel, formatScanDate, glyphFromKey, isExpired, parseStoredKey, zoneCaption } from './model';
 
 const key = (over: Partial<KeyProfile> = {}): KeyProfile =>
   KeyProfile.parse({ ...DEMO_KEY, source: 'youcam_hd', scanDate: '2026-11-01T12:00:00.000Z', expiresAt: '2026-12-01T12:00:00.000Z', ...over });
@@ -44,6 +44,13 @@ describe('key model', () => {
     expect(g.lines).toContain('Nose pore reading: High');
     expect(g.lines.join(' ')).not.toMatch(/T-zone/);
     expect(g.accessibilityLabel).toMatch(/nose high/);
+  });
+
+  it('never calls the Demo reading a scan', () => {
+    const g = glyphFromKey(key({ source: 'demo' }));
+    expect(g.lines[0]).toBe('Oiliness reading: High (whole face, sample reading)');
+    expect(zoneCaption(key({ source: 'demo' }))).toBe('Sample zones · Demo reading · no photo taken');
+    expect(zoneCaption(key())).toBe('Zones from your 1 Nov scan · no photo kept');
   });
 
   it('uses zone labels only for copy set A', () => {

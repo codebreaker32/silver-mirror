@@ -115,6 +115,7 @@ export function InciChipEditor({ chips, unreadable, onChange, onRun, onRetake }:
               <PillButton
                 label="Remove"
                 variant="tertiary"
+                style={{ alignSelf: 'center' }}
                 onPress={() => {
                   onChange(removeChip(chips, editing));
                   setEditing(null);

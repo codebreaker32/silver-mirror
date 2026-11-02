@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ComponentRef } from 'react';
-import { AccessibilityInfo, Pressable, ScrollView, View, useWindowDimensions, type LayoutChangeEvent, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
+import { AccessibilityInfo, Pressable, ScrollView, View, useWindowDimensions, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY, DEMO_KEY, type HowThisWasMade, type Store } from '@skinkey/contracts';
 import { FACET_MAP, medicineGate, rank, verdict } from '@skinkey/rules';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Body, Card, EmptyState, Icon, IconButton, IconDisc, PillButton, Tag, Txt, useCardStyle, type IconName } from '@/components';
+import { Body, Card, EmptyState, Icon, IconButton, IconDisc, PillButton, Tag, Txt, type IconName } from '@/components';
 import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
 import { BetterMatches, guessCategory, storeLinks, StoreSearchSheet, useBetterMatches } from '@/features/matches';
 import { openStoreUrl } from '@/features/matches/openStoreUrl';
@@ -18,6 +18,7 @@ import { HeadSkeleton, ProductHeader } from './components/ProductHeader';
 import { SkuConfirmSheet } from './components/SkuConfirmSheet';
 import { UnknownPanel } from './components/UnknownPanel';
 import { VerdictSheet } from './components/VerdictSheet';
+import { shortListingTitle, sizeMeta } from './display';
 import { productLine, tryonEntry, type Engine } from './flow';
 import { contextClick } from './haptics';
 import { documentScannerAvailable, scanLabel } from './media';
@@ -100,13 +101,14 @@ function NoReadingCard({ onScan, onDemo, primary }: { onScan: () => void; onDemo
   );
 }
 
-/** "Better matches" pill that floats above the dock while that section is off screen. */
-function MatchesPill({ onPress, bottom }: { onPress: () => void; bottom: number }) {
+/**
+ * "Better matches" jump pill (DESIGN.md §8.7). It sits in the dock, above the primary row, only while that section is
+ * off screen, so it never covers copy.
+ */
+function MatchesPill({ onPress }: { onPress: () => void }) {
   const t = useTheme();
-  const surface = useCardStyle('raised', t.radius.full);
-  const shadow = t.dark ? null : t.elevation['2'].style;
   return (
-    <View pointerEvents="box-none" style={{ position: 'absolute', left: 0, right: 0, bottom: bottom + t.space[3], alignItems: 'center' }}>
+    <View style={{ alignItems: 'center' }}>
       <Pressable
         onPress={onPress}
         accessibilityRole="button"
@@ -117,18 +119,15 @@ function MatchesPill({ onPress, bottom }: { onPress: () => void; bottom: number 
       >
         {({ pressed }) => (
           <View
-            style={[
-              surface,
-              shadow,
-              {
-                backgroundColor: pressed ? t.components.button.secondary.bgPressed : t.colors.surfaceRaised,
-                minHeight: t.components.chip.visualMinHeight + t.space[1],
-                paddingHorizontal: t.space[4],
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: t.space[2],
-              },
-            ]}
+            style={{
+              borderRadius: t.radius.full,
+              backgroundColor: pressed ? t.components.button.secondary.bgPressed : t.components.button.secondary.bg,
+              minHeight: t.components.chip.visualMinHeight + t.space[1],
+              paddingHorizontal: t.space[4],
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: t.space[2],
+            }}
           >
             <Txt variant="label">Better matches</Txt>
             <Icon name="chevron-down" size={t.icon.sm} color={t.colors.text} />
@@ -171,7 +170,8 @@ export default function CheckScreen() {
       setMoreOpen(false);
       setCameraOpen(false);
       setOrigin(input.kind === 'image' ? 'screenshot' : from);
-      setListingUrl(input.kind === 'text' ? input.parsed.url : null);
+      // The sample listing's URL is not a real listing: never offer to go back to it.
+      setListingUrl(input.kind === 'text' && from !== 'sample' ? input.parsed.url : null);
       start(input);
     },
     [start, reset],
@@ -198,7 +198,13 @@ export default function CheckScreen() {
   const view = useMemo(
     () =>
       result
-        ? presentVerdict(result.verdict, { key, product: result.product, catalogCount: result.catalogCount, labelTokenCount: result.labelTokenCount })
+        ? presentVerdict(result.verdict, {
+            key,
+            product: result.product,
+            catalogCount: result.catalogCount,
+            labelTokenCount: result.labelTokenCount,
+            listingTitle: result.product ? null : result.title,
+          })
         : null,
     [result, key],
   );
@@ -250,10 +256,11 @@ export default function CheckScreen() {
   const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const backToProduct = () => {
     if (listingUrl && storeName) void openStoreUrl(listingUrl).catch(() => router.back());
+    else if (origin === 'sample') router.replace('/');
     else goBack();
   };
   const toListing = !!(listingUrl && storeName);
-  const backLabel = toListing ? `Back to ${storeName} listing` : 'Back to product';
+  const backLabel = toListing ? `Back to ${storeName} listing` : origin === 'sample' ? 'Back to home' : 'Back to product';
   const backDestination = toListing ? `Returns to the ${storeName} listing` : undefined;
 
   const snap = async () => {
@@ -270,16 +277,28 @@ export default function CheckScreen() {
   };
 
   const tryon = result && view && view.label !== 'MEDICINE' ? tryonEntry(result.product) : null;
+  // Catalogue product: brand · name in the title, the pack size in the meta line (DESIGN.md §9.4). Raw listing titles
+  // lose their SEO tail here; the ledger's Product row keeps the full text.
+  const nameOnly = (p: { brand: string; name: string }) => productLine({ brand: p.brand, name: p.name });
+  const rawTitle = result?.title ?? (state.phase === 'resolving' ? state.title : null);
   const header =
     result?.product != null
-      ? productLine(result.product)
-      : (result?.title ?? (state.phase === 'resolving' ? state.title : state.phase === 'loading' ? productLine(state.candidate.product) : null));
+      ? nameOnly(result.product)
+      : state.phase === 'loading'
+        ? nameOnly(state.candidate.product)
+        : rawTitle
+          ? shortListingTitle(rawTitle)
+          : null;
+  const headerProduct = result?.product ?? (state.phase === 'loading' ? state.candidate.product : null);
+  const headerMeta = headerProduct ? sizeMeta(headerProduct.size) : origin === 'sample' ? 'Sample listing' : null;
 
   const inlineDock = fontScale >= t.components.actionBar.inlineAtFontScale;
-  const [dockH, setDockH] = useState(0);
   const showMore = !!view && view.showMatches;
+  const showPill = !!view && view.showMatches && !matchesOnScreen && !inlineDock;
   const dockActions =
     view && result ? (
+      <View style={{ gap: t.space[1] }}>
+      {showPill ? <MatchesPill onPress={toMatches} /> : null}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.components.actionBar.gap }}>
         <View style={{ flex: 1 }}>
           <PillButton
@@ -292,12 +311,12 @@ export default function CheckScreen() {
         </View>
         {showMore ? <IconButton icon="more-horizontal" variant="tonal" accessibilityLabel="More: search the stores" onPress={() => setMoreOpen(true)} testID="dock-more" /> : null}
       </View>
+      </View>
     ) : null;
 
   const dock =
     dockActions && !inlineDock ? (
       <View
-        onLayout={(e: LayoutChangeEvent) => setDockH(e.nativeEvent.layout.height)}
         style={{
           ...(under && !t.dark ? t.components.actionBar.shadow : null),
           backgroundColor: t.components.actionBar.bg,
@@ -346,7 +365,7 @@ export default function CheckScreen() {
           }}
         >
           {state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
-            <ProductHeader title={header} meta={result?.product ? null : origin === 'sample' ? 'Sample listing' : null} />
+            <ProductHeader title={header} meta={headerMeta} />
           ) : null}
 
           {usingDemo && state.phase === 'confirm' ? <Tag label={`${COPY.reading.demo}: labelled sample readings`} variant="demo" /> : null}
@@ -436,8 +455,6 @@ export default function CheckScreen() {
       )}
 
       {dock}
-
-      {view && view.showMatches && !matchesOnScreen && !inlineDock ? <MatchesPill onPress={toMatches} bottom={dockH} /> : null}
 
       {state.phase === 'confirm' ? (
         <SkuConfirmSheet

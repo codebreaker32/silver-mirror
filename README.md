@@ -1,8 +1,10 @@
-# SkinKey
+# Silver Mirror
+
+<sub>Formerly `SkinKey`: code identifiers (`@skinkey/*`, `app.skinkey`, the Worker URL) keep the old name.</sub>
 
 > The tag says oily skin. Your scan and the ingredients get a vote.
 
-The listing says "for oily skin". SkinKey checks that claim against the product's own ingredient list and your YouCam Skin Analysis readings. It works from the Flipkart or Amazon.in app you are already in, through the Android share sheet. For tinted products, YouCam shows you two shades on your face before you buy something you can't return.
+The listing says "for oily skin". Silver Mirror checks that claim against the product's own ingredient list and your YouCam Skin Analysis readings. It works from the Flipkart or Amazon.in app you are already in, through the Android share sheet. For tinted products, YouCam shows you two shades on your face before you buy something you can't return.
 
 Cosmetic guidance, not medical advice. Not affiliated with Flipkart, Amazon or Nykaa.
 
@@ -14,18 +16,18 @@ Desk research only; nobody was interviewed for these numbers:
 - About 40% of self-reported skin types matched instrument measurement (Youn 2002, via a secondary summary).
 - 43% of shoppers worry AI recommendations are paid placements.
 
-What we claim about the scan: it is a consistent, dated reading from YouCam. It is not a validated measurement, and SkinKey does not close the 40% gap on its own.
+What we claim about the scan: it is a consistent, dated reading from YouCam. It is not a validated measurement, and Silver Mirror does not close the 40% gap on its own.
 
 ## How it works
 
-1. **Your Key (once).** Consent, then one selfie. YouCam HD Skin Analysis returns oiliness, moisture, redness, pore and zone skin-type readings. The Worker turns each `raw_score` into a band (Low / Medium / High). Higher `raw_score` means less visible concern, so the bands invert it (found in the live spike, see `spikes/FINDINGS.md`). The photo is deleted from YouCam straight after, and the delete is confirmed with up to 3 GETs, 2 s apart. Only bands, zone labels and the scan date stay on the phone.
-2. **Share a product.** Flipkart → Share → SkinKey, or Amazon: Share → More → SkinKey.
+1. **Your reading (once).** Consent, then one selfie. YouCam HD Skin Analysis returns oiliness, moisture, redness, pore and zone skin-type readings. The Worker turns each `raw_score` into a band (Low / Medium / High). Higher `raw_score` means less visible concern, so the bands invert it (found in the live spike, see `spikes/FINDINGS.md`). The photo is deleted from YouCam straight after, and the delete is confirmed with up to 3 GETs, 2 s apart. Only bands, zone labels and the scan date stay on the phone.
+2. **Share a product.** In Flipkart or Nykaa, tap Share, then Silver Mirror. In Amazon, tap Share, then More, then Silver Mirror.
    - Flipkart shares only a `dl.flipkart.com/s/` short link. The Worker resolves it with ONE redirect request and reads only the `Location` header (slug + pid). It never loads the product page.
    - Amazon shares `Check this out at Amazon` + title + URL. The title is the text minus those two parts.
    - Nykaa shares `Check out <title> on Nykaa` + a `/p/<id>` URL. Nykaa links open in a browser Custom Tab.
 3. **Confirm the SKU.** Claude proposes catalogue ids; you tap "Yes, this one". No verdict appears before that.
 4. **Verdict.** A pure rules engine compares the product's INCI list and label claims with your bands: FITS, CAUTION, UNKNOWN or MEDICINE. Every reason is a set template filled with a rule id, a band and an ingredient token.
-5. **Better matches.** Up to 3 FITS products from the human-verified catalogue in the same category, each with a link that opens a Flipkart search.
+5. **Better matches.** Up to 3 FITS products from the verified catalogue in the same category (rows checked against the brand page by a second, independent read; rows a person has ticked are labelled human-checked), each with a link that opens a Flipkart search.
 6. **UNKNOWN is designed, not an error.** "We can't read this listing's ingredients. This doesn't mean it's bad." Snap the label; Claude reads it into editable ingredient chips (low-confidence chips are outlined); you confirm; the rules decide.
 7. **Try-on (tinted products).** Two shades, same photo. Preview, not a shade guarantee. The skin-tone hex is used inside the Worker to pick two candidate shades and is never shown; the selfie is deleted from YouCam afterwards.
 8. **Medicine gate.** Retinoids and other medicine actives (adapalene, tretinoin and similar) stop the flow with a MEDICINE notice instead of a fit verdict.
@@ -38,7 +40,7 @@ What we claim about the scan: it is a consistent, dated reading from YouCam. It 
 ```
  Android app (Expo, apps/mobile)          Web (Vite + React, apps/web)
    share intent ─┐                          /, /check, /audit, /rules, /how
-   camera, Key   │                                   │
+   camera, reading│                                   │
                  ▼                                   ▼
         Cloudflare Worker (Hono, apps/worker)  ◄─────┘
           ├─ YouCam API (skin analysis, skin tone, makeup VTO, delete)   keys live only here
@@ -51,13 +53,13 @@ What we claim about the scan: it is a consistent, dated reading from YouCam. It 
 
 - Keys (`YOUCAM_API_KEY`, `ANTHROPIC_API_KEY`) exist only as Worker secrets. They are never bundled into the app or the web build; `npm run secrets:grep` checks the built web bundle and both APKs.
 - The Worker has a full mock mode (`YOUCAM_MODE=mock`, `CLAUDE_MODE=mock`) that serves the real spike responses, with signed URLs redacted. Tests and the smoke script use it, so no YouCam units are spent.
-- Catalogue: `data/catalog/brands/*.json` → `npm run catalog:merge` → `catalog.json` + `AUDIT.md`. Rows need a complete INCI list copied from a brand or retailer page with an https `source_url`; anything else is dropped. Only a human tick on a brand-page row makes a product "verified".
+- Catalogue: `data/catalog/brands/*.json` → `npm run catalog:merge` → `catalog.json` + `AUDIT.md`. Rows need a complete INCI list copied from a brand or retailer page with an https `source_url`; anything else is dropped. A brand-page row counts as verified once a second, independent read matched it word for word (labelled "checked against the brand page"); rows a person has ticked are labelled human-checked. Retailer rows never count.
 
 ## What's possible / not possible
 
 | Possible today | Not possible (and why) |
 |---|---|
-| Share from the native Flipkart, Amazon.in and Nykaa Android apps into SkinKey | Running within a store app. Our links open a Flipkart search in the Flipkart app |
+| Share from the native Flipkart, Amazon.in and Nykaa Android apps into Silver Mirror | Running within a store app. Our links open a Flipkart search in the Flipkart app |
 | Resolve a Flipkart short link from one redirect header | Reading Flipkart product pages. We never load or scrape them |
 | Check a listing's label claim ("for oily skin", fragrance-free, oil-free) against its INCI list and your readings | Checking a product we have no ingredient list for. That is UNKNOWN until you snap the label |
 | Dated, banded YouCam readings (Low / Medium / High, zone labels) | Numeric skin scores or an age estimate. YouCam returns them; we discard them |
@@ -104,7 +106,7 @@ Live mode needs `apps/worker/.dev.vars` (generated from `.env` by `npm run gen:d
 
 ## Repo map
 
-- `apps/mobile`: Expo SDK 58 app (share intent, scan, check, try-on, Key, settings, How this was made)
+- `apps/mobile`: Expo SDK 58 app (share intent, scan, check, try-on, reading, settings, How this was made)
 - `apps/worker`: Cloudflare Worker, YouCam and Claude adapters, mock YouCam, smoke script
 - `apps/web`: landing, `/check`, `/audit`, `/rules`, `/how`
 - `packages/contracts`, `packages/rules`, `packages/design`

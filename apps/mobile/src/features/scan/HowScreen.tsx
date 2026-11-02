@@ -161,14 +161,28 @@ export function HowScreen() {
           title="Delete steps"
           supporting={scanDeleted ? 'Every upload from your last scan went through each step.' : scanFinal ? 'Your last scan ended early; see its card below.' : 'What happens to every upload, in order.'}
         />
-        <StepChecklist steps={deleteSteps} announcement={null} />
-        <DeleteNotes lines={[`If an upload never became a task: ${COPY.orphanUpload}`, `If a delete call fails: ${COPY.deleteFailed}`, COPY.privacyQualifier]} />
+        {scanDeleted ? (
+          <StepChecklist steps={deleteSteps} announcement={null} />
+        ) : (
+          // Static explainer: numbered steps, not empty progress rings (nothing is running).
+          <View accessible accessibilityLabel={`Delete steps: ${DELETE_STEPS.join(', ')}`} style={{ gap: theme.space[2] }}>
+            {DELETE_STEPS.map((label, i) => (
+              <View key={label} style={{ flexDirection: 'row', gap: theme.space[3], alignItems: 'baseline' }}>
+                <Txt variant="label" tone="muted" style={{ minWidth: theme.space[5], fontVariant: ['tabular-nums'] }}>
+                  {`${i + 1}.`}
+                </Txt>
+                <Body small>{label}</Body>
+              </View>
+            ))}
+          </View>
+        )}
+        <DeleteNotes lines={[`If an upload never became a task: ${COPY.orphanUpload}`, COPY.privacyQualifier]} />
       </View>
 
       <View style={{ gap: theme.space[3] }}>
         <SectionHeader title="Recorded calls" />
         {present.length === 0 ? (
-          <Body muted>No calls recorded on this phone yet. Run a scan, a try-on or a product check, then come back here.</Body>
+          <Body muted>No calls recorded since the app opened. Run a scan, a try-on or a shared-link check, then come back here. The sample share and the Demo reading make no calls.</Body>
         ) : (
           present.map((k) => <LedgerCard key={k} kind={k} ledger={ledgers[k]!.ledger} at={ledgers[k]!.at} />)
         )}

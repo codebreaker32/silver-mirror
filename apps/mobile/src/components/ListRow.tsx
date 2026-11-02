@@ -80,7 +80,7 @@ export function ListGroup({ title, children, testID }: { title?: string; childre
   return (
     <View testID={testID} style={{ gap: t.space[2] }}>
       {title ? (
-        <Txt accessibilityRole="header" variant="section" style={{ paddingHorizontal: t.space[1] }}>
+        <Txt accessibilityRole="header" variant="section">
           {title}
         </Txt>
       ) : null}
@@ -96,7 +96,7 @@ export function ListGroup({ title, children, testID }: { title?: string; childre
       >
         {rows.map((row, i) => (
           <Fragment key={i}>
-            {i > 0 ? <View style={{ height: 1, marginLeft: r.dividerInset, backgroundColor: r.divider }} importantForAccessibility="no" /> : null}
+            {i > 0 ? <View style={{ height: 1, marginLeft: r.dividerInset, marginRight: r.paddingX, backgroundColor: r.divider }} importantForAccessibility="no" /> : null}
             {row}
           </Fragment>
         ))}

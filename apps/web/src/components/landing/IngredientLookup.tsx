@@ -100,7 +100,7 @@ function LookupAnswer({ value, result }: { value: string; result: ReturnType<typ
             <span className="rule-id">{h.ruleId}</span>
             <span>
               <strong>{h.rule ? KIND_LABEL[h.rule.kind] : 'Rule'}</strong>
-              {h.rule?.grade ? ` · grade ${GRADE_LABEL[h.rule.grade]}` : ''}
+              {h.rule?.grade ? ` · ${GRADE_LABEL[h.rule.grade]}` : ''}
               {h.rule?.counted === false ? ' · informational' : ''}
               {h.rule?.contested ? ' · contested definition' : ''}
             </span>
@@ -127,8 +127,10 @@ function ProfileGrid({ result }: { result: NonNullable<ReturnType<typeof lookupI
       {result.byProfile.map(({ profile, label }) => (
         <li key={profile.id} className="verdict-tag" data-label={label}>
           <VerdictIcon label={label} size={20} />
-          <span className="profile-name">{profile.label}</span>
-          <span className="profile-label">{label}</span>
+          <span className="profile-text">
+            <span className="profile-name">{profile.label}</span>
+            <span className="profile-label">{label}</span>
+          </span>
         </li>
       ))}
     </ul>

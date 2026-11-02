@@ -2,6 +2,7 @@ import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { COPY, type KeyProfile, type ResolveCandidate, type ResolveRequest, type Store } from '@skinkey/contracts';
 import type { CheckInput } from '@/features/share/parse';
 import { toResolveRequest } from '@/features/share/parse';
+import { recordLedger } from '@/features/scan/ledgerStore';
 import type { CheckApi } from './api';
 import { chipsFromOcr, chipsToInci, type InciChip } from './chips';
 import {
@@ -59,6 +60,7 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
       try {
         const res = await api.resolve(req);
         if (gen.current !== mine) return;
+        if (res.ledger) recordLedger('resolve', res.ledger);
         const step = stepFromResolve(res, engine, title);
         const k = keyRef.current;
         if (step.next === 'medicine') {
@@ -135,6 +137,7 @@ export function useCheckFlow(api: CheckApi, engine: Engine, key: KeyProfile | nu
       try {
         const res = await api.labelOcr({ imageBase64, mediaType: 'image/jpeg' });
         if (gen.current !== mine) return;
+        if (res.ledger) recordLedger('labelOcr', res.ledger);
         dispatch({ type: 'label', label: { step: 'review', chips: chipsFromOcr(res.tokens), unreadable: res.unreadableRegions }, ledger: res.ledger });
       } catch (e) {
         if (gen.current !== mine) return;

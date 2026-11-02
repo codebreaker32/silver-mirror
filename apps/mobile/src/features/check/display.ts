@@ -20,6 +20,28 @@ export function displayTitle(title: string): string {
     .join('');
 }
 
+const words = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
+
+/**
+ * Header title for a raw marketplace listing (DESIGN.md §4, §9.4): keep the product name, drop the SEO tail after the
+ * first " | ", ", " or " - " ("Minimalist SPF 30 Body Sunscreen, UVA & UVB Protection | Nourishing Lotion | …" →
+ * "Minimalist SPF 30 Body Sunscreen"), then title-case. The full title stays in the ledger's Product row.
+ */
+export function shortListingTitle(title: string): string {
+  let head = title.trim().split(/\s*\|\s*/)[0] ?? title;
+  for (const sep of [/,\s+/, /\s+[-–—]\s+/]) {
+    const first = head.split(sep)[0] ?? head;
+    if (first !== head && words(first) >= 2) head = first;
+  }
+  return displayTitle(head.trim() || title.trim());
+}
+
+/** Pack size for the muted meta line, without the "(also 30 g, 100 g on brand site)" note the SKU sheet uses. */
+export const sizeMeta = (size: string | null | undefined): string | null => {
+  const s = size?.replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+  return s ? s : null;
+};
+
 const GLYPH: Record<ProductCategory, IconName> = {
   sunscreen: 'sun',
   tinted_spf: 'sun',

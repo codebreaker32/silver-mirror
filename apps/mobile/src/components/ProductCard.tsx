@@ -49,7 +49,7 @@ export function ProductCard({ name, reason, verdict, destination, image, glyph =
           {name}
         </Txt>
         {reason ? (
-          <Txt variant="bodySm" style={[m.fit, { color: m.fitColor }]}>
+          <Txt variant="bodySm" numberOfLines={2} style={[m.fit, { color: m.fitColor }]}>
             {reason}
           </Txt>
         ) : null}

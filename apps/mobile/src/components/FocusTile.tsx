@@ -9,14 +9,18 @@ export interface FocusItem {
 }
 
 /** Square greige tile with a 24dp line icon and a label (component.focusTile). */
-export function FocusTile({ label, icon }: FocusItem) {
+export function FocusTile({ label, icon, wide = false }: FocusItem & { wide?: boolean }) {
   const t = useTheme();
   const f = t.components.focusTile;
   return (
     <View
       accessible
       accessibilityLabel={label}
-      style={{ flex: 1, minHeight: f.minHeight, borderRadius: f.radius, padding: f.padding, backgroundColor: f.bg, gap: f.gap, justifyContent: 'space-between' }}
+      style={
+        wide
+          ? { flex: 1, minHeight: t.touch.min + t.space[2], borderRadius: f.radius, padding: f.padding, backgroundColor: f.bg, gap: t.space[3], flexDirection: 'row', alignItems: 'center' }
+          : { flex: 1, minHeight: f.minHeight, borderRadius: f.radius, padding: f.padding, backgroundColor: f.bg, gap: f.gap, justifyContent: 'space-between' }
+      }
     >
       <Icon name={icon} size={f.icon} color={f.fg} />
       <Text {...t.textProps.label} style={[f.label, { color: f.fg }]}>
@@ -26,18 +30,16 @@ export function FocusTile({ label, icon }: FocusItem) {
   );
 }
 
-/** Three tiles across (focusTile.columns). Pass at most three items; extra ones are dropped. */
+/** Up to three tiles across (focusTile.columns), sharing the row; one item becomes a wide row. Extra ones are dropped. */
 export function FocusTiles({ items, accessibilityLabel = 'What this means for products' }: { items: readonly FocusItem[]; accessibilityLabel?: string }) {
   const t = useTheme();
   const f = t.components.focusTile;
   const shown = items.slice(0, f.columns);
   return (
     <View accessibilityRole="list" accessibilityLabel={accessibilityLabel} style={{ flexDirection: 'row', gap: t.space[3] }}>
+      {/* One trait: a full-width row instead of a lone square beside empty space. Two or three share the row. */}
       {shown.map((it) => (
-        <FocusTile key={it.label} {...it} />
-      ))}
-      {Array.from({ length: f.columns - shown.length }, (_, i) => (
-        <View key={`pad-${i}`} style={{ flex: 1 }} />
+        <FocusTile key={it.label} {...it} wide={shown.length === 1} />
       ))}
     </View>
   );

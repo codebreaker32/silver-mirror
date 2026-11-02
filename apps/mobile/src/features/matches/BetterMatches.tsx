@@ -95,7 +95,7 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
               key={m.productId}
               testID={`match-${i}`}
               name={m.name}
-              reason={m.reasonLine}
+              reason={m.shortReason}
               verdict={{ tone: 'fits', label: 'FITS' }}
               destination="Opens a Flipkart search for this product"
               glyph={categoryGlyph(m.category ?? category)}

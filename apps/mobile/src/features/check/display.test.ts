@@ -1,11 +1,31 @@
 import { describe, expect, it } from 'vitest';
-import { categoryGlyph, displayTitle, markMismatches } from './display';
+import { categoryGlyph, displayTitle, markMismatches, shortListingTitle, sizeMeta } from './display';
 
 describe('displayTitle', () => {
   it('title-cases an all-lowercase slug and leaves written casing alone', () => {
     expect(displayTitle('vaseline gluta hya dewy radiance')).toBe('Vaseline Gluta Hya Dewy Radiance');
     expect(displayTitle('minimalist spf50 sunscreen for oily skin')).toBe('Minimalist SPF50 Sunscreen for Oily Skin');
     expect(displayTitle('Garnier · Super UV Invisible Serum Sunscreen · 30 ml')).toBe('Garnier · Super UV Invisible Serum Sunscreen · 30 ml');
+  });
+});
+
+describe('shortListingTitle', () => {
+  it('drops the marketplace SEO tail', () => {
+    expect(
+      shortListingTitle(
+        'Minimalist SPF 30 Body Sunscreen, UVA & UVB Protection | Nourishing Lotion | Broad Spectrum PA+++ Sunscreen for All Skin Types | For Men & Women | 150 g',
+      ),
+    ).toBe('Minimalist SPF 30 Body Sunscreen');
+    expect(shortListingTitle('Minimalist SPF 50 PA++++ Sunscreen With Niacinamide - Lightweight & No White Cast For All Skin Types')).toBe(
+      'Minimalist SPF 50 PA++++ Sunscreen With Niacinamide',
+    );
+    expect(shortListingTitle('vaseline gluta hya dewy radiance')).toBe('Vaseline Gluta Hya Dewy Radiance');
+    expect(shortListingTitle('Cetaphil, Gentle Cleanser')).toBe('Cetaphil, Gentle Cleanser');
+  });
+
+  it('keeps the size and drops the also-sizes note', () => {
+    expect(sizeMeta('50g (also 30g, 100g)')).toBe('50g');
+    expect(sizeMeta(undefined)).toBeNull();
   });
 });
 

@@ -44,7 +44,7 @@ export function Layout() {
             ))}
           </div>
         </details>
-        <Link to="/check?sample=1" className="btn btn-primary btn-sm header-cta">
+        <Link to="/check?sample=1" className="btn btn-secondary btn-sm header-cta">
           Try a sample share
         </Link>
       </header>

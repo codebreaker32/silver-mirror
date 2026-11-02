@@ -122,7 +122,7 @@ export function Check() {
             <label className="field-label" htmlFor="listing">
               Link or product title
             </label>
-            <div className="paste-field">
+            <div className="paste-field has-action">
               <input
                 id="listing"
                 value={text}

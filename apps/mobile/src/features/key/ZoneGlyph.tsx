@@ -21,6 +21,31 @@ interface Props {
   caption?: string;
 }
 
+/**
+ * Hatch lines for a legend swatch, clipped by hand to the swatch box. Each legend swatch is its own <Svg>, and
+ * react-native-svg does not resolve url(#pattern) across Svg roots on Android, so the swatches draw real lines.
+ * Medium = one diagonal direction (like the map's single hatch), High = cross-hatch.
+ */
+function swatchHatch(band: Band, x0: number, y0: number, x1: number, y1: number): [number, number, number, number][] {
+  const step = band === 'High' ? 3 : 4;
+  const out: [number, number, number, number][] = [];
+  // "/" lines: x + y = c
+  for (let c = x0 + y0 + step; c < x1 + y1; c += step) {
+    const sx = Math.max(x0, c - y1);
+    const ex = Math.min(x1, c - y0);
+    if (ex > sx) out.push([sx, c - sx, ex, c - ex]);
+  }
+  if (band === 'High') {
+    // "\\" lines: x - y = c
+    for (let c = x0 - y1 + step; c < x1 - y0; c += step) {
+      const sx = Math.max(x0, c + y0);
+      const ex = Math.min(x1, c + y1);
+      if (ex > sx) out.push([sx, sx - c, ex, ex - c]);
+    }
+  }
+  return out;
+}
+
 function usePatternIds() {
   const base = useId().replace(/[^a-zA-Z0-9]/g, '');
   return { medium: `hm${base}`, high: `hh${base}` };
@@ -91,7 +116,12 @@ export function ZoneGlyph({ model, highlight = [], width = 200, showLegend = tru
           {(['Low', 'Medium', 'High'] as const).map((b) => (
             <View key={b} style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[1] }}>
               <Svg width={16} height={12} viewBox="0 0 16 12">
-                <Rect x={0.5} y={0.5} width={15} height={11} rx={2} fill={fillFor(b)} stroke={m.zoneStroke} strokeWidth={1} />
+                {b === 'Low'
+                  ? null
+                  : swatchHatch(b, 1, 1, 15, 11).map(([x1, y1, x2, y2], i) => (
+                      <Line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={ink} strokeWidth={1} />
+                    ))}
+                <Rect x={0.5} y={0.5} width={15} height={11} rx={2} fill="none" stroke={m.zoneStroke} strokeWidth={1} />
               </Svg>
               <Text style={[theme.type.caption, { color: theme.colors.textMuted }]}>{b}</Text>
             </View>

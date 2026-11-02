@@ -63,7 +63,7 @@ export function PasteLinkField({ onSubmit, ref, emphasis = 'primary' }: PasteLin
           testID="paste-input"
           accessibilityLabelledBy="paste-label"
           accessibilityLabel="Product link or name"
-          placeholder="Paste a link or type a name"
+          placeholder="Paste a link or name"
           placeholderTextColor={f.placeholder}
           value={value}
           onChangeText={(v) => {

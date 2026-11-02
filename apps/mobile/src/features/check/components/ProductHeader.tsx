@@ -13,7 +13,7 @@ export function ProductHeader({ title, meta }: { title: string | null; meta?: st
   return (
     <View style={{ gap: t.space[2] }}>
       {title ? (
-        <Txt accessibilityRole="header" variant="title" style={[h.title, { color: h.titleColor }]}>
+        <Txt accessibilityRole="header" variant="title" numberOfLines={3} style={[h.title, { color: h.titleColor }]}>
           {displayTitle(title)}
         </Txt>
       ) : (

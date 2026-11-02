@@ -1,5 +1,5 @@
 import { Children, type ReactNode } from 'react';
-import { Pressable, Text, View, useWindowDimensions, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions, type StyleProp, type ViewStyle } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName, type LegacyIconName } from './Icon';
 
@@ -62,9 +62,12 @@ export function PillButton({
   const borderColor = 'border' in v ? (disabled && 'borderDisabled' in v ? v.borderDisabled : v.border) : 'transparent';
   const a11y = accessibilityLabel ?? [busy && busyLabel ? busyLabel : label, destination].filter(Boolean).join('. ');
   const stretch = fullWidth ?? (variant !== 'tertiary' && variant !== 'destructiveNeutral');
+  // A leading text action (tertiary, left-aligned) pulls its 48dp box left so the label sits on the content edge.
+  const flat = StyleSheet.flatten(style) ?? {};
+  const hang = variant === 'tertiary' && !stretch && flat.alignSelf !== 'center' && flat.alignSelf !== 'flex-end' ? -v.paddingX : 0;
 
   return (
-    <View style={[{ gap: t.space[2], alignSelf: stretch ? 'stretch' : 'flex-start' }, style]}>
+    <View style={[{ gap: t.space[2], alignSelf: stretch ? 'stretch' : 'flex-start', marginLeft: hang }, style]}>
       <Pressable
         testID={testID}
         onPress={onPress}

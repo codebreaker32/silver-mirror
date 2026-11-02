@@ -5,8 +5,13 @@ import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from '../Icon';
 
 /** Generic app tiles around the real chrome-S tile. No store or third-party logos: plain line glyphs only. */
-type Tile = { kind: 'generic'; glyph: IconName } | { kind: 'mark' } | { kind: 'more' };
-const TILES: readonly Tile[] = [{ kind: 'generic', glyph: 'document' }, { kind: 'mark' }, { kind: 'generic', glyph: 'camera' }, { kind: 'more' }];
+type Tile = { kind: 'generic'; glyph: IconName; label: string } | { kind: 'mark' } | { kind: 'more' };
+const TILES: readonly Tile[] = [
+  { kind: 'generic', glyph: 'document', label: 'Messages' },
+  { kind: 'mark' },
+  { kind: 'generic', glyph: 'paste', label: 'Copy link' },
+  { kind: 'more' },
+];
 
 /**
  * Mini share-sheet strip (component.shareTeachingCard art): a sheet handle, then a row of app tiles where the
@@ -26,7 +31,6 @@ export function ShareStrip({ moreLit = false }: { moreLit?: boolean }) {
       {text}
     </Text>
   );
-  const bar = <View style={{ width: 32, height: 6, borderRadius: t.radius.full, backgroundColor: t.colors.border, marginTop: 7, marginBottom: 7 }} />;
 
   return (
     <View
@@ -51,7 +55,7 @@ export function ShareStrip({ moreLit = false }: { moreLit?: boolean }) {
           }
           const lit = item.kind === 'more' && moreLit;
           return (
-            <View key={i} style={{ alignItems: 'center', gap: t.space[1], width: 60, paddingTop: 5 }}>
+            <View key={i} style={{ alignItems: 'center', gap: t.space[1], width: 68, paddingTop: 5 }}>
               <View
                 style={{
                   width: tile - 4,
@@ -67,7 +71,7 @@ export function ShareStrip({ moreLit = false }: { moreLit?: boolean }) {
               >
                 <Icon name={item.kind === 'more' ? 'more-horizontal' : item.glyph} size={t.icon.md} color={item.kind === 'more' ? t.colors.text : c.illustrationStroke} />
               </View>
-              {item.kind === 'more' ? label('More', lit) : bar}
+              {item.kind === 'more' ? label('More', lit) : label(item.label, false)}
             </View>
           );
         })}

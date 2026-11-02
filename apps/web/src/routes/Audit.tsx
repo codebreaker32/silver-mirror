@@ -7,6 +7,7 @@ import {
   distinctQuotes,
   freeFromRows,
   heatStep,
+  labelCheckSentence,
   labelReviewItems,
   loadAudit,
   profileClaimRows,
@@ -112,7 +113,7 @@ function NotRun() {
 
 function Results({ summary, csvAvailable }: { summary: AuditSummary; csvAvailable: boolean }) {
   const p = summary.population;
-  const sentences = [summary.text.coverage, summary.text.label_check, summary.text.claim_profile, summary.text.six_readings].filter(
+  const sentences = [summary.text.coverage, labelCheckSentence(summary), summary.text.claim_profile, summary.text.six_readings].filter(
     (t): t is string => !!t,
   );
   return (
@@ -148,7 +149,7 @@ function Results({ summary, csvAvailable }: { summary: AuditSummary; csvAvailabl
         {sentences.length > 0 && (
           <div className="stack" style={{ marginTop: 24, maxWidth: '64ch' }}>
             {sentences.map((t) => (
-              <p key={t} className="verdict-sub">
+              <p key={t} className="audit-sentence">
                 {t}
               </p>
             ))}
@@ -234,11 +235,15 @@ function LabelCheck({ summary }: { summary: AuditSummary }) {
   return (
     <section className="page-section" aria-labelledby="lc-title">
       <h2 id="lc-title">Label Check</h2>
-      <p>
-        <strong>{summary.label_check.c}</strong> of {summary.population.checked} make a claim their own ingredient list
-        doesn't match (strict rules LC-1a, LC-2, LC-3). <strong>{summary.label_check.d}</strong> more list a fragrance
-        substance or essential oil under a “fragrance-free” claim (LC-1b, informational).
-      </p>
+      {summary.label_check.c === 0 && summary.label_check.d === 0 ? (
+        <p>{labelCheckSentence(summary)}</p>
+      ) : (
+        <p>
+          <strong>{summary.label_check.c}</strong> of {summary.population.checked} make a claim their own ingredient list
+          doesn't match (strict rules LC-1a, LC-2, LC-3). <strong>{summary.label_check.d}</strong> more list a fragrance
+          substance or essential oil under a “fragrance-free” claim (LC-1b, informational).
+        </p>
+      )}
       <p className="small muted" style={{ marginTop: 8 }}>
         Only free-from claims can be tested this way. Checked products with each one:{' '}
         {testable.map((m) => `${m.label} ${m.checked}`).join(', ')}.

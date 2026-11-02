@@ -13,7 +13,7 @@
 //
 // Every request that is not to the local server is aborted and listed in report.json: no Worker, YouCam or Claude calls.
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { dirname, extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -121,7 +121,7 @@ async function settle(page) {
 }
 
 async function waitForVerdict(page) {
-  const back = page.getByRole('button', { name: /Back to (product|\w+ listing)/ }).first();
+  const back = page.getByRole('button', { name: /Back to (product|home|\w+ listing)/ }).first();
   const yes = page.getByTestId('sku-yes');
   const option = page.getByTestId('sku-option-0');
   await Promise.race([back.waitFor({ timeout: 30_000 }), yes.waitFor({ timeout: 30_000 }), option.waitFor({ timeout: 30_000 })]);
@@ -174,8 +174,9 @@ const GROUPS = [
   [['kit-3', `/kit${q({ part: '3' })}`]],
 ];
 
-rmSync(OUT, { recursive: true, force: true });
+// Keep design/web-shots/site (the website shots from apps/web/scripts/shots.mjs); replace only this script's PNGs.
 mkdirSync(OUT, { recursive: true });
+for (const f of readdirSync(OUT)) if (f.endsWith('.png') || f === 'report.json') rmSync(join(OUT, f), { force: true });
 
 const browser = await chromium.launch();
 const report = { base: BASE, viewport: VIEWPORT, scale: 2, tryonProduct: tinted, pasteQuery: pasted, shots: [], blocked: [] };

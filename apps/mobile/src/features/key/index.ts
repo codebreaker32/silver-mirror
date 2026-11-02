@@ -107,6 +107,6 @@ export const saveInstallToken = (t: string) => store.saveInstallToken(t);
 export const saveScanLedger = (l: HowThisWasMade) => store.saveScanLedger(l);
 export const loadScanLedger = () => store.loadScanLedger();
 
-export { formatScanDate, glyphFromKey, CONCERNS, CONCERN_LABEL, SELF_REPORTED_TAG, type GlyphZone } from './model';
+export { formatScanDate, glyphFromKey, zoneCaption, CONCERNS, CONCERN_LABEL, SELF_REPORTED_TAG, type GlyphZone } from './model';
 export { ZoneGlyph } from './ZoneGlyph';
 export { KeyCard } from './KeyCard';

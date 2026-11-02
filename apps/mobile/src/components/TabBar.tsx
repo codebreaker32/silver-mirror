@@ -99,12 +99,16 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
               android_ripple={{ color: t.colors.state.ripple, borderless: true, radius: n.itemMinWidth / 2 }}
               style={{ flex: 1, minWidth: n.itemMinWidth, minHeight: Math.max(n.itemTarget, n.minHeight), alignItems: 'center', justifyContent: 'center', gap: t.space[1] }}
             >
+              {/* Keyed on focus so the pill mounts with its fill: on Android (Fabric) a radius set while the view was
+                  transparent was dropped when the fill arrived later, leaving a square indicator on the Reading tab. */}
               <View
+                key={focused ? 'on' : 'off'}
                 style={{
                   width: n.indicator.width,
                   height: n.indicator.height,
                   borderRadius: n.indicator.radius,
-                  backgroundColor: focused ? n.indicator.bg : 'transparent',
+                  overflow: 'hidden',
+                  backgroundColor: focused ? n.indicator.bg : undefined,
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}

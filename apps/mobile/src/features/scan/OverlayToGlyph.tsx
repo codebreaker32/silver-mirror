@@ -3,7 +3,7 @@ import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import type { KeyProfile } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
-import { formatScanDate, glyphFromKey } from '../key/model';
+import { glyphFromKey, zoneCaption } from '../key/model';
 import { ZoneGlyph } from '../key/ZoneGlyph';
 import { useReduceMotion } from './ui';
 
@@ -14,7 +14,6 @@ export function OverlayToGlyph({ keyProfile, overlayBase64: overlay, onDropped }
   const theme = useTheme();
   const reduced = useReduceMotion();
   const opacity = useRef(new Animated.Value(1)).current;
-  const date = formatScanDate(keyProfile.scanDate);
 
   useEffect(() => {
     if (!overlay) return;
@@ -31,7 +30,7 @@ export function OverlayToGlyph({ keyProfile, overlayBase64: overlay, onDropped }
 
   return (
     <View>
-      <ZoneGlyph model={glyphFromKey(keyProfile)} caption={`Zones from your ${date} scan · no photo kept`} />
+      <ZoneGlyph model={glyphFromKey(keyProfile)} caption={zoneCaption(keyProfile)} />
       {overlay ? (
         <Animated.View
           style={[StyleSheet.absoluteFill, { opacity, borderRadius: theme.components.skinMap.radius, overflow: 'hidden', backgroundColor: theme.colors.inverseSurface }]}

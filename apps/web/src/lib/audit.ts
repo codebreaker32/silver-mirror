@@ -49,3 +49,15 @@ export const distinctQuotes = (quote: string): string => [...new Set(quote.split
 
 /** Cell shade step 0–4 for the heatmap, from the share of checked products flagged. Never shown as a number of its own. */
 export const heatStep = (count: number, of: number) => (of <= 0 || count <= 0 ? 0 : Math.min(4, Math.ceil((count / of) * 4)));
+
+/**
+ * The Label Check sentence for display. With zero hits, "0 of 136 … plus 0 more …" reads like a broken figure, so it is
+ * phrased as "None of the 136 …". Non-zero results keep the computed sentence from summary.json word for word.
+ */
+export function labelCheckSentence(s: AuditSummary): string {
+  const { c, d } = s.label_check;
+  const n = s.population.checked;
+  if (c === 0 && d === 0)
+    return `None of the ${n} make a claim their own ingredient list doesn't match (strict rules LC-1a, LC-2, LC-3), and none list a fragrance substance or essential oil under a 'fragrance-free' claim (LC-1b, informational).`;
+  return s.text.label_check ?? '';
+}

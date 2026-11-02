@@ -9,7 +9,7 @@
  *    `InstallResponse` and `routes.install` into api.ts so it goes through the typed client.
  * 3. Cancel (WORKER `CANCEL_PATHS`): the phone posts /v1/{scan|tryon}/:id/cancel when the presigned PUT fails, so the
  *    receipt shows "orphan upload". Please add `scanCancel` / `tryonCancel` to `routes`.
- * 4. KeySource: support WORKER's 'mock' value. The Key card would then label a mock-fixture Key the way it labels the Demo Key.
+ * 4. KeySource: support WORKER's 'mock' value. The Key card would then label a mock-fixture Key the way it labels the Demo reading.
  * 5. "How this was made": APP-CORE can feed resolve / label-OCR ledgers into the same screen with
  *    `recordLedger('resolve' | 'labelOcr', ledger)` from `@/features/scan`. No schema change.
  */

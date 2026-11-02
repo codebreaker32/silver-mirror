@@ -13,7 +13,7 @@ export const SAMPLE_SHARE_TEXT =
 
 /**
  * P2 (scaffold demo.ts, optional): DEMO_KEY has no zones or skinType. The app now derives the class with
- * @skinkey/rules `deriveSkinType` (Demo Key → Oily → "Oily Skin" facet). Adding
+ * @skinkey/rules `deriveSkinType` (Demo reading → Oily → "Oily Skin" facet). Adding
  * `skinType: { value: 'Oily', derived: true }` to DEMO_KEY would make the web /check agree without that call.
  */
 export interface DemoKeySkinTypeProposal {
@@ -59,7 +59,7 @@ export const COPY_ADDITIONS = {
   linkOutKeyword: (store: 'Flipkart' | 'Amazon' | 'Nykaa', q: string) => `Opens a${store === 'Amazon' ? 'n' : ''} ${store} keyword search for "${q}"`,
   linkOutMatch: 'Opens a Flipkart search for this product',
   backToListing: (store: string) => `Returns to the ${store} listing`,
-  shareTipTitle: 'In Flipkart, tap Share → SkinKey',
+  shareTipTitle: 'In Flipkart, tap Share, then Silver Mirror',
   noKeyPrompt: 'Scan for reasons based on your readings.',
   noMatches: 'No better matches in our catalogue yet',
   howMadeBoundary: 'Claude reads. Our rules decide.',

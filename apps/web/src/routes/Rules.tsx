@@ -7,6 +7,9 @@ import { claimText, cosingUrl, describeTriggers, GRADE_LABEL, KIND_LABEL } from 
 
 const CONCERNS: Concern[] = ['oiliness', 'moisture', 'redness', 'pore'];
 const SAMPLE_SCORES = [20, 55, 85];
+/** Rule sources feed the ruleset hash, so the old app name in a citation is swapped at render time, not in the data. */
+const citeName = (c: string) => c.replace(/\bSkinKey team rule\b/g, `${COPY.appName} team rule`);
+
 const KIND_ORDER = ['FIT_CAUTION', 'FIT_SUPPORT', 'LABEL_CHECK', 'MEDICINE'] as const;
 
 function useRulesData() {
@@ -89,8 +92,8 @@ function RulesBody({ data }: { data: RulesData }) {
 
       <section className="page-section" aria-labelledby="list-title">
         <h2 id="list-title">Every rule</h2>
-        <div className="table-scroll">
-          <table className="data">
+        <div className="table-scroll table-stack">
+          <table className="data stack-rows rules-table">
             <thead>
               <tr>
                 <th scope="col">Rule</th>
@@ -112,11 +115,11 @@ function RulesBody({ data }: { data: RulesData }) {
                     {r.counted === false && <div className="small muted">Informational, not counted</div>}
                     {r.contested && <div className="small muted">Contested definition</div>}
                   </th>
-                  <td>
+                  <td data-col="Fires when">
                     {describeTriggers(r)}
                     {r.positionLimit ? <div className="small muted">Only in the first {r.positionLimit} ingredients</div> : null}
                   </td>
-                  <td>
+                  <td data-col="Ingredients (CosIng)">
                     <span className="small">
                       {r.inciSet.names.map((n, i) => (
                         <span key={n}>
@@ -127,23 +130,26 @@ function RulesBody({ data }: { data: RulesData }) {
                         </span>
                       ))}
                     </span>
-                    {r.inciSet.patterns.length > 0 && (
-                      <div className="small muted">Families: {r.inciSet.patterns.map((p) => p.replace(/^\^|\$$/g, '')).join(' · ')}</div>
-                    )}
-                    {r.inciSet.excludes.length > 0 && (
-                      <div className="small muted">Excludes: {r.inciSet.excludes.map((p) => p.replace(/^\^|\$$/g, '')).join(' · ')}</div>
-                    )}
+                    {r.inciSet.patterns.length > 0 || r.inciSet.excludes.length > 0 ? (
+                      <details className="pattern small muted">
+                        <summary>Pattern</summary>
+                        {r.inciSet.patterns.length > 0 && <div>Families: {r.inciSet.patterns.map((p) => p.replace(/^\^|\$$/g, '')).join(' · ')}</div>}
+                        {r.inciSet.excludes.length > 0 && <div>Excludes: {r.inciSet.excludes.map((p) => p.replace(/^\^|\$$/g, '')).join(' · ')}</div>}
+                      </details>
+                    ) : null}
                   </td>
-                  <td className="small">{r.template}</td>
-                  <td className="small">
+                  <td className="small" data-col="Reason template">
+                    {r.template}
+                  </td>
+                  <td className="small" data-col="Sources">
                     {r.sources.map((s) => (
-                      <div key={s.citation}>{s.url ? <a className="text-link" href={s.url}>{s.citation}</a> : s.citation}</div>
+                      <div key={s.citation}>{s.url ? <a className="text-link" href={s.url}>{citeName(s.citation)}</a> : citeName(s.citation)}</div>
                     ))}
                     {r.counterSources.length > 0 && (
                       <div className="muted" style={{ marginTop: 6 }}>
                         Counter:{' '}
                         {r.counterSources.map((s) => (
-                          <span key={s.citation}>{s.url ? <a className="text-link" href={s.url}>{s.citation}</a> : s.citation} </span>
+                          <span key={s.citation}>{s.url ? <a className="text-link" href={s.url}>{citeName(s.citation)}</a> : citeName(s.citation)} </span>
                         ))}
                       </div>
                     )}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
 import { COPY } from '@skinkey/contracts';
-import { RULESET_VERSION } from '@skinkey/rules';
+import { rulesetHash } from '@skinkey/rules';
 import { Body, Card, Heading, ListGroup, ListRow, Screen, Txt, haptic } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
 import { clearLedger } from '../scan/ledgerStore';
@@ -40,13 +40,13 @@ export function SettingsScreen() {
           <ListRow
             title="Withdraw consent"
             supporting="Deletes your reading and consent from this phone"
-            leadingIcon="trash"
+            leadingIcon="minus-circle"
             trailing="none"
             onPress={() => setConfirm('withdraw')}
           />
         </ListGroup>
         {done ? (
-          <Txt accessibilityLiveRegion="polite" variant="bodySm" style={{ paddingHorizontal: theme.space[1] }}>
+          <Txt accessibilityLiveRegion="polite" variant="bodySm">
             {done}
           </Txt>
         ) : null}
@@ -54,11 +54,11 @@ export function SettingsScreen() {
 
       <ListGroup title="About">
         <ListRow title="How this was made" supporting="Task ids, units, time and delete status" leadingIcon="document" onPress={go('/how')} />
-        <ListRow title="Published rules" supporting={`Rules version ${RULESET_VERSION}. ${COPY.howMadeBoundary}`} leadingIcon="seal-check" trailing="none" />
+        <ListRow title="Published rules" supporting={`Version ${rulesetHash().slice(0, 7)}, the same one each verdict names. ${COPY.howMadeBoundary}`} leadingIcon="info" trailing="none" />
       </ListGroup>
 
       <View style={{ gap: theme.space[2] }}>
-        <Txt accessibilityRole="header" variant="section" style={{ paddingHorizontal: theme.space[1] }}>
+        <Txt accessibilityRole="header" variant="section">
           Credits
         </Txt>
         <Card variant="surface" gap={theme.space[2]}>

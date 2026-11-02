@@ -114,7 +114,7 @@ describe('Tier 1 flows against the mock Worker (phone logic + Worker in-process)
     expect(step.next).toBe('confirm');
     if (step.next !== 'confirm') return;
     const picked = step.candidates[0]!;
-    expect(picked.catalogId).toBe('garnier-garnier-super-uv-invisible-serum-sunscreen');
+    expect(picked.catalogId).toBe('minimalist-niacinamide-10-face-serum');
 
     const { product } = await w.call('catalogProduct', undefined, { id: picked.catalogId });
     const v = evaluateProduct(engine, key, product);

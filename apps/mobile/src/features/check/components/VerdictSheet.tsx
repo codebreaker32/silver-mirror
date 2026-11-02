@@ -43,7 +43,7 @@ export function VerdictSheet({ view, afterHead, unknown, tryon, matches, glyph, 
       {tryon ?? null}
       {!medicine ? (
         <View style={{ gap: t.space[3] }}>
-          <ProvenanceLedger rows={view.ledger} line={view.provenanceLine} />
+          <ProvenanceLedger rows={view.ledger} line={null} />
           {onHowMade ? (
             <PillButton variant="tertiary" label="How this was made" trailingIcon="chevron-right" onPress={onHowMade} testID="how-made-link" />
           ) : null}

@@ -17,8 +17,8 @@ describe('with the real @skinkey/rules engine', () => {
     expect(v.subtitle).toBe(COPY.subtitle.CAUTION);
     expect(v.reasons[0]!.kindNote).toBe('Label check');
     expect(v.reasons[0]!.reading).toBe("Listing says 'fragrance-free'.");
-    expect(v.reasons[0]!.fact).toMatch(/^Its ingredient list has Parfum \(rule LC-1a\)\.$/);
-    const occ = v.reasons.find((r) => r.ruleTag.startsWith('Rule OCC-2'))!;
+    expect(v.reasons[0]!.fact.replace(/\u2060/g, '')).toMatch(/^Its ingredient list has Parfum \(rule LC-1a\)\.$/);
+    const occ = v.reasons.find((r) => r.ruleTag.replace(/\u2060/g, '').startsWith('Rule OCC-2'))!;
     expect(occ.reading).toMatch(/^Oiliness reading: High \(whole face/);
     expect(occ.fact).toMatch(/^Contains .*isopropyl myristate/i);
     expect(v.provenanceLine).toMatch(/Demo reading/);

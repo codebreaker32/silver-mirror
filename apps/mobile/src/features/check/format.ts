@@ -36,9 +36,9 @@ const CLAIM_LABEL: Record<string, string> = {
 export const claimLabel = (claim: string) => CLAIM_LABEL[claim] ?? claim.replace(/_/g, ' ');
 
 /** The reading half of a reason, phrased about the reading, never the person (brief §4.1). */
-export function readingLine(reading: ReasonReading | null, scanDate: string | null): string | null {
+export function readingLine(reading: ReasonReading | null, scanDate: string | null, demo = false): string | null {
   if (!reading) return null;
-  const when = scanDate ? `scan ${shortDate(scanDate)}` : null;
+  const when = demo ? 'sample reading' : scanDate ? `scan ${shortDate(scanDate)}` : null;
   switch (reading.on) {
     case 'zone': {
       const zone = ZONE_LABEL[reading.zone] ?? reading.zone;
