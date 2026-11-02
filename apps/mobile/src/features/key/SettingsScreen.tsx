@@ -16,8 +16,7 @@ const CREDITS = [
 ];
 
 /** 44dp rounded-square icon tile, radius 12 (showcase 00_brand_panel feature list; kit thumb tile §3.6 at row scale). */
-const TILE = 44;
-const TILE_RADIUS = 12;
+const TILE = 24;
 
 interface RowProps {
   title: string;
@@ -30,32 +29,17 @@ interface RowProps {
 }
 
 /**
- * Settings row: 44dp rounded-square well tile (sheen top edge in dark) with a 20dp ink line icon, title (bodyStrong) over supporting (bodySm muted),
+ * Settings row: a bare 24dp ink line icon in a 24dp column (no tile), title (bodyStrong) over supporting (bodySm muted),
  * trailing chevron when it opens a screen. ≥64dp, one TalkBack node. Tokens from component.listRow / iconDisc.
  */
 function SettingsRow({ title, supporting, icon, onPress, chevron = true, testID }: RowProps) {
   const t = useTheme();
   const r = t.components.listRow;
-  const d = t.components.iconDisc;
   const label = [title, supporting].filter(Boolean).join('. ');
   const body = (
     <>
-      <View
-        importantForAccessibility="no-hide-descendants"
-        accessibilityElementsHidden
-        style={{
-          width: TILE,
-          height: TILE,
-          borderRadius: TILE_RADIUS,
-          backgroundColor: d.bg,
-          borderWidth: t.dark ? 1 : 0,
-          borderColor: t.colors.border,
-          borderTopColor: t.dark ? t.colors.sheenEdge : t.colors.border,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Icon name={icon} size={t.icon.md} color={d.fg} />
+      <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: 24, alignItems: 'center' }}>
+        <Icon name={icon} size={t.icon.lg} color={t.colors.text} />
       </View>
       <View style={{ flex: 1, gap: 2 }}>
         <Txt variant="bodyStrong" style={[r.title, { color: r.titleColor }]}>

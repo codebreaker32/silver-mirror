@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { COPY } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Body, Caption, Card, IconDisc, PillButton, SectionHeader, Txt } from '@/components';
+import { Body, Caption, Card, Icon, PillButton, SectionHeader, Txt } from '@/components';
 import type { InciChip } from '../chips';
 import type { LabelState } from '../flow';
 import { InciChipEditor } from './InciChipEditor';
@@ -30,12 +30,16 @@ export function UnknownPanel({ catalogCount, label, onSnap, onChips, onRun }: Pr
     <View testID="unknown-panel" style={{ gap: t.space[3] }}>
       <SectionHeader title="Next step" />
       <Card variant="raised" gap={t.space[4]}>
-        <View style={{ flexDirection: 'row', gap: t.space[3], alignItems: 'flex-start' }}>
-          <IconDisc icon="document" />
-          <View style={{ flex: 1, gap: t.space[1] }}>
-            <Txt variant="bodyStrong" style={{ fontFamily: 'Geist_500Medium', fontSize: 15, lineHeight: 20 }}>
+        <View style={{ gap: t.space[1] }}>
+          <View style={{ flexDirection: 'row', gap: t.space[2], alignItems: 'center' }}>
+            <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+              <Icon name="document" size={t.icon.md} color={t.colors.text} />
+            </View>
+            <Txt variant="bodyStrong" style={{ fontFamily: 'Geist_600SemiBold', fontSize: 17, lineHeight: 22, flex: 1 }}>
               Check it from the pack
             </Txt>
+          </View>
+          <View>
             {label.step === 'error' ? (
               <Body small accessibilityLiveRegion="polite">
                 {label.message}

@@ -6,7 +6,7 @@ import { homeType } from '@/components/home/homeType';
 import { categoryGlyph } from '@/features/check/display';
 import type { HomePick } from './usePicks';
 
-const TILE = 148;
+const TILE = 120;
 
 /**
  * "Picks for you" (dashboard reference "Recommended for you", Silver & graphite): a plain 17 heading over a horizontal
@@ -19,7 +19,7 @@ export function Picks({ picks, onOpen }: { picks: readonly HomePick[]; onOpen: (
   const gutter = t.spacing.gutter;
   const fits = t.colors.verdict.fits;
   return (
-    <View testID="home-picks" style={{ gap: t.space[4] }}>
+    <View testID="home-picks" style={{ gap: t.space[3] }}>
       <HomeHeading title="Picks for you" />
       <ScrollView
         horizontal
@@ -35,12 +35,12 @@ export function Picks({ picks, onOpen }: { picks: readonly HomePick[]; onOpen: (
             onPress={() => onOpen(p.query)}
             accessibilityRole="button"
             accessibilityLabel={p.a11y}
-            style={({ pressed }) => ({ width: TILE, opacity: pressed ? 0.7 : 1 })}
+            style={({ pressed }) => ({ width: TILE, minHeight: t.touch.min, opacity: pressed ? 0.7 : 1 })}
           >
             <View style={{ width: TILE, height: TILE, borderRadius: 12, backgroundColor: t.colors.bgSunken, alignItems: 'center', justifyContent: 'center' }}>
-              <Icon name={categoryGlyph(p.category)} size={44} color={t.colors.text} strokeWidth={1.25} />
+              <Icon name={categoryGlyph(p.category)} size={36} color={t.colors.text} strokeWidth={1.25} />
             </View>
-            <View style={{ paddingTop: t.space[3], gap: 2 }}>
+            <View style={{ paddingTop: t.space[2], gap: 2 }}>
               <Text numberOfLines={1} style={[homeType.small, { color: t.colors.textMuted }]}>
                 {p.brand}
               </Text>

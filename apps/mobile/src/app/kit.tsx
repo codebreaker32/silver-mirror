@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Image, ScrollView, View } from 'react-native';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY } from '@skinkey/contracts';
@@ -19,7 +19,6 @@ import {
   Ledger,
   ListGroup,
   ListRow,
-  LiquidBackdrop,
   PillButton,
   ProductCard,
   SectionHeader,
@@ -34,6 +33,8 @@ import {
 } from '@/components';
 import { demo } from '@/demo';
 import { useTheme } from '@/theme/ThemeProvider';
+
+const WELCOME_PHOTO = require('../../assets/images/welcome-backdrop.jpg');
 
 const noop = () => undefined;
 
@@ -117,20 +118,26 @@ export default function KitGallery() {
             <Chip label="Fragrance-free" selected={filter === 'ff'} onPress={() => setFilter('ff')} />
             <Chip label="Lighter textures" selected={filter === 'lt'} onPress={() => setFilter('lt')} />
           </ChipRail>
-          <Card variant="gradient" padding={t.space[6]}>
-            <Txt variant="headline">{COPY.matchesBanner('Combination')}</Txt>
-            <Txt tone="muted">{COPY.betterMatchesHeader}</Txt>
+          <View style={{ gap: t.space[1] }}>
+            <Txt variant="section" style={{ fontFamily: 'Geist_600SemiBold', fontSize: 17, lineHeight: 22 }}>
+              {COPY.matchesBanner('Combination')}
+            </Txt>
+            <Txt tone="muted" style={{ fontSize: 15, lineHeight: 22 }}>
+              {COPY.betterMatchesHeader}
+            </Txt>
+          </View>
+          <Card variant="raised" gap={t.space[5]}>
+            <ProductCard name="Minimalist Oil-Free Gel Moisturiser" reason="Light gel, no fragrance" verdict={{ tone: 'fits', label: 'FITS' }} linkOut onPress={noop} />
+            <ProductCard name="Sunscreen SPF 50 Matte Fluid" reason="Contains fragrance (parfum)" verdict={{ tone: 'caution', label: 'CAUTION' }} linkOut onPress={noop} />
           </Card>
-          <ProductCard name="Minimalist Oil-Free Gel Moisturiser" reason="Light gel, no fragrance" verdict={{ tone: 'fits', label: 'FITS' }} glyph="jar" linkOut onPress={noop} />
-          <ProductCard name="Sunscreen SPF 50 Matte Fluid" reason="Contains fragrance (parfum)" verdict={{ tone: 'caution', label: 'CAUTION' }} glyph="tube" linkOut onPress={noop} />
         </>
       ) : null}
 
       {p === '3' ? (
         <>
-          {/* Welcome panel (showcase 01_welcome): drawn liquid silver, chrome S, outlined serif wordmark, pills. */}
+          {/* Welcome panel: the neutral liquid-silver photo (as on Welcome), chrome S, serif wordmark, pills. */}
           <View style={{ minHeight: 420, borderRadius: t.radius.lg, overflow: 'hidden', padding: t.space[5], justifyContent: 'flex-end', gap: t.space[3] }}>
-            <LiquidBackdrop />
+            <Image source={WELCOME_PHOTO} resizeMode="cover" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }} />
             <View style={{ alignItems: 'center', gap: t.space[3], marginBottom: t.space[8] }}>
               <SilverMark size={t.components.brand.heroMark} tile={false} />
               <Wordmark capHeight={t.components.brand.wordmarkWelcome} header />
@@ -142,7 +149,7 @@ export default function KitGallery() {
             <PillButton label={COPY.reading.useDemo} variant="translucent" onPress={noop} />
           </View>
           {/* Tab glyphs: outline (inactive) and filled (active) on the bar colour. */}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingVertical: t.space[3], backgroundColor: t.components.bottomNav.bg, borderRadius: t.radius.lg, borderWidth: 1, borderColor: t.colors.border }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingVertical: t.space[3], backgroundColor: t.components.bottomNav.bg, borderRadius: t.radius.lg }}>
             {(['tag-check', 'face-frame', 'droplet'] as const).map((name) => (
               <View key={name} style={{ flexDirection: 'row', gap: t.space[3] }}>
                 <Icon name={name} size={t.icon.lg} color={t.components.bottomNav.iconInactive} />

@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COPY, DEMO_KEY, type HowThisWasMade, type Store } from '@skinkey/contracts';
 import { FACET_MAP, medicineGate, rank, verdict } from '@skinkey/rules';
 import { useTheme } from '@/theme/ThemeProvider';
-import { AppBar, Body, Card, EmptyState, FooterFade, Icon, IconButton, IconDisc, PageBackdrop, PillButton, Tag, Txt, type IconName } from '@/components';
+import { AppBar, Body, Card, EmptyState, FooterFade, Icon, IconButton, PageBackdrop, PillButton, Tag, Txt } from '@/components';
 import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
 import { BetterMatches, guessCategory, storeLinks, StoreSearchSheet, useBetterMatches } from '@/features/matches';
 import { openStoreUrl } from '@/features/matches/openStoreUrl';
@@ -41,42 +41,6 @@ function sourceLine(origin: Origin | null, store: Store): string {
   return name ? `Shared from ${name}` : 'Shared link';
 }
 
-const SOURCE_ICON: Record<Origin, IconName> = { share: 'arrow-down-left', screenshot: 'arrow-down-left', paste: 'paste', sample: 'tag-check' };
-
-/**
- * Source chip (DESIGN.md §8.9, §9.4): a light grey pill ("Shared from Nykaa", "Sample share", "Pasted link") with a
- * 16dp icon, left-aligned at the top of the scroll content above the product header. The centred app-bar title
- * ("Your check") is the screen header, so the chip is plain text.
- */
-function SourceChip({ label, icon }: { label: string; icon: IconName }) {
-  const t = useTheme();
-  // The kit chip fill (secondary-bg: mist.150 / graphite.750), so the chip reads as a chip in dark too; the old
-  // productHeader source-chip fill sat almost on the graphite page.
-  const bg = t.colors.secondaryBg;
-  const fg = t.colors.textMuted;
-  return (
-    <View
-      testID="source-chip"
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: t.space[1] + 2,
-        paddingHorizontal: t.space[3],
-        minHeight: t.components.tag.visualMinHeight + t.space[1],
-        borderRadius: t.radius.full,
-        backgroundColor: bg,
-        maxWidth: '100%',
-        alignSelf: 'flex-start',
-      }}
-    >
-      <Icon name={icon} size={t.icon.sm} color={fg} />
-      <Txt variant="label" numberOfLines={1} style={{ color: fg, flexShrink: 1, fontFamily: 'Geist_500Medium', fontSize: 13, lineHeight: 18 }}>
-        {label}
-      </Txt>
-    </View>
-  );
-}
-
 /** Row title in the showcase cards: 15 medium. */
 const ROW_TITLE = { fontFamily: 'Geist_500Medium', fontSize: 15, lineHeight: 20, letterSpacing: -0.1 } as const;
 
@@ -85,16 +49,13 @@ function NoReadingCard({ onScan, onDemo }: { onScan: () => void; onDemo: () => v
   const t = useTheme();
   return (
     <Card variant="raised" testID="no-key" gap={t.space[4]}>
-      <View style={{ flexDirection: 'row', gap: t.space[3], alignItems: 'flex-start' }}>
-        <IconDisc icon="face-frame" />
-        <View style={{ flex: 1, gap: t.space[1] }}>
-          <Txt accessibilityRole="header" variant="section" style={ROW_TITLE}>
-            {COPY.reading.none}
-          </Txt>
-          <Body small muted>
-            Scan for reasons based on your readings.
-          </Body>
-        </View>
+      <View style={{ gap: t.space[1] }}>
+        <Txt accessibilityRole="header" variant="section" style={ROW_TITLE}>
+          {COPY.reading.none}
+        </Txt>
+        <Body small muted>
+          Scan for reasons based on your readings.
+        </Body>
       </View>
       <View style={{ gap: t.space[1] }}>
         <PillButton label="Start scan" variant="secondary" leadingIcon="face-frame" onPress={onScan} />
@@ -297,7 +258,10 @@ export default function CheckScreen() {
           ? shortListingTitle(rawTitle)
           : fallbackTitle;
   const headerProduct = result?.product ?? (state.phase === 'loading' ? state.candidate.product : null);
-  const headerMeta = headerProduct ? sizeMeta(headerProduct.size) : origin === 'sample' ? 'Sample listing' : null;
+  // The source is plain muted text in the meta line ("50g · Pasted link"), never a pill above the title (no eyebrow).
+  const source = origin ? sourceLine(origin, store) : null;
+  const size = headerProduct ? sizeMeta(headerProduct.size) : null;
+  const headerMeta = [size, source].filter(Boolean).join(' · ') || null;
 
   const inlineDock = fontScale >= t.components.actionBar.inlineAtFontScale;
   const showMore = !!view && view.showMatches;
@@ -325,7 +289,8 @@ export default function CheckScreen() {
             accessibilityLabel="More: search the stores"
             onPress={() => setMoreOpen(true)}
             testID="dock-more"
-            style={{ backgroundColor: t.colors.surface, borderWidth: 1, borderColor: t.colors.border }}
+            color={t.colors.text}
+            style={t.dark ? { backgroundColor: t.colors.surface, borderWidth: 1, borderColor: t.colors.border } : { backgroundColor: t.colors.bgSunken }}
           />
         ) : null}
       </View>
@@ -338,7 +303,7 @@ export default function CheckScreen() {
         style={{
           // The dock sits on the flat page tone (tokens 2.3): no shadow and no hairline in light; dark keeps its sheen
           // edge while content scrolls under it.
-          backgroundColor: contentUnder ? t.colors.bg : t.components.actionBar.bg,
+          backgroundColor: !t.dark || contentUnder ? t.colors.bg : t.components.actionBar.bg,
           borderTopWidth: contentUnder && t.dark ? 1 : 0,
           borderTopColor: t.dark ? t.colors.sheenEdge : t.components.actionBar.border,
           paddingTop: t.components.actionBar.paddingTop,
@@ -382,12 +347,11 @@ export default function CheckScreen() {
             }}
           >
             {state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
-              <View style={{ gap: t.space[3] }}>
-                {origin ? <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} /> : null}
-                <ProductHeader title={header} meta={headerMeta} glyph={categoryGlyph(headerProduct?.category ?? category)} />
-              </View>
+              <ProductHeader title={header} meta={headerMeta} glyph={categoryGlyph(headerProduct?.category ?? category)} />
             ) : origin && state.phase !== 'idle' ? (
-              <SourceChip label={sourceLine(origin, store)} icon={SOURCE_ICON[origin]} />
+              <Txt variant="caption" tone="muted" testID="source-line">
+                {sourceLine(origin, store)}
+              </Txt>
             ) : null}
 
             {usingDemo && state.phase === 'confirm' ? <Tag label={`${COPY.reading.demo}: labelled sample readings`} variant="demo" /> : null}
@@ -478,7 +442,7 @@ export default function CheckScreen() {
 
             {inlineDock && dockActions ? <View style={{ paddingTop: t.space[2] }}>{dockActions}</View> : null}
           </ScrollView>
-          {dock && contentUnder ? <FooterFade /> : null}
+          {dock && contentUnder && t.dark ? <FooterFade /> : null}
         </View>
       )}
 

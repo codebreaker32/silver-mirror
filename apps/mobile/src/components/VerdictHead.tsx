@@ -11,8 +11,9 @@ const LABEL: Record<Exclude<Verdict, 'medicine'>, string> = { fits: 'FITS', caut
 const SPOKEN: Record<Verdict, string> = { fits: 'Fits', caution: 'Caution', unknown: 'Unknown', medicine: 'Medicine' };
 
 // Silver & graphite (2.3): the head is a surface-tone card (radius 16, no hairline, no shadow). The verdict carries by
-// its glyph in a small tinted disc plus the word, set 13 semibold at normal tracking; the sentence is the 17 line.
-const DISC = 36;
+// a bare 20dp seal glyph in the verdict icon colour inline with the word (13 semibold, normal tracking); the sentence
+// is the 17 line under it. No tinted disc: the surface tone step carries the card.
+const SEAL = 20;
 const LABEL_TYPE = { fontFamily: 'Geist_600SemiBold', fontSize: 13, lineHeight: 18, letterSpacing: 0 } as const;
 const QUALIFIER_TYPE = { fontFamily: 'Geist_400Regular', fontSize: 13, lineHeight: 18, letterSpacing: 0 } as const;
 const LINE_TYPE = { fontFamily: 'Geist_500Medium', fontSize: 17, lineHeight: 24, letterSpacing: 0 } as const;
@@ -38,9 +39,8 @@ export interface VerdictHeadProps {
 
 /**
  * Verdict head (component.verdictCard.head, tokens 2.3): the same surface-tone card as every other card, radius 16,
- * padding 16, no hairline and no shadow (graphite + sheen edge in dark). The verdict lives in a 36dp tinted disc
- * (the neutral well for UNKNOWN, solid, never dashed) holding the 20dp verdict icon, the word in the verdict fg at 13
- * semibold, then the sentence at 17 medium. No leading stripe; name-only is carried by the qualifier line. MEDICINE:
+ * padding 16, no hairline and no shadow (graphite + sheen edge in dark). The verdict is a bare 20dp seal icon in
+ * verdict.*.icon inline with the word in the verdict fg at 13 semibold, then the sentence at 17 medium. No leading stripe; name-only is carried by the qualifier line. MEDICINE:
  * no box and no label, the 32dp pharmacist icon over one title line.
  */
 export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = 'based on product name only', demo = false, accessibilityLabel, revealStyle, testID = 'verdict-head' }: VerdictHeadProps) {
@@ -94,9 +94,9 @@ export function VerdictHead({ tone, label, line, nameOnly = false, qualifier = '
         revealStyle,
       ]}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: head.iconGap }}>
-        <View testID={`${testID}-disc`} style={{ width: DISC, height: DISC, borderRadius: t.radius.full, backgroundColor: c.iconDisc, alignItems: 'center', justifyContent: 'center' }}>
-          <VerdictIcon tone={tone} size={20} color={c.icon} />
+      <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: t.space[2] }}>
+        <View testID={`${testID}-seal`} style={{ width: SEAL, height: 18, alignItems: 'center', justifyContent: 'center' }}>
+          <VerdictIcon tone={tone} size={SEAL} color={c.icon} />
         </View>
         <View style={{ flex: 1, gap: 2 }}>
           {shownLabel && c.showLabel ? (

@@ -7,7 +7,7 @@ export { Txt, Heading, Body, Caption, Overline, Note, Section, textStyle, type T
 export { PillButton, PillButton as Button, ButtonPair, type ButtonVariant, type PillButtonProps } from './PillButton';
 export { IconButton, IconDisc } from './IconButton';
 export { TextLink } from './TextLink';
-export { Card, SkinGradient, useCardStyle, type CardVariant, type CardProps } from './Card';
+export { Card, useCardStyle, type CardVariant, type CardProps } from './Card';
 export { Sheet, type SheetProps } from './Sheet';
 export { Chip, ChipRow, ChipRail, Tag, KeepChip } from './Chip';
 export { BandChip, BandMeter } from './BandChip';

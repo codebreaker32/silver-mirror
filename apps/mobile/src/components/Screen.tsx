@@ -119,9 +119,8 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
     const next = viewport > 0 && y + viewport < content - 1;
     if (next !== under) setUnder(next);
   };
-  // With a footer the last line clears the dock by the fade height plus 16dp, so it can always scroll into full view.
-  // In a tab scene the scroll also clears the floating bar and its 48dp page fade (tabScrollTail), so the last card rests
-  // in full view above them.
+  // With a footer the last line clears the dock by 28dp plus 16dp, so it can always scroll into full view. In a tab
+  // scene the scroll also clears the docked bar (tabScrollTail): content scrolls under the flat bar, no fade.
   const base = footer && scroll ? t.spacing.section + FADE + t.space[4] : t.spacing.section;
   const tail = scroll && inTab ? Math.max(base + barSpace, tabScrollTail(insets.bottom)) : base;
   const body = <View style={{ paddingHorizontal: t.spacing.gutter, paddingBottom: tail, gap: t.spacing.stackLg }}>{children}</View>;
@@ -156,7 +155,7 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
           >
             {body}
           </ScrollView>
-          {footer && under ? <FooterFade /> : null}
+          {footer && under && t.dark ? <FooterFade /> : null}
         </View>
       ) : (
         <View style={{ flex: 1 }}>{body}</View>
@@ -164,8 +163,8 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
       {footer ? (
         <View
           style={{
-            // The dock sits on the flat page tone; while content runs under it the fade above carries the edge (no hairline).
-            backgroundColor: scroll && under ? t.colors.bg : t.components.actionBar.bg,
+            // Light: the dock is the flat page tone (#ECEDF0) and content scrolls under it with no fade and no line.
+            backgroundColor: !t.dark || (scroll && under) ? t.colors.bg : t.components.actionBar.bg,
             paddingTop: t.components.actionBar.paddingTop,
             paddingHorizontal: t.components.actionBar.paddingX,
             paddingBottom: bottom + t.components.actionBar.paddingBottom,
@@ -183,10 +182,14 @@ export function Screen({ title, appBar = true, onBack, actions, appBarCenter, ch
 
 const FADE = 28;
 
-/** A short page-to-transparent fade over the bottom of the scroll area, shown while content runs under the dock (in the page-bottom tone it meets). */
+/**
+ * Dark only: a short page-to-transparent fade over the bottom of the scroll area while content runs under the dock.
+ * Light (Silver & graphite) draws nothing: the dock is a flat page-tone band, no gradient.
+ */
 export function FooterFade() {
   const t = useTheme();
   const id = `fade${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
+  if (!t.dark) return null;
   return (
     <View
       pointerEvents="none"

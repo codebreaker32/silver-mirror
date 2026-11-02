@@ -2,8 +2,7 @@ import type { ReactNode } from 'react';
 import { View, useWindowDimensions } from 'react-native';
 import { FaceFrame, SilverMark } from '@/brand';
 import { useTheme } from '@/theme/ThemeProvider';
-import { IconDisc } from './IconButton';
-import type { IconName } from './Icon';
+import { Icon, type IconName } from './Icon';
 import { Txt } from './Text';
 
 export type EmptyPlate = 'face' | 'mark' | 'none' | { icon: IconName };
@@ -39,10 +38,14 @@ export function EmptyState({ title, body, plate = 'face', children, testID }: Em
         >
           {plate === 'face' ? <FaceFrame width={Math.round(plateWidth * 0.42)} tile={false} /> : <SilverMark size={96} />}
         </View>
-      ) : plate !== 'none' ? (
-        <IconDisc icon={plate.icon} large />
       ) : null}
       <View style={{ gap: s.gap }}>
+        {typeof plate === 'object' ? (
+          // A bare 24dp ink glyph above the title, no disc (Silver & graphite: no decorative icon tiles).
+          <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+            <Icon name={plate.icon} size={t.icon.lg} color={t.colors.text} />
+          </View>
+        ) : null}
         <Txt accessibilityRole="header" variant="display" style={[s.title, { color: s.titleColor }]}>
           {title}
         </Txt>

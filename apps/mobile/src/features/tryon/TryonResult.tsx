@@ -3,7 +3,7 @@ import { Image } from 'expo-image';
 import Svg, { Ellipse } from 'react-native-svg';
 import { FaceFrame } from '@/brand';
 import { COPY, type TryonStatusResponse } from '@skinkey/contracts';
-import { Body, Chip, StepChecklist, Txt, useCardStyle } from '@/components';
+import { Body, Chip, StepChecklist, Txt } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
 import type { DisplayStep } from '../scan/steps';
 
@@ -32,9 +32,8 @@ function SamplePreview({ index }: { index: number }) {
 }
 
 /**
- * Result (DESIGN.md §9.11, showcase 04_report card language): two shade cards side by side from the same photo
- * (white radius-24 cards; the image sits in a thumb-tile well, radius 20; the shade chip under it keeps the
- * "Shade: …" label), the fixed caption on the plain surface below, always visible, then the real steps as the
+ * Result (DESIGN.md §9.11, Silver & graphite): two previews side by side from the same photo, each a well-tone frame
+ * (radius 12) set straight on the page, no card around it, with the shade chip under it (keeps the "Shade: …" label), the fixed caption on the plain surface below, always visible, then the real steps as the
  * checklist card ending in the delete row. No slider, no Save, no swatch of the user's own tone.
  */
 export function TryonResult({ status, steps }: { status: TryonStatusResponse; steps: readonly DisplayStep[] }) {
@@ -42,18 +41,16 @@ export function TryonResult({ status, steps }: { status: TryonStatusResponse; st
   // The mock Worker returns a placeholder image, not the user's photo: say so to TalkBack too.
   const imageLabel = (shade: string) => (status.ledger.mock ? `Mock render placeholder for ${shade} (test, not your photo)` : `Your photo with a ${shade} preview`);
   const t = theme.components.tryOnCompare;
-  const card = useCardStyle('raised');
   const caption = status.renders.length >= 2 ? COPY.tryonCaption : SINGLE_CAPTION;
-  const wellRadius = theme.radius.md;
   return (
     <View style={{ gap: theme.space[5] }}>
       <View style={{ flexDirection: 'row', gap: theme.space[3] }}>
         {status.renders.map((r, i) => (
-          <View key={r.shadeName} style={[card, { flex: 1, padding: theme.space[2], gap: theme.space[2] }]}>
+          <View key={r.shadeName} style={{ flex: 1, gap: theme.space[2] }}>
             <View
               style={{
                 aspectRatio: 3 / 4,
-                borderRadius: wellRadius,
+                borderRadius: 12,
                 overflow: 'hidden',
                 backgroundColor: theme.components.listRow.thumbBg,
               }}
@@ -70,7 +67,7 @@ export function TryonResult({ status, steps }: { status: TryonStatusResponse; st
                 />
               )}
             </View>
-            <View style={{ paddingHorizontal: theme.space[1], paddingBottom: theme.space[1] }}>
+            <View style={{ alignItems: 'flex-start' }}>
               <Chip label={r.shadeName} accessibilityLabel={`Shade: ${r.shadeName}`} />
             </View>
           </View>

@@ -87,7 +87,8 @@ export default function HomeScreen() {
   const gutter = t.spacing.gutter;
   // The gear's 48dp target overhangs its 24dp glyph; pull it right so the glyph sits on the gutter.
   const gearPull = (t.touch.min - t.icon.lg) / 2;
-  const section = t.space[10];
+  // 32dp between sections: generous, but tight enough that the first row of Picks ends above the bar at 390x844.
+  const section = t.space[8];
 
   useEffect(() => {
     shareTipDismissed().then((d) => setTip(!d));
@@ -117,7 +118,7 @@ export default function HomeScreen() {
             <IconButton icon="gear" accessibilityLabel="Settings" onPress={() => router.push('/settings')} testID="home-settings" style={{ marginRight: -gearPull }} />
           </View>
 
-          <View style={{ marginTop: t.space[6], gap: t.space[1] }}>
+          <View style={{ marginTop: t.space[4], gap: t.space[1] }}>
             <Text
               accessibilityRole="header"
               {...t.textProps.display}
@@ -133,7 +134,7 @@ export default function HomeScreen() {
             </Text>
           </View>
 
-          <View style={{ marginTop: t.space[6] }}>
+          <View style={{ marginTop: t.space[5] }}>
             {loading ? (
               <View style={{ minHeight: 200 }} />
             ) : (

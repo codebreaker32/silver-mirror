@@ -4,7 +4,6 @@ import { FaceFrame } from '@/brand';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from '../Icon';
 import { useCardStyle } from '../Card';
-import { ThumbTile } from '../ListRow';
 import { Txt } from '../Text';
 
 /**
@@ -42,22 +41,23 @@ export interface PromiseItem {
 }
 
 /**
- * The three promises ("One photo, analysed by YouCam" …) as rows on one surface-tone card (well-tone square tile,
- * ink icon, rows separated by spacing, no dividers). A 48dp tile and body weight keep each promise on one line at 1.0x.
+ * The three promises ("One photo, analysed by YouCam" …) as rows on one surface-tone card: a bare 24dp ink icon in a
+ * 24dp column (no tile), rows separated by spacing, no dividers.
  * One TalkBack node per row.
  */
 export function PromiseList({ items }: { items: readonly PromiseItem[] }) {
   const t = useTheme();
   const card = useCardStyle('raised');
-  const tile = t.touch.min;
   const padX = t.spacing.insetCard;
-  const gap = t.space[4];
+  const gap = t.space[3];
   return (
     <View accessibilityRole="list" style={[card, { paddingHorizontal: 0, paddingVertical: t.space[1], gap: 0 }]}>
       {items.map((it, i) => (
         <Fragment key={it.label}>
-          <View accessible accessibilityLabel={it.label} style={{ flexDirection: 'row', alignItems: 'center', gap, minHeight: t.space[16], paddingHorizontal: padX, paddingVertical: t.space[2] }}>
-            <ThumbTile thumb={{ icon: it.icon }} size={tile} />
+          <View accessible accessibilityLabel={it.label} style={{ flexDirection: 'row', alignItems: 'center', gap, minHeight: t.space[12], paddingHorizontal: padX, paddingVertical: t.space[2] }}>
+            <View style={{ width: 24, alignItems: 'center' }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+              <Icon name={it.icon} size={t.icon.lg} color={t.colors.text} />
+            </View>
             <Txt variant="body" style={{ flex: 1 }}>
               {it.label}
             </Txt>

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { COPY, type DeleteState, type HowThisWasMade, type LedgerEntry, type LedgerFeature } from '@skinkey/contracts';
-import { Body, Button, Caption, Card, Divider, Heading, IconDisc, Screen, SectionHeader, StepChecklist, Tag, Txt, type ChecklistStep } from '@/components';
+import { Body, Button, Caption, Card, Divider, Heading, Icon, Screen, SectionHeader, StepChecklist, Tag, Txt, type ChecklistStep } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
 import { loadScanLedger } from '../key';
 import { deleteStateLabel, isFinalDeleteState } from './deleteCopy';
@@ -138,7 +138,7 @@ export function HowScreen() {
 
       <Card variant="raised" gap={theme.space[3]} testID="photos-on-phone">
         <View accessible accessibilityLiveRegion="polite" style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[3] }}>
-          <IconDisc icon={images === null ? 'circle' : noPhotos ? 'check-circle' : 'info'} />
+          <Icon name={images === null ? 'circle' : noPhotos ? 'check-circle' : 'info'} size={theme.icon.lg} color={theme.colors.text} />
           <View style={{ flex: 1, gap: 2 }}>
             <Txt variant="section">Photos on this phone</Txt>
             <Body small>
@@ -146,15 +146,15 @@ export function HowScreen() {
             </Body>
           </View>
         </View>
-        {/* Paths and the tonal pill hang from the title's text column, not the disc's left edge. */}
+        {/* Paths and the tonal pill hang from the title's text column, not the glyph's left edge. */}
         {images && images.length > 0
           ? images.map((p) => (
-              <View key={p} style={{ marginLeft: theme.components.iconDisc.size + theme.space[3] }}>
+              <View key={p} style={{ marginLeft: theme.icon.lg + theme.space[3] }}>
                 <Caption selectable>{p}</Caption>
               </View>
             ))
           : null}
-        <View style={{ marginLeft: theme.components.iconDisc.size + theme.space[3], alignSelf: 'flex-start' }}>
+        <View style={{ marginLeft: theme.icon.lg + theme.space[3], alignSelf: 'flex-start' }}>
           <Button label="Check again" variant="secondary" fullWidth={false} onPress={check} />
         </View>
       </Card>

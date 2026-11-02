@@ -59,8 +59,11 @@ export function PillButton({
   const inactive = disabled || busy;
   const lead = leadingIcon ?? icon ?? (variant === 'destructiveNeutral' ? (b.destructiveNeutral.leadingIcon as IconName) : undefined);
 
-  const fg = disabled ? (variant === 'primary' ? b.primary.fgDisabled : t.colors.disabledFg) : v.fg;
-  const bg = disabled && variant === 'primary' ? b.primary.bgDisabled : v.bg;
+  // Light: a disabled primary stays graphite at 35% with white text, so it never reads as the grey secondary pill
+  // ("Not now") beside it. Dark keeps the token pair.
+  const dimPrimary = disabled && variant === 'primary' && !t.dark;
+  const fg = dimPrimary ? b.primary.fg : disabled ? (variant === 'primary' ? b.primary.fgDisabled : t.colors.disabledFg) : v.fg;
+  const bg = dimPrimary ? withAlpha(b.primary.bg, 0.35) : disabled && variant === 'primary' ? b.primary.bgDisabled : v.bg;
   // Light: flat fills only, never an outline (tokens 2.3). Dark keeps its sheen edge on the translucent pill.
   const borderWidth = !t.dark ? 0 : 'borderWidth' in v ? v.borderWidth : 0;
   const borderColor = 'border' in v ? (disabled && 'borderDisabled' in v ? v.borderDisabled : v.border) : 'transparent';
@@ -119,6 +122,13 @@ export function PillButton({
       ) : null}
     </View>
   );
+}
+
+/** #RRGGBB + alpha as rgba(); other formats pass through unchanged. */
+function withAlpha(hex: string, alpha: number): string {
+  const m = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex);
+  if (!m) return hex;
+  return `rgba(${parseInt(m[1]!, 16)}, ${parseInt(m[2]!, 16)}, ${parseInt(m[3]!, 16)}, ${alpha})`;
 }
 
 /** Two pills side by side at 1×, stacked from button.stackAtFontScale (1.3×). Children get equal width. */

@@ -1,41 +1,15 @@
-import { useId, type ReactNode } from 'react';
-import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+import type { ReactNode } from 'react';
+import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 
 /**
  * Silver & graphite (tokens 2.3): a card is a tone step, never a line or a shadow.
  * raised / surface: the surface tone (#F8F8FA) one step up from the page, radius 16, no border, no shadow.
  * sunken: the well tone (#E1E3E8) one step down (chip tracks, thumbnails, quiet rows).
- * hero / gradient: legacy names; both draw the flat surface tone now (no gradient fill).
+ * hero: legacy name; draws the flat surface tone (no gradient fill). The gradient variant is gone.
  * Never nest a card inside a card: group with spacing, or use a sunken well for the inner thing.
  */
-export type CardVariant = 'raised' | 'surface' | 'sunken' | 'hero' | 'gradient';
-
-/**
- * The skin gradient as an absolute-fill layer (react-native-svg, no extra dependency). 120 deg as in CSS: the line
- * runs left -> right and slightly down. Decorative.
- */
-export function SkinGradient({ radius = 0 }: { radius?: number }) {
-  const t = useTheme();
-  const g = t.colors.skinGradient;
-  const mid = t.components.readingCard.gradientMid;
-  const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
-  return (
-    <View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={[StyleSheet.absoluteFill, { borderRadius: radius, overflow: 'hidden' }]}>
-      <Svg width="100%" height="100%">
-        <Defs>
-          <LinearGradient id={`skin${uid}`} x1="0" y1="0.21" x2="1" y2="0.79">
-            <Stop offset={0} stopColor={g.start} />
-            <Stop offset={mid} stopColor={g.mid} />
-            <Stop offset={1} stopColor={g.end} />
-          </LinearGradient>
-        </Defs>
-        <Rect x="0" y="0" width="100%" height="100%" fill={`url(#skin${uid})`} />
-      </Svg>
-    </View>
-  );
-}
+export type CardVariant = 'raised' | 'surface' | 'sunken' | 'hero';
 
 export interface CardProps {
   children: ReactNode;
@@ -82,11 +56,9 @@ export function Card({
   const t = useTheme();
   const base = useCardStyle(variant, radius);
   const inner: ViewStyle = { padding: padding ?? t.spacing.insetCard, gap: gap ?? t.space[3] };
-  const fill = null;
   if (!onPress) {
     return (
       <View testID={testID} accessible={accessibilityLabel ? true : undefined} accessibilityLabel={accessibilityLabel} style={[base, inner, style]}>
-        {fill}
         {children}
       </View>
     );
@@ -101,7 +73,6 @@ export function Card({
       android_ripple={{ color: t.colors.state.ripple }}
       style={({ pressed }) => [base, inner, { minHeight: t.touch.min, overflow: 'hidden', transform: [{ scale: pressed ? 0.99 : 1 }] }, style]}
     >
-      {fill}
       {children}
     </Pressable>
   );

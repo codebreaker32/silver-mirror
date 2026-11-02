@@ -16,8 +16,9 @@ export interface ProductCardProps {
   destination?: string;
   /** The card opens a store outside the app (arrow-up-right, link role) even without its own destination caption. */
   linkOut?: boolean;
-  /** Product image; otherwise a category glyph on the sunken tile. */
+  /** Real product image (40dp thumbnail, radius 12). Without one the row shows no thumbnail at all. */
   image?: ImageSourcePropType;
+  /** Legacy: glyph tiles are retired (no pastel icon tiles); kept so callers compile. */
   glyph?: IconName;
   /** First result: sits on the sheen lavender (productMatchCard.heroBg). */
   hero?: boolean;
@@ -28,47 +29,61 @@ export interface ProductCardProps {
 }
 
 /**
- * Better-matches product row (component.productMatchCard, tokens 2.3): the surface tone, radius 16, no hairline and no
- * shadow (graphite-850 + sheen edge in dark), a 44dp well-tone thumb tile (radius 12) with an ink glyph, the name on
- * one line in 15 medium, then one reason line with the grey verdict chip inline after it, destination caption. No ratings, review counts, ribbons or logos.
- * One target with one label in visual order.
+ * Better-matches product row (component.productMatchCard, Silver & graphite): a row set on ONE shared surface card
+ * (BetterMatches wraps the list in Card variant="raised"); rows are separated by spacing, never dividers, and carry no
+ * surface of their own. A 40dp thumbnail (radius 12) shows only when a real product image exists; no glyph tiles. The
+ * name runs to two lines in 15 medium, the verdict tag sits on its own line under it, then one full-width reason line.
+ * No ratings, review counts, ribbons or logos. One target with one label in visual order.
+ * `standalone` draws the surface tone behind a single row (the kit sample); lists leave it off.
  */
-export function ProductCard({ name, reason, verdict, destination, linkOut = !!destination, image, glyph = 'bottle', hero = false, onPress, accessibilityLabel, accessibilityHint, testID }: ProductCardProps) {
+export function ProductCard({
+  name,
+  reason,
+  verdict,
+  destination,
+  linkOut = !!destination,
+  image,
+  glyph: _glyph,
+  hero = false,
+  standalone = false,
+  onPress,
+  accessibilityLabel,
+  accessibilityHint,
+  testID,
+}: ProductCardProps & { standalone?: boolean }) {
   const t = useTheme();
   const m = t.components.productMatchCard;
-  // Product rows: radius 16, a 44dp well tile (radius 12), a 15 medium name.
-  const radius = t.radius.lg;
-  const thumb = 44;
+  const thumb = 40;
   const surface = hero
-    ? { backgroundColor: m.heroBg, borderRadius: radius }
-    : t.dark
-      ? { backgroundColor: t.colors.surfaceRaised, borderRadius: radius, borderWidth: 1, borderColor: m.border, borderTopColor: t.colors.sheenEdge }
-      : { backgroundColor: t.colors.surface, borderRadius: radius };
-  // One neutral well tile for every product (tokens 2.3): no pastel rotation.
-  const tile = t.dark ? m.thumbBg : t.colors.thumbTile;
+    ? { backgroundColor: m.heroBg, borderRadius: t.radius.lg, padding: m.padding }
+    : standalone
+      ? { backgroundColor: t.dark ? t.colors.surfaceRaised : t.colors.surface, borderRadius: t.radius.lg, padding: t.spacing.insetCard }
+      : null;
   const label = accessibilityLabel ?? [name, verdict?.label, reason, destination].filter(Boolean).join('. ');
   const body = (
     <>
-      <View
-        importantForAccessibility="no-hide-descendants"
-        accessibilityElementsHidden
-        style={{ width: thumb, height: thumb, borderRadius: 12, backgroundColor: tile, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
-      >
-        {image ? <Image source={image} style={{ width: thumb, height: thumb }} resizeMode="cover" /> : <Icon name={glyph} size={t.icon.md} color={t.dark ? t.colors.textMuted : t.colors.onIconDisc} />}
-      </View>
-      <View style={{ flex: 1, gap: 2 }}>
-        <Txt variant="bodyStrong" numberOfLines={1} style={[m.name, { fontFamily: 'Geist_500Medium', fontSize: 15, lineHeight: 20, color: m.nameColor }]}>
+      {image ? (
+        <View
+          importantForAccessibility="no-hide-descendants"
+          accessibilityElementsHidden
+          style={{ width: thumb, height: thumb, borderRadius: 12, backgroundColor: t.colors.thumbTile, overflow: 'hidden' }}
+        >
+          <Image source={image} style={{ width: thumb, height: thumb }} resizeMode="cover" />
+        </View>
+      ) : null}
+      <View style={{ flex: 1, gap: t.space[1] }}>
+        <Txt variant="bodyStrong" numberOfLines={2} style={[m.name, { fontFamily: 'Geist_500Medium', fontSize: 15, lineHeight: 20, color: t.colors.text }]}>
           {name}
         </Txt>
-        {reason || verdict ? (
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[2] }}>
-            {reason ? (
-              <Txt variant="bodySm" numberOfLines={1} style={[m.fit, { fontFamily: 'Geist_400Regular', fontSize: 13, lineHeight: 18, color: t.colors.textMuted, flexShrink: 1 }]}>
-                {reason}
-              </Txt>
-            ) : null}
-            {verdict ? <Tag label={verdict.label} variant={{ verdict: verdict.tone }} /> : null}
+        {verdict ? (
+          <View style={{ flexDirection: 'row' }}>
+            <Tag label={verdict.label} variant={{ verdict: verdict.tone }} />
           </View>
+        ) : null}
+        {reason ? (
+          <Txt variant="bodySm" numberOfLines={1} style={[m.fit, { fontFamily: 'Geist_400Regular', fontSize: 13, lineHeight: 18, color: t.colors.textMuted }]}>
+            {reason}
+          </Txt>
         ) : null}
         {destination ? (
           <Txt variant="caption" style={[m.meta, { color: m.metaColor }]}>
@@ -79,7 +94,7 @@ export function ProductCard({ name, reason, verdict, destination, linkOut = !!de
       {onPress ? <Icon name={linkOut ? 'arrow-up-right' : 'chevron-right'} size={t.icon.md} color={t.colors.textMuted} /> : null}
     </>
   );
-  const box = { ...surface, minHeight: m.minHeight, padding: m.padding, flexDirection: 'row' as const, alignItems: 'center' as const, gap: t.space[3] };
+  const box = { ...surface, minHeight: t.touch.min, flexDirection: 'row' as const, alignItems: 'flex-start' as const, gap: t.space[3] };
   if (!onPress) {
     return (
       <View testID={testID} accessible accessibilityLabel={label} style={box}>
@@ -94,8 +109,7 @@ export function ProductCard({ name, reason, verdict, destination, linkOut = !!de
       accessibilityRole={linkOut ? 'link' : 'button'}
       accessibilityLabel={label}
       accessibilityHint={accessibilityHint}
-      android_ripple={{ color: t.colors.state.ripple }}
-      style={({ pressed }) => [box, { minHeight: m.minHeight, overflow: 'hidden', transform: [{ scale: pressed ? 0.99 : 1 }] }]}
+      style={({ pressed }) => [box, { minHeight: t.touch.min, opacity: pressed ? 0.6 : 1 }]}
     >
       {body}
     </Pressable>

@@ -42,10 +42,10 @@ function useKeyboardOpen(): boolean {
 
 /**
  * Docked bar geometry (Silver & graphite): a full-width 64dp surface-tone bar over the system navigation inset, flat (no
- * glass, no shadow, no line). The Scan disc (56dp graphite in a 4dp collar) rises 26dp above the bar's top edge, set in a 4dp collar of
- * the bar tone so it reads as part of the bar; "Scan" sits under it on the side labels' baseline.
+ * glass, no shadow, no line). The Scan disc is a plain 56dp graphite disc rising 26dp above the bar's top edge, with no
+ * collar and no halo; "Scan" sits under it on the side labels' baseline.
  */
-export const TAB_BAR = { height: 64, raise: 26, scan: 56, collar: 4 } as const;
+export const TAB_BAR = { height: 64, raise: 26, scan: 56 } as const;
 
 /**
  * Space a tab scene leaves at its bottom so the docked bar never covers its last line: the bar, the raised Scan disc
@@ -132,7 +132,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
               {it.label}
             </Text>
           );
-          const disc = TAB_BAR.scan + TAB_BAR.collar * 2;
+          const disc = TAB_BAR.scan;
           return (
             <Pressable
               key={it.key}
@@ -153,7 +153,7 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
                 alignItems: 'center',
                 justifyContent: raised ? 'flex-end' : 'center',
                 paddingBottom: raised ? labelPad : 0,
-                gap: raised ? t.space[1] - TAB_BAR.collar : t.space[1],
+                gap: t.space[1],
               }}
             >
               {raised ? (
@@ -161,27 +161,16 @@ export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: B
                   <>
                     <View
                       style={{
-                        width: disc,
-                        height: disc,
-                        borderRadius: disc / 2,
-                        backgroundColor: barBg,
+                        width: TAB_BAR.scan,
+                        height: TAB_BAR.scan,
+                        borderRadius: TAB_BAR.scan / 2,
+                        backgroundColor: pressed ? t.colors.accentPressed : t.colors.accent,
                         alignItems: 'center',
                         justifyContent: 'center',
+                        transform: [{ scale: pressed ? 0.96 : 1 }],
                       }}
                     >
-                      <View
-                        style={{
-                          width: TAB_BAR.scan,
-                          height: TAB_BAR.scan,
-                          borderRadius: TAB_BAR.scan / 2,
-                          backgroundColor: pressed ? t.colors.accentPressed : t.colors.accent,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          transform: [{ scale: pressed ? 0.96 : 1 }],
-                        }}
-                      >
-                        <Icon name={it.icon} size={t.icon.lg} color={t.colors.onAccent} strokeWidth={1.75} />
-                      </View>
+                      <Icon name={it.icon} size={t.icon.lg} color={t.colors.onAccent} strokeWidth={1.75} />
                     </View>
                     {text}
                   </>

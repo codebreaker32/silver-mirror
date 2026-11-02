@@ -4,7 +4,6 @@ import { COPY } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Card } from './Card';
 import { Icon, type IconName } from './Icon';
-import { IconDisc } from './IconButton';
 import { Txt } from './Text';
 
 export interface SkinTypeCardProps {
@@ -18,7 +17,7 @@ export interface SkinTypeCardProps {
   caption?: string;
   /** Hero: one plain cosmetic line under the value (passed in; the card computes nothing). */
   line?: string;
-  /** Disc icon; defaults to droplet (the empty state uses face-frame). */
+  /** Legacy: the disc is gone (Silver & graphite, no icon tiles); kept so callers compile. */
   icon?: IconName;
   /** Set the value in bodyStrong instead of type.value (the empty "No reading yet" card). */
   quiet?: boolean;
@@ -38,7 +37,8 @@ export interface SkinTypeCardProps {
  * 24/30), an optional caption, trailing 24dp arrow-right when pressable. hero: the skin gradient, padding 24, a 72dp
  * disc on a white-glass fill (lavender-700 in dark), the label in text (not muted), the value in type.valueHero
  * (Geist 600 26/32) so it dominates as in 04_report, one cosmetic 14/20 muted line, no arrow. Radius 20 (compact) and
- * 2.3: both sizes use the one surface radius (16) on the flat surface tone; no gradient.
+ * 2.3: both sizes use the one surface radius (16) on the flat surface tone; no gradient, no icon disc. The text runs the
+ * full card width, left-aligned: "Skin type" 13 muted, the type word 28 semibold, the line 15 in full ink.
  */
 export function SkinTypeCard({
   size = 'compact',
@@ -46,7 +46,7 @@ export function SkinTypeCard({
   label = COPY.reading.skinType,
   caption,
   line,
-  icon = 'droplet',
+  icon: _icon,
   quiet = false,
   onPress,
   accessibilityLabel,
@@ -61,20 +61,22 @@ export function SkinTypeCard({
   const a11y = accessibilityLabel ?? [label, value, hero ? line : caption].filter(Boolean).join(', ');
   const row = (
     <View
-      style={{ flexDirection: 'row', alignItems: 'center', gap: hero ? t.space[5] : t.space[4] }}
+      style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[4] }}
       accessible={children ? true : undefined}
       accessibilityLabel={children ? a11y : undefined}
     >
-      {hero ? <IconDisc icon={icon} size="xl" bg={rc.heroDiscBg} /> : <IconDisc icon={icon} size="lg" />}
       <View style={{ flex: 1, gap: 2 }}>
-        <Txt variant="bodySm" style={[rc.label, { color: hero ? rc.heroLabelColor : rc.labelColor }]}>
+        <Txt variant="bodySm" style={[rc.label, { color: t.colors.textMuted, fontSize: 13, lineHeight: 18 }]}>
           {label}
         </Txt>
-        <Txt variant={quiet ? 'bodyStrong' : hero ? 'valueHero' : 'value'} style={{ color: rc.valueColor }}>
+        <Txt
+          variant={quiet ? 'bodyStrong' : hero ? 'valueHero' : 'value'}
+          style={[{ color: rc.valueColor }, !quiet ? { fontFamily: 'Geist_600SemiBold', fontSize: 28, lineHeight: 34, letterSpacing: -0.4 } : null]}
+        >
           {value}
         </Txt>
         {hero && line ? (
-          <Txt variant="bodySm" tone="muted" style={{ marginTop: t.space[1], fontSize: 14, lineHeight: 20 }}>
+          <Txt variant="body" style={{ marginTop: t.space[1], fontSize: 15, lineHeight: 22, color: t.colors.text }}>
             {line}
           </Txt>
         ) : null}

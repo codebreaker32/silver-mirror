@@ -92,7 +92,7 @@ export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardP
         .join('. ')}
       accessibilityHint="Opens the Reading tab"
       android_ripple={{ color: t.colors.state.ripple }}
-      style={({ pressed }) => [surface, { minHeight: t.touch.min, overflow: 'hidden', gap: t.space[5], backgroundColor: pressed ? t.colors.surfaceRaised : t.colors.surface }]}
+      style={({ pressed }) => [surface, { minHeight: t.touch.min, overflow: 'hidden', gap: t.space[5], backgroundColor: pressed ? t.colors.surfaceRaised : t.colors.surface }, { gap: t.space[4] }]}
     >
       <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: t.space[3] }}>
         <View style={{ flex: 1, minWidth: 0 }}>
@@ -104,7 +104,8 @@ export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardP
         </View>
         <Icon name="chevron-right" size={t.icon.md} color={t.colors.textMuted} />
       </View>
-      <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ gap: t.space[3] }}>
+      {/* Tight band rows (8dp) so the first row of Picks clears the docked bar on a 390x844 phone. */}
+      <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ gap: t.space[2] }}>
         {bands.map((b) => (
           <BandMeter key={b.label} label={b.label} level={b.level} />
         ))}

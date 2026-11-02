@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { COPY, type FacetMapping, type KeyProfile, type ProductCategory } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Body, Caption, Card, Chip, ChipRail, Icon, IconDisc, ProductCard, SectionHeader, Txt } from '@/components';
-import { categoryGlyph } from '@/features/check/display';
+import { Body, Caption, Card, Chip, ChipRail, Icon, ProductCard, SectionHeader, Txt } from '@/components';
 import { applyReadingFilter, readingFilters } from './filters';
 import { keyClass, storeKeywords, storeLinks } from './links';
 import { openStoreUrl } from './openStoreUrl';
@@ -28,32 +27,28 @@ function honestyLines(): string[] {
 }
 
 /**
- * The Discover banner (showcase 06_discover, DESIGN.md §9.5): the skin gradient card, radius 24, padding 20, with
- * COPY.matchesBanner(skin type) in type.headline, the honesty line in bodySm muted, and a 56dp white disc holding the
- * bottle glyph at right. No product photo, no arrow: it is a heading for the list, not a link. Read as one node.
+ * The list heading (Silver & graphite): plain text on the page, never a card and never a disc. COPY.matchesBanner(skin
+ * type) as a 17 semibold heading, the honesty line under it in 15 muted. Read as one node.
  */
 function MatchesBanner({ skinType }: { skinType: string }) {
   const t = useTheme();
   const lines = honestyLines();
   const headline = COPY.matchesBanner(skinType);
   return (
-    <Card variant="gradient" padding={t.space[5]} testID="matches-banner" accessibilityLabel={`${headline}. ${lines.join(' ')}`}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[4] }}>
-        <View style={{ flex: 1, gap: t.space[2] }}>
-          <Txt variant="headline">{headline}</Txt>
-          {lines.map((l) => (
-            <Txt key={l} variant="bodySm" tone="muted">
-              {l}
-            </Txt>
-          ))}
-        </View>
-        <IconDisc icon="bottle" size="lg" bg={t.components.readingCard.heroDiscBg} />
-      </View>
-    </Card>
+    <View testID="matches-banner" accessible accessibilityLabel={`${headline}. ${lines.join(' ')}`} style={{ gap: t.space[1] }}>
+      <Txt variant="section" style={{ fontFamily: 'Geist_600SemiBold', fontSize: 17, lineHeight: 22, letterSpacing: 0, color: t.colors.text }}>
+        {headline}
+      </Txt>
+      {lines.map((l) => (
+        <Txt key={l} variant="body" tone="muted" style={{ fontSize: 15, lineHeight: 22 }}>
+          {l}
+        </Txt>
+      ))}
+    </View>
   );
 }
 
-/** Without a reading there is no skin type to name: the honesty line stays, as a plain caption under a 1dp rule. */
+/** Without a reading there is no skin type to name: the honesty line stays, as a plain muted caption (no rule). */
 function Honesty() {
   const t = useTheme();
   const lines = honestyLines();
@@ -61,7 +56,7 @@ function Honesty() {
     <View
       accessible
       accessibilityLabel={`How results are ranked. ${lines.join(' ')}`}
-      style={{ borderTopWidth: 1, borderTopColor: t.colors.border, paddingTop: t.space[2], gap: t.space[1] }}
+      style={{ gap: t.space[1] }}
     >
       {lines.map((l) => (
         <Txt key={l} variant="caption" tone="muted">
@@ -104,8 +99,8 @@ function MatchDestination({ destination }: { destination: string }) {
 
 /**
  * Better matches (DESIGN.md §9.5, showcase 06_discover order): section head, one scrolling rail of reading filter chips
- * (selected = slate + check), the gradient banner with the honesty line, one shared destination line, product cards (all
- * alike, so none reads as featured or paid; no stars, hearts or ratings), then the store searches as one chip row
+ * (selected = graphite + check), the plain heading with the honesty line, one shared destination line, the products as
+ * rows on one surface card (all alike, so none reads as featured or paid; no stars, hearts or ratings), then the store searches as one chip row
  * with a shared destination line.
  */
 export function BetterMatches({ state, keyProfile, category, facetMap }: Props) {
@@ -153,8 +148,10 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
         </Card>
       ) : null}
       {shown.length ? (
-        <View style={{ gap: t.components.productMatchCard.listGap }}>
+        <View style={{ gap: t.space[3] }}>
           <MatchDestination destination={shown[0]!.destination} />
+          {/* One surface for the whole list: rows separated by space, no dividers, no card per product. */}
+          <Card variant="raised" gap={t.space[5]} testID="match-list">
           {shown.map((m, i) => (
             <ProductCard
               key={m.productId}
@@ -163,11 +160,11 @@ export function BetterMatches({ state, keyProfile, category, facetMap }: Props) 
               reason={m.shortReason}
               verdict={{ tone: 'fits', label: 'FITS' }}
               linkOut
-              glyph={categoryGlyph(m.category ?? category)}
               accessibilityLabel={m.a11y}
               onPress={() => open(m.url)}
             />
           ))}
+          </Card>
         </View>
       ) : null}
       <StoreSearchChips links={links} keywords={storeKeywords(category, keyProfile)} />
