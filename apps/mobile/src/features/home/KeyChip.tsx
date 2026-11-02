@@ -37,7 +37,7 @@ interface ReadingCardProps {
  * Home skin-type card (SkinTypeCard compact, DESIGN.md §9.2 item 3, showcase 02_home "Your Skin Type / Combination ->"):
  * droplet disc, "Your skin type" over the value, the scan stamp, a trailing arrow; one target, one label in visual
  * order. The band meters live on the Reading tab. Empty: a face-frame disc, "No reading yet", "Scan once, about a
- * minute", then slate Start scan and tonal Use the Demo reading inside the same card.
+ * minute", then slate Start scan and a centred text action, Use the Demo reading (48dp target), inside the same card.
  */
 export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardProps) {
   const { title, value, sub } = keyChipText(keyProfile, isDemo);
@@ -46,7 +46,7 @@ export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardP
     return (
       <SkinTypeCard testID="key-chip" icon="face-frame" label={title} value={value} quiet accessibilityLabel={`${title}. ${value}`}>
         <PillButton label="Start scan" trailingIcon="arrow-right" onPress={onPress} testID="home-start-scan" />
-        {onUseDemo ? <PillButton label={COPY.reading.useDemo} variant="secondary" onPress={onUseDemo} testID="home-use-demo" /> : null}
+        {onUseDemo ? <PillButton label={COPY.reading.useDemo} variant="tertiary" onPress={onUseDemo} testID="home-use-demo" style={{ alignSelf: 'center' }} /> : null}
       </SkinTypeCard>
     );
   }

@@ -55,13 +55,13 @@ export default function HomeScreen() {
         }}
       >
         <View testID="home-hero">
-          <View style={{ minHeight: t.components.appBar.minHeight, flexDirection: 'row', alignItems: 'center', gap: t.space[3] }}>
+          <View style={{ minHeight: t.touch.min, flexDirection: 'row', alignItems: 'center', gap: t.space[3] }}>
             <Heading level="display" style={{ flex: 1 }}>
               {greeting()}
             </Heading>
             <IconButton icon="gear" accessibilityLabel="Settings" onPress={() => router.push('/settings')} testID="home-settings" style={{ marginRight: -gearPull }} />
           </View>
-          <Txt variant="body" tone="muted" style={{ marginTop: t.space[1] }}>
+          <Txt variant="body" tone="muted">
             {COPY.welcome.tagline}
           </Txt>
           <View style={{ marginTop: t.space[5] }}>

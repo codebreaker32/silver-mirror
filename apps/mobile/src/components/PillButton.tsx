@@ -7,7 +7,7 @@ import { Icon, type IconName, type LegacyIconName } from './Icon';
  * primary: the one slate pill per screen state (pearl in dark), 56dp (showcase); pass trailingIcon="arrow-right"
  * when it moves forward ("Get started", "Start scan", "Check a product").
  * secondary: tonal mist pill, 52dp, no outline. tertiary: text + optional chevron in a 48dp box.
- * translucent: welcome only, a white-glass pill with a light edge over the liquid backdrop (sheen edge in dark).
+ * translucent: welcome only, a borderless frosted pill over the liquid backdrop (light); sheen edge in dark.
  * destructiveNeutral: text pill with a leading trash icon, never red; always followed by a confirm sheet.
  * consentPair: two identical tonal pills with a 1dp strong edge (Start scan / Not now at equal weight).
  */
@@ -60,7 +60,9 @@ export function PillButton({
 
   const fg = disabled ? (variant === 'primary' ? b.primary.fgDisabled : t.colors.disabledFg) : v.fg;
   const bg = disabled && variant === 'primary' ? b.primary.bgDisabled : v.bg;
-  const borderWidth = 'borderWidth' in v ? v.borderWidth : 0;
+  // Light translucent (welcome): a borderless frosted pill over the liquid backdrop, as in showcase 01_welcome. Dark
+  // keeps its sheen edge so the pill does not dissolve into graphite.
+  const borderWidth = variant === 'translucent' && !t.dark ? 0 : 'borderWidth' in v ? v.borderWidth : 0;
   const borderColor = 'border' in v ? (disabled && 'borderDisabled' in v ? v.borderDisabled : v.border) : 'transparent';
   const a11y = accessibilityLabel ?? [busy && busyLabel ? busyLabel : label, destination].filter(Boolean).join('. ');
   const stretch = fullWidth ?? (variant !== 'tertiary' && variant !== 'destructiveNeutral');

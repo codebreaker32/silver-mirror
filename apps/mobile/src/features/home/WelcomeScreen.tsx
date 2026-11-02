@@ -45,12 +45,12 @@ export default function WelcomeScreen() {
       <LiquidBackdrop />
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: t.space[8], paddingTop: insets.top + t.space[6], paddingBottom: t.space[12] }}>
         <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-          <SilverMark size={b.splashMark} tile={false} />
+          <SilverMark size={b.heroMark} tile={false} />
         </View>
-        <View style={{ marginTop: t.space[3] }}>
+        <View style={{ marginTop: t.space[5] }}>
           <Wordmark capHeight={b.wordmarkHero} header />
         </View>
-        <Txt variant="body" tone="muted" style={{ marginTop: t.space[3], lineHeight: 22, textAlign: 'center', maxWidth: 300 }}>
+        <Txt variant="body" textBreakStrategy="balanced" style={{ marginTop: t.space[3], lineHeight: 22, textAlign: 'center', maxWidth: 320 }}>
           {COPY.welcome.tagline}
         </Txt>
       </View>
