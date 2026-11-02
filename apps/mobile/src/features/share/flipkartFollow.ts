@@ -44,7 +44,11 @@ export function followFlipkartShortLink(
       xhr = makeXhr();
       xhr.timeout = timeoutMs;
       xhr.onreadystatechange = () => {
-        if (xhr.readyState >= HEADERS_RECEIVED) finish(xhr.responseURL || null);
+        if (xhr.readyState < HEADERS_RECEIVED || done) return;
+        // React Native fires HEADERS_RECEIVED before it assigns responseURL (Libraries/Network/XMLHttpRequest.js),
+        // so read it once this event has returned.
+        if (xhr.responseURL) finish(xhr.responseURL);
+        else setTimeout(() => finish(xhr.responseURL || null), 0);
       };
       xhr.onerror = () => finish(null);
       xhr.ontimeout = () => finish(null);

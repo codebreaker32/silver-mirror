@@ -33,6 +33,16 @@ describe('followFlipkartShortLink', () => {
     expect(f.aborted()).toBe(1);
   });
 
+  it('reads responseURL after HEADERS_RECEIVED returns (React Native assigns it after the event)', async () => {
+    const f = fakeXhr((x) => {
+      x.readyState = 2;
+      x.onreadystatechange?.();
+      x.responseURL = LISTING;
+    });
+    await expect(followFlipkartShortLink(SHORT, f.make)).resolves.toBe(LISTING);
+    expect(f.aborted()).toBe(1);
+  });
+
   it('returns null when the redirect lands somewhere that is not a listing', async () => {
     const f = fakeXhr((x) => {
       x.readyState = 2;
