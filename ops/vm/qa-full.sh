@@ -75,13 +75,16 @@ flow() {
   fi
   $U wait "^(FITS|CAUTION|UNKNOWN|MEDICINE)$" 20 || fail "$tag: no verdict label visible"
   shot "${tag}_2_verdict"
+  # A short verdict (UNKNOWN) shows the Better matches head on the first screen; one scroll then puts it above the
+  # viewport, where neither the head nor the dock's jump pill is in the tree. Remember it if it was already seen.
+  local seen=0; $U has "^Better matches$" && seen=1
   $U scroll; sleep 1; shot "${tag}_2_verdict_scrolled"
   if $U tap "^Better matches$"; then sleep 3; shot "${tag}_3_matches"
     # one more step so the first match card is on screen (Amazon stopped at the filter chips before)
     $U scroll; sleep 1; shot "${tag}_3_matches_2"
   else
     $U scroll; sleep 1
-    $U has "^Better matches$" && shot "${tag}_3_matches" || fail "$tag: no Better matches section"
+    { ((seen)) || $U has "^Better matches$"; } && shot "${tag}_3_matches" || fail "$tag: no Better matches section"
   fi
 }
 

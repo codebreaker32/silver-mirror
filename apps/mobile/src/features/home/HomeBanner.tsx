@@ -15,6 +15,9 @@ const BACKDROP = PHOTOS.texture;
  * right, and the one charcoal pill "Try a sample share" (same testID, label and hint as before; QA taps it). The pill
  * presses to the darker charcoal with a 0.98 scale; no shadow at rest.
  */
+/** Width of the serum photo at the banner's right edge (dp). */
+const BANNER_ART = 128;
+
 export function HomeBanner({ onSample, hint }: { onSample: () => void; hint: string }) {
   const t = useTheme();
   return (
@@ -27,10 +30,14 @@ export function HomeBanner({ onSample, hint }: { onSample: () => void; hint: str
         importantForAccessibility="no-hide-descendants"
         style={{ position: 'absolute', right: t.space[3], bottom: t.space[3], top: t.space[3], justifyContent: 'center' }}
       >
-        <ProductArt category="serum" size={150} style={{ borderRadius: 12 }} />
+        <ProductArt category="serum" size={BANNER_ART} style={{ borderRadius: 12 }} />
       </View>
-      <View style={{ padding: t.space[5], paddingRight: 120, gap: t.space[4], flex: 1, justifyContent: 'space-between' }}>
-        <Text accessibilityRole="header" style={{ fontFamily: fonts.serifDisplay, fontSize: 28, lineHeight: 34, letterSpacing: -0.3, color: t.colors.text }}>
+      <View style={{ padding: t.space[5], gap: t.space[4], flex: 1, justifyContent: 'space-between' }}>
+        {/* The title stops short of the photo (photo + its 12 inset + an 8 gap, less the column's own 20 padding). */}
+        <Text
+          accessibilityRole="header"
+          style={{ marginRight: BANNER_ART + t.space[3] + t.space[2] - t.space[5], fontFamily: fonts.serifDisplay, fontSize: 28, lineHeight: 34, letterSpacing: -0.3, color: t.colors.text }}
+        >
           Check before you buy
         </Text>
         <Pressable
