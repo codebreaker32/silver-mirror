@@ -32,7 +32,8 @@ Desk research shaped the brief. It is desk research only; nobody was interviewed
 7. **Honest UNKNOWN.** If we have no ingredient list, we say so ("This doesn't mean it's bad") and offer a label photo: Claude reads the ingredient names into editable chips, the shopper confirms, the rules decide.
 8. **Medicine gate.** Adapalene, tretinoin and similar actives stop the flow and point to a pharmacist.
 9. **Audit.** A pre-registered audit runs the same rules over 136 brand-page products and their own ingredient lists, published at `/audit`.
-10. **For retailers and brands (built, no partner yet).** The same deterministic check is an API: `POST /v1/label-check` takes up to 500 seller-feed items (claims + ingredient list) and returns label-check hits and per-profile verdicts, with no model on the path. The audit is this check over 136 brand pages. For Perfect Corp, 16 units buy one reading that powers every check for 30 days, checks spend 0 YouCam units, and try-on spends 22 units only when a shopper is choosing a tinted product. No partner, no pricing claimed, no affiliate revenue in this build.
+10. **Shop, Routine and saved products.** A Shop tab browses the 125 verified catalogue products by category, each card showing whether it fits the shopper's reading; a heart saves a product on the phone. Your Routine builds an AM and PM routine (cleanser, serum, moisturiser, sunscreen) only from catalogue products that fit the reading, mixing brands, and any step can be swapped.
+11. **For retailers and brands (built, no partner yet).** The same deterministic check is an API: `POST /v1/label-check` takes up to 500 seller-feed items (claims + ingredient list) and returns label-check hits and per-profile verdicts, with no model on the path. The audit is this check over 136 brand pages. For Perfect Corp, 16 units buy one reading that powers every check for 30 days, checks spend 0 YouCam units, and try-on spends 22 units only when a shopper is choosing a tinted product. No partner, no pricing claimed, no affiliate revenue in this build.
 
 ## How we built it
 
@@ -41,9 +42,9 @@ Desk research shaped the brief. It is desk research only; nobody was interviewed
 - **Claude (`claude-opus-5-5`)** does two reading jobs with structured JSON output, both as fallbacks: share title to catalogue ids when the deterministic name match finds nothing (or for a screenshot), and label photo to ingredient tokens. It never writes verdict text and never decides a verdict.
 - **`packages/rules`** is a pure TypeScript function: 11 rules (OCC-1, OCC-2, FRG-1, ALC-1, SUP-1, SUP-2, LC-1a, LC-1b, LC-2, LC-3, MED-1), each with an evidence grade and sources, versioned by hash (`440f555a8845`).
 - **Catalogue:** 180 rows from 30 brand files; 125 count for verdicts because a second, independent read matched the brand page's ingredient list word for word.
-- **Expo SDK 58 + expo-router** for the Android app (share intent, camera, light and dark themes following the phone), **Vite + React** for the web (`/check`, `/audit`, `/rules`, `/how`), zod contracts shared by all three, and one token pipeline for both React Native and CSS.
+- **Expo SDK 58 + expo-router** for the Android app (share intent, camera, five tabs: Home, Shop, Scan, Reading, Routine; a calm lavender-grey light theme), **Vite + React** for the web (`/check`, `/audit`, `/rules`, `/how`), zod contracts shared by all three, and one token pipeline for both React Native and CSS.
 - **A copy linter** fails the build on banned words (medical, safety and colourist terms, numeric scores) in app, web, shared copy, README and these submission docs.
-- Heavy builds ran on a remote VM (`scripts/remote.sh`), including a headless Android emulator walkthrough of the release APK in both themes.
+- Heavy builds ran on a remote VM (`scripts/remote.sh`), including a headless Android emulator walkthrough of the release APK; the final build was then run live on a Samsung phone.
 
 ## YouCam APIs used
 
@@ -71,7 +72,8 @@ Measured live in the API spike (each feature called on its own): HD Skin Analysi
 
 ## Accomplishments that we're proud of
 
-- A working Android APK where a real share from the Flipkart, Amazon.in or Nykaa app lands on a verdict with reasons, in light and dark.
+- A working Android APK where a real share from the Flipkart, Amazon.in or Nykaa app lands on a verdict with reasons.
+- The app's own live YouCam chain, end to end on a real phone (2 Nov): one consented HD Skin Analysis (16 units, 13.5 s, every upload deleted and the delete confirmed by YouCam) and one Makeup VTO try-on of Re'equil Sheer Zinc Tinted Sunscreen (1 unit). Both are in the demo video.
 - Two-shade YouCam Makeup VTO on 7 tinted sunscreens, each shade colour taken from the brand's own page with its source recorded.
 - A pre-registered, tagged audit with its own result published as is: 0 of 136 label-check mismatches, 70 of 136 flagged CAUTION for a profile their own claim points to, 0 reviewed by a person so far.
 - Every verdict names the ingredient and the reading behind it. The rule id, ruleset version, YouCam task id, units and delete state are recorded by the Worker ledger and the published rules, not shown as developer detail in the app.
@@ -99,8 +101,8 @@ YouCam API (Skin Analysis v2.1 HD, Facial Color Tones, Makeup VTO), Claude (`cla
 
 | Criterion | Evidence in the submission |
 |---|---|
-| Technological implementation | Three YouCam features wired (HD Skin Analysis and Makeup VTO verified live in the spike, Facial Color Tones against the mock) plus delete; try-on reachable on 7 tinted catalogue rows with brand-sourced shade colours; per-zone HD readings mapped to bands with the inverted score direction; delete state machine with confirming GETs; unit ledger; full mock server replaying real responses; pure rules engine with hash-versioned rules; Claude limited to structured reading jobs; release APK built and walked through on an emulator in both themes. |
-| Design | Silver Mirror visual system in light and dark, both designed and following the phone; reason-first verdict cards where state reads from label, icon and outline, not colour alone (CAUTION is amber, never red); a designed UNKNOWN with a next step; 48dp targets and screen-reader labels; consent screen that lists what stays on the phone. |
+| Technological implementation | Three YouCam features wired (HD Skin Analysis and Makeup VTO verified live in the spike and again end to end in the app on a real phone, Facial Color Tones against the mock) plus delete; try-on reachable on 7 tinted catalogue rows with brand-sourced shade colours; per-zone HD readings mapped to bands with the inverted score direction; delete state machine with confirming GETs; unit ledger; full mock server replaying real responses; pure rules engine with hash-versioned rules; Claude limited to structured reading jobs; release APK built, walked through on an emulator and run live on a phone. |
+| Design | Silver Mirror visual system: lavender-grey, near-white and charcoal, serif headings, real product photography (Open Beauty Facts, CC BY-SA, and Unsplash, credited in the app), calm motion with press feedback, staggered reveals and reduced-motion support; reason-first verdict cards where state reads from label, icon and outline, not colour alone (CAUTION is amber, never red); a designed UNKNOWN with a next step; 48dp targets and screen-reader labels; consent screen that lists what stays on the phone. |
 | Potential impact | Works from the store apps shoppers already use, through the Android share sheet; a published audit of 136 brand-page products (70 flagged for a profile their own claim points to); `POST /v1/label-check` already checks seller feeds for retailers and brands (built, no partner yet); one 16-unit reading powers every check for 30 days, and try-on spends units only at the moment a shopper is choosing a shade. |
 | Quality of idea | Checks the exact listing in front of the shopper against their own YouCam reading, rather than recommending from one store's shelf; label claim vs ingredient list vs reading in one view; honest about limits (bands not scores, UNKNOWN, medicine gate, "our sample, not the market"). |
 
