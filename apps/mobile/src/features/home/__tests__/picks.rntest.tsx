@@ -2,7 +2,7 @@ import { describe, expect, it, jest } from '@jest/globals';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { ThemeProvider } from '@/theme/ThemeProvider';
 import { Picks } from '@/features/home/Picks';
-import { ReadingRing } from '@/features/home/ReadingRing';
+import { BandMeter } from '@/features/home/BandMeter';
 import { spreadByCategory, type HomePick } from '@/features/home/usePicks';
 
 const pick = (i: number, category: HomePick['category']): HomePick => ({
@@ -21,7 +21,7 @@ describe('Home picks', () => {
     expect(spreadByCategory(items, 10)).toHaveLength(5);
   });
 
-  it('shows brand, name and a FITS tag, never a number, and opens the check by name', async () => {
+  it('shows brand, name and the Fits seal, never a number, and opens the check by name', async () => {
     const onOpen = jest.fn();
     await render(
       <ThemeProvider scheme="light">
@@ -29,19 +29,22 @@ describe('Home picks', () => {
       </ThemeProvider>,
     );
     expect(screen.getByText('Picks for you')).toBeTruthy();
-    expect(screen.getAllByText('FITS')).toHaveLength(2);
+    expect(screen.getAllByText('Fits')).toHaveLength(2);
+    // Not the verdict screen's caps label: QA waits for ^FITS$ after a share, so Home must never show it.
+    expect(screen.queryByText('FITS')).toBeNull();
     expect(screen.queryByText(/%|₹|\d+\s*\/\s*\d+/)).toBeNull();
     await fireEvent.press(screen.getByTestId('home-pick-1'));
     expect(onOpen).toHaveBeenCalledWith('Brand 2 Product 2');
   });
 
-  it('keeps the decorative ring out of the accessibility tree', async () => {
+  it('band meter shows the band word, never a figure', async () => {
     await render(
       <ThemeProvider scheme="light">
-        <ReadingRing />
+        <BandMeter label="Oiliness" level="Medium" />
       </ThemeProvider>,
     );
-    expect(screen.toJSON()).toBeTruthy();
-    expect(screen.queryByRole('image')).toBeNull();
+    expect(screen.getByText('Oiliness')).toBeTruthy();
+    expect(screen.getByText('Medium')).toBeTruthy();
+    expect(screen.queryByText(/\d/)).toBeNull();
   });
 });

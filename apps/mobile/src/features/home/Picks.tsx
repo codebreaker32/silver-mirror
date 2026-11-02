@@ -1,36 +1,32 @@
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
-import { Icon, SectionHeader } from '@/components';
-import { useGlass } from '@/components/glass';
+import { Icon } from '@/components';
+import { HomeHeading } from '@/components/home/HomeHeading';
+import { homeType } from '@/components/home/homeType';
 import { categoryGlyph } from '@/features/check/display';
 import type { HomePick } from './usePicks';
 
-const CARD_W = 152;
-const TILE_H = 128;
+const TILE = 148;
 
 /**
- * "Picks for you" (dashboard reference "Recommended for you"): a section head over a horizontal rail of tall glass
- * cards. Each card: a pastel tile (pink, lilac, lavender in turn) with the category glyph, never a product photo; the
- * brand in muted caption, the product name on two lines, and a small FITS tag where the reference shows a price.
- * No See all: there is no standalone matches list to open. A card opens /check for that product by name.
+ * "Picks for you" (dashboard reference "Recommended for you", Silver & graphite): a plain 17 heading over a horizontal
+ * rail of product tiles. A tile is not a card: a 1:1 well-tone thumbnail (radius 12) with one ink line glyph for the
+ * category (never a product photo), then the brand (13 muted), the name (15 ink, two lines) and the sage seal with
+ * "Fits", all set straight on the page. No See all: there is no standalone list to open. A tile opens /check by name.
  */
 export function Picks({ picks, onOpen }: { picks: readonly HomePick[]; onOpen: (query: string) => void }) {
   const t = useTheme();
-  const glass = useGlass(22);
-  const tiles = [t.colors.tilePink, t.colors.tileLilac, t.colors.tileLavender];
   const gutter = t.spacing.gutter;
-  // Room above and below the cards so the soft shadow is not clipped by the rail.
-  const shadowRoom = t.space[3];
   const fits = t.colors.verdict.fits;
   return (
-    <View testID="home-picks" style={{ gap: t.space[3] - shadowRoom }}>
-      <SectionHeader title="Picks for you" />
+    <View testID="home-picks" style={{ gap: t.space[4] }}>
+      <HomeHeading title="Picks for you" />
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         accessibilityLabel="Products that fit your reading"
         style={{ marginHorizontal: -gutter }}
-        contentContainerStyle={{ paddingHorizontal: gutter, paddingVertical: shadowRoom, gap: t.space[3] }}
+        contentContainerStyle={{ paddingHorizontal: gutter, gap: t.space[4] }}
       >
         {picks.map((p, i) => (
           <Pressable
@@ -39,36 +35,21 @@ export function Picks({ picks, onOpen }: { picks: readonly HomePick[]; onOpen: (
             onPress={() => onOpen(p.query)}
             accessibilityRole="button"
             accessibilityLabel={p.a11y}
-            android_ripple={{ color: t.colors.state.ripple }}
-            style={({ pressed }) => [glass, { width: CARD_W, minHeight: t.touch.min, padding: t.space[2], overflow: 'hidden', transform: [{ scale: pressed ? 0.98 : 1 }] }]}
+            style={({ pressed }) => ({ width: TILE, opacity: pressed ? 0.7 : 1 })}
           >
-            <View style={{ height: TILE_H, borderRadius: 16, backgroundColor: tiles[i % tiles.length], alignItems: 'center', justifyContent: 'center' }}>
-              <Icon name={categoryGlyph(p.category)} size={48} color={t.colors.plum} strokeWidth={1.25} />
+            <View style={{ width: TILE, height: TILE, borderRadius: 12, backgroundColor: t.colors.bgSunken, alignItems: 'center', justifyContent: 'center' }}>
+              <Icon name={categoryGlyph(p.category)} size={44} color={t.colors.text} strokeWidth={1.25} />
             </View>
-            <View style={{ paddingHorizontal: t.space[1], paddingTop: t.space[3], paddingBottom: t.space[1], gap: 2 }}>
-              <Text {...t.textProps.caption} numberOfLines={1} style={[t.typography.caption, { color: t.colors.textMuted }]}>
+            <View style={{ paddingTop: t.space[3], gap: 2 }}>
+              <Text numberOfLines={1} style={[homeType.small, { color: t.colors.textMuted }]}>
                 {p.brand}
               </Text>
-              <Text {...t.textProps.bodyStrong} numberOfLines={2} style={{ fontFamily: t.fonts.sansMedium, fontSize: 14, lineHeight: 19, minHeight: 38, color: t.colors.text }}>
+              <Text numberOfLines={2} style={[homeType.bodyStrong, { minHeight: 40, color: t.colors.text }]}>
                 {p.name}
               </Text>
-              <View
-                style={{
-                  marginTop: t.space[2],
-                  alignSelf: 'flex-start',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 4,
-                  paddingHorizontal: t.space[2],
-                  paddingVertical: 3,
-                  borderRadius: t.radius.full,
-                  backgroundColor: fits.bg,
-                }}
-              >
-                <Icon name="seal-check" size={14} color={fits.icon} />
-                <Text {...t.textProps.labelSm} style={{ fontFamily: t.fonts.sansSemibold, fontSize: 11, lineHeight: 14, letterSpacing: 0.4, color: fits.fg }}>
-                  FITS
-                </Text>
+              <View style={{ marginTop: t.space[1], flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <Icon name="seal-check" size={16} color={fits.icon} />
+                <Text style={[homeType.smallStrong, { color: fits.fg }]}>Fits</Text>
               </View>
             </View>
           </Pressable>

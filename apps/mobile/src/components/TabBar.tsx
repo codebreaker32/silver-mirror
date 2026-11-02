@@ -1,12 +1,10 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Keyboard, Platform, Pressable, Text, View } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from 'expo-router/tabs';
-import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { useTheme } from '@/theme/ThemeProvider';
 import { Icon, type IconName } from './Icon';
-import { useGlass } from './glass';
 
 /**
  * One item of the bottom bar. Tabs with `route` are real tab scenes in app/(tabs); a tab with `href` opens a
@@ -43,195 +41,167 @@ function useKeyboardOpen(): boolean {
 }
 
 /**
- * Floating bar geometry (dashboard reference): a 68dp glass pill, the 56dp Scan disc raised 20dp above its top edge, and
- * a 48dp page fade (transparent -> page-bottom) that ends at the pill's top edge, so content scrolling under the bar
- * dissolves into the page instead of being cut by it.
+ * Docked bar geometry (Silver & graphite): a full-width 64dp surface-tone bar over the system navigation inset, flat (no
+ * glass, no shadow, no line). The Scan disc (56dp graphite in a 4dp collar) rises 26dp above the bar's top edge, set in a 4dp collar of
+ * the bar tone so it reads as part of the bar; "Scan" sits under it on the side labels' baseline.
  */
-export const TAB_BAR = { height: 68, raise: 20, scan: 56, radius: 28, inset: 16, gapBelow: 12, fade: 48 } as const;
+export const TAB_BAR = { height: 64, raise: 26, scan: 56, collar: 4 } as const;
 
 /**
- * Space a tab scene leaves at its bottom so the floating bar never covers its last line: the bar, the raised Scan disc
- * and the gap under the bar (at least the system inset).
+ * Space a tab scene leaves at its bottom so the docked bar never covers its last line: the bar, the raised Scan disc
+ * and the system navigation inset.
  */
 export function tabBarSpace(bottomInset: number): number {
-  return TAB_BAR.height + TAB_BAR.raise + Math.max(bottomInset, TAB_BAR.gapBelow);
+  return TAB_BAR.height + TAB_BAR.raise + bottomInset;
 }
 
 export function useTabBarSpace(): number {
   return tabBarSpace(useSafeAreaInsets().bottom);
 }
 
-/**
- * Bottom padding for a tab scene's scroll content: the bar's space plus enough to lift the last line out of the fade
- * above the pill (at least 24dp past the raised Scan disc), so the final card or caption rests in full view.
- */
+/** Bottom padding for a tab scene's scroll content: the bar's space plus 24dp, so the last line rests in full view. */
 export function tabScrollTail(bottomInset: number): number {
-  return tabBarSpace(bottomInset) + Math.max(24, TAB_BAR.fade - TAB_BAR.raise + 8);
+  return tabBarSpace(bottomInset) + 24;
 }
 
 export function useTabScrollTail(): number {
   return tabScrollTail(useSafeAreaInsets().bottom);
 }
 
-/** The page fade behind the floating bar: transparent at the top, page-bottom from the pill's top edge down. */
-function BarFade({ bottom }: { bottom: number }) {
-  const t = useTheme();
-  const id = `barFade${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
-  const height = bottom + TAB_BAR.height + TAB_BAR.fade;
-  return (
-    <View
-      pointerEvents="none"
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
-      style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height }}
-    >
-      <Svg width="100%" height="100%" preserveAspectRatio="none">
-        <Defs>
-          <LinearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-            <Stop offset={0} stopColor={t.colors.pageBottom} stopOpacity={0} />
-            <Stop offset={TAB_BAR.fade / height} stopColor={t.colors.pageBottom} stopOpacity={1} />
-            <Stop offset={1} stopColor={t.colors.pageBottom} stopOpacity={1} />
-          </LinearGradient>
-        </Defs>
-        <Rect x="0" y="0" width="100%" height="100%" fill={`url(#${id})`} />
-      </Svg>
-    </View>
-  );
-}
-
 /**
- * Custom bottom tab bar (dashboard reference, colors reference): a floating frosted glass pill inset from the screen
- * edges (radius 28, white hairline, soft plum shadow), drawn over the scene. Check at left and Reading at right: outline
- * glyph + 500 label when idle, the filled plum glyph + 600 plum label when selected (fill + weight + colour + the
- * selected state, never colour alone). Scan in the middle is a raised 56dp plum disc with the white scan glyph and
- * "Scan" under it. role tablist / tab; the labels and testIDs are what QA taps. Hidden while the Android keyboard is
- * open. A 48dp page fade sits behind the pill (BarFade), and scenes end their scroll with tabScrollTail() so the last
- * line rests above it.
+ * Custom bottom tab bar (dashboard reference idea, Silver & graphite surfaces): a flat docked full-width bar in the
+ * surface tone, drawn over the bottom of the scene and padded by the system navigation inset. Check at left and
+ * Reading at right: outline glyph + 500 label in muted when idle; the filled ink glyph + 600 steel-blue label when
+ * selected (fill + weight + colour + the selected state, never colour alone). Scan in the middle is a raised 56dp
+ * graphite disc with the white scan glyph and "Scan" under it. role tablist / tab; the labels and testIDs are what QA
+ * taps. Hidden while the Android keyboard is open. Scenes end their scroll with tabScrollTail() so the last line clears it.
  */
 export function TabBar({ state, descriptors, emitter, navigateToTab, insets }: BottomTabBarProps) {
   const t = useTheme();
   const n = t.components.bottomNav;
   const router = useRouter();
   const keyboard = useKeyboardOpen();
-  const glass = useGlass(TAB_BAR.radius, 'bar');
   if (keyboard) return null;
-  const below = Math.max(insets.bottom, TAB_BAR.gapBelow);
+  const barBg = t.colors.surface;
 
   const focusedName = state.routes[state.index]?.name;
   const items = TAB_ITEMS.filter((it) => !it.route || state.routes.some((r) => r.name === it.route));
-  // Side items centre a 24dp glyph + 4dp + 16dp label in the 68dp bar; Scan's label shares that baseline.
-  const labelPad = (TAB_BAR.height - (t.icon.lg + t.space[1] + n.labelActive.lineHeight)) / 2;
+  const labelLine = 16;
+  // Side items centre a 24dp glyph + 4dp + 16dp label in the 64dp bar; Scan's label shares that baseline.
+  const labelPad = (TAB_BAR.height - (t.icon.lg + t.space[1] + labelLine)) / 2;
+  const label = (focused: boolean) => ({
+    fontFamily: focused ? t.fonts.sansSemibold : t.fonts.sansMedium,
+    fontSize: 13,
+    lineHeight: labelLine,
+    letterSpacing: 0,
+    includeFontPadding: false,
+    color: focused ? t.colors.tabActive : t.colors.textMuted,
+  });
 
   return (
     <View
       pointerEvents="box-none"
-      style={{
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        paddingBottom: below,
-        paddingLeft: insets.left + TAB_BAR.inset,
-        paddingRight: insets.right + TAB_BAR.inset,
-      }}
+      style={{ position: 'absolute', left: 0, right: 0, bottom: 0, paddingLeft: insets.left, paddingRight: insets.right }}
     >
-      <BarFade bottom={below} />
-      <View pointerEvents="box-none" style={{ height: TAB_BAR.height + TAB_BAR.raise }}>
-        <View pointerEvents="none" style={[glass, { position: 'absolute', left: 0, right: 0, bottom: 0, height: TAB_BAR.height }]} />
-        <View testID="tab-bar" accessibilityRole="tablist" pointerEvents="box-none" style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
-          {items.map((it, i) => {
-            const route = it.route ? state.routes.find((r) => r.name === it.route) : undefined;
-            const focused = Boolean(route && route.name === focusedName);
-            const options = route ? descriptors[route.key]?.options : undefined;
-            const label = it.label;
-            const raised = !it.route;
-            const onPress = () => {
-              if (it.href) {
-                router.push(it.href);
-                return;
-              }
-              if (!route) return;
-              const event = emitter.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-              if (!focused && !event.defaultPrevented) navigateToTab(route.key);
-            };
-            const onLongPress = () => {
-              if (route) emitter.emit({ type: 'tabLongPress', target: route.key });
-            };
-            const text = (
-              <Text
-                {...t.textProps[focused ? 'labelSm' : 'labelSmRegular']}
-                numberOfLines={1}
-                style={[focused ? n.labelActive : n.labelInactive, { color: focused ? n.labelActiveColor : n.labelInactiveColor }]}
-              >
-                {label}
-              </Text>
-            );
-            return (
-              <Pressable
-                key={it.key}
-                testID={options?.tabBarButtonTestID ?? `tab-${it.key}`}
-                onPress={onPress}
-                onLongPress={onLongPress}
-                accessibilityRole="tab"
-                accessibilityState={{ selected: focused }}
-                accessibilityLabel={options?.tabBarAccessibilityLabel ?? `${label}, tab ${i + 1} of ${items.length}`}
-                accessibilityHint={it.accessibilityHint}
-                android_ripple={raised ? undefined : { color: t.colors.state.ripple, borderless: true, radius: n.rippleRadius }}
-                style={{
-                  flex: raised ? undefined : 1,
-                  width: raised ? TAB_BAR.scan + t.space[6] : undefined,
-                  minWidth: raised ? undefined : n.itemMinWidth,
-                  minHeight: n.itemTarget,
-                  height: raised ? TAB_BAR.height + TAB_BAR.raise : TAB_BAR.height,
-                  alignItems: 'center',
-                  justifyContent: raised ? 'flex-end' : 'center',
-                  paddingBottom: raised ? labelPad : 0,
-                  gap: t.space[1],
-                }}
-              >
-                {raised ? (
-                  ({ pressed }) => (
-                    <>
+      <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: TAB_BAR.height + insets.bottom, backgroundColor: barBg }} />
+      <View
+        testID="tab-bar"
+        accessibilityRole="tablist"
+        pointerEvents="box-none"
+        style={{ height: TAB_BAR.height + TAB_BAR.raise, marginBottom: insets.bottom, flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: t.space[2] }}
+      >
+        {items.map((it, i) => {
+          const route = it.route ? state.routes.find((r) => r.name === it.route) : undefined;
+          const focused = Boolean(route && route.name === focusedName);
+          const options = route ? descriptors[route.key]?.options : undefined;
+          const raised = !it.route;
+          const onPress = () => {
+            if (it.href) {
+              router.push(it.href);
+              return;
+            }
+            if (!route) return;
+            const event = emitter.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
+            if (!focused && !event.defaultPrevented) navigateToTab(route.key);
+          };
+          const onLongPress = () => {
+            if (route) emitter.emit({ type: 'tabLongPress', target: route.key });
+          };
+          const text = (
+            <Text {...t.textProps[focused ? 'labelSm' : 'labelSmRegular']} numberOfLines={1} style={label(focused)}>
+              {it.label}
+            </Text>
+          );
+          const disc = TAB_BAR.scan + TAB_BAR.collar * 2;
+          return (
+            <Pressable
+              key={it.key}
+              testID={options?.tabBarButtonTestID ?? `tab-${it.key}`}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: focused }}
+              accessibilityLabel={options?.tabBarAccessibilityLabel ?? `${it.label}, tab ${i + 1} of ${items.length}`}
+              accessibilityHint={it.accessibilityHint}
+              android_ripple={raised ? undefined : { color: t.colors.state.ripple, borderless: true, radius: n.rippleRadius }}
+              style={{
+                flex: raised ? undefined : 1,
+                width: raised ? disc + t.space[6] : undefined,
+                minWidth: raised ? undefined : n.itemMinWidth,
+                minHeight: n.itemTarget,
+                height: raised ? TAB_BAR.height + TAB_BAR.raise : TAB_BAR.height,
+                alignItems: 'center',
+                justifyContent: raised ? 'flex-end' : 'center',
+                paddingBottom: raised ? labelPad : 0,
+                gap: raised ? t.space[1] - TAB_BAR.collar : t.space[1],
+              }}
+            >
+              {raised ? (
+                ({ pressed }) => (
+                  <>
+                    <View
+                      style={{
+                        width: disc,
+                        height: disc,
+                        borderRadius: disc / 2,
+                        backgroundColor: barBg,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
                       <View
                         style={{
                           width: TAB_BAR.scan,
                           height: TAB_BAR.scan,
                           borderRadius: TAB_BAR.scan / 2,
-                          backgroundColor: pressed ? t.colors.plumPressed : t.colors.plum,
-                          borderWidth: 3,
-                          borderColor: t.colors.glass,
+                          backgroundColor: pressed ? t.colors.accentPressed : t.colors.accent,
                           alignItems: 'center',
                           justifyContent: 'center',
-                          shadowColor: t.colors.plum,
-                          shadowOpacity: 0.3,
-                          shadowRadius: 12,
-                          shadowOffset: { width: 0, height: 6 },
-                          elevation: 6,
                           transform: [{ scale: pressed ? 0.96 : 1 }],
                         }}
                       >
                         <Icon name={it.icon} size={t.icon.lg} color={t.colors.onAccent} strokeWidth={1.75} />
                       </View>
-                      {text}
-                    </>
-                  )
-                ) : (
-                  <>
-                    <Icon
-                      name={it.icon}
-                      size={t.icon.lg}
-                      filled={focused && n.iconActiveFilled}
-                      knockout={t.colors.glass}
-                      color={focused ? n.iconActive : n.iconInactive}
-                      strokeWidth={n.iconInactiveStrokeWidth}
-                    />
+                    </View>
                     {text}
                   </>
-                )}
-              </Pressable>
-            );
-          })}
-        </View>
+                )
+              ) : (
+                <>
+                  <Icon
+                    name={it.icon}
+                    size={t.icon.lg}
+                    filled={focused && n.iconActiveFilled}
+                    knockout={barBg}
+                    color={focused ? t.colors.text : t.colors.textMuted}
+                    strokeWidth={n.iconInactiveStrokeWidth}
+                  />
+                  {text}
+                </>
+              )}
+            </Pressable>
+          );
+        })}
       </View>
     </View>
   );

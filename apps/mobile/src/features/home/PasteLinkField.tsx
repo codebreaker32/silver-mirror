@@ -17,9 +17,9 @@ interface PasteLinkFieldProps {
 }
 
 /**
- * Paste field (component.field, DESIGN.md §8.2): label above, a 56dp white pill with the card hairline and the card shadow in light, and the inline
- * trailing Check pill (48dp target) inside it. Focus = 2dp focus-ring edge; error = 2dp text-colour edge, an info
- * icon and the message below.
+ * Paste field (Silver & graphite): optional label above, a 56dp surface-tone row (radius 16, no line, no shadow) with the
+ * inline graphite Check pill (48dp target). Focus = 2dp steel focus ring; error = 2dp ink edge, an info icon and the
+ * message below.
  */
 export function PasteLinkField({ onSubmit, ref, emphasis = 'primary', hideLabel = false }: PasteLinkFieldProps) {
   const t = useTheme();
@@ -35,7 +35,10 @@ export function PasteLinkField({ onSubmit, ref, emphasis = 'primary', hideLabel 
     setError(null);
     onSubmit(value.trim());
   };
-  const edge = error ? { width: 2, color: t.colors.text } : focused ? { width: f.focusBorderWidth, color: f.focusBorder } : { width: f.borderWidth, color: f.border };
+  // Silver & graphite: the field is a surface-tone row on the page, radius 16, no line and no shadow at rest. Focus
+  // draws the 2dp steel focus ring, an error a 2dp ink edge; the edge is always 2dp wide (transparent at rest) so the
+  // text never shifts.
+  const edgeColor = error ? t.colors.text : focused ? t.colors.focusRing : 'transparent';
   const inset = (f.minHeight - f.trailingActionTarget) / 2;
   const primary = emphasis === 'primary';
   return (
@@ -50,15 +53,12 @@ export function PasteLinkField({ onSubmit, ref, emphasis = 'primary', hideLabel 
           minHeight: f.minHeight,
           flexDirection: 'row',
           alignItems: 'center',
-          // Card family (DESIGN.md §9.2): the card hairline + shadow in light, hairline only in dark; focus and error draw 2dp.
-          ...(t.dark ? null : t.elevation['1'].style),
-          backgroundColor: f.bg,
-          borderRadius: f.radius,
-          borderWidth: edge.width,
-          borderColor: edge.color,
-          // Keep the text from shifting when the edge thickens on focus or error.
-          paddingLeft: f.paddingX - (edge.width - f.borderWidth),
-          paddingRight: inset - (edge.width - f.borderWidth),
+          backgroundColor: t.colors.surface,
+          borderRadius: 16,
+          borderWidth: 2,
+          borderColor: edgeColor,
+          paddingLeft: f.paddingX - 2,
+          paddingRight: inset - 2,
           gap: t.space[2],
         }}
       >
@@ -71,7 +71,7 @@ export function PasteLinkField({ onSubmit, ref, emphasis = 'primary', hideLabel 
           accessibilityLabelledBy={hideLabel ? undefined : 'paste-label'}
           accessibilityLabel="Product link or name"
           placeholder="Paste a link or name"
-          placeholderTextColor={f.placeholder}
+          placeholderTextColor={t.colors.textSubtle}
           value={value}
           onChangeText={(v) => {
             setValue(v);

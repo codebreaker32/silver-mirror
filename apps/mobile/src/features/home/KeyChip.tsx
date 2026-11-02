@@ -4,8 +4,9 @@ import { shortDate } from '@/features/check/format';
 import { Pressable, Text, View } from 'react-native';
 import { PillButton } from '@/components';
 import { useTheme } from '@/theme/ThemeProvider';
-import { useGlass } from '@/components/glass';
-import { ReadingRing } from './ReadingRing';
+import { Icon } from '@/components';
+import { homeType } from '@/components/home/homeType';
+import { BandMeter } from './BandMeter';
 
 export interface KeyChipText {
   /** Card label: "Your skin type", or "No reading yet" when empty. */
@@ -37,69 +38,33 @@ interface ReadingCardProps {
   onUseDemo?: () => void;
 }
 
+/** The three readings Home shows, in this order. The Reading tab carries the full set. */
+export function homeBands(key: KeyProfile): { label: string; level: KeyProfile['bands']['oiliness']['level'] }[] {
+  return [
+    { label: 'Oiliness', level: key.bands.oiliness.level },
+    { label: 'Moisture', level: key.bands.moisture.level },
+    { label: 'Pores', level: key.bands.pore.level },
+  ];
+}
+
 /**
- * Home reading card (dashboard reference "Skin Health" card, without its number): a frosted glass card, radius 28.
- * Left, "Your skin type" over the skin-type word set large and one muted line (scan stamp or the Demo reading line);
- * right, the oiliness band ring (one, two or three of three arcs for Low / Medium / High) with the droplet in a pastel
- * disc and "Oiliness · High" under it (the ring is hidden from TalkBack; the card label carries the band; no figure). One target, one
- * label in visual order, opens the Reading tab. Empty: the same card says "No reading yet" over "Scan once, about a
- * minute" with the face-frame in the ring, then Start scan and the text action Use the Demo reading.
+ * Home reading surface (dashboard reference "Skin Health" block, Silver & graphite): one surface-tone block, radius 16,
+ * no line, no shadow. "Your skin type" in muted 15, the skin-type word large, the scan line muted; under it three band
+ * rows (Oiliness, Moisture, Pores) with a three-segment bar and the band word. No figures anywhere. With a reading the
+ * block is one target with one label in visual order and opens the Reading tab. Empty: "No reading yet", the one-line
+ * how, then Start scan (graphite pill) and the text action Use the Demo reading.
  */
 export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardProps) {
   const t = useTheme();
-  const glass = useGlass(28);
   const { title, value, sub } = keyChipText(keyProfile, isDemo);
-  const pad = t.space[5];
-
-  const text = (
-    <View style={{ flex: 1, minWidth: 0, gap: t.space[1] }}>
-      <Text {...t.textProps.bodySm} style={[t.typography.bodySm, { color: t.colors.textMuted }]}>
-        {title}
-      </Text>
-      {keyProfile ? (
-        <Text
-          {...t.textProps.valueHero}
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          minimumFontScale={0.7}
-          style={{ fontFamily: t.fonts.sansSemibold, fontSize: 34, lineHeight: 42, letterSpacing: -0.8, color: t.colors.text }}
-        >
-          {value}
-        </Text>
-      ) : (
-        <Text {...t.textProps.headline} style={[t.typography.headline, { color: t.colors.text }]}>
-          {value}
-        </Text>
-      )}
-      {sub ? (
-        <Text {...t.textProps.caption} style={[t.typography.caption, { color: t.colors.textMuted, marginTop: t.space[1] }]}>
-          {sub}
-        </Text>
-      ) : null}
-    </View>
-  );
-  // The ring shows the oiliness band (one, two or three arcs); the word under it says the same, so it is never a
-  // shape without a reading.
-  const oil = keyProfile?.bands.oiliness.level;
-  const row = (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[4] }}>
-      {text}
-      <View style={{ alignItems: 'center', gap: t.space[1] }}>
-        <ReadingRing icon={keyProfile ? 'droplet' : 'face-frame'} level={oil} />
-        {oil ? (
-          <Text {...t.textProps.caption} numberOfLines={1} style={[t.typography.caption, { color: t.colors.textMuted }]}>
-            {`Oiliness · ${oil}`}
-          </Text>
-        ) : null}
-      </View>
-    </View>
-  );
+  const surface = { backgroundColor: t.colors.surface, borderRadius: 16, padding: t.space[5] } as const;
 
   if (!keyProfile) {
     return (
-      <View testID="key-chip" style={[glass, { padding: pad, gap: t.space[4] }]}>
-        <View accessible accessibilityLabel={`${title}. ${value}`}>
-          {row}
+      <View testID="key-chip" style={[surface, { gap: t.space[5] }]}>
+        <View accessible accessibilityLabel={`${title}. ${value}`} style={{ gap: t.space[1] }}>
+          <Text style={[homeType.value, { fontSize: 28, lineHeight: 34, color: t.colors.text }]}>{title}</Text>
+          <Text style={[homeType.body, { color: t.colors.textMuted }]}>{value}</Text>
         </View>
         <View style={{ gap: t.space[1] }}>
           <PillButton label="Start scan" trailingIcon="arrow-right" onPress={onPress} testID="home-start-scan" />
@@ -109,18 +74,41 @@ export function KeyChip({ keyProfile, isDemo, onPress, onUseDemo }: ReadingCardP
     );
   }
 
+  const bands = homeBands(keyProfile);
   const selfReported = Object.values(keyProfile.bands).some((b) => b.selfReported);
   return (
     <Pressable
       testID="key-chip"
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={[`${title}, ${value}`, sub, oil ? `Oiliness reading: ${oil}` : null, selfReported ? `Some readings ${COPY.selfReported}` : null, 'Open your reading'].filter(Boolean).join('. ')}
+      accessibilityLabel={[
+        `${title}, ${value}`,
+        sub,
+        bands.map((b) => `${b.label} ${b.level}`).join(', '),
+        selfReported ? `Some readings ${COPY.selfReported}` : null,
+        'Open your reading',
+      ]
+        .filter(Boolean)
+        .join('. ')}
       accessibilityHint="Opens the Reading tab"
       android_ripple={{ color: t.colors.state.ripple }}
-      style={({ pressed }) => [glass, { minHeight: t.touch.min, padding: pad, overflow: 'hidden', transform: [{ scale: pressed ? 0.99 : 1 }] }]}
+      style={({ pressed }) => [surface, { minHeight: t.touch.min, overflow: 'hidden', gap: t.space[5], backgroundColor: pressed ? t.colors.surfaceRaised : t.colors.surface }]}
     >
-      {row}
+      <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: t.space[3] }}>
+        <View style={{ flex: 1, minWidth: 0 }}>
+          <Text style={[homeType.body, { color: t.colors.textMuted }]}>{title}</Text>
+          <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7} style={[homeType.value, { marginTop: 2, color: t.colors.text }]}>
+            {value}
+          </Text>
+          {sub ? <Text style={[homeType.small, { marginTop: t.space[1], color: t.colors.textMuted }]}>{sub}</Text> : null}
+        </View>
+        <Icon name="chevron-right" size={t.icon.md} color={t.colors.textMuted} />
+      </View>
+      <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ gap: t.space[3] }}>
+        {bands.map((b) => (
+          <BandMeter key={b.label} label={b.label} level={b.level} />
+        ))}
+      </View>
     </Pressable>
   );
 }
