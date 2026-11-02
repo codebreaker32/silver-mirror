@@ -121,7 +121,7 @@ async function settle(page) {
 }
 
 async function waitForVerdict(page) {
-  const back = page.getByRole('button', { name: /Back to product/ }).first();
+  const back = page.getByRole('button', { name: /Back to (product|\w+ listing)/ }).first();
   const yes = page.getByTestId('sku-yes');
   const option = page.getByTestId('sku-option-0');
   await Promise.race([back.waitFor({ timeout: 30_000 }), yes.waitFor({ timeout: 30_000 }), option.waitFor({ timeout: 30_000 })]);
@@ -139,7 +139,7 @@ const GROUPS = [
       'check-matches',
       null,
       async (page) => {
-        await page.getByRole('button', { name: /Find better matches/ }).first().click();
+        await page.getByRole('button', { name: /^Better matches/ }).first().click();
         await page.getByTestId('better-matches').waitFor({ timeout: 15_000 });
         await page
           .getByTestId('match-0')

@@ -1,9 +1,9 @@
 import { View } from 'react-native';
 import { COPY } from '@skinkey/contracts';
 import { useTheme } from '@/theme/ThemeProvider';
+import { Body, Caption, Card, IconDisc, PillButton, SectionHeader, Txt } from '@/components';
 import type { InciChip } from '../chips';
 import type { LabelState } from '../flow';
-import { Body, Button } from '../ui';
 import { InciChipEditor } from './InciChipEditor';
 
 interface Props {
@@ -14,34 +14,55 @@ interface Props {
   onRun: (chips: InciChip[]) => void;
 }
 
-/** Designed UNKNOWN (spec §2D): a next step and the live catalogue count, never an error state. */
+/** The button drops the fixed string's trailing full stop (DESIGN.md §9.4); the copy itself is unchanged. */
+const SNAP_LABEL = COPY.snapLabel.replace(/\.$/, '');
+
+/**
+ * Designed UNKNOWN (spec §2D, DESIGN.md §9.4): one next step as the in-content primary, the real catalogue count,
+ * never an error state. After the photo, the editable ingredient chips take its place.
+ */
 export function UnknownPanel({ catalogCount, label, onSnap, onChips, onRun }: Props) {
   const t = useTheme();
   if (label.step === 'review') {
     return <InciChipEditor chips={label.chips} unreadable={label.unreadable} onChange={onChips} onRun={onRun} onRetake={onSnap} />;
   }
   return (
-    <View testID="unknown-panel" style={{ gap: t.space[4] }}>
-      {catalogCount != null ? <Body testID="catalog-count">{COPY.catalogCount(catalogCount)}</Body> : null}
-      <Button
-        testID="snap-label"
-        label={COPY.snapLabel}
-        leadingIcon="camera"
-        onPress={onSnap}
-        busy={label.step === 'reading'}
-        busyLabel="Reading the label…"
-        accessibilityHint="Opens the camera. Claude reads the ingredient names; you confirm them before any check runs."
-      />
-      {label.step === 'reading' ? (
-        <Body muted accessibilityLiveRegion="polite">
-          Reading the ingredient names (Claude). You'll check them next.
+    <View testID="unknown-panel" style={{ gap: t.space[3] }}>
+      <SectionHeader title="Next step" />
+      <Card variant="raised" gap={t.space[4]}>
+        <View style={{ flexDirection: 'row', gap: t.space[3], alignItems: 'flex-start' }}>
+          <IconDisc icon="document" />
+          <View style={{ flex: 1, gap: t.space[1] }}>
+            <Txt variant="bodyStrong">Check it from the pack</Txt>
+            {label.step === 'error' ? (
+              <Body small accessibilityLiveRegion="polite">
+                {label.message}
+              </Body>
+            ) : (
+              <Body small muted>
+                Photograph the ingredient list on the pack. Claude reads the names; you check them; our rules decide.
+              </Body>
+            )}
+          </View>
+        </View>
+        <PillButton
+          testID="snap-label"
+          label={SNAP_LABEL}
+          leadingIcon="camera"
+          onPress={onSnap}
+          busy={label.step === 'reading'}
+          busyLabel="Reading the label…"
+          accessibilityHint="Opens the camera. Claude reads the ingredient names; you confirm them before any check runs."
+        />
+        {label.step === 'reading' ? (
+          <Caption accessibilityLiveRegion="polite">Reading the ingredient names (Claude). You'll check them next.</Caption>
+        ) : null}
+      </Card>
+      {catalogCount != null ? (
+        <Body small muted testID="catalog-count">
+          {COPY.catalogCount(catalogCount)}
         </Body>
       ) : null}
-      {label.step === 'error' ? (
-        <Body accessibilityLiveRegion="polite">{label.message}</Body>
-      ) : (
-        <Body muted>Photograph the ingredient list on the pack. Claude reads the names; you check them; our rules decide.</Body>
-      )}
     </View>
   );
 }

@@ -22,7 +22,8 @@ export interface LedgerLink {
 }
 
 export interface LedgerRow {
-  key: 'SKIN' | 'PRODUCT' | 'RULES' | 'LIMITS';
+  /** Sentence-case ledger keys (DESIGN.md §8.6). */
+  key: 'Reading' | 'Product' | 'Rules' | 'Limits';
   value: string;
   sub: string | null;
   links: LedgerLink[];
@@ -42,7 +43,7 @@ export interface VerdictView {
   ledger: LedgerRow[];
   fixedLines: string[];
   showMatches: boolean;
-  /** UNKNOWN because the ingredients are missing (offer the label photo) or because there is no Key (offer a scan). */
+  /** UNKNOWN because the ingredients are missing (offer the label photo) or because there is no reading (offer a scan). */
   unknownKind: 'ingredients' | 'readings' | null;
   announce: string;
 }
@@ -63,7 +64,7 @@ function subtitleFor(v: Verdict): string {
   return v.subtitle?.trim() || COPY.subtitle[v.label];
 }
 
-/** Rules may return `basis` (VerdictResult). `no_readings` means INCI is known but there is no Key. */
+/** Rules may return `basis` (VerdictResult). `no_readings` means INCI is known but there is no reading. */
 const basisOf = (v: Verdict): string | null => ('basis' in v && typeof v.basis === 'string' ? v.basis : null);
 
 /** Rules write "<reading lead>. <fact>" in one string; the sheet sets the reading in serif above the fact. */
@@ -102,20 +103,20 @@ function reasonView(r: Reason, i: number, total: number, scanDate: string | null
 
 function skinRow(key: KeyProfile | null): LedgerRow {
   if (!key) {
-    const value = 'No Key on this phone';
+    const value = 'No reading on this phone';
     const sub = 'Scan for reasons based on your readings.';
-    return { key: 'SKIN', value, sub, links: [], a11y: `Skin: ${value}. ${sub}` };
+    return { key: 'Reading', value, sub, links: [], a11y: `Reading: ${value}. ${sub}` };
   }
   if (key.source === 'demo') {
-    const value = 'Demo Key: labelled sample readings, not a scan';
+    const value = 'Demo reading: labelled sample readings, not a scan';
     const sub = 'No photo taken';
-    return { key: 'SKIN', value, sub, links: [], a11y: `Skin: ${value}. ${sub}` };
+    return { key: 'Reading', value, sub, links: [], a11y: `Reading: ${value}. ${sub}` };
   }
   const value = `Measured by YouCam Skin Analysis HD, ${shortDate(key.scanDate)}`;
-  const parts = [key.photoDeleted ? 'Photo deleted · score bands only' : COPY.deleteFailed];
+  const parts: string[] = [key.photoDeleted ? COPY.reading.photoDeletedStamp : COPY.deleteFailed];
   if (key.selfReported.length) parts.push(`${key.selfReported.length} band${key.selfReported.length > 1 ? 's' : ''} ${COPY.selfReported}`);
   const sub = parts.join(' · ');
-  return { key: 'SKIN', value, sub, links: [], a11y: `Skin: ${value}. ${sub}` };
+  return { key: 'Reading', value, sub, links: [], a11y: `Reading: ${value}. ${sub}` };
 }
 
 function productRow(v: Verdict, ctx: PresentContext): LedgerRow {
@@ -127,34 +128,34 @@ function productRow(v: Verdict, ctx: PresentContext): LedgerRow {
     const by = ctx.product?.verified_by;
     const sub = by === 'human' ? COPY.catalogHumanChecked : by === 'brand_page_check' ? COPY.catalogBrandPageChecked : 'Copied from the brand page';
     const links = url ? [{ label: 'Ingredient list source', url }] : [];
-    return { key: 'PRODUCT', value, sub, links, a11y: `Product: ${value}. ${sub}` };
+    return { key: 'Product', value, sub, links, a11y: `Product: ${value}. ${sub}` };
   }
   if (src === 'label_photo_confirmed') {
     const value = COPY.labelPhotoProvenance;
     const sub = ctx.labelTokenCount ? `${ctx.labelTokenCount} ingredients` : null;
-    return { key: 'PRODUCT', value, sub, links: [], a11y: `Product: ${value}${sub ? ` ${sub}` : ''}` };
+    return { key: 'Product', value, sub, links: [], a11y: `Product: ${value}${sub ? ` ${sub}` : ''}` };
   }
   const value = 'Product name only';
   const sub = ctx.catalogCount != null ? COPY.catalogCount(ctx.catalogCount) : null;
-  return { key: 'PRODUCT', value, sub, links: [], a11y: `Product: ${value}.${sub ? ` ${sub}` : ''}` };
+  return { key: 'Product', value, sub, links: [], a11y: `Product: ${value}.${sub ? ` ${sub}` : ''}` };
 }
 
 function rulesRow(v: Verdict, reasons: Reason[]): LedgerRow {
-  const value = `Published rules v${shortHash(v.provenance.rulesetHash)}`;
+  const value = `Published rules (version ${shortHash(v.provenance.rulesetHash)})`;
   const sub = reasons.length ? reasons.map((r) => `${r.ruleId}${r.grade ? ` (${r.grade})` : ''}`).join(' · ') : null;
   const links: LedgerLink[] = [];
   for (const r of reasons) {
     if (r.sourceUrl && !links.some((l) => l.url === r.sourceUrl)) links.push({ label: `${r.ruleId} source`, url: r.sourceUrl });
     if (r.inciSourceUrl && !links.some((l) => l.url === r.inciSourceUrl)) links.push({ label: `${r.ruleId} ingredient name`, url: r.inciSourceUrl });
   }
-  return { key: 'RULES', value, sub, links, a11y: `Rules: ${value}.${sub ? ` ${sub}.` : ''}` };
+  return { key: 'Rules', value, sub, links, a11y: `Rules: ${value}.${sub ? ` ${sub}.` : ''}` };
 }
 
 function composeProvenance(v: Verdict, key: KeyProfile | null): string {
   const p = v.provenance;
   const parts: string[] = [];
   if (key?.source === 'youcam_hd') parts.push(`Measured by YouCam Skin Analysis HD, ${shortDate(key.scanDate)}`);
-  else if (key?.source === 'demo') parts.push('Demo Key (sample readings)');
+  else if (key?.source === 'demo') parts.push('Demo reading (sample readings)');
   if (key?.source === 'youcam_hd') parts.push(key.photoDeleted ? 'photo deleted' : 'photo delete not confirmed');
   if (p.inciSource === 'label_photo_confirmed') parts.push(COPY.labelPhotoProvenance.replace(/\.$/, ''));
   parts.push(`rules v${shortHash(p.rulesetHash)}`);
@@ -193,7 +194,7 @@ export function presentVerdict(v: Verdict, ctx: PresentContext): VerdictView {
   const reasons = ordered.map((r, i) => reasonView(r, i, ordered.length, scanDate));
   const emptyReasonsNote = v.label === 'FITS' && reasons.length === 0 ? COPY.fitsNoFlags : null;
   const provenanceLine = v.provenance.line?.trim() || composeProvenance(v, ctx.key);
-  const ledger = [skinRow(ctx.key), productRow(v, ctx), rulesRow(v, ordered), { key: 'LIMITS', value: COPY.accuracyNote, sub: null, links: [], a11y: `Limits: ${COPY.accuracyNote}` } satisfies LedgerRow];
+  const ledger = [skinRow(ctx.key), productRow(v, ctx), rulesRow(v, ordered), { key: 'Limits', value: COPY.accuracyNote, sub: null, links: [], a11y: `Limits: ${COPY.accuracyNote}` } satisfies LedgerRow];
 
   return {
     label: v.label,
@@ -227,7 +228,7 @@ const ZONE_MAP: Record<string, LitZone[]> = {
   whole: ALL,
 };
 
-/** Zones the Key glyph lights for the first reading-based reason (spec §2B.3). */
+/** Zones the reading glyph lights for the first reading-based reason (spec §2B.3). */
 export function litZones(v: Verdict): LitZone[] {
   for (const r of [...v.reasons, ...v.labelChecks]) {
     const key = r.glyphZone ?? (r.reading?.on === 'zone' ? r.reading.zone : r.reading?.on === 'band' ? r.reading.region : null);

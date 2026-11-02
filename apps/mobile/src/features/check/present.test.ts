@@ -27,7 +27,7 @@ describe('presentVerdict', () => {
   it('carries a provenance line, ledger rows and the fixed lines', () => {
     const v = presentVerdict(CAUTION_VERDICT, ctx);
     expect(v.provenanceLine).toBe('Measured by YouCam Skin Analysis HD, 1 Nov · photo deleted · rules va1b2c3d');
-    expect(v.ledger.map((r) => r.key)).toEqual(['SKIN', 'PRODUCT', 'RULES', 'LIMITS']);
+    expect(v.ledger.map((r) => r.key)).toEqual(['Reading', 'Product', 'Rules', 'Limits']);
     expect(v.ledger[1]!.links).toEqual([{ label: 'Ingredient list source', url: PRODUCT.source_url }]);
     expect(v.ledger[2]!.sub).toBe('LC-1a (R) · OCC-2 (L) · LC-1b (R)');
     expect(v.ledger[2]!.links[0]).toEqual({ label: 'OCC-2 source', url: 'https://example.org/fulton-1989' });
@@ -79,9 +79,9 @@ describe('presentVerdict', () => {
     expect(v.provenanceLine).toContain('Photo of label, confirmed by you');
   });
 
-  it('labels the Demo Key and never dates it as a scan', () => {
+  it('labels the Demo reading and never dates it as a scan', () => {
     const v = presentVerdict(CAUTION_VERDICT, { key: DEMO_KEY, product: PRODUCT, catalogCount: 1 });
-    expect(v.ledger[0]!.value).toMatch(/^Demo Key/);
+    expect(v.ledger[0]!.value).toMatch(/^Demo reading/);
     expect(v.reasons[1]!.reading).toBe('Oiliness reading: High (whole face).');
   });
 

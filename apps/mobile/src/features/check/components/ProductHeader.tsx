@@ -1,37 +1,54 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
-import { textStyle } from '../ui';
+import { Txt } from '@/components';
+import { displayTitle } from '../display';
 
-/** "Is this the product?" header: the title is plain serif text, never a form field (components.md §5). */
-export function ProductHeader({ title, meta, kicker = 'Is this the product?' }: { title: string | null; meta?: string | null; kicker?: string }) {
+/**
+ * Product header (component.productHeader): the product name in the serif title, title-cased, then one muted meta
+ * line. Plain text, never a form field, and no "Is this the product?" kicker (the SKU sheet already asked).
+ */
+export function ProductHeader({ title, meta }: { title: string | null; meta?: string | null }) {
   const t = useTheme();
   const h = t.components.productHeader;
   return (
-    <View style={{ gap: h.gap }}>
-      <Text style={[textStyle(h.kicker), { color: h.kickerColor }]}>{kicker}</Text>
+    <View style={{ gap: t.space[2] }}>
       {title ? (
-        <Text accessibilityRole="header" style={[h.title, { color: h.titleColor }]}>
-          {title}
-        </Text>
+        <Txt accessibilityRole="header" variant="title" style={[h.title, { color: h.titleColor }]}>
+          {displayTitle(title)}
+        </Txt>
       ) : (
-        <View style={{ gap: t.space[2] }} accessibilityLabel="Reading the shared link">
-          <View style={{ height: t.space[6], width: '80%', borderRadius: t.radius.xs, backgroundColor: t.colors.bgSunken }} />
-          <View style={{ height: t.space[6], width: '55%', borderRadius: t.radius.xs, backgroundColor: t.colors.bgSunken }} />
+        <View style={{ gap: t.space[2] }} accessible accessibilityLabel="Reading the shared link">
+          <View style={{ height: t.space[6], width: '80%', borderRadius: t.radius.sm, backgroundColor: t.colors.bgSunken }} />
+          <View style={{ height: t.space[6], width: '55%', borderRadius: t.radius.sm, backgroundColor: t.colors.bgSunken }} />
         </View>
       )}
-      {meta ? <Text style={[textStyle(h.meta), { color: h.metaColor }]}>{meta}</Text> : null}
+      {meta ? (
+        <Txt variant="caption" style={[h.meta, { color: h.metaColor }]}>
+          {meta}
+        </Txt>
+      ) : null}
     </View>
   );
 }
 
+/** Placeholder where the verdict head will land: same radius as the head, a busy node and a polite status line. */
 export function HeadSkeleton({ label }: { label: string }) {
   const t = useTheme();
   return (
     <View accessible accessibilityLabel={label} accessibilityState={{ busy: true }} style={{ gap: t.space[3] }}>
-      <View style={{ height: t.space[20], borderRadius: t.components.verdictCard.head.radius, backgroundColor: t.colors.bgSunken }} />
-      <Text accessibilityLiveRegion="polite" style={[t.type.body, { color: t.colors.textMuted }]}>
+      <View
+        style={{
+          height: t.space[20] + t.space[4],
+          borderRadius: t.components.verdictCard.head.radius,
+          backgroundColor: t.colors.bgSunken,
+          borderWidth: 1,
+          borderStyle: 'dashed',
+          borderColor: t.colors.border,
+        }}
+      />
+      <Txt variant="body" tone="muted" accessibilityLiveRegion="polite">
         {label}
-      </Text>
+      </Txt>
     </View>
   );
 }

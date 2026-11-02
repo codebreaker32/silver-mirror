@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
-import type { KeyProfile, ResolveCandidate, ResolveRequest, Store } from '@skinkey/contracts';
+import { COPY, type KeyProfile, type ResolveCandidate, type ResolveRequest, type Store } from '@skinkey/contracts';
 import type { CheckInput } from '@/features/share/parse';
 import { toResolveRequest } from '@/features/share/parse';
 import type { CheckApi } from './api';
@@ -20,7 +20,7 @@ const QUIET = 'Something went wrong. Try again in a moment.';
 export function errorMessage(e: unknown): string {
   if (e && typeof e === 'object' && 'body' in e) {
     const code = (e as { body?: { error?: { code?: string } } | null }).body?.error?.code;
-    if (code === 'rate_limited') return 'SkinKey is busy right now. Try again in a minute.';
+    if (code === 'rate_limited') return `${COPY.appName} is busy right now. Try again in a minute.`;
     if (code === 'cap_reached') return 'This install has used its checks for now. The sample share still works.';
     if (code === 'claude_refusal') return "We couldn't read that. Try a clearer photo or paste the product name.";
   }

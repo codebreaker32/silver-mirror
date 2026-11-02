@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ComponentRef } from 'react';
-import { AccessibilityInfo, Pressable, ScrollView, Text, View } from 'react-native';
+import { AccessibilityInfo, Pressable, ScrollView, View, useWindowDimensions, type LayoutChangeEvent, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { DEMO_KEY, type HowThisWasMade, type Store } from '@skinkey/contracts';
+import { COPY, DEMO_KEY, type HowThisWasMade, type Store } from '@skinkey/contracts';
 import { FACET_MAP, medicineGate, rank, verdict } from '@skinkey/rules';
 import { useTheme } from '@/theme/ThemeProvider';
+import { Body, Card, EmptyState, Icon, IconButton, IconDisc, PillButton, Tag, Txt, useCardStyle, type IconName } from '@/components';
 import { glyphFromKey, loadScanLedger, useKey, ZoneGlyph } from '@/features/key';
-import { BetterMatches, guessCategory, useBetterMatches } from '@/features/matches';
+import { BetterMatches, guessCategory, storeLinks, StoreSearchSheet, useBetterMatches } from '@/features/matches';
 import { openStoreUrl } from '@/features/matches/openStoreUrl';
 import { CropStep, inputFromPaste, sampleInput, takeShare, type CheckInput } from '@/features/share';
 import { demo } from '@/demo';
@@ -21,7 +22,6 @@ import { productLine, tryonEntry, type Engine } from './flow';
 import { contextClick } from './haptics';
 import { documentScannerAvailable, scanLabel } from './media';
 import { litZones, presentVerdict } from './present';
-import { Body, Button, Icon, Tag } from './ui';
 import { useCheckFlow } from './useCheckFlow';
 
 const ENGINE: Engine = { verdict, medicineGate };
@@ -40,15 +40,116 @@ function sourceLine(origin: Origin | null, store: Store): string {
   return name ? `Shared from ${name}` : 'Shared link';
 }
 
+const SOURCE_ICON: Record<Origin, IconName> = { share: 'arrow-down-left', screenshot: 'arrow-down-left', paste: 'paste', sample: 'tag-check' };
+
+/** App bar (component.appBar): one chevron-left back button and the store source as a small sunken chip. */
+function CheckAppBar({ label, icon, onBack }: { label: string; icon: IconName | null; onBack: () => void }) {
+  const t = useTheme();
+  const a = t.components.appBar;
+  const h = t.components.productHeader;
+  return (
+    <View style={{ minHeight: a.minHeight, paddingHorizontal: a.paddingX, flexDirection: 'row', alignItems: 'center', gap: t.space[1], backgroundColor: a.bg }}>
+      <IconButton icon="chevron-left" accessibilityLabel="Back" onPress={onBack} color={a.fg} />
+      {icon ? (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: t.space[1] + 2,
+            paddingHorizontal: t.space[3],
+            minHeight: t.components.tag.visualMinHeight + t.space[2],
+            borderRadius: t.radius.full,
+            backgroundColor: h.sourceChipBg,
+          }}
+        >
+          <Icon name={icon} size={t.icon.sm} color={h.sourceChipFg} />
+          <Txt accessibilityRole="header" variant="label" numberOfLines={1} style={{ color: h.sourceChipFg }}>
+            {label}
+          </Txt>
+        </View>
+      ) : (
+        <Txt accessibilityRole="header" variant="headline" numberOfLines={1} style={[a.title, { color: a.fg }]}>
+          {label}
+        </Txt>
+      )}
+    </View>
+  );
+}
+
+/** Compact "No reading yet" card, always under the verdict (DESIGN.md §9.4). */
+function NoReadingCard({ onScan, onDemo, primary }: { onScan: () => void; onDemo: () => void; primary: boolean }) {
+  const t = useTheme();
+  return (
+    <Card variant="raised" testID="no-key" gap={t.space[4]}>
+      <View style={{ flexDirection: 'row', gap: t.space[3], alignItems: 'flex-start' }}>
+        <IconDisc icon="face-frame" />
+        <View style={{ flex: 1, gap: t.space[1] }}>
+          <Txt accessibilityRole="header" variant="section">
+            {COPY.reading.none}
+          </Txt>
+          <Body small muted>
+            Scan for reasons based on your readings.
+          </Body>
+        </View>
+      </View>
+      <View style={{ gap: t.space[1] }}>
+        <PillButton label="Start scan" variant={primary ? 'primary' : 'secondary'} leadingIcon="face-frame" onPress={onScan} />
+        <PillButton label={COPY.reading.useDemo} variant="tertiary" trailingIcon="chevron-right" onPress={onDemo} style={{ alignSelf: 'center' }} />
+      </View>
+    </Card>
+  );
+}
+
+/** "Better matches" pill that floats above the dock while that section is off screen. */
+function MatchesPill({ onPress, bottom }: { onPress: () => void; bottom: number }) {
+  const t = useTheme();
+  const surface = useCardStyle('raised', t.radius.full);
+  const shadow = t.dark ? null : t.elevation['2'].style;
+  return (
+    <View pointerEvents="box-none" style={{ position: 'absolute', left: 0, right: 0, bottom: bottom + t.space[3], alignItems: 'center' }}>
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel="Better matches"
+        accessibilityHint="Scrolls to catalogue products ranked by fit to your readings."
+        testID="find-better"
+        style={{ minHeight: t.touch.min, justifyContent: 'center' }}
+      >
+        {({ pressed }) => (
+          <View
+            style={[
+              surface,
+              shadow,
+              {
+                backgroundColor: pressed ? t.components.button.secondary.bgPressed : t.colors.surfaceRaised,
+                minHeight: t.components.chip.visualMinHeight + t.space[1],
+                paddingHorizontal: t.space[4],
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: t.space[2],
+              },
+            ]}
+          >
+            <Txt variant="label">Better matches</Txt>
+            <Icon name="chevron-down" size={t.icon.sm} color={t.colors.text} />
+          </View>
+        )}
+      </Pressable>
+    </View>
+  );
+}
+
 export default function CheckScreen() {
   const t = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { fontScale } = useWindowDimensions();
   const params = useLocalSearchParams<{ q?: string; sample?: string; share?: string }>();
   const { key: storedKey, isDemo, loading: keyLoading, useDemo: chooseDemo } = useKey();
   const [origin, setOrigin] = useState<Origin | null>(null);
   const [listingUrl, setListingUrl] = useState<string | null>(null);
   const [howOpen, setHowOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
   const key = storedKey ?? (origin === 'sample' ? DEMO_KEY : null);
   const usingDemo = isDemo || (!storedKey && origin === 'sample');
@@ -67,6 +168,7 @@ export default function CheckScreen() {
       // Each new input is a fresh check: drop the previous result, sheets and listing link.
       reset();
       setHowOpen(false);
+      setMoreOpen(false);
       setCameraOpen(false);
       setOrigin(input.kind === 'image' ? 'screenshot' : from);
       setListingUrl(input.kind === 'text' ? input.parsed.url : null);
@@ -118,20 +220,41 @@ export default function CheckScreen() {
     excludeId: result?.product?.id,
     enabled: !!view?.showMatches,
   });
+  const links = useMemo(() => storeLinks({ category, key, facetMap: FACET_MAP, facetLabel: COPY.flipkartFacetLink }), [category, key]);
 
+  // Scroll geometry: the "Better matches" pill shows only while that section is off screen, and the dock edge only
+  // while content scrolls under it (component.actionBar).
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const sheetY = useRef(0);
-  const matchesY = useRef(0);
-  const toMatches = () => scroll.current?.scrollTo({ y: sheetY.current + matchesY.current, animated: true });
+  const matchesY = useRef<number | null>(null);
+  const geo = useRef({ y: 0, viewport: 0, content: 0 });
+  const [matchesOnScreen, setMatchesOnScreen] = useState(false);
+  const [under, setUnder] = useState(false);
+  const measure = useCallback(() => {
+    const { y, viewport, content } = geo.current;
+    const top = matchesY.current == null ? null : sheetY.current + matchesY.current;
+    setMatchesOnScreen(top != null && y + viewport > top + t.space[12]);
+    setUnder(content - (y + viewport) > 1);
+  }, [t.space]);
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    geo.current.y = e.nativeEvent.contentOffset.y;
+    measure();
+  };
+  const toMatches = () => {
+    if (matchesY.current == null) return;
+    scroll.current?.scrollTo({ y: Math.max(0, sheetY.current + matchesY.current - t.space[2]), animated: true });
+  };
 
   const store = state.phase === 'resolving' ? state.store : (result?.store ?? (state.phase === 'confirm' ? state.resolve.store : 'other'));
   const storeName = STORE_NAME[store];
+  const goBack = () => (router.canGoBack() ? router.back() : router.replace('/'));
   const backToProduct = () => {
     if (listingUrl && storeName) void openStoreUrl(listingUrl).catch(() => router.back());
-    else if (router.canGoBack()) router.back();
-    else router.replace('/');
+    else goBack();
   };
-  const backDestination = listingUrl && storeName ? `Returns to the ${storeName} listing` : undefined;
+  const toListing = !!(listingUrl && storeName);
+  const backLabel = toListing ? `Back to ${storeName} listing` : 'Back to product';
+  const backDestination = toListing ? `Returns to the ${storeName} listing` : undefined;
 
   const snap = async () => {
     if (!documentScannerAvailable()) {
@@ -152,198 +275,192 @@ export default function CheckScreen() {
       ? productLine(result.product)
       : (result?.title ?? (state.phase === 'resolving' ? state.title : state.phase === 'loading' ? productLine(state.candidate.product) : null));
 
-  const actionBar =
+  const inlineDock = fontScale >= t.components.actionBar.inlineAtFontScale;
+  const [dockH, setDockH] = useState(0);
+  const showMore = !!view && view.showMatches;
+  const dockActions =
     view && result ? (
-      <View
-        style={{
-          ...t.components.actionBar.shadow,
-          backgroundColor: t.components.actionBar.bg,
-          borderTopWidth: 1,
-          borderTopColor: t.components.actionBar.border,
-          paddingTop: t.components.actionBar.paddingTop,
-          paddingHorizontal: t.components.actionBar.paddingX,
-          paddingBottom: insets.bottom + t.components.actionBar.paddingBottom,
-          gap: t.components.actionBar.gap,
-        }}
-      >
-        {view.label === 'MEDICINE' ? (
-          <Button label="Back to product" onPress={backToProduct} destination={backDestination} testID="back-to-product" />
-        ) : view.label === 'FITS' ? (
-          <>
-            <Button label="Back to product" onPress={backToProduct} destination={backDestination} testID="back-to-product" />
-            <Button label="Find better matches" variant="secondary" onPress={toMatches} />
-          </>
-        ) : (
-          <>
-            <Button label="Find better matches" onPress={toMatches} testID="find-better" />
-            <Button label="Back to product" variant="secondary" onPress={backToProduct} destination={backDestination} />
-          </>
-        )}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.components.actionBar.gap }}>
+        <View style={{ flex: 1 }}>
+          <PillButton
+            label={backLabel}
+            onPress={backToProduct}
+            trailingIcon={toListing ? 'arrow-up-right' : undefined}
+            accessibilityHint={backDestination}
+            testID="back-to-product"
+          />
+        </View>
+        {showMore ? <IconButton icon="more-horizontal" variant="tonal" accessibilityLabel="More: search the stores" onPress={() => setMoreOpen(true)} testID="dock-more" /> : null}
       </View>
     ) : null;
 
-  return (
-    <View style={{ flex: 1, backgroundColor: t.colors.bg }}>
+  const dock =
+    dockActions && !inlineDock ? (
       <View
+        onLayout={(e: LayoutChangeEvent) => setDockH(e.nativeEvent.layout.height)}
         style={{
-          paddingTop: insets.top,
-          minHeight: t.components.appBar.minHeight + insets.top,
-          paddingHorizontal: t.components.appBar.paddingX,
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: t.components.appBar.bg,
+          ...(under && !t.dark ? t.components.actionBar.shadow : null),
+          backgroundColor: t.components.actionBar.bg,
+          borderTopWidth: 1,
+          borderTopColor: under ? (t.dark ? t.colors.sheenEdge : t.components.actionBar.border) : 'transparent',
+          paddingTop: t.components.actionBar.paddingTop,
+          paddingHorizontal: t.components.actionBar.paddingX,
+          paddingBottom: insets.bottom + t.components.actionBar.paddingBottom + t.space[1],
         }}
       >
-        <Pressable
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
-          accessibilityRole="button"
-          accessibilityLabel="Back"
-          style={{
-            width: t.components.iconButton.target,
-            height: t.components.iconButton.target,
-            borderRadius: t.components.iconButton.radius,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Icon name="back" size={t.components.appBar.iconSize} color={t.components.appBar.fg} />
-        </Pressable>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space[2], flex: 1 }}>
-          <Icon name="share" size={t.icon.sm} color={t.components.appBar.sourceColor} />
-          <Text accessibilityRole="header" style={[t.components.appBar.source, { color: t.components.appBar.sourceColor }]}>
-            {state.phase === 'idle' ? 'Check a product' : sourceLine(origin, store)}
-          </Text>
-        </View>
+        {dockActions}
       </View>
+    ) : null;
+
+  const medicine = view?.label === 'MEDICINE';
+
+  return (
+    <View style={{ flex: 1, backgroundColor: t.colors.bg, paddingTop: insets.top }}>
+      <CheckAppBar
+        label={state.phase === 'idle' ? 'Check a product' : sourceLine(origin, store)}
+        icon={state.phase === 'idle' || !origin ? null : SOURCE_ICON[origin]}
+        onBack={goBack}
+      />
 
       {state.phase === 'crop' ? (
-        <CropStep
-          uri={state.image.uri}
-          width={state.image.width}
-          height={state.image.height}
-          onCropped={flow.sendCrop}
-          onCancel={() => (router.canGoBack() ? router.back() : router.replace('/'))}
-        />
+        <CropStep uri={state.image.uri} width={state.image.width} height={state.image.height} onCropped={flow.sendCrop} onCancel={goBack} />
       ) : (
         <ScrollView
           ref={scroll}
-          contentContainerStyle={{ paddingHorizontal: t.spacing.gutter, paddingTop: t.space[2], paddingBottom: t.space[10], gap: t.space[6] }}
+          onScroll={onScroll}
+          scrollEventThrottle={64}
+          onLayout={(e) => {
+            geo.current.viewport = e.nativeEvent.layout.height;
+            measure();
+          }}
+          onContentSizeChange={(_w, h) => {
+            geo.current.content = h;
+            measure();
+          }}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{
+            paddingHorizontal: t.spacing.gutter,
+            paddingTop: t.space[2],
+            paddingBottom: inlineDock ? insets.bottom + t.space[6] : t.space[10],
+            gap: t.spacing.stackLg,
+          }}
         >
           {state.phase !== 'idle' && state.phase !== 'error' && state.phase !== 'not_skincare' ? (
             <ProductHeader title={header} meta={result?.product ? null : origin === 'sample' ? 'Sample listing' : null} />
           ) : null}
 
-          {usingDemo && (state.phase === 'result' || state.phase === 'confirm') ? (
-            <Tag label="Demo Key: labelled sample readings" variant="neutral" />
-          ) : null}
+          {usingDemo && state.phase === 'confirm' ? <Tag label={`${COPY.reading.demo}: labelled sample readings`} variant="demo" /> : null}
 
           {state.phase === 'resolving' ? <HeadSkeleton label="Reading the shared link…" /> : null}
           {state.phase === 'confirm' ? <HeadSkeleton label="Confirm the product to see the check." /> : null}
           {state.phase === 'loading' ? <HeadSkeleton label="Checking this product…" /> : null}
 
           {view && result ? (
-            <>
-              {!key && view.label !== 'MEDICINE' ? (
-                <View style={{ gap: t.space[2] }} testID="no-key">
-                  <Body>Scan for reasons based on your readings.</Body>
-                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space[2] }}>
-                    <Button label="Start scan" variant="tertiary" onPress={() => router.push('/scan')} />
-                    <Button label="Use the Demo Key" variant="tertiary" onPress={chooseDemo} />
-                  </View>
-                </View>
-              ) : null}
-              <View onLayout={(e) => (sheetY.current = e.nativeEvent.layout.y)}>
+            <View
+              style={medicine ? { paddingTop: t.space[10] } : undefined}
+              onLayout={(e) => {
+                sheetY.current = e.nativeEvent.layout.y;
+                measure();
+              }}
+            >
               <VerdictSheet
                 view={view}
+                demo={usingDemo}
                 onHowMade={() => setHowOpen(true)}
-                glyph={
-                  key && litZones(result.verdict).length ? (
-                    <View style={{ alignItems: 'center' }}>
-                      <ZoneGlyph model={glyphFromKey(key)} highlight={litZones(result.verdict)} width={160} showLegend={false} />
-                    </View>
+                afterHead={
+                  !key && !medicine ? (
+                    <NoReadingCard onScan={() => router.push('/scan')} onDemo={chooseDemo} primary={view.unknownKind !== 'ingredients'} />
                   ) : null
                 }
-                unknown={
-                  <UnknownPanel
-                    catalogCount={result.catalogCount}
-                    label={result.label}
-                    onSnap={() => void snap()}
-                    onChips={flow.setChips}
-                    onRun={flow.runLabel}
-                  />
+                glyph={
+                  key && litZones(result.verdict).length ? (
+                    <ZoneGlyph model={glyphFromKey(key)} highlight={litZones(result.verdict)} width={160} showLegend={false} />
+                  ) : null
                 }
+                unknown={<UnknownPanel catalogCount={result.catalogCount} label={result.label} onSnap={() => void snap()} onChips={flow.setChips} onRun={flow.runLabel} />}
                 tryon={
                   tryon && result.product ? (
-                    <Button
+                    <PillButton
                       label={tryon.label}
                       variant="secondary"
                       testID="tryon-entry"
                       accessibilityHint="Asks for a separate selfie consent first."
-                      onPress={() => router.push({ pathname: '/tryon', params: { productId: result.product!.id, mode: tryon.mode, productName: productLine(result.product!) } })}
+                      onPress={() =>
+                        router.push({ pathname: '/tryon', params: { productId: result.product!.id, mode: tryon.mode, productName: productLine(result.product!) } })
+                      }
                     />
                   ) : null
                 }
                 matches={
-                  <View onLayout={(e) => (matchesY.current = e.nativeEvent.layout.y)}>
+                  <View
+                    onLayout={(e) => {
+                      matchesY.current = e.nativeEvent.layout.y;
+                      measure();
+                    }}
+                  >
                     <BetterMatches state={matches} keyProfile={key} category={category} facetMap={FACET_MAP} />
                   </View>
                 }
               />
-              </View>
-            </>
+            </View>
           ) : null}
 
           {state.phase === 'not_skincare' ? (
-            <View style={{ gap: t.space[4] }}>
-              <Text accessibilityRole="header" style={[t.type.headline, { color: t.colors.text }]}>
-                This doesn't look like a skincare listing
-              </Text>
-              <Body muted>SkinKey checks face and lip products. Try another product, or the sample share on Home.</Body>
-              <Button label="Back" variant="secondary" onPress={() => router.back()} />
-            </View>
+            <EmptyState
+              plate={{ icon: 'tag-check' }}
+              title="This doesn't look like a skincare listing"
+              body={`${COPY.appName} checks face and lip products. Try another product, or the sample share on Home.`}
+            >
+              <PillButton label="Back" onPress={goBack} />
+            </EmptyState>
           ) : null}
 
           {state.phase === 'error' ? (
-            <View style={{ gap: t.space[4] }}>
-              <Text accessibilityRole="header" style={[t.type.headline, { color: t.colors.text }]}>
-                Something went wrong
-              </Text>
+            <EmptyState plate={{ icon: 'cloud-off' }} title="Something went wrong">
               <Body muted accessibilityLiveRegion="polite">
                 {state.message}
               </Body>
-              <Button label="Try again" onPress={flow.retry} />
-              <Button label="Back" variant="tertiary" onPress={() => router.back()} />
-            </View>
+              <PillButton label="Try again" onPress={flow.retry} />
+              <PillButton label="Back" variant="tertiary" onPress={goBack} style={{ alignSelf: 'center' }} />
+            </EmptyState>
           ) : null}
 
           {state.phase === 'idle' ? (
-            <View style={{ gap: t.space[4] }}>
-              <Text accessibilityRole="header" style={[t.type.headline, { color: t.colors.text }]}>
-                Nothing to check yet
-              </Text>
-              <Body muted>In Flipkart or Amazon.in, tap Share → SkinKey. Or paste a link on Home.</Body>
-              <Button label="Go to Home" variant="secondary" onPress={() => router.replace('/')} />
-            </View>
+            <EmptyState plate="mark" title="Nothing to check yet" body={COPY.shareTo}>
+              <PillButton label="Paste a link" leadingIcon="paste" onPress={() => router.replace('/')} />
+            </EmptyState>
           ) : null}
+
+          {inlineDock && dockActions ? <View style={{ paddingTop: t.space[2] }}>{dockActions}</View> : null}
         </ScrollView>
       )}
 
-      {actionBar}
+      {dock}
+
+      {view && view.showMatches && !matchesOnScreen && !inlineDock ? <MatchesPill onPress={toMatches} bottom={dockH} /> : null}
 
       {state.phase === 'confirm' ? (
         <SkuConfirmSheet
           visible
           mode={state.mode}
           candidates={state.candidates}
+          sharedTitle={state.resolve.extractedTitle}
           onConfirm={(c) => void flow.confirm(c)}
           onNotThis={flow.notThis}
-          onClose={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+          onClose={goBack}
         />
       ) : null}
 
       {result && view ? (
-        <HowThisWasMadeSheet visible={howOpen} onClose={() => setHowOpen(false)} ledgers={scanLedger ? [scanLedger, ...result.ledgers] : result.ledgers} rulesetHash={result.verdict.provenance.rulesetHash} />
+        <HowThisWasMadeSheet
+          visible={howOpen}
+          onClose={() => setHowOpen(false)}
+          ledgers={scanLedger ? [scanLedger, ...result.ledgers] : result.ledgers}
+          rulesetHash={result.verdict.provenance.rulesetHash}
+        />
       ) : null}
+
+      {showMore ? <StoreSearchSheet visible={moreOpen} onClose={() => setMoreOpen(false)} links={links} /> : null}
 
       <LabelCamera visible={cameraOpen} onClose={() => setCameraOpen(false)} onPhoto={flow.readLabel} />
     </View>

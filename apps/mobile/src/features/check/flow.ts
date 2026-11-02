@@ -125,7 +125,7 @@ export function evaluateLabel(
   });
 }
 
-/** Re-run the same inputs when the Key changes (for example the user switches to the Demo Key). */
+/** Re-run the same inputs when the Key changes (for example the user switches to the Demo reading). */
 export function reevaluate(engine: Engine, key: KeyProfile | null, r: CheckResult): Verdict {
   if (r.verdict.label === 'MEDICINE') return r.verdict;
   if (r.labelInci) return evaluateLabel(engine, key, r.labelInci, r.product, r.title);

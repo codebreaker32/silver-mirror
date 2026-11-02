@@ -22,7 +22,7 @@ const flat = (style: unknown): Record<string, unknown> =>
   Array.isArray(style) ? Object.assign({}, ...style.map(flat)) : ((style as Record<string, unknown>) ?? {});
 
 describe('VerdictSheet', () => {
-  it('CAUTION: reason first, numbered serif reasons, ledger, How link and matches', async () => {
+  it('CAUTION: reasons as rows without numerals, sentence-case ledger, How link and matches', async () => {
     const onHowMade = jest.fn();
     await wrap(<VerdictSheet view={presentVerdict(CAUTION_VERDICT, ctx)} onHowMade={onHowMade} matches={<Text>MATCHES</Text>} />);
 
@@ -33,13 +33,14 @@ describe('VerdictSheet', () => {
 
     expect(screen.getByText('Why · 3 reasons')).toBeTruthy();
     const first = screen.getByTestId('reason-01');
-    expect(within(first).getByText('01')).toBeTruthy();
+    expect(within(first).queryByText('01')).toBeNull();
     expect(within(first).getByText("Listing says 'fragrance-free'.")).toBeTruthy();
     expect(within(first).getByText('Its ingredient list has Parfum (rule LC-1a).')).toBeTruthy();
     expect(within(screen.getByTestId('reason-02')).getByText('Oiliness reading: High (whole face, scan 1 Nov).')).toBeTruthy();
 
     expect(screen.getByTestId('provenance-line').props.children).toMatch(/^Measured by YouCam Skin Analysis HD, 1 Nov · photo deleted · rules v/);
     expect(screen.getByText('Where this comes from')).toBeTruthy();
+    for (const key of ['Reading', 'Product', 'Rules', 'Limits']) expect(screen.getByText(key)).toBeTruthy();
     expect(screen.getByText(COPY.accuracyNote)).toBeTruthy();
     expect(screen.getByText(COPY.footer)).toBeTruthy();
     expect(screen.getByText(COPY.notAffiliated)).toBeTruthy();
@@ -90,6 +91,13 @@ describe('VerdictSheet', () => {
   });
 });
 
+describe('UNKNOWN panel', () => {
+  it('UNKNOWN snap button drops the trailing full stop of the fixed string', async () => {
+    await wrap(<UnknownPanel catalogCount={42} label={{ step: 'none' }} onSnap={jest.fn()} onChips={jest.fn()} onRun={jest.fn()} />);
+    expect(screen.getByTestId('snap-label').props.accessibilityLabel).toBe(COPY.snapLabel.replace(/\.$/, ''));
+  });
+});
+
 describe('label chips', () => {
   it('outlines uncertain tokens and runs only on confirm', async () => {
     const chips = chipsFromOcr([
@@ -107,12 +115,14 @@ describe('label chips', () => {
 });
 
 describe('SKU confirmation', () => {
-  it('asks "We think this is …" with Yes / Not this', async () => {
+  it('shows the candidate card with Yes / Not this', async () => {
     const onConfirm = jest.fn();
     const onNotThis = jest.fn();
     const { candidates } = resolveResponse();
     await wrap(<SkuConfirmSheet visible mode="single" candidates={candidates} onConfirm={onConfirm} onNotThis={onNotThis} onClose={jest.fn()} />);
-    expect(screen.getByText('Garnier · Super UV Invisible Serum Sunscreen · 30 ml')).toBeTruthy();
+    expect(screen.getByText('Garnier · Super UV Invisible Serum Sunscreen')).toBeTruthy();
+    expect(screen.getByText('30 ml')).toBeTruthy();
+    expect(screen.getByTestId('sku-yes').props.accessibilityLabel).toBe('Yes, this is Garnier · Super UV Invisible Serum Sunscreen · 30 ml');
     await fireEvent.press(screen.getByTestId('sku-not-this'));
     expect(onNotThis).toHaveBeenCalled();
     await fireEvent.press(screen.getByTestId('sku-yes'));
